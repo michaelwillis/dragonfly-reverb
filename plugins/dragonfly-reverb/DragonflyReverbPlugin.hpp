@@ -98,11 +98,17 @@ private:
 
     static const uint32_t BUFFER_SIZE = 256;
 
+    float dry_level;
+    float early_level;
+    float early_send;
+    float late_level;
+
     fv3::earlyref_f early;
     fv3::zrev2_f late;
 
     float early_out_buffer[2][BUFFER_SIZE];
     float late_in_buffer[2][BUFFER_SIZE];
+    float late_out_buffer[2][BUFFER_SIZE];
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };

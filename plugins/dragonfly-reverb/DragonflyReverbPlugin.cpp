@@ -41,31 +41,31 @@ typedef struct {
 } Preset;
 
 static Param params[NUM_PARAMS] = {
-  {"Dry Level",       "dry",        -70.0f, -10.0f,  10.0f,  "dB"},
-  {"Early Level",     "e_lev",      -70.0f, -10.0f,  10.0f,  "dB"},
-  {"Early Size",      "e_size",       1.0f,  10.0f,   5.0f,   "m"},
-  {"Early Width",     "e_width",      0.1f,   0.4f,   1.0f,   "X"},
-  {"Early Low Pass",  "e_lpf",        2.0f,   7.5f,  20.0f, "kHz"},
-  {"Early Send",      "e_send",       0.0f,   0.2f,   1.0f,   "X"},
-  {"Late Level",      "l_level",    -70.0f, -10.0f,  10.0f,  "dB"},
-  {"Late Predelay",   "l_delay",      0.0f,  14.0f, 100.0f,  "ms"},
-  {"Late Decay Time", "l_time",       0.1f,   2.0f,  10.0f, "sec"},
-  {"Late Size",       "l_size",      10.0f,  40.0f, 100.0f,   "m"},
-  {"Late Width",      "l_width",      0.1f,   0.9f,   1.0f,   "X"},
-  {"Late Low Pass",   "l_lpf",        2.0f,   7.5f,  20.0f, "kHz"},
-  {"Diffuse",         "diffuse",      0.0f,   0.8f,   1.0f,   "X"},
-  {"Low Crossover",   "lo_xo",        0.1f,   0.6f,   1.0f, "kHz"},
-  {"Low Decay Mult",  "lo_mult",      0.0f,   1.5f,   2.0f,   "X"},
-  {"High Crossover",  "hi_xo",        1.0f,   4.5f,  20.0f, "kHz"},
-  {"High Decay Mult", "hi_mult",      0.0f,   0.4f,   1.0f,   "X"},
-  {"Spin",            "spin",         0.1f,   3.0f,  10.0f,  "Hz"},
-  {"Wander",          "wander",       0.0f,  15.0f,  50.0f,  "ms"}
+  {"Dry Level",       "dry",          0.0f,   50.0f,   100.0f,   "%"},
+  {"Early Level",     "e_lev",        0.0f,   50.0f,   100.0f,   "%"},
+  {"Early Size",      "e_size",       1.0f,   10.0f,     5.0f,   "m"},
+  {"Early Width",     "e_width",     10.0f,   40.0f,   100.0f,   "%"},
+  {"Early Low Pass",  "e_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
+  {"Early Send",      "e_send",       0.0f,   20.0f,   100.0f,   "%"},
+  {"Late Level",      "l_level",      0.0f,   50.0f,   100.0f,   "%"},
+  {"Late Predelay",   "l_delay",      0.0f,   14.0f,   100.0f,  "ms"},
+  {"Late Decay Time", "l_time",       0.1f,    2.0f,    10.0f, "sec"},
+  {"Late Size",       "l_size",      10.0f,   40.0f,   100.0f,   "m"},
+  {"Late Width",      "l_width",     10.0f,   90.0f,   100.0f,   "%"},
+  {"Late Low Pass",   "l_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
+  {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
+  {"Low Crossover",   "lo_xo",      100.0f,  600.0f,  1000.0f,  "Hz"},
+  {"Low Decay Mult",  "lo_mult",      0.0f,  150.0f,   200.0f,   "%"},
+  {"High Crossover",  "hi_xo",     1000.0f, 4500.0f, 20000.0f,  "Hz"},
+  {"High Decay Mult", "hi_mult",      0.0f,   40.0f,   100.0f,   "%"},
+  {"Spin",            "spin",         0.1f,    3.0f,    10.0f,  "Hz"},
+  {"Wander",          "wander",       0.0f,   15.0f,    50.0f,  "ms"}
 };
 
 static Preset presets[NUM_PRESETS] = {
   //                 dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
-  {"Medium Hall", {-10.0, -10.0,    5.0,    0.4,    7.5,    0.2,   -10.0,    15.0,    1.7,   30.0,     1.0,   5.5,     0.9,   0.6,     1.5,   4.5,    0.35,  3.0, 15.0}},
-  {"Large Hall",  {-10.0, -10.0,    6.0,    0.8,    5.0,    0.2,   -10.0,    20.0,    2.8,   40.0,     1.0,   6.5,     0.9,   4.5,     2.4,   4.5,    0.35,  2.0, 20.0}}
+  {"Medium Hall", { 50.0,  50.0,    5.0,    40.0,   7.5,   20.0,    50.0,    15.0,    1.7,   30.0,     1.0,   5.5,     0.9,   0.6,     1.5,   4.5,    0.35,  3.0, 15.0}},
+  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,   5.0,   30.0,    50.0,    20.0,    2.8,   40.0,     1.0,   6.5,     0.9,   4.5,     2.4,   4.5,    0.35,  2.0, 20.0}}
 };
 
 // -----------------------------------------------------------------------
@@ -78,11 +78,12 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS,
     early.setLRDelay(0.3);
     early.setLRCrossApFreq(750, 4);
     early.setDiffusionApFreq(150, 4);
-    early.setSampleRate(FV3_REVBASE_DEFAULT_FS);
+    early.setSampleRate(getSampleRate());
 
     late.setMuteOnChange(true);
+    late.setwet(0); // 0dB
     late.setdryr(0); // mute dry signal
-    late.setSampleRate(FV3_REVBASE_DEFAULT_FS);
+    late.setSampleRate(getSampleRate());
 
     // set initial values
     loadProgram(0);
@@ -107,9 +108,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
 
 void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 {
-    if (index < NUM_PRESETS) {
-      programName = presets[index].name;
-    }
+  programName = presets[index].name;
 }
 
 // -----------------------------------------------------------------------
@@ -117,13 +116,26 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
-    // FIXME! Needs to get params
-    return 0.0f;
+    // FIXME! Needs to get all params!
+    switch(index) {
+      case 0: return dry_level * 100.0;
+      case 1: return early_level * 100.0;
+      case 5: return early_send * 100.0;
+      case 6: return late_level * 100.0;
+    }
+
+    return 0.0;
 }
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
-    // FIXME! Needs to set params!
+    // FIXME! Needs to set all params!
+    switch(index) {
+      case 0:   dry_level = (value / 100.0); break;
+      case 1: early_level = (value / 100.0); break;
+      case 5:  early_send = (value / 100.0); break;
+      case 6:  late_level = (value / 100.0); break;
+    }
 }
 
 void DragonflyReverbPlugin::loadProgram(uint32_t index)
@@ -142,7 +154,8 @@ void DragonflyReverbPlugin::loadProgram(uint32_t index)
 
 void DragonflyReverbPlugin::activate()
 {
-    // FIXME: Reset reverb algorithms
+  early.setSampleRate(getSampleRate());
+  late.setSampleRate(getSampleRate());
 }
 
 void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t frames)
@@ -159,21 +172,28 @@ void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t 
     );
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
-      late_in_buffer[0][i] = 0.5 * early_out_buffer[0][i] + inputs[0][offset + i];
-      late_in_buffer[1][i] = 0.5 * early_out_buffer[1][i] + inputs[1][offset + i];
+      late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + inputs[0][offset + i];
+      late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + inputs[1][offset + i];
     }
 
     late.processreplace(
       const_cast<float *>(late_in_buffer[0]),
       const_cast<float *>(late_in_buffer[1]),
-      outputs[0] + offset,
-      outputs[1] + offset,
+      late_out_buffer[0],
+      late_out_buffer[1],
       buffer_frames
     );
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
-      outputs[0][offset + i] += 0.5 * early_out_buffer[0][i] + 0.5 * inputs[0][offset + i];
-      outputs[1][offset + i] += 0.5 * early_out_buffer[1][i] + 0.5 * inputs[1][offset + i];
+      outputs[0][offset + i] =
+        dry_level   * inputs[0][offset + i]  +
+        early_level * early_out_buffer[0][i] +
+        late_level  * late_out_buffer[0][i];
+
+      outputs[1][offset + i] =
+        dry_level   * inputs[1][offset + i]  +
+        early_level * early_out_buffer[1][i] +
+        late_level  * late_out_buffer[1][i];
     }
   }
 }

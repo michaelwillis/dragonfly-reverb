@@ -74,7 +74,7 @@ public:
    * @param[in] value level.
    */
   virtual void         setwetr(_fv3_float_t value);
-  virtual _fv3_float_t getwetr();
+  virtual _fv3_float_t getwetr() const;
 
   /**
    * set the dry signal level.
@@ -125,7 +125,7 @@ public:
   virtual void freeWave();
   virtual void update_wet();
   virtual _fv3_float_t limFs2(_fv3_float_t fq);
-  
+
   virtual long f_(long def, _fv3_float_t factor);
   virtual long f_(_fv3_float_t def, _fv3_float_t factor);
   virtual long p_(long def, _fv3_float_t factor);
@@ -135,5 +135,5 @@ public:
 
  private:
   _FV3_(revbase)(const _FV3_(revbase)& x);
-  _FV3_(revbase)& operator=(const _FV3_(revbase)& x);  
+  _FV3_(revbase)& operator=(const _FV3_(revbase)& x);
 };

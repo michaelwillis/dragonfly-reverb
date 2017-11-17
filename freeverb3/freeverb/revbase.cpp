@@ -160,7 +160,7 @@ void FV3_(revbase)::setwetr(fv3_float_t value)
   update_wet();
 }
 
-fv3_float_t FV3_(revbase)::getwetr()
+fv3_float_t FV3_(revbase)::getwetr() const
 {
   return wet;
 }
