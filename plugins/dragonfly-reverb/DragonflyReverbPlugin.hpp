@@ -60,7 +60,7 @@ protected:
 
     uint32_t getVersion() const noexcept override
     {
-        return d_version(1, 0, 0);
+        return d_version(0, 0, 1);
     }
 
     int64_t getUniqueId() const noexcept override
@@ -96,8 +96,14 @@ protected:
 
 private:
 
-    fv3::earlyref_f *early;
-    fv3::zrev2_f *late;
+    static const uint32_t BUFFER_SIZE = 256;
+
+    fv3::earlyref_f early;
+    fv3::zrev2_f late;
+
+    float early_out_buffer[2][BUFFER_SIZE];
+    float late_in_buffer[2][BUFFER_SIZE];
+
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };
 

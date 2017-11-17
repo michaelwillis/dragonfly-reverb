@@ -26,16 +26,21 @@
 
 START_NAMESPACE_DISTRHO
 
-struct param {
+typedef struct {
   const char *name;
   const char *symbol;
   float range_min;
   float range_def;
   float range_max;
   const char *unit;
-};
+} Param;
 
-static param params[NUM_PARAMS] = {
+typedef struct {
+  const char *name;
+  const float params[NUM_PARAMS];
+} Preset;
+
+static Param params[NUM_PARAMS] = {
   {"Dry Level",       "dry",        -70.0f, -10.0f,  10.0f,  "dB"},
   {"Early Level",     "e_lev",      -70.0f, -10.0f,  10.0f,  "dB"},
   {"Early Size",      "e_size",       1.0f,  10.0f,   5.0f,   "m"},
@@ -57,63 +62,27 @@ static param params[NUM_PARAMS] = {
   {"Wander",          "wander",       0.0f,  15.0f,  50.0f,  "ms"}
 };
 
-/*
-static char presetNames[NUM_PRESETS][PRESET_NAME_LENGTH] = {
-  "Room",
-  "Bright Room",
-  "Dark Room",
-
-  "Studio",
-
-  "Chamber",
-
-  "Small Hall",
-  "Small Bright Hall",
-  "Small Dark Hall",
-  "Small Vocal Hall",
-
-  "Medium Hall",
-  "Medium Bright Hall",
-  "Medium Dark Hall",
-  "Medium Vocal Hall",
-
-  "Large Hall",
-  "Large Bright Hall",
-  "Large Dark Hall",
-  "Large Vocal Hall",
-
-  "Cathedral"
-};
-*/
-
-static const char* preset_names[NUM_PRESETS] = {
-  "Medium Hall",
-  "Large Hall"
-};
-
-static float presets[NUM_PRESETS][NUM_PARAMS] = {
-  // dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
-  {-10.0, -10.0,    5.0,    0.4,    7.5,    0.2,   -10.0,    15.0,    1.7,   30.0,     1.0,   5.5,     0.9,   0.6,     1.5,   4.5,    0.35,  3.0, 15.0},
-  {-10.0, -10.0,    6.0,    0.8,    5.0,    0.2,   -10.0,    20.0,    2.8,   40.0,     1.0,   6.5,     0.9,   4.5,     2.4,   4.5,    0.35,  2.0, 20.0}
+static Preset presets[NUM_PRESETS] = {
+  //                 dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
+  {"Medium Hall", {-10.0, -10.0,    5.0,    0.4,    7.5,    0.2,   -10.0,    15.0,    1.7,   30.0,     1.0,   5.5,     0.9,   0.6,     1.5,   4.5,    0.35,  3.0, 15.0}},
+  {"Large Hall",  {-10.0, -10.0,    6.0,    0.8,    5.0,    0.2,   -10.0,    20.0,    2.8,   40.0,     1.0,   6.5,     0.9,   4.5,     2.4,   4.5,    0.35,  2.0, 20.0}}
 };
 
 // -----------------------------------------------------------------------
 
 DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS, 0) // 0 states
 {
-    early = new fv3::earlyref_f();
-    early->setMuteOnChange(true);
-    early->setdryr(0);
-    early->setwet(0); // 0dB
-    early->setLRDelay(0.3);
-    early->setLRCrossApFreq(750, 4);
-    early->setDiffusionApFreq(150, 4);
-    early->setSampleRate(FV3_REVBASE_DEFAULT_FS);
+    early.setMuteOnChange(true);
+    early.setdryr(0);
+    early.setwet(0); // 0dB
+    early.setLRDelay(0.3);
+    early.setLRCrossApFreq(750, 4);
+    early.setDiffusionApFreq(150, 4);
+    early.setSampleRate(FV3_REVBASE_DEFAULT_FS);
 
-    late = new fv3::zrev2_f();
-    late->setMuteOnChange(true);
-    late->setdryr(0); // mute dry signal
-    late->setSampleRate(FV3_REVBASE_DEFAULT_FS);
+    late.setMuteOnChange(true);
+    late.setdryr(0); // mute dry signal
+    late.setSampleRate(FV3_REVBASE_DEFAULT_FS);
 
     // set initial values
     loadProgram(0);
@@ -139,7 +108,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
 void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 {
     if (index < NUM_PRESETS) {
-      programName = preset_names[index];
+      programName = presets[index].name;
     }
 }
 
@@ -159,7 +128,7 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 
 void DragonflyReverbPlugin::loadProgram(uint32_t index)
 {
-    float *preset = presets[index];
+    const float *preset = presets[index].params;
     for (uint32_t param_index = 0; param_index < NUM_PARAMS; param_index++)
     {
         setParameterValue(param_index, preset[param_index]);
@@ -178,8 +147,35 @@ void DragonflyReverbPlugin::activate()
 
 void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t frames)
 {
-    // FIXME: Do reverb processing here!
-    late->processreplace(const_cast<float *>(inputs[0]),const_cast<float *>(inputs[1]),outputs[0],outputs[1],(long int)frames);
+  for (uint32_t offset = 0; offset < frames; offset += BUFFER_SIZE) {
+    long int buffer_frames = frames - offset < BUFFER_SIZE ? frames - offset : BUFFER_SIZE;
+
+    early.processreplace(
+        const_cast<float *>(inputs[0] + offset),
+        const_cast<float *>(inputs[1] + offset),
+        early_out_buffer[0],
+        early_out_buffer[1],
+        buffer_frames
+    );
+
+    for (uint32_t i = 0; i < buffer_frames; i++) {
+      late_in_buffer[0][i] = 0.5 * early_out_buffer[0][i] + inputs[0][offset + i];
+      late_in_buffer[1][i] = 0.5 * early_out_buffer[1][i] + inputs[1][offset + i];
+    }
+
+    late.processreplace(
+      const_cast<float *>(late_in_buffer[0]),
+      const_cast<float *>(late_in_buffer[1]),
+      outputs[0] + offset,
+      outputs[1] + offset,
+      buffer_frames
+    );
+
+    for (uint32_t i = 0; i < buffer_frames; i++) {
+      outputs[0][offset + i] += 0.5 * early_out_buffer[0][i] + 0.5 * inputs[0][offset + i];
+      outputs[1][offset + i] += 0.5 * early_out_buffer[1][i] + 0.5 * inputs[1][offset + i];
+    }
+  }
 }
 
 // -----------------------------------------------------------------------
@@ -187,10 +183,8 @@ void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t 
 
 void DragonflyReverbPlugin::sampleRateChanged(double newSampleRate)
 {
-    early->setSampleRate(newSampleRate);
-    late->setSampleRate(newSampleRate);
-
-    // FIXME: Set sample rate on algorithms!
+    early.setSampleRate(newSampleRate);
+    late.setSampleRate(newSampleRate);
 }
 
 // -----------------------------------------------------------------------
