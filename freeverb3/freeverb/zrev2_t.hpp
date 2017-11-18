@@ -32,36 +32,36 @@ public:
   virtual void setloopdamp(_fv3_float_t value);
 
   void setrt60_factor_low(_fv3_float_t gain);
-  _fv3_float_t getrt60_factor_low();
+  _fv3_float_t getrt60_factor_low() const;
   void setrt60_factor_high(_fv3_float_t gain);
-  _fv3_float_t getrt60_factor_high();
+  _fv3_float_t getrt60_factor_high() const;
 
 
   void setxover_low(_fv3_float_t fc);
-  _fv3_float_t getxover_low();
+  _fv3_float_t getxover_low() const;
   void setxover_high(_fv3_float_t fc);
-  _fv3_float_t getxover_high();
+  _fv3_float_t getxover_high() const;
 
   /**
    * set the allpass diffusion parameter.
    * @param[in] value The parameter in -1~1.
    */
   void setidiffusion1(_fv3_float_t value);
-  _fv3_float_t getidiffusion1();
+  _fv3_float_t getidiffusion1() const;
 
   /**
    * set the comb filter length for the modulation.
    * @param[in] value The comb filter length in ms.
    */
   void setwander(_fv3_float_t ms);
-  _fv3_float_t getwander();
+  _fv3_float_t getwander() const;
 
   /**
    * set the modulation frequency of the strength of the comb filter.
    * @param[in] value LFO modulation freqneucy.
    */
   void setspin(_fv3_float_t fq);
-  _fv3_float_t getspin();
+  _fv3_float_t getspin() const;
   void setspinfactor(_fv3_float_t value);
   _fv3_float_t getspinfactor();
 

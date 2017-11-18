@@ -222,7 +222,7 @@ void FV3_(earlyref)::setoutputlpf(fv3_float_t value)
   out2_lpf.setLPF_BW(outputlpf, factor*currentfs);
 }
 
-fv3_float_t FV3_(earlyref)::getoutputlpf()
+fv3_float_t FV3_(earlyref)::getoutputlpf() const
 {
   return outputlpf;
 }
@@ -237,7 +237,7 @@ void FV3_(earlyref)::setoutputhpf(fv3_float_t value)
   out2_hpf.setHPF_BW(outputhpf, factor*currentfs);
 }
 
-fv3_float_t FV3_(earlyref)::getoutputhpf()
+fv3_float_t FV3_(earlyref)::getoutputhpf() const
 {
   return outputhpf;
 }

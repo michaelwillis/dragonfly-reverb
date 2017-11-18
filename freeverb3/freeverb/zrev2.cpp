@@ -169,7 +169,7 @@ void FV3_(zrev2)::setrt60_factor_low(fv3_float_t gain)
   setrt60(getrt60());
 }
 
-fv3_float_t FV3_(zrev2)::getrt60_factor_low()
+fv3_float_t FV3_(zrev2)::getrt60_factor_low() const
 {
   return rt60_f_low;
 }
@@ -180,7 +180,7 @@ void FV3_(zrev2)::setrt60_factor_high(fv3_float_t gain)
   setrt60(getrt60());
 }
 
-fv3_float_t FV3_(zrev2)::getrt60_factor_high()
+fv3_float_t FV3_(zrev2)::getrt60_factor_high() const
 {
   return rt60_f_high;
 }
@@ -196,7 +196,7 @@ void FV3_(zrev2)::setxover_low(fv3_float_t fc)
   setrt60(getrt60());
 }
 
-fv3_float_t FV3_(zrev2)::getxover_low()
+fv3_float_t FV3_(zrev2)::getxover_low() const
 {
   return rt60_xo_low;
 }
@@ -208,7 +208,7 @@ void FV3_(zrev2)::setxover_high(fv3_float_t fc)
   setrt60(getrt60());
 }
 
-fv3_float_t FV3_(zrev2)::getxover_high()
+fv3_float_t FV3_(zrev2)::getxover_high() const
 {
   return rt60_xo_high;
 }
@@ -223,7 +223,7 @@ void FV3_(zrev2)::setidiffusion1(fv3_float_t value)
     }
 }
 
-fv3_float_t FV3_(zrev2)::getidiffusion1()
+fv3_float_t FV3_(zrev2)::getidiffusion1() const
 {
   return idiff1;
 }
@@ -236,7 +236,7 @@ void FV3_(zrev2)::setwander(fv3_float_t ms)
   spincombr.setsize(p_(wander_ms, getTotalSampleRate()*0.001));
 }
 
-fv3_float_t FV3_(zrev2)::getwander()
+fv3_float_t FV3_(zrev2)::getwander() const
 {
   return wander_ms;
 }
@@ -247,7 +247,7 @@ void FV3_(zrev2)::setspin(fv3_float_t fq)
   spin1_lpf.setLPF_BW(spin_fq, getTotalSampleRate());
 }
 
-fv3_float_t FV3_(zrev2)::getspin(){ return spin_fq; }
+fv3_float_t FV3_(zrev2)::getspin() const { return spin_fq; }
 
 void FV3_(zrev2)::setspinfactor(fv3_float_t value){ spin_factor = value; }
 

@@ -36,7 +36,7 @@ public:
    * @param[in] the factor.
    */
   virtual void setRSFactor(_fv3_float_t value);
-  virtual _fv3_float_t getRSFactor();
+  virtual _fv3_float_t getRSFactor() const;
   virtual _fv3_float_t getTotalFactorFs(){ return getSampleRate()*getOSFactorf()*getRSFactor(); }
 
   virtual void setFsFactors();
@@ -56,7 +56,7 @@ public:
   virtual void setInitialDelay(long numsamples);
   virtual long getInitialDelay();
   virtual void         setPreDelay(_fv3_float_t value_ms);
-  virtual _fv3_float_t getPreDelay();
+  virtual _fv3_float_t getPreDelay() const;
   virtual long getLatency();
   virtual void mute();
   virtual void processreplace(_fv3_float_t *inputL, _fv3_float_t *inputR, _fv3_float_t *outputL, _fv3_float_t *outputR, long numsamples)
@@ -95,7 +95,7 @@ public:
    * @param[in] value width level. must be 0~1.
    */
   virtual void         setwidth(_fv3_float_t value);
-  virtual _fv3_float_t getwidth();
+  virtual _fv3_float_t getwidth() const;
 
   /**
    * set the prime mode for delay lines.

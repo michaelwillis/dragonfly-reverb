@@ -82,7 +82,7 @@ void FV3_(revbase)::setPreDelay(fv3_float_t value_ms)
   setInitialDelay((long)(currentfs*(fv3_float_t)getOSFactor()*(preDelay = value_ms)/1000.));
 }
 
-fv3_float_t FV3_(revbase)::getPreDelay()
+fv3_float_t FV3_(revbase)::getPreDelay() const
 {
   return preDelay;
 }
@@ -200,7 +200,7 @@ void FV3_(revbase)::setwidth(fv3_float_t value)
   update_wet();
 }
 
-fv3_float_t FV3_(revbase)::getwidth()
+fv3_float_t FV3_(revbase)::getwidth() const
 {
   return width;
 }
@@ -259,7 +259,7 @@ void FV3_(revbase)::setRSFactor(fv3_float_t value)
   if(muteOnChange) mute();
 }
 
-fv3_float_t FV3_(revbase)::getRSFactor()
+fv3_float_t FV3_(revbase)::getRSFactor() const
 {
   return rsfactor;
 }

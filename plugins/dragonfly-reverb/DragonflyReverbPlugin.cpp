@@ -55,35 +55,42 @@ static Param params[NUM_PARAMS] = {
   {"Late Low Pass",   "l_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
   {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
   {"Low Crossover",   "lo_xo",      100.0f,  600.0f,  1000.0f,  "Hz"},
-  {"Low Decay Mult",  "lo_mult",      0.0f,  150.0f,   200.0f,   "%"},
+  {"Low Decay Mult",  "lo_mult",      0.1f,    1.5f,     2.0f,   "X"},
   {"High Crossover",  "hi_xo",     1000.0f, 4500.0f, 20000.0f,  "Hz"},
-  {"High Decay Mult", "hi_mult",      0.0f,   40.0f,   100.0f,   "%"},
+  {"High Decay Mult", "hi_mult",      0.1f,    0.4f,     1.0f,   "X"},
   {"Spin",            "spin",         0.1f,    3.0f,    10.0f,  "Hz"},
   {"Wander",          "wander",       0.0f,   15.0f,    50.0f,  "ms"}
 };
 
 static Preset presets[NUM_PRESETS] = {
   //                 dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
-  {"Medium Hall", { 50.0,  50.0,    5.0,    40.0,   7.5,   20.0,    50.0,    15.0,    1.7,   30.0,     1.0,   5.5,     0.9,   0.6,     1.5,   4.5,    0.35,  3.0, 15.0}},
-  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,   5.0,   30.0,    50.0,    20.0,    2.8,   40.0,     1.0,   6.5,     0.9,   4.5,     2.4,   4.5,    0.35,  2.0, 20.0}}
+  {"Medium Hall", { 50.0,  50.0,    5.0,    40.0,  7500,   20.0,    50.0,    15.0,    1.7,   30.0,   100.0,  5500,    90.0,   600,     1.5,  4500,    0.35,  3.0, 15.0}},
+  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,  5000,   30.0,    50.0,    20.0,    2.8,   40.0,   100.0,  6500,    90.0,   600,     2.4,  4500,    0.35,  2.0, 20.0}}
 };
 
 // -----------------------------------------------------------------------
 
 DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS, 0) // 0 states
 {
+    early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
     early.setMuteOnChange(true);
-    early.setdryr(0);
+    early.setdryr(0); // mute dry signal
     early.setwet(0); // 0dB
     early.setLRDelay(0.3);
     early.setLRCrossApFreq(750, 4);
     early.setDiffusionApFreq(150, 4);
     early.setSampleRate(getSampleRate());
+    early.setoutputhpf(4.0);
 
     late.setMuteOnChange(true);
     late.setwet(0); // 0dB
     late.setdryr(0); // mute dry signal
     late.setSampleRate(getSampleRate());
+    late.setoutputhpf(4.0);
+    late.setlfo1freq(0.9);
+    late.setlfo2freq(1.3);
+    late.setlfofactor(0.3);
+    late.setspinfactor(0.3);
 
     // set initial values
     loadProgram(0);
@@ -116,12 +123,26 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
-    // FIXME! Needs to get all params!
     switch(index) {
-      case 0: return dry_level * 100.0;
-      case 1: return early_level * 100.0;
-      case 5: return early_send * 100.0;
-      case 6: return late_level * 100.0;
+      case  0: return dry_level * 100.0;
+      case  1: return early_level * 100.0;
+      case  2: return early.getRSFactor() * 7.0;
+      case  3: return early.getwidth() * 100.0;
+      case  4: return early.getoutputlpf();
+      case  5: return early_send * 100.0;
+      case  6: return late_level * 100.0;
+      case  7: return late.getPreDelay();
+      case  8: return late.getrt60();
+      case  9: return late.getRSFactor() * 80.0;
+      case 10: return late.getwidth() * 100.0;
+      case 11: return late.getoutputlpf();
+      case 12: return late.getidiffusion1() * 100.0;
+      case 13: return late.getxover_low();
+      case 14: return late.getrt60_factor_low();
+      case 15: return late.getxover_high();
+      case 16: return late.getrt60_factor_high();
+      case 17: return late.getspin();
+      case 18: return late.getwander();
     }
 
     return 0.0;
@@ -129,12 +150,29 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
-    // FIXME! Needs to set all params!
     switch(index) {
-      case 0:   dry_level = (value / 100.0); break;
-      case 1: early_level = (value / 100.0); break;
-      case 5:  early_send = (value / 100.0); break;
-      case 6:  late_level = (value / 100.0); break;
+      case  0:     dry_level    = (value / 100.0); break;
+      case  1:   early_level    = (value / 100.0); break;
+      case  2: early.setRSFactor  (value / 7.0);   break;
+      case  3: early.setwidth     (value / 100.0); break;
+      case  4: early.setoutputlpf(value);          break;
+      case  5:    early_send    = (value / 100.0); break;
+      case  6:    late_level    = (value / 100.0); break;
+      case  7: late.setPreDelay   (value);         break;
+      case  8: late.setrt60       (value);         break;
+      case  9: late.setRSFactor   (value / 80.0);  break;
+      case 10: late.setwidth      (value / 100.0); break;
+      case 11: late.setoutputlpf  (value);         break;
+      case 12:
+        late.setidiffusion1(value / 100.0 * 0.75);
+        late.setapfeedback(value / 100.0 * 0.75);
+        break;
+      case 13: late.setxover_low  (value);         break;
+      case 14: late.setrt60_factor_low(value);     break;
+      case 15: late.setxover_high (value);         break;
+      case 16: late.setrt60_factor_high(value);    break;
+      case 17: late.setspin       (value);         break;
+      case 18: late.setwander     (value);         break;
     }
 }
 
@@ -145,8 +183,6 @@ void DragonflyReverbPlugin::loadProgram(uint32_t index)
     {
         setParameterValue(param_index, preset[param_index]);
     }
-
-    // TODO: Reset reverb algorithms if necessary!
 }
 
 // -----------------------------------------------------------------------

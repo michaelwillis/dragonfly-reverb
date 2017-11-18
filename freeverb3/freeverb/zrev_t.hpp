@@ -29,13 +29,13 @@ public:
     throw(std::bad_alloc);
 
   virtual void setrt60(_fv3_float_t value);
-  _fv3_float_t getrt60();
+  _fv3_float_t getrt60() const;
   void setapfeedback(_fv3_float_t value);
   _fv3_float_t getapfeedback();
   virtual void setloopdamp(_fv3_float_t value);
   _fv3_float_t getloopdamp();
   void setoutputlpf(_fv3_float_t value);
-  _fv3_float_t getoutputlpf();
+  _fv3_float_t getoutputlpf() const;
   void setoutputhpf(_fv3_float_t value);
   _fv3_float_t getoutputhpf();
   void setdccutfreq(_fv3_float_t value);

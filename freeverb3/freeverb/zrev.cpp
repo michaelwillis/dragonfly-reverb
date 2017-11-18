@@ -136,7 +136,7 @@ void FV3_(zrev)::setrt60(fv3_float_t value)
     }
 }
 
-fv3_float_t FV3_(zrev)::getrt60()
+fv3_float_t FV3_(zrev)::getrt60() const
 {
   return rt60;
 }
@@ -175,7 +175,7 @@ void FV3_(zrev)::setoutputlpf(fv3_float_t value)
   out2_lpf.setLPF_BW(outputlpf, getTotalSampleRate());
 }
 
-fv3_float_t FV3_(zrev)::getoutputlpf()
+fv3_float_t FV3_(zrev)::getoutputlpf() const
 {
   return outputlpf;
 }
