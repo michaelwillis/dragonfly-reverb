@@ -19,7 +19,7 @@
 #include "DragonflyReverbPlugin.hpp"
 
 #define NUM_PARAMS 19
-#define NUM_PRESETS 2
+#define NUM_PRESETS 7
 #define PARAM_NAME_LENGTH 16
 #define PARAM_SYMBOL_LENGTH 8
 #define PRESET_NAME_LENGTH 20
@@ -43,29 +43,34 @@ typedef struct {
 static Param params[NUM_PARAMS] = {
   {"Dry Level",       "dry",          0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "e_lev",        0.0f,   50.0f,   100.0f,   "%"},
-  {"Early Size",      "e_size",       1.0f,   10.0f,     5.0f,   "m"},
-  {"Early Width",     "e_width",     10.0f,   40.0f,   100.0f,   "%"},
+  {"Early Size",      "e_size",       1.0f,    5.0f,    10.0f,   "m"},
+  {"Early Width",     "e_width",     10.0f,   40.0f,   200.0f,   "%"},
   {"Early Low Pass",  "e_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
   {"Early Send",      "e_send",       0.0f,   20.0f,   100.0f,   "%"},
   {"Late Level",      "l_level",      0.0f,   50.0f,   100.0f,   "%"},
   {"Late Predelay",   "l_delay",      0.0f,   14.0f,   100.0f,  "ms"},
   {"Late Decay Time", "l_time",       0.1f,    2.0f,    10.0f, "sec"},
   {"Late Size",       "l_size",      10.0f,   40.0f,   100.0f,   "m"},
-  {"Late Width",      "l_width",     10.0f,   90.0f,   100.0f,   "%"},
+  {"Late Width",      "l_width",     10.0f,   90.0f,   200.0f,   "%"},
   {"Late Low Pass",   "l_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
   {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
   {"Low Crossover",   "lo_xo",      100.0f,  600.0f,  1000.0f,  "Hz"},
-  {"Low Decay Mult",  "lo_mult",      0.1f,    1.5f,     2.0f,   "X"},
+  {"Low Decay Mult",  "lo_mult",      0.1f,    1.5f,     4.0f,   "X"},
   {"High Crossover",  "hi_xo",     1000.0f, 4500.0f, 20000.0f,  "Hz"},
-  {"High Decay Mult", "hi_mult",      0.1f,    0.4f,     1.0f,   "X"},
-  {"Spin",            "spin",         0.1f,    3.0f,    10.0f,  "Hz"},
-  {"Wander",          "wander",       0.0f,   15.0f,    50.0f,  "ms"}
+  {"High Decay Mult", "hi_mult",      0.1f,    0.4f,     2.0f,   "X"},
+  {"Spin",            "spin",         0.1f,    3.0f,     5.0f,  "Hz"},
+  {"Wander",          "wander",       0.0f,   15.0f,    30.0f,  "ms"}
 };
 
 static Preset presets[NUM_PRESETS] = {
   //                 dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
-  {"Medium Hall", { 50.0,  50.0,    5.0,    40.0,  7500,   20.0,    50.0,    15.0,    1.7,   30.0,   100.0,  5500,    90.0,   600,     1.5,  4500,    0.35,  3.0, 15.0}},
-  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,  5000,   30.0,    50.0,    20.0,    2.8,   40.0,   100.0,  6500,    90.0,   600,     2.4,  4500,    0.35,  2.0, 20.0}}
+  {"Room",        { 50.0,  50.0,    3.0,    80.0, 18000,   40.0,    50.0,     5.0,    0.4,   10.0,   100.0, 12000,    75.0,   400,     0.9,  6000,    0.90,  0.3, 27.0}},
+  {"Studio",      { 50.0,  50.0,    5.0,    90.0,  6000,   20.0,    50.0,     5.0,    0.8,   12.0,    90.0,  6000,    50.0,   200,     1.2,  5000,    0.80,  2.5,  7.0}},
+  {"Chamber",     { 50.0,  50.0,    5.0,    40.0,  9000,   60.0,    50.0,    12.0,    1.2,   16.0,    60.0,  8000,    80.0,   500,     1.5,  5500,    0.30,  3.3, 15.0}},
+  {"Small Hall",  { 50.0,  50.0,    3.0,    40.0,  6000,   20.0,    50.0,    12.0,    1.3,   18.0,   100.0,  5500,    90.0,   500,     1.2,  4000,    0.35,  2.5, 13.0}},
+  {"Medium Hall", { 50.0,  50.0,    5.0,    60.0,  7500,   20.0,    50.0,    15.0,    1.7,   30.0,   120.0,  6500,    90.0,   600,     1.5,  4500,    0.40,  2.8, 16.0}},
+  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,  5000,   20.0,    50.0,    20.0,    3.2,   42.0,   100.0,  7500,    85.0,   600,     2.4,  4500,    0.30,  2.9, 22.0}},
+  {"Cathedral",   { 50.0,  50.0,    8.0,   120.0,  5000,   60.0,    50.0,    30.0,    4.8,   58.0,   200.0,  6500,    85.0,   850,     3.0,  4000,    0.60,  3.1, 18.0}}
 };
 
 // -----------------------------------------------------------------------
