@@ -40,6 +40,12 @@ typedef struct {
   const float params[NUM_PARAMS];
 } Preset;
 
+enum {
+  DRY_LEVEL, EARLY_LEVEL, EARLY_SIZE, EARLY_WIDTH, EARLY_LPF, EARLY_SEND,
+  LATE_LEVEL, LATE_PREDELAY, LATE_DECAY, LATE_SIZE, LATE_WIDTH, LATE_LPF,
+  DIFFUSE, LOW_XOVER, LOW_MULT, HIGH_XOVER, HIGH_MULT, SPIN, WANDER
+};
+
 static Param params[NUM_PARAMS] = {
   {"Dry Level",       "dry",          0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "e_lev",        0.0f,   50.0f,   100.0f,   "%"},
@@ -129,25 +135,25 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
     switch(index) {
-      case  0: return dry_level * 100.0;
-      case  1: return early_level * 100.0;
-      case  2: return early.getRSFactor() * 7.0;
-      case  3: return early.getwidth() * 100.0;
-      case  4: return early.getoutputlpf();
-      case  5: return early_send * 100.0;
-      case  6: return late_level * 100.0;
-      case  7: return late.getPreDelay();
-      case  8: return late.getrt60();
-      case  9: return late.getRSFactor() * 80.0;
-      case 10: return late.getwidth() * 100.0;
-      case 11: return late.getoutputlpf();
-      case 12: return late.getidiffusion1() * 100.0;
-      case 13: return late.getxover_low();
-      case 14: return late.getrt60_factor_low();
-      case 15: return late.getxover_high();
-      case 16: return late.getrt60_factor_high();
-      case 17: return late.getspin();
-      case 18: return late.getwander();
+      case     DRY_LEVEL: return dry_level * 100.0;
+      case   EARLY_LEVEL: return early_level * 100.0;
+      case    EARLY_SIZE: return early.getRSFactor() * 7.0;
+      case   EARLY_WIDTH: return early.getwidth() * 100.0;
+      case     EARLY_LPF: return early.getoutputlpf();
+      case    EARLY_SEND: return early_send * 100.0;
+      case    LATE_LEVEL: return late_level * 100.0;
+      case LATE_PREDELAY: return late.getPreDelay();
+      case    LATE_DECAY: return late.getrt60();
+      case     LATE_SIZE: return late.getRSFactor() * 80.0;
+      case    LATE_WIDTH: return late.getwidth() * 100.0;
+      case      LATE_LPF: return late.getoutputlpf();
+      case       DIFFUSE: return late.getidiffusion1() * 100.0;
+      case     LOW_XOVER: return late.getxover_low();
+      case      LOW_MULT: return late.getrt60_factor_low();
+      case    HIGH_XOVER: return late.getxover_high();
+      case     HIGH_MULT: return late.getrt60_factor_high();
+      case          SPIN: return late.getspin();
+      case        WANDER: return late.getwander();
     }
 
     return 0.0;
@@ -156,28 +162,27 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
     switch(index) {
-      case  0:     dry_level    = (value / 100.0); break;
-      case  1:   early_level    = (value / 100.0); break;
-      case  2: early.setRSFactor  (value / 7.0);   break;
-      case  3: early.setwidth     (value / 100.0); break;
-      case  4: early.setoutputlpf(value);          break;
-      case  5:    early_send    = (value / 100.0); break;
-      case  6:    late_level    = (value / 100.0); break;
-      case  7: late.setPreDelay   (value);         break;
-      case  8: late.setrt60       (value);         break;
-      case  9: late.setRSFactor   (value / 80.0);  break;
-      case 10: late.setwidth      (value / 100.0); break;
-      case 11: late.setoutputlpf  (value);         break;
-      case 12:
-        late.setidiffusion1(value / 100.0 * 0.75);
-        late.setapfeedback(value / 100.0 * 0.75);
-        break;
-      case 13: late.setxover_low  (value);         break;
-      case 14: late.setrt60_factor_low(value);     break;
-      case 15: late.setxover_high (value);         break;
-      case 16: late.setrt60_factor_high(value);    break;
-      case 17: late.setspin       (value);         break;
-      case 18: late.setwander     (value);         break;
+      case     DRY_LEVEL: dry_level        = (value / 100.0); break;
+      case   EARLY_LEVEL: early_level      = (value / 100.0); break;
+      case    EARLY_SIZE: early.setRSFactor  (value / 7.0);   break;
+      case   EARLY_WIDTH: early.setwidth     (value / 100.0); break;
+      case     EARLY_LPF: early.setoutputlpf (value);         break;
+      case    EARLY_SEND: early_send       = (value / 100.0); break;
+      case    LATE_LEVEL: late_level       = (value / 100.0); break;
+      case LATE_PREDELAY: late.setPreDelay   (value);         break;
+      case    LATE_DECAY: late.setrt60       (value);         break;
+      case     LATE_SIZE: late.setRSFactor   (value / 80.0);  break;
+      case    LATE_WIDTH: late.setwidth      (value / 100.0); break;
+      case      LATE_LPF: late.setoutputlpf  (value);         break;
+      case       DIFFUSE: late.setidiffusion1(value / 100.0 * 0.75);
+                          late.setapfeedback (value / 100.0 * 0.75);
+                                                              break;
+      case     LOW_XOVER: late.setxover_low  (value);         break;
+      case      LOW_MULT: late.setrt60_factor_low(value);     break;
+      case    HIGH_XOVER: late.setxover_high (value);         break;
+      case     HIGH_MULT: late.setrt60_factor_high(value);    break;
+      case          SPIN: late.setspin       (value);         break;
+      case        WANDER: late.setwander     (value);         break;
     }
 }
 
