@@ -18,7 +18,7 @@
 
 #include "DragonflyReverbPlugin.hpp"
 
-#define NUM_PARAMS 19
+#define NUM_PARAMS 21
 #define NUM_PRESETS 7
 #define PARAM_NAME_LENGTH 16
 #define PARAM_SYMBOL_LENGTH 8
@@ -41,24 +41,27 @@ typedef struct {
 } Preset;
 
 enum {
-  DRY_LEVEL, EARLY_LEVEL, EARLY_SIZE, EARLY_WIDTH, EARLY_LPF, EARLY_SEND,
-  LATE_LEVEL, LATE_PREDELAY, LATE_DECAY, LATE_SIZE, LATE_WIDTH, LATE_LPF,
+  DRY_LEVEL, EARLY_LEVEL, LATE_LEVEL,
+  EARLY_SIZE, EARLY_WIDTH, EARLY_LPF, EARLY_HPF, EARLY_SEND,
+  LATE_PREDELAY, LATE_DECAY, LATE_SIZE, LATE_WIDTH, LATE_LPF, LATE_HPF,
   DIFFUSE, LOW_XOVER, LOW_MULT, HIGH_XOVER, HIGH_MULT, SPIN, WANDER
 };
 
 static Param params[NUM_PARAMS] = {
   {"Dry Level",       "dry",          0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "e_lev",        0.0f,   50.0f,   100.0f,   "%"},
+  {"Late Level",      "l_level",      0.0f,   50.0f,   100.0f,   "%"},
   {"Early Size",      "e_size",       1.0f,    5.0f,    10.0f,   "m"},
   {"Early Width",     "e_width",     10.0f,   40.0f,   200.0f,   "%"},
   {"Early Low Pass",  "e_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
+  {"Early High Pass", "e_hpf",        0.0f,    4.0f,   100.0f,  "Hz"},
   {"Early Send",      "e_send",       0.0f,   20.0f,   100.0f,   "%"},
-  {"Late Level",      "l_level",      0.0f,   50.0f,   100.0f,   "%"},
   {"Late Predelay",   "l_delay",      0.0f,   14.0f,   100.0f,  "ms"},
   {"Late Decay Time", "l_time",       0.1f,    2.0f,    10.0f, "sec"},
   {"Late Size",       "l_size",      10.0f,   40.0f,   100.0f,   "m"},
   {"Late Width",      "l_width",     10.0f,   90.0f,   200.0f,   "%"},
   {"Late Low Pass",   "l_lpf",     2000.0f, 7500.0f, 20000.0f,  "Hz"},
+  {"Late High Pass",  "l_hpf",        0.0f,    4.0f,   100.0f,  "Hz"},
   {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
   {"Low Crossover",   "lo_xo",      100.0f,  600.0f,  1000.0f,  "Hz"},
   {"Low Decay Mult",  "lo_mult",      0.1f,    1.5f,     4.0f,   "X"},
@@ -69,14 +72,14 @@ static Param params[NUM_PARAMS] = {
 };
 
 static Preset presets[NUM_PRESETS] = {
-  //                 dry, e_lev, e_size, e_width, e_lpf, e_send, l_level, l_delay, l_time, l_size, l_width, l_lpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
-  {"Room",        { 50.0,  50.0,    3.0,    80.0, 18000,   40.0,    50.0,     5.0,    0.4,   10.0,   100.0, 12000,    75.0,   400,     0.9,  6000,    0.90,  0.3, 27.0}},
-  {"Studio",      { 50.0,  50.0,    5.0,    90.0,  6000,   20.0,    50.0,     5.0,    0.8,   12.0,    90.0,  6000,    50.0,   200,     1.2,  5000,    0.80,  2.5,  7.0}},
-  {"Chamber",     { 50.0,  50.0,    5.0,    40.0,  9000,   60.0,    50.0,    12.0,    1.2,   16.0,    60.0,  8000,    80.0,   500,     1.5,  5500,    0.30,  3.3, 15.0}},
-  {"Small Hall",  { 50.0,  50.0,    3.0,    40.0,  6000,   20.0,    50.0,    12.0,    1.3,   18.0,   100.0,  5500,    90.0,   500,     1.2,  4000,    0.35,  2.5, 13.0}},
-  {"Medium Hall", { 50.0,  50.0,    5.0,    60.0,  7500,   20.0,    50.0,    15.0,    1.7,   30.0,   120.0,  6500,    90.0,   600,     1.5,  4500,    0.40,  2.8, 16.0}},
-  {"Large Hall",  { 50.0,  50.0,    6.0,    80.0,  5000,   20.0,    50.0,    20.0,    3.2,   42.0,   100.0,  7500,    85.0,   600,     2.4,  4500,    0.30,  2.9, 22.0}},
-  {"Cathedral",   { 50.0,  50.0,    8.0,   120.0,  5000,   60.0,    50.0,    30.0,    4.8,   58.0,   200.0,  6500,    85.0,   850,     3.0,  4000,    0.60,  3.1, 18.0}}
+  //                 dry, e_lev, l_lev, e_size, e_width, e_lpf, e_hpf, e_send, l_delay, l_time, l_size, l_width, l_lpf, e_hpf, diffuse, lo_xo, lo_mult, hi_xo, hi_mult, spin, wander
+  {"Room",        { 50.0,  50.0,  50.0,    3.0,    80.0, 18000,   4.0,   40.0,     5.0,    0.4,   10.0,   100.0, 12000,   4.0,    75.0,   400,     0.9,  6000,    0.90,  0.3, 27.0}},
+  {"Studio",      { 50.0,  50.0,  50.0,    5.0,    90.0,  6000,   4.0,   20.0,     5.0,    0.8,   12.0,    90.0,  6000,   4.0,    50.0,   200,     1.2,  5000,    0.80,  2.5,  7.0}},
+  {"Chamber",     { 50.0,  50.0,  50.0,    5.0,    40.0,  9000,   4.0,   60.0,    12.0,    1.2,   16.0,    60.0,  8000,   4.0,    80.0,   500,     1.5,  5500,    0.30,  3.3, 15.0}},
+  {"Small Hall",  { 50.0,  50.0,  50.0,    3.0,    40.0,  6000,   4.0,   20.0,    12.0,    1.3,   18.0,   100.0,  5500,   4.0,    90.0,   500,     1.2,  4000,    0.35,  2.5, 13.0}},
+  {"Medium Hall", { 50.0,  50.0,  50.0,    5.0,    60.0,  7500,   4.0,   20.0,    15.0,    1.7,   30.0,   120.0,  6500,   4.0,    90.0,   600,     1.5,  4500,    0.40,  2.8, 16.0}},
+  {"Large Hall",  { 50.0,  50.0,  50.0,    6.0,    80.0,  5000,   4.0,   20.0,    20.0,    3.2,   42.0,   100.0,  7500,   4.0,    85.0,   600,     2.4,  4500,    0.30,  2.9, 22.0}},
+  {"Cathedral",   { 50.0,  50.0,  50.0,    8.0,   120.0,  5000,   4.0,   60.0,    30.0,    4.8,   58.0,   200.0,  6500,   4.0,    85.0,   850,     3.0,  4000,    0.60,  3.1, 18.0}}
 };
 
 // -----------------------------------------------------------------------
@@ -91,13 +94,11 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS,
     early.setLRCrossApFreq(750, 4);
     early.setDiffusionApFreq(150, 4);
     early.setSampleRate(getSampleRate());
-    early.setoutputhpf(4.0);
 
     late.setMuteOnChange(true);
     late.setwet(0); // 0dB
     late.setdryr(0); // mute dry signal
     late.setSampleRate(getSampleRate());
-    late.setoutputhpf(4.0);
     late.setlfo1freq(0.9);
     late.setlfo2freq(1.3);
     late.setlfofactor(0.3);
@@ -137,16 +138,18 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
     switch(index) {
       case     DRY_LEVEL: return dry_level * 100.0;
       case   EARLY_LEVEL: return early_level * 100.0;
+      case    LATE_LEVEL: return late_level * 100.0;
       case    EARLY_SIZE: return early.getRSFactor() * 7.0;
       case   EARLY_WIDTH: return early.getwidth() * 100.0;
       case     EARLY_LPF: return early.getoutputlpf();
+      case     EARLY_HPF: return early.getoutputhpf();
       case    EARLY_SEND: return early_send * 100.0;
-      case    LATE_LEVEL: return late_level * 100.0;
       case LATE_PREDELAY: return late.getPreDelay();
       case    LATE_DECAY: return late.getrt60();
       case     LATE_SIZE: return late.getRSFactor() * 80.0;
       case    LATE_WIDTH: return late.getwidth() * 100.0;
       case      LATE_LPF: return late.getoutputlpf();
+      case      LATE_HPF: return late.getoutputhpf();
       case       DIFFUSE: return late.getidiffusion1() * 100.0;
       case     LOW_XOVER: return late.getxover_low();
       case      LOW_MULT: return late.getrt60_factor_low();
@@ -164,16 +167,18 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
     switch(index) {
       case     DRY_LEVEL: dry_level        = (value / 100.0); break;
       case   EARLY_LEVEL: early_level      = (value / 100.0); break;
+      case    LATE_LEVEL: late_level       = (value / 100.0); break;
       case    EARLY_SIZE: early.setRSFactor  (value / 7.0);   break;
       case   EARLY_WIDTH: early.setwidth     (value / 100.0); break;
       case     EARLY_LPF: early.setoutputlpf (value);         break;
+      case     EARLY_HPF: early.setoutputhpf (value);         break;
       case    EARLY_SEND: early_send       = (value / 100.0); break;
-      case    LATE_LEVEL: late_level       = (value / 100.0); break;
       case LATE_PREDELAY: late.setPreDelay   (value);         break;
       case    LATE_DECAY: late.setrt60       (value);         break;
       case     LATE_SIZE: late.setRSFactor   (value / 80.0);  break;
       case    LATE_WIDTH: late.setwidth      (value / 100.0); break;
       case      LATE_LPF: late.setoutputlpf  (value);         break;
+      case      LATE_HPF: late.setoutputhpf  (value);         break;
       case       DIFFUSE: late.setidiffusion1(value / 100.0 * 0.75);
                           late.setapfeedback (value / 100.0 * 0.75);
                                                               break;

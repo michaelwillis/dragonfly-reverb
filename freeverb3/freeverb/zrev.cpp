@@ -187,7 +187,7 @@ void FV3_(zrev)::setoutputhpf(fv3_float_t value)
   out2_hpf.setHPF_BW(outputhpf, getTotalSampleRate());
 }
 
-fv3_float_t FV3_(zrev)::getoutputhpf()
+fv3_float_t FV3_(zrev)::getoutputhpf() const
 {
   return outputhpf;
 }

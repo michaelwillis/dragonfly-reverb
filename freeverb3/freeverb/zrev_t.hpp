@@ -37,7 +37,7 @@ public:
   void setoutputlpf(_fv3_float_t value);
   _fv3_float_t getoutputlpf() const;
   void setoutputhpf(_fv3_float_t value);
-  _fv3_float_t getoutputhpf();
+  _fv3_float_t getoutputhpf() const;
   void setdccutfreq(_fv3_float_t value);
   _fv3_float_t getdccutfreq();
 
