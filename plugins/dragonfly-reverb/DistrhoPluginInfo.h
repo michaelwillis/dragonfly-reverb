@@ -1,7 +1,6 @@
 /*
- * DISTRHO MVerb, a DPF'ied MVerb.
- * Copyright (c) 2010 Martin Eastwood
- * Copyright (C) 2015 Filipe Coelho <falktx@falktx.com>
+ * Dragonfly Reverb, a hall-style reverb plugin
+ * Copyright (c) 2018 Michael Willis
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

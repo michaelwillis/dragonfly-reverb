@@ -1,7 +1,6 @@
 /*
- * Dragonfly Reverb, a port of Freeverb3 Hibiki
- * Copyright (c) 2010 Martin Eastwood
- * Copyright (C) 2017 Michael Willis <willismichael@gmail.com>
+ * Dragonfly Reverb, a hall-style reverb plugin
+ * Copyright (c) 2018 Michael Willis
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -102,6 +101,16 @@ private:
     float early_level;
     float early_send;
     float late_level;
+
+    float size;
+    float delay;
+    float diffuse;
+    float low_cut;
+    float low_xover;
+    float low_mult;
+    float high_cut;
+    float high_xover;
+    float high_mult;
 
     fv3::earlyref_f early;
     fv3::zrev2_f late;
