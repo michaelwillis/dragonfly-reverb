@@ -66,8 +66,8 @@ static Preset presets[NUM_PRESETS] = {
   {"Bright Room",            { 80.0,  10.0,  10.0,  8.0,   4.0,    0.90,     4.0,    500,     0.80,    20000,    8000,   0.75}},
   {"Clear Room",             { 80.0,  10.0,  10.0,  8.0,   4.0,    0.90,     4.0,    500,     0.90,    16000,    6000,   0.50}},
   {"Dark Room",              { 80.0,  10.0,  10.0,  8.0,   4.0,    0.50,     4.0,    500,     1.20,     7000,    5000,   0.35}},
-  {"Acoustic Studio",        { 85.0,   5.0,  10.0, 12.0,   6.0,    0.50,     4.0,    150,     1.50,     7500,    5000,   0.70}},
-  {"Electric Studio",        { 85.0,   5.0,  10.0, 10.0,   8.0,    0.75,     4.0,    450,     1.25,     7500,    5000,   0.80}},
+  {"Acoustic Studio",        { 85.0,   5.0,  10.0, 10.0,   8.0,    0.75,     4.0,    450,     1.50,     7500,    5000,   0.80}},
+  {"Electric Studio",        { 85.0,   5.0,  10.0, 12.0,   6.0,    0.45,     4.0,    250,     1.25,     7500,    6000,   0.70}},
   {"Percussion Studio",      { 90.0,   0.0,  10.0, 12.0,   6.0,    0.20,    20.0,    200,     1.75,     6000,    5000,   0.45}},
   {"Vocal Studio",           { 90.0,   0.0,  10.0, 12.0,   0.0,    0.60,     4.0,    400,     1.20,     6000,    5000,   0.40}},
   {"Small Chamber",          { 75.0,  10.0,  15.0, 16.0,   8.0,    0.70,     4.0,    500,     1.10,     8000,    5500,   0.35}},
@@ -103,7 +103,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS,
     early.setDiffusionApFreq(150, 4);
     early.setSampleRate(getSampleRate());
 
-    early_send = 0.30;
+    early_send = 0.20;
 
     late.setMuteOnChange(false);
     late.setwet(0); // 0dB
