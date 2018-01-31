@@ -94,7 +94,7 @@ jack: $(jack)
 
 $(jack): $(OBJS_DSP) $(OBJS_UI) $(DISTRHO_PLUGIN_FILES) $(DISTRHO_UI_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(shell pkg-config --cflags --libs jack) -DDISTRHO_PLUGIN_TARGET_JACK -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(shell pkg-config --cflags --libs jack) -DDISTRHO_PLUGIN_TARGET_JACK -o $@
 
 # --------------------------------------------------------------
 # LADSPA
@@ -103,7 +103,7 @@ ladspa: $(ladspa_dsp)
 
 $(ladspa_dsp): $(OBJS_DSP) $(DISTRHO_PLUGIN_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LADSPA -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LADSPA -o $@
 
 # --------------------------------------------------------------
 # DSSI
@@ -114,11 +114,11 @@ dssi_ui:  $(dssi_ui)
 
 $(dssi_dsp): $(OBJS_DSP) $(DISTRHO_PLUGIN_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_DSSI -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_DSSI -o $@
 
 $(dssi_ui): $(OBJS_UI) $(DISTRHO_UI_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(shell pkg-config --cflags --libs liblo) -DDISTRHO_PLUGIN_TARGET_DSSI -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(shell pkg-config --cflags --libs liblo) -DDISTRHO_PLUGIN_TARGET_DSSI -o $@
 
 # --------------------------------------------------------------
 # LV2
