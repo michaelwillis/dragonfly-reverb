@@ -1,0 +1,14 @@
+[Buildset]
+BuildItems=@Variant(\x00\x00\x00\t\x00\x00\x00\x00\x01\x00\x00\x00\x0b\x00\x00\x00\x00\x01\x00\x00\x00 \x00d\x00r\x00a\x00g\x00o\x00n\x00f\x00l\x00y\x00-\x00r\x00e\x00v\x00e\x00r\x00b)
+
+[Project]
+VersionControlSupport=kdevgit
+
+[SourceFormatter]
+UseDefault=false
+text/x-c++hdr=kdevastyle||GNU
+text/x-c++src=kdevastyle||GNU
+text/x-chdr=kdevcustomscript||GNU_indent_GNU
+text/x-csharp=kdevcustomscript||GNU_indent_GNU
+text/x-csrc=kdevcustomscript||GNU_indent_GNU
+text/x-java=kdevcustomscript||GNU_indent_GNU

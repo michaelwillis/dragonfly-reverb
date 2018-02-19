@@ -22,7 +22,7 @@
 #define DISTRHO_PLUGIN_NAME  "Dragonfly Reverb"
 #define DISTRHO_PLUGIN_URI   "https://github.com/michaelwillis/dragonfly-reverb"
 
-// #define DISTRHO_PLUGIN_HAS_UI        1
+#define DISTRHO_PLUGIN_HAS_UI        1
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
 #define DISTRHO_PLUGIN_NUM_INPUTS    2
 #define DISTRHO_PLUGIN_NUM_OUTPUTS   2
@@ -31,5 +31,23 @@
 // #define DISTRHO_UI_USE_NANOVG      1
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
+
+enum Parameters
+{
+    paramDry_level = 0,
+    paramEarly_level, 
+    paramLate_level,
+    paramSize,
+    paramPredelay,
+    paramDiffuse,
+    paramLow_cut,
+    paramLow_xover,
+    paramLow_mult,
+    paramHigh_cut,
+    paramHigh_xover,
+    paramHigh_mult
+    paramCount
+};
+
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED
