@@ -19,6 +19,7 @@
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"
+#include <array>
 
 START_NAMESPACE_DISTRHO
 
@@ -31,93 +32,97 @@ DragonflyReverbUI::DragonflyReverbUI()
 {
   // knobs
   
+  std::array <int, 5> knobx {176, 274, 370, 467, 564};
+  std::array <int, 2> knoby {122, 262};
+  
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobSize->setId ( paramSize );
-  fKnobSize->setAbsolutePos ( 279, 79 );
-  fKnobSize->setRange ( 0.0f, 1.0f );
-  fKnobSize->setDefault ( 0.0f );
-  fKnobSize->setValue ( 0.0f );
+  fKnobSize->setAbsolutePos ( knobx[0], knoby[0] );
+  fKnobSize->setRange ( 10.0f, 100.0f );
+  fKnobSize->setDefault ( 40.0f );
+  fKnobSize->setValue ( 40.0f );
+  fKnobSize->setRotationAngle ( 300 );
   fKnobSize->setCallback ( this );
 
   //
   fKnobPredelay = new ImageKnob ( this,
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobPredelay->setId ( paramPredelay );
-  fKnobPredelay->setAbsolutePos ( 560, 255 );
-  fKnobPredelay->setRange ( 0.05f, 1.0f );
-  fKnobPredelay->setDefault ( 0.05f );
-  fKnobPredelay->setValue ( 0.05f );
+  fKnobPredelay->setAbsolutePos ( knobx[0], knoby[1] );
+  fKnobPredelay->setRange ( 0.0f, 100.0f );
+  fKnobPredelay->setDefault ( 14.0f );
+  fKnobPredelay->setValue ( 14.0f );
   fKnobPredelay->setRotationAngle ( 300 );
   fKnobPredelay->setCallback ( this );
 
   fKnobDiffuse = new ImageKnob ( this,
                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobDiffuse->setId ( paramDiffuse );
-  fKnobDiffuse->setAbsolutePos ( 637, 255 );
-  fKnobDiffuse->setRange ( 0.05f, 1.0f );
-  fKnobDiffuse->setDefault ( 0.0f );
-  fKnobDiffuse->setValue ( 0.05f );
+  fKnobDiffuse->setAbsolutePos (knobx[1], knoby[1] );
+  fKnobDiffuse->setRange ( 0.00f, 100.0f );
+  fKnobDiffuse->setDefault ( 80.0f );
+  fKnobDiffuse->setValue ( 80.0f );
   fKnobDiffuse->setRotationAngle ( 300 );
   fKnobDiffuse->setCallback ( this );
 
   fKnobLow_cut = new ImageKnob ( this,
                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_cut->setId ( paramLow_cut );
-  fKnobLow_cut->setAbsolutePos ( 715, 255 );
-  fKnobLow_cut->setRange ( 0.0f, 1.0f );
-  fKnobLow_cut->setDefault ( 1.0f );
-  fKnobLow_cut->setValue ( 1.0f );
+  fKnobLow_cut->setAbsolutePos ( knobx[2], knoby[1] );
+  fKnobLow_cut->setRange ( 0.0f, 100.0f );
+  fKnobLow_cut->setDefault ( 4.0f );
+  fKnobLow_cut->setValue ( 4.0f );
   fKnobLow_cut->setRotationAngle ( 300 );
   fKnobLow_cut->setCallback ( this );
 
   fKnobLow_xover = new ImageKnob ( this,
                                    Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_xover->setId ( paramLow_xover );
-  fKnobLow_xover->setAbsolutePos ( 792, 255 );
-  fKnobLow_xover->setRange ( 0.05f, 1.0f );
-  fKnobLow_xover->setDefault ( 0.05f );
-  fKnobLow_xover->setValue ( 0.05f );
+  fKnobLow_xover->setAbsolutePos ( knobx[3], knoby[1] );
+  fKnobLow_xover->setRange ( 100.0f, 1000.0f );
+  fKnobLow_xover->setDefault ( 600.0f );
+  fKnobLow_xover->setValue ( 600.0f );
   fKnobLow_xover->setRotationAngle ( 300 );
   fKnobLow_xover->setCallback ( this );
 
   fKnobLow_mult = new ImageKnob ( this,
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_mult->setId ( paramLow_mult );
-  fKnobLow_mult->setAbsolutePos ( 792, 255 );
-  fKnobLow_mult->setRange ( 0.05f, 1.0f );
-  fKnobLow_mult->setDefault ( 0.05f );
-  fKnobLow_mult->setValue ( 0.05f );
+  fKnobLow_mult->setAbsolutePos ( knobx[4], knoby[1] );
+  fKnobLow_mult->setRange ( 0.1f, 4.0f );
+  fKnobLow_mult->setDefault ( 1.5f );
+  fKnobLow_mult->setValue ( 1.5f );
   fKnobLow_mult->setRotationAngle ( 300 );
   fKnobLow_mult->setCallback ( this );
 
   fKnobHigh_cut = new ImageKnob ( this,
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_cut->setId ( paramHigh_cut );
-  fKnobHigh_cut->setAbsolutePos ( 715, 255 );
-  fKnobHigh_cut->setRange ( 0.0f, 1.0f );
-  fKnobHigh_cut->setDefault ( 1.0f );
-  fKnobHigh_cut->setValue ( 1.0f );
+  fKnobHigh_cut->setAbsolutePos ( knobx[2], knoby[0] );
+  fKnobHigh_cut->setRange ( 2000.0f, 20000.0f );
+  fKnobHigh_cut->setDefault ( 7500.0f );
+  fKnobHigh_cut->setValue ( 7500.0f );
   fKnobHigh_cut->setRotationAngle ( 300 );
   fKnobHigh_cut->setCallback ( this );
 
   fKnobHigh_xover = new ImageKnob ( this,
                                     Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_xover->setId ( paramHigh_xover );
-  fKnobHigh_xover->setAbsolutePos ( 792, 255 );
-  fKnobHigh_xover->setRange ( 0.05f, 1.0f );
-  fKnobHigh_xover->setDefault ( 0.05f );
-  fKnobHigh_xover->setValue ( 0.05f );
+  fKnobHigh_xover->setAbsolutePos ( knobx[3], knoby[0] );
+  fKnobHigh_xover->setRange ( 1000.0f, 20000.0f );
+  fKnobHigh_xover->setDefault ( 4500.0f );
+  fKnobHigh_xover->setValue ( 4500.0f );
   fKnobHigh_xover->setRotationAngle ( 300 );
   fKnobHigh_xover->setCallback ( this );
 
   fKnobHigh_mult = new ImageKnob ( this,
                                    Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_mult->setId ( paramHigh_mult );
-  fKnobHigh_mult->setAbsolutePos ( 792, 255 );
-  fKnobHigh_mult->setRange ( 0.05f, 1.0f );
-  fKnobHigh_mult->setDefault ( 0.05f );
-  fKnobHigh_mult->setValue ( 0.05f );
+  fKnobHigh_mult->setAbsolutePos ( knobx[4], knoby[0] );
+  fKnobHigh_mult->setRange ( 0.01f, 2.0f );
+  fKnobHigh_mult->setDefault ( 0.4f );
+  fKnobHigh_mult->setValue ( 0.4f );
   fKnobHigh_mult->setRotationAngle ( 300 );
   fKnobHigh_mult->setCallback ( this );
 
@@ -127,28 +132,29 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level = new ImageSlider ( this,
                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGR ) );
   fSliderDry_level->setId ( paramDry_level );
-  fSliderDry_level->setStartPos ( 0.0f, 0.0f );
-  fSliderDry_level->setEndPos ( 0.0f, 100.0f );
-  fSliderDry_level->setRange ( 0.0f, 1.0f );
-  fSliderDry_level->setValue ( 0.0f );
+  fSliderDry_level->setStartPos ( 24, 122 );
+  fSliderDry_level->setEndPos ( 24, 322 );
+  fSliderDry_level->setRange ( 0.0f, 100.0f );
+  fSliderDry_level->setValue ( 50.0f );
+  //fSliderDry_level->setInverted(true);
   fSliderDry_level->setCallback ( this );
 
   fSliderEarly_level = new ImageSlider ( this,
                                          Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGR ) );
   fSliderEarly_level->setId ( paramEarly_level );
-  fSliderEarly_level->setStartPos ( 0.0f, 0.0f );
-  fSliderEarly_level->setEndPos ( 0.0f, 100.0f );
-  fSliderEarly_level->setRange ( 0.0f, 1.0f );
-  fSliderEarly_level->setValue ( 0.0f );
+  fSliderEarly_level->setStartPos ( 72, 122 );
+  fSliderEarly_level->setEndPos ( 72, 322 );
+  fSliderEarly_level->setRange ( 0.0f, 100.0f );
+  fSliderEarly_level->setValue ( 50.0f );
   fSliderEarly_level->setCallback ( this );
 
   fSliderLate_level = new ImageSlider ( this,
                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGR ) );
   fSliderLate_level->setId ( paramLate_level );
-  fSliderLate_level->setStartPos ( 0.0f, 0.0f );
-  fSliderLate_level->setEndPos ( 0.0f, 100.0f );
-  fSliderLate_level->setRange ( 0.0f, 1.0f );
-  fSliderLate_level->setValue ( 0.0f );
+  fSliderLate_level->setStartPos ( 120, 122 );
+  fSliderLate_level->setEndPos ( 120, 322 );
+  fSliderLate_level->setRange ( 0.0f, 100.0f );
+  fSliderLate_level->setValue ( 50.0f );
   fSliderLate_level->setCallback ( this );
 
 

@@ -16,8 +16,9 @@
  */
 
 #include "DragonflyReverbPlugin.hpp"
+#include "DistrhoPluginInfo.h"
 
-#define NUM_PARAMS 12
+// #define NUM_PARAMS 12
 #define NUM_PRESETS 24
 #define PARAM_NAME_LENGTH 16
 #define PARAM_SYMBOL_LENGTH 8
@@ -36,17 +37,17 @@ typedef struct {
 
 typedef struct {
   const char *name;
-  const float params[NUM_PARAMS];
+  const float params[paramCount];
 } Preset;
 
-enum {
-  DRY_LEVEL, EARLY_LEVEL, LATE_LEVEL,
-  SIZE, PREDELAY, DIFFUSE,
-  LOW_CUT, LOW_XOVER, LOW_MULT,
-  HIGH_CUT, HIGH_XOVER, HIGH_MULT
-};
+// enum {
+//   , EARLY_LEVEL, LATE_LEVEL,
+//   SIZE, PREDELAY, DIFFUSE,
+//   LOW_CUT, LOW_XOVER, LOW_MULT,
+//   HIGH_CUT, HIGH_XOVER, HIGH_MULT
+// };
 
-static Param params[NUM_PARAMS] = {
+static Param params[paramCount] = {
   {"Dry Level",       "dry_level",    0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "early_level",  0.0f,   50.0f,   100.0f,   "%"},
   {"Late Level",      "late_level",   0.0f,   50.0f,   100.0f,   "%"},
@@ -91,7 +92,7 @@ static Preset presets[NUM_PRESETS] = {
 
 // -----------------------------------------------------------------------
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS, 0) // 0 states
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS, 0) // 0 states
 {
     early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
     early.setMuteOnChange(false);
@@ -120,7 +121,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS,
 
 void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
 {
-    if (index < NUM_PARAMS)
+    if (index < paramCount)
     {
       parameter.hints      = kParameterIsAutomable;
       parameter.name       = params[index].name;
@@ -143,18 +144,18 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
     switch(index) {
-      case     DRY_LEVEL: return dry_level * 100.0;
-      case   EARLY_LEVEL: return early_level * 100.0;
-      case    LATE_LEVEL: return late_level * 100.0;
-      case          SIZE: return size;
-      case      PREDELAY: return delay;
-      case       DIFFUSE: return diffuse;
-      case       LOW_CUT: return low_cut;
-      case     LOW_XOVER: return low_xover;
-      case      LOW_MULT: return low_mult;
-      case      HIGH_CUT: return late.getoutputlpf();
-      case    HIGH_XOVER: return high_xover;
-      case     HIGH_MULT: return high_mult;
+      case     paramDry_level: return dry_level * 100.0;
+      case   paramEarly_level: return early_level * 100.0;
+      case    paramLate_level: return late_level * 100.0;
+      case          paramSize: return size;
+      case      paramPredelay: return delay;
+      case       paramDiffuse: return diffuse;
+      case       paramLow_cut: return low_cut;
+      case     paramLow_xover: return low_xover;
+      case      paramLow_mult: return low_mult;
+      case      paramHigh_cut: return late.getoutputlpf();
+      case    paramHigh_xover: return high_xover;
+      case     paramHigh_mult: return high_mult;
     }
 
     return 0.0;
@@ -163,31 +164,31 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
     switch(index) {
-      case     DRY_LEVEL: dry_level        = (value / 100.0); break;
-      case   EARLY_LEVEL: early_level      = (value / 100.0); break;
-      case    LATE_LEVEL: late_level       = (value / 100.0); break;
-      case          SIZE: size             = (value);
+      case     paramDry_level: dry_level        = (value / 100.0); break;
+      case   paramEarly_level: early_level      = (value / 100.0); break;
+      case    paramLate_level: late_level       = (value / 100.0); break;
+      case          paramSize: size             = (value);
                           early.setRSFactor  (value / 50.0);
                           late.setRSFactor   (value / 100.0);
                           late.setrt60       (value / 20.0);  break;
-      case      PREDELAY: delay            = (value);
+      case      paramPredelay: delay            = (value);
                           late.setPreDelay   (value);         break;
-      case       DIFFUSE: diffuse          = (value);
+      case       paramDiffuse: diffuse          = (value);
                           late.setidiffusion1(value / 140.0);
                           late.setapfeedback (value / 140.0);
-      case       LOW_CUT: low_cut          = (value);
+      case       paramLow_cut: low_cut          = (value);
                           early.setoutputhpf (value);
                           late.setoutputhpf  (value);         break;
-      case     LOW_XOVER: low_xover        = (value);
+      case     paramLow_xover: low_xover        = (value);
                           late.setxover_low  (value);         break;
-      case      LOW_MULT: low_mult         = (value);
+      case      paramLow_mult: low_mult         = (value);
                           late.setrt60_factor_low(value);     break;
-      case      HIGH_CUT: high_cut         = (value);
+      case      paramHigh_cut: high_cut         = (value);
                           early.setoutputlpf (value);
                           late.setoutputlpf  (value);         break;
-      case    HIGH_XOVER: high_xover       = (value);
+      case    paramHigh_xover: high_xover       = (value);
                           late.setxover_high (value);         break;
-      case     HIGH_MULT: high_mult        = (value);
+      case     paramHigh_mult: high_mult        = (value);
                           late.setrt60_factor_high(value);    break;
     }
 }
@@ -195,7 +196,7 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 void DragonflyReverbPlugin::loadProgram(uint32_t index)
 {
     const float *preset = presets[index].params;
-    for (uint32_t param_index = 0; param_index < NUM_PARAMS; param_index++)
+    for (uint32_t param_index = 0; param_index < paramCount; param_index++)
     {
         setParameterValue(param_index, preset[param_index]);
     }
