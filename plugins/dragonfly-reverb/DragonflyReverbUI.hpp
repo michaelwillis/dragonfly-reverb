@@ -26,7 +26,6 @@ START_NAMESPACE_DISTRHO
 // -----------------------------------------------------------------------
 
 class DragonflyReverbUI : public UI, 
-		 public ImageSwitch::Callback,
 		 public ImageKnob::Callback,
 		 public ImageSlider::Callback
 {

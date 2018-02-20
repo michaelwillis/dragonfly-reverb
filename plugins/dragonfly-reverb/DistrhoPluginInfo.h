@@ -45,7 +45,7 @@ enum Parameters
     paramLow_mult,
     paramHigh_cut,
     paramHigh_xover,
-    paramHigh_mult
+    paramHigh_mult,
     paramCount
 };
 

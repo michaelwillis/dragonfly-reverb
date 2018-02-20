@@ -14,6 +14,10 @@ NAME = DragonflyReverb
 
 OBJS_DSP = \
 	DragonflyReverbPlugin.cpp.o
+	
+OBJS_UI  = \
+	DragonflyReverbUI.cpp.o \
+	DragonflyReverbArtwork.cpp.o
 
 # --------------------------------------------------------------
 # Do some magic
