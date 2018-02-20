@@ -255,6 +255,11 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
   int SliderID = slider->getId();
   setParameterValue(SliderID,value);
   }
+  
+void DragonflyReverbUI::programLoaded ( uint32_t index)
+{
+  // do stuff
+}
 
 
 void DragonflyReverbUI::onDisplay()

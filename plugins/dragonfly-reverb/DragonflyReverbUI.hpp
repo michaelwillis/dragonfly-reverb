@@ -47,6 +47,8 @@ protected:
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
     
+    void programLoaded (uint32_t index) override;	  
+    
     void onDisplay() override;
 
 private:
