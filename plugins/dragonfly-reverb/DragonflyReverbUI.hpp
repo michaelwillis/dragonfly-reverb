@@ -50,12 +50,16 @@ protected:
     void programLoaded (uint32_t index) override;	  
     
     void onDisplay() override;
+   // void onNanoDisplay() override;
 
 private:
     Image fImgBackground;
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
-  
+    // FontId fFont;
+  // temp buf for text
+   // char fStrBuf[0xff+1];
+    
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
 
