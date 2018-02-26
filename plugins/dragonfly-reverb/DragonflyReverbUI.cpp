@@ -32,8 +32,8 @@ DragonflyReverbUI::DragonflyReverbUI()
 {
   // knobs
   
-  std::array <int, 3> knobx {81,179, 275};
-  std::array <int, 3> knoby {38, 139, 238 };
+  std::array <int, 3> knobx {77,174, 270};
+  std::array <int, 3> knoby {34, 135, 233 };
   
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
