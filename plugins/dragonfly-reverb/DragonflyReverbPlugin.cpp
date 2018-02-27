@@ -35,10 +35,12 @@ typedef struct {
   const char *unit;
 } Param;
 
+/*
 typedef struct {
   const char *name;
   const float params[paramCount];
 } Preset;
+*/
 
 // enum {
 //   , EARLY_LEVEL, LATE_LEVEL,
@@ -51,7 +53,7 @@ static Param params[paramCount] = {
   {"Dry Level",       "dry_level",    0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "early_level",  0.0f,   50.0f,   100.0f,   "%"},
   {"Late Level",      "late_level",   0.0f,   50.0f,   100.0f,   "%"},
-  {"Size",            "size",        10.0f,   40.0f,   100.0f,   "m"},
+  {"Size",            "size",         8.0f,   40.0f,   100.0f,   "m"},
   {"Predelay",        "delay",        0.0f,   14.0f,   100.0f,  "ms"},
   {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
   {"Low Cut",         "low_cut",      0.0f,    4.0f,   100.0f,  "Hz"},
@@ -62,6 +64,7 @@ static Param params[paramCount] = {
   {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"}
 };
 
+/*
 static Preset presets[NUM_PRESETS] = {
                              // dry, e_lev, l_lev, size, delay, diffuse, low_cut, low_xo, low_mult, high_cut, high_xo, high_mult
   {"Bright Room",            { 80.0,  10.0,  10.0,  8.0,   4.0,    90.0,     4.0,    500,     0.80,    20000,    8000,   0.75}},
@@ -89,6 +92,7 @@ static Preset presets[NUM_PRESETS] = {
   {"Great Hall",             { 70.0,   0.0,  30.0, 60.0,  20.0,    95.0,     4.0,    750,     3.00,     5500,    4000,   0.30}},
   {"Cathedral",              { 70.0,   0.0,  30.0, 72.0,  24.0,    90.0,     4.0,    850,     2.25,     6000,    3200,   0.30}}
 };
+*/
 
 // -----------------------------------------------------------------------
 

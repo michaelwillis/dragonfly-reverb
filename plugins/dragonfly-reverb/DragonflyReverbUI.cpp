@@ -24,22 +24,26 @@
 START_NAMESPACE_DISTRHO
 
 namespace Art = DragonflyReverbArtwork;
+using DGL::Color;
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA )
 {
+  // text
+  fNanoText.loadSharedResources();
+  fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/home/rob/git/dragonfly-reverb/plugins/dragonfly-reverb/Artwork/LCD_Solid.ttf" );
+
   // knobs
-  
   std::array <int, 3> knobx {77,174, 270};
   std::array <int, 3> knoby {34, 135, 233 };
-  
+
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobSize->setId ( paramSize );
   fKnobSize->setAbsolutePos ( knobx[1], knoby[0] );
-  fKnobSize->setRange ( 10.0f, 100.0f );
+  fKnobSize->setRange ( 8.0f, 100.0f );
   fKnobSize->setDefault ( 40.0f );
   fKnobSize->setValue ( 40.0f );
   fKnobSize->setRotationAngle ( 300 );
@@ -59,7 +63,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobDiffuse = new ImageKnob ( this,
                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobDiffuse->setId ( paramDiffuse );
-  fKnobDiffuse->setAbsolutePos (knobx[2], knoby[0] );
+  fKnobDiffuse->setAbsolutePos ( knobx[2], knoby[0] );
   fKnobDiffuse->setRange ( 0.00f, 100.0f );
   fKnobDiffuse->setDefault ( 80.0f );
   fKnobDiffuse->setValue ( 80.0f );
@@ -136,7 +140,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level->setEndPos ( 781, 238 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
   fSliderDry_level->setValue ( 50.0f );
-  //fSliderDry_level->setInverted(true);
+  fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
 
   fSliderEarly_level = new ImageSlider ( this,
@@ -146,6 +150,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level->setEndPos ( 849, 238 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
   fSliderEarly_level->setValue ( 50.0f );
+  fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
 
   fSliderLate_level = new ImageSlider ( this,
@@ -155,6 +160,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level->setEndPos ( 918, 238 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
   fSliderLate_level->setValue ( 50.0f );
+  fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
 
@@ -259,25 +265,86 @@ void  DragonflyReverbUI::imageSliderDragFinished ( ImageSlider* slider )
 void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float value )
 {
   int SliderID = slider->getId();
-  setParameterValue(SliderID,value);
-  }
-  
-void DragonflyReverbUI::programLoaded ( uint32_t index)
+  setParameterValue ( SliderID,value );
+}
+
+void DragonflyReverbUI::programLoaded ( uint32_t index )
 {
-  // do stuff
+  currentProgram = index;
+  const float *preset = presets[index].params;
+  fSliderDry_level->setValue ( preset[paramDry_level] );
+  fSliderEarly_level->setValue ( preset[paramEarly_level] );
+  fSliderLate_level->setValue ( preset[paramLate_level] );
+  fKnobSize->setValue ( preset[paramSize] );
+  fKnobPredelay->setValue ( preset[paramPredelay] );
+  fKnobDiffuse->setValue ( preset[paramDiffuse] );
+  fKnobLow_cut->setValue ( preset[paramLow_cut] );
+  fKnobLow_xover->setValue ( preset[paramLow_xover] );
+  fKnobLow_mult->setValue ( preset[paramLow_mult] );
+  fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
+  fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
+  fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
 }
 
 
 void DragonflyReverbUI::onDisplay()
 {
   fImgBackground.draw();
-   // repsonse graph here
+  // repsonse graph here
+
+  // text display
+  fNanoText.beginFrame ( this );
+  fNanoText.fontFaceId ( fNanoFont );
+  fNanoText.fontSize ( 10 );
+  fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
+  float r,g,b;
+  r =  8.0f / 256;
+  g = 19.0f / 256;
+  b = 10.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+
+  char strBuf[32+1];
+  strBuf[32] = '\0';
+  
+  float xstart = 374.0f, ystart= 195.0f;
+  float xoffset = 126.0f, yoffset = 12.0f, extra_offset_x = 8.0f;
+  
+  // print current program namespace
+  std::snprintf (strBuf, 32, "Program : %s", presets[currentProgram].name);
+  fNanoText.textBox( xstart, ystart - yoffset, 200.0f, strBuf, nullptr);
+  
+  // print parameters
+  std::snprintf ( strBuf, 32, "Pre-Delay: %4.2f ms", fKnobPredelay->getValue() );
+  fNanoText.textBox ( xstart             , ystart , 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Hi Cut   : %i Hz", int ( fKnobHigh_cut->getValue() ) );
+  fNanoText.textBox ( xstart             , ystart + yoffset ,130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Low Cut  : %4.2f Hz", fKnobLow_cut->getValue() );
+  fNanoText.textBox ( xstart             , ystart + yoffset*2 ,130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Dry      : %i %%", int ( fSliderDry_level->getValue() ) );
+  fNanoText.textBox ( xstart             , ystart + yoffset*3, 130.0f, strBuf, nullptr );
+
+  std::snprintf ( strBuf, 32, "Size     : %4.2f m", fKnobSize->getValue() );
+  fNanoText.textBox ( xstart + xoffset   , ystart , 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Hi Cross : %i Hz", int ( fKnobHigh_xover->getValue() ) );
+  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset, 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Low Cross: %4.2f Hz", fKnobLow_xover->getValue() );
+  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset*2, 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Early    : %i %%", int ( fSliderEarly_level->getValue() ) );
+  fNanoText.textBox ( xstart + xoffset*1 , ystart + yoffset*3, 130.0f, strBuf, nullptr );
+
+  std::snprintf ( strBuf, 32, "Diffuse : %i %%", int ( fKnobDiffuse->getValue() ) );
+  fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart , 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Hi Mult : %4.2f X", fKnobHigh_mult->getValue() );
+  fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset, 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Low Mult: %4.2f X", fKnobLow_mult->getValue() );
+  fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset*2, 130.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "Late    : %i %%", int ( fSliderLate_level->getValue() ) );
+  fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset*3, 130.0f, strBuf, nullptr );
+  fNanoText.endFrame();
+
 }
 
-// void DragonflyReverbUI::onNanoDisplay();
-// {
-//   // do nano stuff
-// }
+
 
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */

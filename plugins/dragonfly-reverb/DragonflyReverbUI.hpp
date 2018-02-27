@@ -19,6 +19,7 @@
 
 #include "DistrhoUI.hpp"
 #include "ImageWidgets.hpp"
+#include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
 
 START_NAMESPACE_DISTRHO
@@ -37,6 +38,7 @@ protected:
     // DSP Callbacks
 
     void parameterChanged ( uint32_t index, float value ) override;
+    void programLoaded (uint32_t index) override;
  
     // -------------------------------------------------------------------
     // Widget Callbacks
@@ -46,20 +48,19 @@ protected:
     void imageSliderDragStarted(ImageSlider* slider) override;
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
-    
-    void programLoaded (uint32_t index) override;	  
-    
+        
     void onDisplay() override;
    // void onNanoDisplay() override;
 
 private:
     Image fImgBackground;
+    NanoVG fNanoText;
+    NanoVG::FontId fNanoFont;
+    
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
-    // FontId fFont;
-  // temp buf for text
-   // char fStrBuf[0xff+1];
     
+    int currentProgram {0};
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
 
