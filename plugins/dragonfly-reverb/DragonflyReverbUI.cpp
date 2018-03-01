@@ -186,23 +186,23 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   // rectangles for programs
   // 3 columns
-  
+
   for ( int i = 0; i < 3; ++i )
-     {
-       int startx = 376, starty = 75 , offsety = 20;
-       int offsetx [3] = { 0, 115, 250};
-       int width[3] = { offsetx[1]-offsetx[0], offsetx[2]-offsetx[1], rectDisplay.getWidth()-offsetx[2] };
- 
-    for ( int j=0; j < 8; ++j )
     {
-      int programIndex = j + (i * 8);
-      int x = offsetx[i] +startx , y = offsety * j + starty ;
-    //  std:: cout << programIndex << " " << x << " " <<  y << std::endl;
-      
-      rectPrograms[programIndex].setPos ( x,y );
-      rectPrograms[programIndex].setSize(width[i],offsety);
+      int startx = 376, starty = 75 , offsety = 20;
+      int offsetx [3] = { 0, 115, 250};
+      int width[3] = { offsetx[1]-offsetx[0], offsetx[2]-offsetx[1], rectDisplay.getWidth()-offsetx[2] };
+
+      for ( int j=0; j < 8; ++j )
+        {
+          int programIndex = j + ( i * 8 );
+          int x = offsetx[i] +startx , y = offsety * j + starty ;
+          //  std:: cout << programIndex << " " << x << " " <<  y << std::endl;
+
+          rectPrograms[programIndex].setPos ( x,y );
+          rectPrograms[programIndex].setSize ( width[i],offsety );
+        }
     }
-  }
 }
 
 /**
@@ -286,7 +286,7 @@ void DragonflyReverbUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
   switch ( buttonId )
     {
     case paramPrograms:
-    //  std::cout << "paramPrograms " << fSwitchPrograms->isDown() << std::endl;
+      //  std::cout << "paramPrograms " << fSwitchPrograms->isDown() << std::endl;
       // switch off About button
       fSwitchAbout->setDown ( 0 );
 
@@ -373,33 +373,41 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
 {
-   // ignore if currentDisplayMode == play
-    if (currentDisplayMode != programs)
-      return false;
-      
-    if (ev.button != 1)
-        return false;
-   
-    if (ev.press)
+  if ( ev.button != 1 )
+    return false;
+  if ( ev.press )
     {
-        if (! rectDisplay.contains(ev.pos))
-	  return false;
-	
-	for ( int i = 0; i < 24; i++)
-	{
-	  if ( rectPrograms[i].contains(ev.pos))
-	  {
-	    currentProgram = i;
-	    currentDisplayMode = play;
-	    fSwitchPrograms->setDown(0);
-	    programLoaded(currentProgram);
-	    repaint();
-	    
-	  }
-	}
-	
-    }
-return false;
+      if ( ! rectDisplay.contains ( ev.pos ) )
+        return false;
+
+      switch ( currentDisplayMode )
+        {
+        case play:
+          return false;
+          break;
+       
+	case programs:
+          for ( int i = 0; i < 24; i++ )
+            {
+              if ( rectPrograms[i].contains ( ev.pos ) )
+                {
+                  currentProgram = i;
+                  currentDisplayMode = play;
+                  fSwitchPrograms->setDown ( 0 );
+                  programLoaded ( currentProgram );
+                  repaint();
+                } // end if
+            } // end for
+
+          break;
+        
+	case about:
+          currentDisplayMode = play;
+          fSwitchAbout->setDown ( 0 );
+          break;
+        } // end switch
+    } // end if ev.press
+  return false;
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -485,17 +493,17 @@ void DragonflyReverbUI::onDisplay()
 
       char strBuf[32+1];
       strBuf[32] = '\0';
-      for (int i = 0; i < 24; i++)
-      {
-	int x = rectPrograms[i].getX();
-	int y = rectPrograms[i].getY();
-	//int w = rectPrograms[i].getWidth();
-	//int h = rectPrograms[i].getHeight();
-	std::snprintf ( strBuf, 32, "%s", presets[i].name );
-	fNanoText.textBox ( x, y , 130.0f, strBuf, nullptr );
-      }
+      for ( int i = 0; i < 24; i++ )
+        {
+          int x = rectPrograms[i].getX();
+          int y = rectPrograms[i].getY();
+          //int w = rectPrograms[i].getWidth();
+          //int h = rectPrograms[i].getHeight();
+          std::snprintf ( strBuf, 32, "%s", presets[i].name );
+          fNanoText.textBox ( x, y , 130.0f, strBuf, nullptr );
+        }
       fNanoText.endFrame();
-     
+
 
       break;
     }
@@ -510,17 +518,17 @@ void DragonflyReverbUI::onDisplay()
       g = 19.0f / 256;
       b = 10.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
-  
-	int x = rectDisplay.getX();
-	int y = rectDisplay.getY();
-	int w = rectDisplay.getWidth();
-	
-	fNanoText.textBox ( x, y , w , "This plugin is licenced under the <insert licence here> \n Code is based on freeverb3. \n Plugin is developed using the DPF framework", nullptr);
+
+      int x = rectDisplay.getX();
+      int y = rectDisplay.getY();
+      int w = rectDisplay.getWidth();
+
+      fNanoText.textBox ( x, y , w , "This plugin is licenced under the <insert licence here> \n Code is based on freeverb3. \n Plugin is developed using the DPF framework", nullptr );
       fNanoText.endFrame();
-   
+
       break;
     }
-    
+
     } // end switch
 
 }
