@@ -46,6 +46,8 @@ enum Parameters
     paramHigh_cut,
     paramHigh_xover,
     paramHigh_mult,
+    paramPrograms,
+    paramAbout,
     paramCount
 };
 
