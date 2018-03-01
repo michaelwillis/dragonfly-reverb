@@ -16,8 +16,9 @@
  */
 
 #include "DragonflyReverbPlugin.hpp"
+#include "DistrhoPluginInfo.h"
 
-#define NUM_PARAMS 12
+// #define NUM_PARAMS 12
 #define NUM_PRESETS 24
 #define PARAM_NAME_LENGTH 16
 #define PARAM_SYMBOL_LENGTH 8
@@ -34,23 +35,25 @@ typedef struct {
   const char *unit;
 } Param;
 
+/*
 typedef struct {
   const char *name;
-  const float params[NUM_PARAMS];
+  const float params[paramCount];
 } Preset;
+*/
 
-enum {
-  DRY_LEVEL, EARLY_LEVEL, LATE_LEVEL,
-  SIZE, PREDELAY, DIFFUSE,
-  LOW_CUT, LOW_XOVER, LOW_MULT,
-  HIGH_CUT, HIGH_XOVER, HIGH_MULT
-};
+// enum {
+//   , EARLY_LEVEL, LATE_LEVEL,
+//   SIZE, PREDELAY, DIFFUSE,
+//   LOW_CUT, LOW_XOVER, LOW_MULT,
+//   HIGH_CUT, HIGH_XOVER, HIGH_MULT
+// };
 
-static Param params[NUM_PARAMS] = {
+static Param params[paramCount] = {
   {"Dry Level",       "dry_level",    0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "early_level",  0.0f,   50.0f,   100.0f,   "%"},
   {"Late Level",      "late_level",   0.0f,   50.0f,   100.0f,   "%"},
-  {"Size",            "size",        10.0f,   40.0f,   100.0f,   "m"},
+  {"Size",            "size",         8.0f,   40.0f,   100.0f,   "m"},
   {"Predelay",        "delay",        0.0f,   14.0f,   100.0f,  "ms"},
   {"Diffuse",         "diffuse",      0.0f,   80.0f,   100.0f,   "%"},
   {"Low Cut",         "low_cut",      0.0f,    4.0f,   100.0f,  "Hz"},
@@ -58,40 +61,16 @@ static Param params[NUM_PARAMS] = {
   {"Low Decay Mult",  "low_mult",     0.1f,    1.5f,     4.0f,   "X"},
   {"High Cut",        "high_cut",  2000.0f, 7500.0f, 20000.0f,  "Hz"},
   {"High Crossover",  "high_xo",   1000.0f, 4500.0f, 20000.0f,  "Hz"},
-  {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"}
+  {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"},
+  {"Preset",	      "preset_button",0.0f,   0.0f,     1.0f,   ""},
+  {"About",           "about_button", 0.0f,   0.0f,     1.0f,   ""} 
 };
 
-static Preset presets[NUM_PRESETS] = {
-                             // dry, e_lev, l_lev, size, delay, diffuse, low_cut, low_xo, low_mult, high_cut, high_xo, high_mult
-  {"Bright Room",            { 80.0,  10.0,  10.0,  8.0,   4.0,    90.0,     4.0,    500,     0.80,    20000,    8000,   0.75}},
-  {"Clear Room",             { 80.0,  10.0,  10.0,  8.0,   4.0,    90.0,     4.0,    500,     0.90,    16000,    6000,   0.50}},
-  {"Dark Room",              { 80.0,  10.0,  10.0,  8.0,   4.0,    50.0,     4.0,    500,     1.20,     7000,    5000,   0.35}},
-  {"Acoustic Studio",        { 85.0,   5.0,  10.0, 10.0,   8.0,    75.0,     4.0,    450,     1.50,     7500,    5000,   0.80}},
-  {"Electric Studio",        { 85.0,   5.0,  10.0, 12.0,   6.0,    45.0,     4.0,    250,     1.25,     7500,    6000,   0.70}},
-  {"Percussion Studio",      { 90.0,   0.0,  10.0, 12.0,   6.0,    20.0,    20.0,    200,     1.75,     6000,    5000,   0.45}},
-  {"Vocal Studio",           { 90.0,   0.0,  10.0, 12.0,   0.0,    60.0,     4.0,    400,     1.20,     6000,    5000,   0.40}},
-  {"Small Chamber",          { 75.0,  10.0,  15.0, 16.0,   8.0,    70.0,     4.0,    500,     1.10,     8000,    5500,   0.35}},
-  {"Large Chamber",          { 75.0,  10.0,  15.0, 20.0,   8.0,    90.0,     4.0,    500,     1.30,     7000,    5000,   0.25}},
-  {"Small Bright Hall",      { 75.0,  10.0,  15.0, 24.0,  12.0,    90.0,     4.0,    400,     1.10,    12000,    6000,   0.75}},
-  {"Small Clear Hall",       { 75.0,  10.0,  15.0, 20.0,   4.0,    90.0,     4.0,    500,     1.30,     7500,    5500,   0.50}},
-  {"Small Dark Hall",        { 75.0,  10.0,  15.0, 24.0,  12.0,    60.0,     4.0,    500,     1.50,     6000,    4000,   0.35}},
-  {"Small Percussion Hall",  { 85.0,   0.0,  15.0, 24.0,  12.0,    30.0,    20.0,    250,     2.00,     5000,    4000,   0.35}},
-  {"Small Vocal Hall",       { 85.0,   0.0,  15.0, 20.0,   4.0,    60.0,     4.0,    500,     1.25,     6000,    5000,   0.35}},
-  {"Medium Bright Hall",     { 75.0,   5.0,  20.0, 36.0,  18.0,    90.0,     4.0,    400,     1.25,    10000,    6000,   0.60}},
-  {"Medium Clear Hall",      { 75.0,   5.0,  20.0, 30.0,   8.0,    90.0,     4.0,    500,     1.50,     7500,    5500,   0.50}},
-  {"Medium Dark Hall",       { 75.0,   5.0,  20.0, 36.0,  18.0,    60.0,     4.0,    500,     1.75,     6000,    4000,   0.40}},
-  {"Medium Vocal Hall",      { 80.0,   0.0,  20.0, 30.0,   8.0,    75.0,     4.0,    600,     1.50,     6000,    5000,   0.40}},
-  {"Large Bright Hall",      { 75.0,   0.0,  25.0, 48.0,  20.0,    90.0,     4.0,    400,     1.50,     8000,    6000,   0.50}},
-  {"Large Clear Hall",       { 75.0,   0.0,  25.0, 40.0,  12.0,    80.0,     4.0,    550,     2.00,     8000,    5000,   0.40}},
-  {"Large Dark Hall",        { 75.0,   0.0,  25.0, 48.0,  20.0,    60.0,     4.0,    600,     2.50,     6000,    3200,   0.20}},
-  {"Large Vocal Hall",       { 75.0,   0.0,  25.0, 40.0,  12.0,    80.0,     4.0,    700,     2.25,     6000,    4500,   0.30}},
-  {"Great Hall",             { 70.0,   0.0,  30.0, 60.0,  20.0,    95.0,     4.0,    750,     3.00,     5500,    4000,   0.30}},
-  {"Cathedral",              { 70.0,   0.0,  30.0, 72.0,  24.0,    90.0,     4.0,    850,     2.25,     6000,    3200,   0.30}}
-};
+
 
 // -----------------------------------------------------------------------
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS, 0) // 0 states
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS, 0) // 0 states
 {
     early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
     early.setMuteOnChange(false);
@@ -120,7 +99,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(NUM_PARAMS, NUM_PRESETS,
 
 void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
 {
-    if (index < NUM_PARAMS)
+    if (index < paramCount)
     {
       parameter.hints      = kParameterIsAutomable;
       parameter.name       = params[index].name;
@@ -143,18 +122,18 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
     switch(index) {
-      case     DRY_LEVEL: return dry_level * 100.0;
-      case   EARLY_LEVEL: return early_level * 100.0;
-      case    LATE_LEVEL: return late_level * 100.0;
-      case          SIZE: return size;
-      case      PREDELAY: return delay;
-      case       DIFFUSE: return diffuse;
-      case       LOW_CUT: return low_cut;
-      case     LOW_XOVER: return low_xover;
-      case      LOW_MULT: return low_mult;
-      case      HIGH_CUT: return late.getoutputlpf();
-      case    HIGH_XOVER: return high_xover;
-      case     HIGH_MULT: return high_mult;
+      case     paramDry_level: return dry_level * 100.0;
+      case   paramEarly_level: return early_level * 100.0;
+      case    paramLate_level: return late_level * 100.0;
+      case          paramSize: return size;
+      case      paramPredelay: return delay;
+      case       paramDiffuse: return diffuse;
+      case       paramLow_cut: return low_cut;
+      case     paramLow_xover: return low_xover;
+      case      paramLow_mult: return low_mult;
+      case      paramHigh_cut: return late.getoutputlpf();
+      case    paramHigh_xover: return high_xover;
+      case     paramHigh_mult: return high_mult;
     }
 
     return 0.0;
@@ -163,31 +142,31 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
     switch(index) {
-      case     DRY_LEVEL: dry_level        = (value / 100.0); break;
-      case   EARLY_LEVEL: early_level      = (value / 100.0); break;
-      case    LATE_LEVEL: late_level       = (value / 100.0); break;
-      case          SIZE: size             = (value);
+      case     paramDry_level: dry_level        = (value / 100.0); break;
+      case   paramEarly_level: early_level      = (value / 100.0); break;
+      case    paramLate_level: late_level       = (value / 100.0); break;
+      case          paramSize: size             = (value);
                           early.setRSFactor  (value / 50.0);
                           late.setRSFactor   (value / 100.0);
                           late.setrt60       (value / 20.0);  break;
-      case      PREDELAY: delay            = (value);
+      case      paramPredelay: delay            = (value);
                           late.setPreDelay   (value);         break;
-      case       DIFFUSE: diffuse          = (value);
+      case       paramDiffuse: diffuse          = (value);
                           late.setidiffusion1(value / 140.0);
                           late.setapfeedback (value / 140.0);
-      case       LOW_CUT: low_cut          = (value);
+      case       paramLow_cut: low_cut          = (value);
                           early.setoutputhpf (value);
                           late.setoutputhpf  (value);         break;
-      case     LOW_XOVER: low_xover        = (value);
+      case     paramLow_xover: low_xover        = (value);
                           late.setxover_low  (value);         break;
-      case      LOW_MULT: low_mult         = (value);
+      case      paramLow_mult: low_mult         = (value);
                           late.setrt60_factor_low(value);     break;
-      case      HIGH_CUT: high_cut         = (value);
+      case      paramHigh_cut: high_cut         = (value);
                           early.setoutputlpf (value);
                           late.setoutputlpf  (value);         break;
-      case    HIGH_XOVER: high_xover       = (value);
+      case    paramHigh_xover: high_xover       = (value);
                           late.setxover_high (value);         break;
-      case     HIGH_MULT: high_mult        = (value);
+      case     paramHigh_mult: high_mult        = (value);
                           late.setrt60_factor_high(value);    break;
     }
 }
@@ -195,7 +174,7 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 void DragonflyReverbPlugin::loadProgram(uint32_t index)
 {
     const float *preset = presets[index].params;
-    for (uint32_t param_index = 0; param_index < NUM_PARAMS; param_index++)
+    for (uint32_t param_index = 0; param_index < paramCount; param_index++)
     {
         setParameterValue(param_index, preset[param_index]);
     }
