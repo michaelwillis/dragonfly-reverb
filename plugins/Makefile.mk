@@ -129,15 +129,15 @@ lv2_sep: $(lv2_dsp) $(lv2_ui)
 
 $(lv2): $(OBJS_DSP) $(OBJS_UI) $(DISTRHO_PLUGIN_FILES) $(DISTRHO_UI_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(OBJECT_FILES) -v $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
 
 $(lv2_dsp): $(OBJS_DSP) $(DISTRHO_PLUGIN_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(OBJECT_FILES) -v $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
 
 $(lv2_ui): $(OBJS_UI) $(DISTRHO_UI_FILES)
 	mkdir -p $(shell dirname $@)
-	$(CXX) $^ $(OBJECT_FILES) -v $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
+	$(CXX) $^ $(OBJECT_FILES) $(BUILD_CXX_FLAGS) $(LINK_FLAGS) $(DGL_LIBS) $(SHARED) -DDISTRHO_PLUGIN_TARGET_LV2 -o $@
 
 # --------------------------------------------------------------
 # VST
