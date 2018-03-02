@@ -27,6 +27,9 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
+static const int knobx[] = { 77,174, 270 };
+static const int knoby[] = {34, 135, 233 };
+
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
@@ -35,10 +38,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   // text
   fNanoText.loadSharedResources();
   fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/home/rob/git/dragonfly-reverb/plugins/dragonfly-reverb/Artwork/LCD_Solid.ttf" );
-
-  // knobs
-  std::array <int, 3> knobx {77,174, 270};
-  std::array <int, 3> knoby {34, 135, 233 };
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -385,7 +384,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         case play:
           return false;
           break;
-       
+
 	case programs:
           for ( int i = 0; i < 24; i++ )
             {
@@ -400,7 +399,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
             } // end for
 
           break;
-        
+
 	case about:
           currentDisplayMode = play;
           fSwitchAbout->setDown ( 0 );
@@ -546,5 +545,3 @@ UI* createUI()
 // -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
-
-

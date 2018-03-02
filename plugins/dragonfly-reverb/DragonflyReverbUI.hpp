@@ -26,7 +26,7 @@ START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class DragonflyReverbUI : public UI, 
+class DragonflyReverbUI : public UI,
 		 public ImageKnob::Callback,
 		 public ImageSwitch::Callback,
 		 public ImageSlider::Callback
@@ -40,7 +40,7 @@ protected:
 
     void parameterChanged ( uint32_t index, float value ) override;
     void programLoaded (uint32_t index) override;
- 
+
     // -------------------------------------------------------------------
     // Widget Callbacks
     void imageSwitchClicked ( ImageSwitch* ImageSwitch, bool down ) override;
@@ -50,36 +50,34 @@ protected:
     void imageSliderDragStarted(ImageSlider* slider) override;
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
-    
+
     // preset browser stuff
     bool onMouse(const MouseEvent&) override;
-    
-    
-    
+
+
+
     void onDisplay() override;
-   
+
 private:
     Image fImgBackground;
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
-    
+
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout;
-    int currentProgram {0};
-    
+    int currentProgram = 0;
+
     enum displayMode {
       play,
       programs,
-      about 
+      about
     };
     int currentDisplayMode = play;
     Rectangle<int> rectDisplay;
-    // boxes for programs 
+    // boxes for programs
     Rectangle<int> rectPrograms[24]; // TODO check Programs constant
-    
 
-    
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
 
@@ -87,4 +85,4 @@ private:
 
 END_NAMESPACE_DISTRHO
 
-#endif // 
+#endif //
