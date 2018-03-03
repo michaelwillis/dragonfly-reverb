@@ -28,7 +28,7 @@ START_NAMESPACE_DISTRHO
 
 class DragonflyReverbUI : public UI, 
 		 public ImageKnob::Callback,
-		 public ImageSwitch::Callback,
+//		 public ImageSwitch::Callback,
 		 public ImageSlider::Callback
 {
 public:
@@ -43,7 +43,7 @@ protected:
  
     // -------------------------------------------------------------------
     // Widget Callbacks
-    void imageSwitchClicked ( ImageSwitch* ImageSwitch, bool down ) override;
+//    void imageSwitchClicked ( ImageSwitch* ImageSwitch, bool down ) override;
     void imageKnobDragStarted ( ImageKnob* knob ) override;
     void imageKnobDragFinished ( ImageKnob* knob ) override;
     void imageKnobValueChanged ( ImageKnob* knob, float value ) override;
@@ -59,27 +59,30 @@ protected:
     void onDisplay() override;
    
 private:
-    Image fImgBackground;
+    Image fImgBackground,fImgTabOff,fImgTabOn;
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
     
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
-    ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout;
+    ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     int currentProgram {0};
     
     enum displayMode {
-      play,
-      programs,
-      about 
+      displayResponse,
+      displayPrograms,
+      displayAbout 
     };
-    int currentDisplayMode = play;
-    Rectangle<int> rectDisplay;
+    int currentDisplayMode = displayResponse;
+    
+    Rectangle<int> rectDisplay,rectTabResponse,rectTabPrograms,rectTabAbout;
+        
     // boxes for programs 
     Rectangle<int> rectPrograms[24]; // TODO check Programs constant
     
-
-    
+    // to fill sliders
+    Rectangle<int> rectSliders[3]; 
+   
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
 

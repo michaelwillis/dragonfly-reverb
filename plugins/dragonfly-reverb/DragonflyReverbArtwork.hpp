@@ -6,29 +6,29 @@
 namespace DragonflyReverbArtwork
 {
     extern const char* backgroundData;
-    const unsigned int backgroundDataSize = 1212416;
-    const unsigned int backgroundWidth    = 1024;
-    const unsigned int backgroundHeight   = 296;
-
-    extern const char* button_offData;
-    const unsigned int button_offDataSize = 3024;
-    const unsigned int button_offWidth    = 36;
-    const unsigned int button_offHeight   = 21;
-
-    extern const char* button_onData;
-    const unsigned int button_onDataSize = 3024;
-    const unsigned int button_onWidth    = 36;
-    const unsigned int button_onHeight   = 21;
+    const unsigned int backgroundDataSize = 876150;
+    const unsigned int backgroundWidth    = 885;
+    const unsigned int backgroundHeight   = 330;
 
     extern const char* knobData;
-    const unsigned int knobDataSize = 9216;
-    const unsigned int knobWidth    = 48;
-    const unsigned int knobHeight   = 48;
+    const unsigned int knobDataSize = 14400;
+    const unsigned int knobWidth    = 60;
+    const unsigned int knobHeight   = 60;
 
     extern const char* sliderData;
-    const unsigned int sliderDataSize = 8540;
-    const unsigned int sliderWidth    = 35;
-    const unsigned int sliderHeight   = 61;
+    const unsigned int sliderDataSize = 360;
+    const unsigned int sliderWidth    = 30;
+    const unsigned int sliderHeight   = 3;
+
+    extern const char* tab_offData;
+    const unsigned int tab_offDataSize = 5280;
+    const unsigned int tab_offWidth    = 80;
+    const unsigned int tab_offHeight   = 22;
+
+    extern const char* tab_onData;
+    const unsigned int tab_onDataSize = 5280;
+    const unsigned int tab_onWidth    = 80;
+    const unsigned int tab_onHeight   = 22;
 }
 
 #endif // BINARY_DRAGONFLYREVERBARTWORK_HPP
