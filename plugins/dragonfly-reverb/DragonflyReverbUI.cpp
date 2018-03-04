@@ -181,20 +181,20 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setSize ( 450,210 );
 
   // rectangles for programs
-  // 3 columns
 
-  for ( int i = 0; i < 3; ++i )
+  for ( int i = 0; i < 3; ++i ) // 3 columns
     {
-      int startx = 290, starty = 115 , offsety = 24;
-      int offsetx [3] = { 0, 160, 325};
-      int width[3] = { offsetx[1]-offsetx[0], offsetx[2]-offsetx[1], rectDisplay.getWidth()-offsetx[2] };
+      int startx = 290, starty = 115;
+      int height = ( rectDisplay.getHeight()-10 ) / 8;
+      int width = ( rectDisplay.getWidth()-10 ) /3;
 
-      for ( int j=0; j < 8; ++j )
+      for ( int j=0; j < 8; ++j ) // 8 rows
         {
           int programIndex = j + ( i * 8 );
-          int x = offsetx[i] +startx , y = offsety * j + starty ;
+          int x = startx + i * width;
+          int y = starty + height * j;
           rectPrograms[programIndex].setPos ( x,y );
-          rectPrograms[programIndex].setSize ( width[i],offsety );
+          rectPrograms[programIndex].setSize ( width,height );
         }
     }
   // rectangles for sliders
@@ -384,7 +384,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
       if ( rectTabAbout.contains ( ev.pos ) )
         {
-           currentDisplayMode = displayAbout;
+          currentDisplayMode = displayAbout;
           repaint();
           return true;
         }
@@ -507,7 +507,7 @@ void DragonflyReverbUI::onDisplay()
       rectSliders[i].draw();
     }
 
-   switch ( int ( currentDisplayMode ) )
+  switch ( int ( currentDisplayMode ) )
     {
     case displayResponse:
       // print program name
@@ -537,7 +537,7 @@ void DragonflyReverbUI::onDisplay()
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 18 );
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
+      fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
       r = 230.0f / 256;
       g = 230.0f / 256;
@@ -550,10 +550,10 @@ void DragonflyReverbUI::onDisplay()
         {
           int x = rectPrograms[i].getX();
           int y = rectPrograms[i].getY();
-          //int w = rectPrograms[i].getWidth();
-          //int h = rectPrograms[i].getHeight();
+          int w = rectPrograms[i].getWidth();
+          int h = rectPrograms[i].getHeight();
           std::snprintf ( strBuf, 32, "%s", presets[i].name );
-          fNanoText.textBox ( x, y , 130.0f, strBuf, nullptr );
+          fNanoText.textBox ( x, y + ( h/2 ), w, strBuf, nullptr );
         }
       fNanoText.endFrame();
 
@@ -562,6 +562,9 @@ void DragonflyReverbUI::onDisplay()
       // g = 230.0f / 256;
       // b = 230.0f / 256;
       glColor4f ( r,g,b ,1.0f );
+//       for ( int i = 0 ; i < 24 ; i++ )
+// 	rectPrograms[i].drawOutline();
+//
       rectPrograms[currentProgram].drawOutline();
 
       // draw tabs
@@ -601,23 +604,22 @@ void DragonflyReverbUI::onDisplay()
     }
 
     } // end switch
-    
-    // draw labels on tabs
-     fNanoText.beginFrame ( this );
-     fNanoText.fontFaceId ( fNanoFont );
-     fNanoText.fontSize ( 16 );
-     fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
-     r = 230.0f / 256;
-     g = 230.0f / 256;
-     b = 230.0f / 256;
-    fNanoText.fillColor ( Color ( r, g, b ) );
-    float y = 85+(22/2);
-     fNanoText.textBox ( 315.0f, y, 80.0f , "Response", nullptr );
-    fNanoText.textBox ( 405.0f ,y, 80.0f, "Programs", nullptr );
-    fNanoText.textBox ( 495.0f, y, 80.0f , "About", nullptr );
-    fNanoText.endFrame();
-    
+  // draw labels on tabs
+  fNanoText.beginFrame ( this );
+  fNanoText.fontFaceId ( fNanoFont );
+  fNanoText.fontSize ( 18 );
+  fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
+  r = 205.0f / 256;
+  g = 241.0f / 256;
+  b = 255.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+  float y = 85 + ( 22/2 );
+  fNanoText.textBox ( 315.0f, y, 80.0f , "Response", nullptr );
+  fNanoText.textBox ( 405.0f ,y, 80.0f , "Presets", nullptr );
+  fNanoText.textBox ( 495.0f, y, 80.0f , "About"   , nullptr );
+  fNanoText.endFrame();
+
 
 }
 
