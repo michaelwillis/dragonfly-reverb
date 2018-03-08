@@ -17,6 +17,7 @@
 
 #include "DragonflyReverbPlugin.hpp"
 #include "DistrhoPluginInfo.h"
+#include <iostream>
 
 // #define NUM_PARAMS 12
 #define NUM_PRESETS 24
@@ -61,9 +62,7 @@ static Param params[paramCount] = {
   {"Low Decay Mult",  "low_mult",     0.1f,    1.5f,     4.0f,   "X"},
   {"High Cut",        "high_cut",  2000.0f, 7500.0f, 20000.0f,  "Hz"},
   {"High Crossover",  "high_xo",   1000.0f, 4500.0f, 20000.0f,  "Hz"},
-  {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"},
-  {"Preset",	      "preset_button",0.0f,   0.0f,     1.0f,   ""},
-  {"About",           "about_button", 0.0f,   0.0f,     1.0f,   ""} 
+  {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"}
 };
 
 
@@ -92,6 +91,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS,
 
     // set initial values
     loadProgram(0);
+    
 }
 
 // -----------------------------------------------------------------------
@@ -109,6 +109,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
       parameter.ranges.max = params[index].range_max;
       parameter.unit       = params[index].unit;
     }
+  
 }
 
 void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
@@ -134,7 +135,7 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
       case      paramHigh_cut: return late.getoutputlpf();
       case    paramHigh_xover: return high_xover;
       case     paramHigh_mult: return high_mult;
-    }
+      }
 
     return 0.0;
 }

@@ -27,17 +27,20 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[] = { 77,174, 270 };
-static const int knoby[] = {34, 135, 233 };
+static const int knobx[] = {20, 108, 195};
+static const int knoby[] = {25, 135, 245};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA )
+    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGR ),
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
+    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR )
+
 {
   // text
   fNanoText.loadSharedResources();
-  fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/home/rob/git/dragonfly-reverb/plugins/dragonfly-reverb/Artwork/LCD_Solid.ttf" );
+  fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf" );
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -136,8 +139,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level = new ImageSlider ( this,
                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
-  fSliderDry_level->setStartPos ( 781, 31 );
-  fSliderDry_level->setEndPos ( 781, 238 );
+  fSliderDry_level->setStartPos ( 760, 32 );
+  fSliderDry_level->setEndPos ( 760, 300 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
   fSliderDry_level->setValue ( 50.0f );
   fSliderDry_level->setInverted ( true );
@@ -146,8 +149,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level = new ImageSlider ( this,
                                          Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarly_level->setId ( paramEarly_level );
-  fSliderEarly_level->setStartPos ( 849, 31 );
-  fSliderEarly_level->setEndPos ( 849, 238 );
+  fSliderEarly_level->setStartPos ( 800, 32 );
+  fSliderEarly_level->setEndPos ( 800, 300 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
   fSliderEarly_level->setValue ( 50.0f );
   fSliderEarly_level->setInverted ( true );
@@ -156,52 +159,51 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level = new ImageSlider ( this,
                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderLate_level->setId ( paramLate_level );
-  fSliderLate_level->setStartPos ( 918, 31 );
-  fSliderLate_level->setEndPos ( 918, 238 );
+  fSliderLate_level->setStartPos ( 840, 32 );
+  fSliderLate_level->setEndPos ( 840, 300 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
   fSliderLate_level->setValue ( 50.0f );
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
-  // switches
-  fSwitchPrograms = new ImageSwitch ( this,
-                                      Image ( Art::button_offData, Art::button_offWidth, Art::button_offHeight, GL_BGRA ),
-                                      Image ( Art::button_onData, Art::button_onWidth, Art::button_onHeight, GL_BGRA ) );
-  fSwitchPrograms->setId ( paramPrograms );
-  fSwitchPrograms->setAbsolutePos ( 456, 267 );
-  fSwitchPrograms->setCallback ( this ) ;
-
-  fSwitchAbout = new ImageSwitch ( this,
-                                   Image ( Art::button_offData, Art::button_offWidth, Art::button_offHeight, GL_BGRA ),
-                                   Image ( Art::button_onData, Art::button_onWidth, Art::button_onHeight, GL_BGRA ) );
-  fSwitchAbout->setId ( paramAbout );
-  fSwitchAbout->setAbsolutePos ( 613, 267 );
-  fSwitchAbout->setCallback ( this ) ;
+  // rectangles for displaytabs
+  rectTabResponse.setPos ( 315, 85 );
+  rectTabResponse.setSize ( Art::tab_onWidth, Art::tab_onHeight );
+  rectTabPrograms.setPos ( 405, 85 );
+  rectTabPrograms.setSize ( Art::tab_onWidth, Art::tab_onHeight );
+  rectTabAbout.setPos ( 495, 85 );
+  rectTabAbout.setSize ( Art::tab_onWidth, Art::tab_onHeight );
 
   // rectangles for display
-  // x 376 y 61 w 355 h 179
-  rectDisplay.setPos ( 375,61 );
-  rectDisplay.setSize ( 356,179 );
+
+  rectDisplay.setPos ( 285,110 );
+  rectDisplay.setSize ( 450,210 );
 
   // rectangles for programs
-  // 3 columns
 
-  for ( int i = 0; i < 3; ++i )
+  for ( int i = 0; i < 3; ++i ) // 3 columns
     {
-      int startx = 376, starty = 75 , offsety = 20;
-      int offsetx [3] = { 0, 115, 250};
-      int width[3] = { offsetx[1]-offsetx[0], offsetx[2]-offsetx[1], rectDisplay.getWidth()-offsetx[2] };
+      int startx = 290, starty = 115;
+      int height = ( rectDisplay.getHeight()-10 ) / 8;
+      int width = ( rectDisplay.getWidth()-10 ) /3;
 
-      for ( int j=0; j < 8; ++j )
+      for ( int j=0; j < 8; ++j ) // 8 rows
         {
           int programIndex = j + ( i * 8 );
-          int x = offsetx[i] +startx , y = offsety * j + starty ;
-          //  std:: cout << programIndex << " " << x << " " <<  y << std::endl;
-
+          int x = startx + i * width;
+          int y = starty + height * j;
           rectPrograms[programIndex].setPos ( x,y );
-          rectPrograms[programIndex].setSize ( width[i],offsety );
+          rectPrograms[programIndex].setSize ( width,height );
         }
     }
+  // rectangles for sliders
+
+  rectSliders[0].setPos ( 762,32 );
+  rectSliders[0].setSize ( 26,271 );
+  rectSliders[1].setPos ( 802,32 );
+  rectSliders[1].setSize ( 26,271 );
+  rectSliders[2].setPos ( 842,32 );
+  rectSliders[2].setSize ( 26,271 );
 }
 
 /**
@@ -264,13 +266,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
       fKnobHigh_mult->setValue ( value );
       break;
 
-    case paramPrograms:
-      fSwitchPrograms->setDown ( value > 0.5f );
-      break;
-
-    case paramAbout:
-      fSwitchAbout->setDown ( value > 0.5f );
-
     }
 
 }
@@ -278,45 +273,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 /* ----------------------------------------------------------------------------------------------------------
  * Widget Callbacks
  *----------------------------------------------------------------------------------------------------------*/
-
-void DragonflyReverbUI::imageSwitchClicked ( ImageSwitch* imageSwitch, bool )
-{
-  const uint buttonId ( imageSwitch->getId() );
-  switch ( buttonId )
-    {
-    case paramPrograms:
-      //  std::cout << "paramPrograms " << fSwitchPrograms->isDown() << std::endl;
-      // switch off About button
-      fSwitchAbout->setDown ( 0 );
-
-      // do programs stuff
-      if ( fSwitchPrograms->isDown() == 1 )
-        {
-          currentDisplayMode = programs;
-        }
-      else
-        {
-          currentDisplayMode = play;
-        }
-
-      break;
-
-    case paramAbout:
-      // switch off Programs button
-      fSwitchPrograms->setDown ( 0 );
-      // do About stuff
-      if ( fSwitchAbout->isDown() == 1 )
-        {
-          currentDisplayMode = about;
-        }
-      else
-        {
-          currentDisplayMode = play;
-        }
-
-      break;
-    }
-}
 
 void DragonflyReverbUI::imageKnobDragStarted ( ImageKnob* knob )
 {
@@ -372,122 +328,219 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
 {
+  // display
+
   if ( ev.button != 1 )
     return false;
   if ( ev.press )
     {
-      if ( ! rectDisplay.contains ( ev.pos ) )
-        return false;
-
-      switch ( currentDisplayMode )
+      if ( rectDisplay.contains ( ev.pos ) )
         {
-        case play:
-          return false;
-          break;
-
-	case programs:
-          for ( int i = 0; i < 24; i++ )
+          switch ( currentDisplayMode )
             {
-              if ( rectPrograms[i].contains ( ev.pos ) )
+            case displayResponse:
+              return false;
+              break;
+
+
+            case displayPrograms:
+              for ( int i = 0; i < 24; i++ )
                 {
-                  currentProgram = i;
-                  currentDisplayMode = play;
-                  fSwitchPrograms->setDown ( 0 );
-                  programLoaded ( currentProgram );
-                  repaint();
-                } // end if
-            } // end for
+                  if ( rectPrograms[i].contains ( ev.pos ) )
+                    {
+                      currentProgram = i;
+                      programLoaded ( currentProgram );
+                      repaint();
+                    } // end if
+                } // end for
 
-          break;
+              break;
 
-	case about:
-          currentDisplayMode = play;
-          fSwitchAbout->setDown ( 0 );
-          break;
-        } // end switch
+            case displayAbout:
+              currentDisplayMode = displayResponse;
+              repaint();
+
+              break;
+            } // end switch
+          return false;
+        } // end if rectDisplay
+
+      // check for clicks on tabs
+
+      if ( rectTabResponse.contains ( ev.pos ) )
+        {
+          currentDisplayMode = displayResponse;
+          repaint();
+          return true;
+        }
+
+      if ( rectTabPrograms.contains ( ev.pos ) )
+        {
+          currentDisplayMode = displayPrograms;
+          repaint();
+          return true;
+        }
+
+      if ( rectTabAbout.contains ( ev.pos ) )
+        {
+          currentDisplayMode = displayAbout;
+          repaint();
+          return true;
+        }
+
     } // end if ev.press
   return false;
 }
 
 void DragonflyReverbUI::onDisplay()
 {
+
   fImgBackground.draw();
   float r,g,b;
   // wipe display
-  // TODO worry about shadows later
-  // color #87a518
-  r = float ( 0x87 ) / 256.0f;
-  g = float ( 0xa5 ) / 256.0f;
-  b = float ( 0x18 ) / 256.0f;
+  r = 80.0f / 256.0f;
+  g = 80.0f / 256.0f;
+  b = 80.0f / 256.0f;
   // rectangle to wipe
   glColor4f ( r, g, b, 1.0f );
   rectDisplay.draw();
 
+  // print parameters
+  fNanoText.beginFrame ( this );
+  fNanoText.fontFaceId ( fNanoFont );
+  fNanoText.fontSize ( 16 );
+  fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
+
+  r = 230.0f / 256;
+  g = 230.0f / 256;
+  b = 230.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+
+  char strBuf[32+1];
+  strBuf[32] = '\0';
+
+  float xstart = 20.0f, ystart= 92.0f;
+  float xoffset = 88.0f, yoffset = 110.0f;
+
+
+  std::snprintf ( strBuf, 32, "%4.2f ms", fKnobPredelay->getValue() );
+  fNanoText.textBox ( xstart             , ystart , 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%i Hz", int ( fKnobHigh_cut->getValue() ) );
+  fNanoText.textBox ( xstart             , ystart + yoffset ,60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%4.2f Hz", fKnobLow_cut->getValue() );
+  fNanoText.textBox ( xstart             , ystart + yoffset*2 ,60.0f, strBuf, nullptr );
+
+  std::snprintf ( strBuf, 32, " %4.2f m", fKnobSize->getValue() );
+  fNanoText.textBox ( xstart + xoffset   , ystart , 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, " %i Hz", int ( fKnobHigh_xover->getValue() ) );
+  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset, 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%4.2f Hz", fKnobLow_xover->getValue() );
+  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset*2, 65.0f, strBuf, nullptr );
+
+
+  std::snprintf ( strBuf, 32, "%i %%", int ( fKnobDiffuse->getValue() ) );
+  fNanoText.textBox ( xstart  + xoffset*2 , ystart , 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%4.2f X", fKnobHigh_mult->getValue() );
+  fNanoText.textBox ( xstart  + xoffset*2 , ystart + yoffset, 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%4.2f X", fKnobLow_mult->getValue() );
+  fNanoText.textBox ( xstart  + xoffset*2 , ystart + yoffset*2, 60.0f, strBuf, nullptr );
+
+  std::snprintf ( strBuf, 32, "%i %%", int ( fSliderDry_level->getValue() ) );
+  fNanoText.textBox ( 760 - 2  , 314 , 35.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%i %%", int ( fSliderEarly_level->getValue() ) );
+  fNanoText.textBox ( 800 - 2, 314, 35.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%i %%", int ( fSliderLate_level->getValue() ) );
+  fNanoText.textBox ( 840 - 2, 314 , 35.0f, strBuf, nullptr );
+
+  // print lables;
+  r = 205.0f / 256;
+  g = 241.0f / 256;
+  b = 255.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+  fNanoText.fontSize ( 18 );
+  int labelX[6]= {20,105,194,760,800,840};
+  int labelY[4]= {18,128,238,20};
+  float labelWidth = 65.0f;
+  fNanoText.textBox ( labelX[0], labelY[0] , labelWidth, "Pre-Delay", nullptr );
+  fNanoText.textBox ( labelX[1], labelY[0] , labelWidth, "Size", nullptr );
+  fNanoText.textBox ( labelX[2], labelY[0] , labelWidth, "Diffuse", nullptr );
+  fNanoText.textBox ( labelX[0], labelY[1] , labelWidth, "High Cut", nullptr );
+  fNanoText.textBox ( labelX[1], labelY[1] , labelWidth, "High Cross", nullptr );
+  fNanoText.textBox ( labelX[2], labelY[1] , labelWidth, "High Multi", nullptr );
+  fNanoText.textBox ( labelX[0], labelY[2] , labelWidth, "Low Cut", nullptr );
+  fNanoText.textBox ( labelX[1], labelY[2] , labelWidth, "Low Cross", nullptr );
+  fNanoText.textBox ( labelX[2], labelY[2] , labelWidth, "Low Multi", nullptr );
+  fNanoText.textBox ( labelX[3], labelY[3] , 30 , "Dry", nullptr );
+  fNanoText.textBox ( labelX[4], labelY[3] , 30, "Early", nullptr );
+  fNanoText.textBox ( labelX[5], labelY[3] , 30, "Late", nullptr );
+
+  //fNanoText.textBox( 325 , 90 , 30, "Repsonse", nullptr);
+
+  fNanoText.endFrame();
+
+  //draw faders
+  r = 82.0f/255.f;
+  g = 148.0f/255.f;
+  b = 88.0f/255.f;
+  glColor4f ( r, g, b, 1.0f );
+  float dry = ( float ( fSliderDry_level->getValue() ) / 100 ) * 271;
+  float early = ( float ( fSliderEarly_level->getValue() ) / 100 ) * 271;
+  float late = ( float ( fSliderLate_level->getValue() ) / 100 ) * 271;
+  if ( dry < 1.0f )
+    dry = 1.0f;
+  rectSliders[0].setHeight ( dry+0.5 );
+  rectSliders[0].setY ( 32+271-dry+0.5 );
+
+  if ( early < 1.0f )
+    early = 1.0f;
+  rectSliders[1].setHeight ( early+0.5 );
+  rectSliders[1].setY ( 32+271-early + 0.5 );
+
+  if ( late < 1.0f )
+    late = 1.0f;
+  rectSliders[2].setHeight ( late+0.5 );
+  rectSliders[2].setY ( 32+271-late + 0.5 );
+
+  for ( int i = 0; i < 3 ; i++ )
+    {
+      rectSliders[i].draw();
+    }
+
   switch ( int ( currentDisplayMode ) )
     {
-    case play:
-    {
+    case displayResponse:
+      // print program name
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
-      fNanoText.fontSize ( 10 );
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
+      fNanoText.fontSize ( 16 );
+      fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_MIDDLE );
 
-      r =  8.0f / 256;
-      g = 19.0f / 256;
-      b = 10.0f / 256;
+      r = 230.0f / 256;
+      g = 230.0f / 256;
+      b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
-
-      char strBuf[32+1];
-      strBuf[32] = '\0';
-
-      float xstart = 374.0f, ystart= 195.0f;
-      float xoffset = 126.0f, yoffset = 12.0f, extra_offset_x = 8.0f;
-
-      // print current program namespace
-      std::snprintf ( strBuf, 32, "Program : %s", presets[currentProgram].name );
-      fNanoText.textBox ( xstart, ystart - yoffset, 200.0f, strBuf, nullptr );
-
-      // print parameters
-      std::snprintf ( strBuf, 32, "Pre-Delay: %4.2f ms", fKnobPredelay->getValue() );
-      fNanoText.textBox ( xstart             , ystart , 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Hi Cut   : %i Hz", int ( fKnobHigh_cut->getValue() ) );
-      fNanoText.textBox ( xstart             , ystart + yoffset ,130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Low Cut  : %4.2f Hz", fKnobLow_cut->getValue() );
-      fNanoText.textBox ( xstart             , ystart + yoffset*2 ,130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Dry      : %i %%", int ( fSliderDry_level->getValue() ) );
-      fNanoText.textBox ( xstart             , ystart + yoffset*3, 130.0f, strBuf, nullptr );
-
-      std::snprintf ( strBuf, 32, "Size     : %4.2f m", fKnobSize->getValue() );
-      fNanoText.textBox ( xstart + xoffset   , ystart , 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Hi Cross : %i Hz", int ( fKnobHigh_xover->getValue() ) );
-      fNanoText.textBox ( xstart + xoffset   , ystart + yoffset, 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Low Cross: %4.2f Hz", fKnobLow_xover->getValue() );
-      fNanoText.textBox ( xstart + xoffset   , ystart + yoffset*2, 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Early    : %i %%", int ( fSliderEarly_level->getValue() ) );
-      fNanoText.textBox ( xstart + xoffset*1 , ystart + yoffset*3, 130.0f, strBuf, nullptr );
-
-      std::snprintf ( strBuf, 32, "Diffuse : %i %%", int ( fKnobDiffuse->getValue() ) );
-      fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart , 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Hi Mult : %4.2f X", fKnobHigh_mult->getValue() );
-      fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset, 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Low Mult: %4.2f X", fKnobLow_mult->getValue() );
-      fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset*2, 130.0f, strBuf, nullptr );
-      std::snprintf ( strBuf, 32, "Late    : %i %%", int ( fSliderLate_level->getValue() ) );
-      fNanoText.textBox ( xstart + extra_offset_x + xoffset*2 , ystart + yoffset*3, 130.0f, strBuf, nullptr );
+      fNanoText.textBox ( rectDisplay.getX() +5, rectDisplay.getY() +5, 200.0f , presets[currentProgram].name, nullptr );
       fNanoText.endFrame();
+      // draw graph
+      // TODO draw graph
 
+      // draw tabs
+      glColor4f ( 1.0f,1.0f,1.0f,1.0f ); // reset colour
+      fImgTabOn.drawAt ( 315,85 );
+      fImgTabOff.drawAt ( 405,85 );
+      fImgTabOff.drawAt ( 495,85 );
       break;
-    }
-    case programs:
+
+    case displayPrograms:
     {
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
-      fNanoText.fontSize ( 10 );
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
+      fNanoText.fontSize ( 18 );
+      fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
-      r =  8.0f / 256;
-      g = 19.0f / 256;
-      b = 10.0f / 256;
+      r = 230.0f / 256;
+      g = 230.0f / 256;
+      b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
 
       char strBuf[32+1];
@@ -496,26 +549,42 @@ void DragonflyReverbUI::onDisplay()
         {
           int x = rectPrograms[i].getX();
           int y = rectPrograms[i].getY();
-          //int w = rectPrograms[i].getWidth();
-          //int h = rectPrograms[i].getHeight();
+          int w = rectPrograms[i].getWidth();
+          int h = rectPrograms[i].getHeight();
           std::snprintf ( strBuf, 32, "%s", presets[i].name );
-          fNanoText.textBox ( x, y , 130.0f, strBuf, nullptr );
+          fNanoText.textBox ( x, y + ( h/2 ), w, strBuf, nullptr );
         }
       fNanoText.endFrame();
+
+      // draw box around current program
+      // r = 230.0f / 256;
+      // g = 230.0f / 256;
+      // b = 230.0f / 256;
+      glColor4f ( r,g,b ,1.0f );
+//       for ( int i = 0 ; i < 24 ; i++ )
+// 	rectPrograms[i].drawOutline();
+//
+      rectPrograms[currentProgram].drawOutline();
+
+      // draw tabs
+      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+      fImgTabOff.drawAt ( 315,85 );
+      fImgTabOn.drawAt ( 405,85 );
+      fImgTabOff.drawAt ( 495,85 );
 
 
       break;
     }
-    case about:
+    case displayAbout:
     {
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
-      fNanoText.fontSize ( 10 );
+      fNanoText.fontSize ( 24 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
-      r =  8.0f / 256;
-      g = 19.0f / 256;
-      b = 10.0f / 256;
+      r = 230.0f / 256;
+      g = 230.0f / 256;
+      b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
 
       int x = rectDisplay.getX();
@@ -524,11 +593,32 @@ void DragonflyReverbUI::onDisplay()
 
       fNanoText.textBox ( x, y , w , "This plugin is licenced under the <insert licence here> \n Code is based on freeverb3. \n Plugin is developed using the DPF framework", nullptr );
       fNanoText.endFrame();
+      // draw tabs
+      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+      fImgTabOff.drawAt ( 315,85 );
+      fImgTabOff.drawAt ( 405,85 );
+      fImgTabOn.drawAt ( 495,85 );
 
       break;
     }
 
     } // end switch
+
+  // draw labels on tabs
+  fNanoText.beginFrame ( this );
+  fNanoText.fontFaceId ( fNanoFont );
+  fNanoText.fontSize ( 18 );
+  fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
+  r = 205.0f / 256;
+  g = 241.0f / 256;
+  b = 255.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+  float y = 85 + ( 22/2 );
+  fNanoText.textBox ( 315.0f, y, 80.0f , "Response", nullptr );
+  fNanoText.textBox ( 405.0f ,y, 80.0f , "Presets", nullptr );
+  fNanoText.textBox ( 495.0f, y, 80.0f , "About"   , nullptr );
+  fNanoText.endFrame();
+
 
 }
 
