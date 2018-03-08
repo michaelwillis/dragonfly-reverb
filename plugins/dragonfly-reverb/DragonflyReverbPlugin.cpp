@@ -19,7 +19,6 @@
 #include "DistrhoPluginInfo.h"
 #include <iostream>
 
-// #define NUM_PARAMS 12
 #define NUM_PRESETS 24
 #define PARAM_NAME_LENGTH 16
 #define PARAM_SYMBOL_LENGTH 8
@@ -36,20 +35,6 @@ typedef struct {
   const char *unit;
 } Param;
 
-/*
-typedef struct {
-  const char *name;
-  const float params[paramCount];
-} Preset;
-*/
-
-// enum {
-//   , EARLY_LEVEL, LATE_LEVEL,
-//   SIZE, PREDELAY, DIFFUSE,
-//   LOW_CUT, LOW_XOVER, LOW_MULT,
-//   HIGH_CUT, HIGH_XOVER, HIGH_MULT
-// };
-
 static Param params[paramCount] = {
   {"Dry Level",       "dry_level",    0.0f,   50.0f,   100.0f,   "%"},
   {"Early Level",     "early_level",  0.0f,   50.0f,   100.0f,   "%"},
@@ -64,8 +49,6 @@ static Param params[paramCount] = {
   {"High Crossover",  "high_xo",   1000.0f, 4500.0f, 20000.0f,  "Hz"},
   {"High Decay Mult", "high_mult",    0.1f,    0.4f,     2.0f,   "X"}
 };
-
-
 
 // -----------------------------------------------------------------------
 
@@ -91,7 +74,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS,
 
     // set initial values
     loadProgram(0);
-    
+
 }
 
 // -----------------------------------------------------------------------
@@ -109,7 +92,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter)
       parameter.ranges.max = params[index].range_max;
       parameter.unit       = params[index].unit;
     }
-  
+
 }
 
 void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
@@ -122,54 +105,18 @@ void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName)
 
 float DragonflyReverbPlugin::getParameterValue(uint32_t index) const
 {
-    switch(index) {
-      case     paramDry_level: return dry_level * 100.0;
-      case   paramEarly_level: return early_level * 100.0;
-      case    paramLate_level: return late_level * 100.0;
-      case          paramSize: return size;
-      case      paramPredelay: return delay;
-      case       paramDiffuse: return diffuse;
-      case       paramLow_cut: return low_cut;
-      case     paramLow_xover: return low_xover;
-      case      paramLow_mult: return low_mult;
-      case      paramHigh_cut: return late.getoutputlpf();
-      case    paramHigh_xover: return high_xover;
-      case     paramHigh_mult: return high_mult;
-      }
+  if (index < paramCount) {
+    return newParams[index];
+  }
 
-    return 0.0;
+  return 0.0;
 }
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value)
 {
-    switch(index) {
-      case     paramDry_level: dry_level        = (value / 100.0); break;
-      case   paramEarly_level: early_level      = (value / 100.0); break;
-      case    paramLate_level: late_level       = (value / 100.0); break;
-      case          paramSize: size             = (value);
-                          early.setRSFactor  (value / 50.0);
-                          late.setRSFactor   (value / 100.0);
-                          late.setrt60       (value / 20.0);  break;
-      case      paramPredelay: delay            = (value);
-                          late.setPreDelay   (value);         break;
-      case       paramDiffuse: diffuse          = (value);
-                          late.setidiffusion1(value / 140.0);
-                          late.setapfeedback (value / 140.0);
-      case       paramLow_cut: low_cut          = (value);
-                          early.setoutputhpf (value);
-                          late.setoutputhpf  (value);         break;
-      case     paramLow_xover: low_xover        = (value);
-                          late.setxover_low  (value);         break;
-      case      paramLow_mult: low_mult         = (value);
-                          late.setrt60_factor_low(value);     break;
-      case      paramHigh_cut: high_cut         = (value);
-                          early.setoutputlpf (value);
-                          late.setoutputlpf  (value);         break;
-      case    paramHigh_xover: high_xover       = (value);
-                          late.setxover_high (value);         break;
-      case     paramHigh_mult: high_mult        = (value);
-                          late.setrt60_factor_high(value);    break;
-    }
+  if (index < paramCount) {
+    newParams[index] = value;
+  }
 }
 
 void DragonflyReverbPlugin::loadProgram(uint32_t index)
@@ -192,6 +139,34 @@ void DragonflyReverbPlugin::activate()
 
 void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t frames)
 {
+  for (uint32_t index = 0; index < paramCount; index++) {
+    if (oldParams[index] != newParams[index]) {
+      oldParams[index] = newParams[index];
+      float value = newParams[index];
+
+      switch(index) {
+        case     paramDry_level: dry_level        = (value / 100.0); break;
+        case   paramEarly_level: early_level      = (value / 100.0); break;
+        case    paramLate_level: late_level       = (value / 100.0); break;
+        case          paramSize: early.setRSFactor  (value / 50.0);
+                                 late.setRSFactor   (value / 100.0);
+                                 late.setrt60       (value / 20.0);  break;
+        case      paramPredelay: late.setPreDelay   (value);         break;
+        case       paramDiffuse: late.setidiffusion1(value / 140.0);
+                                 late.setapfeedback (value / 140.0);
+        case       paramLow_cut: early.setoutputhpf (value);
+                                 late.setoutputhpf  (value);         break;
+        case     paramLow_xover: late.setxover_low  (value);         break;
+        case      paramLow_mult: late.setrt60_factor_low(value);     break;
+        case      paramHigh_cut: early.setoutputlpf (value);
+                                 late.setoutputlpf  (value);         break;
+        case    paramHigh_xover: late.setxover_high (value);         break;
+        case     paramHigh_mult: late.setrt60_factor_high(value);    break;
+      }
+    }
+  }
+
+
   for (uint32_t offset = 0; offset < frames; offset += BUFFER_SIZE) {
     long int buffer_frames = frames - offset < BUFFER_SIZE ? frames - offset : BUFFER_SIZE;
 

@@ -97,20 +97,13 @@ private:
 
     static const uint32_t BUFFER_SIZE = 256;
 
+    float oldParams[paramCount];
+    float newParams[paramCount];
+
     float dry_level;
     float early_level;
     float early_send;
     float late_level;
-
-    float size;
-    float delay;
-    float diffuse;
-    float low_cut;
-    float low_xover;
-    float low_mult;
-    float high_cut;
-    float high_xover;
-    float high_mult;
 
     fv3::earlyref_f early;
     fv3::zrev2_f late;
