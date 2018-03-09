@@ -140,7 +140,7 @@ void DragonflyReverbPlugin::activate()
 void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t frames)
 {
   for (uint32_t index = 0; index < paramCount; index++) {
-    if (oldParams[index] != newParams[index]) {
+    if (d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
