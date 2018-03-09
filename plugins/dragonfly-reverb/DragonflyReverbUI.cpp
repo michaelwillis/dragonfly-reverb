@@ -27,6 +27,9 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
+static const int knobx[] = {20, 108, 195};
+static const int knoby[] = {25, 135, 245};
+
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
@@ -38,10 +41,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   // text
   fNanoText.loadSharedResources();
   fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf" );
-
-  // knobs
-  std::array <int, 3> knobx {20,108, 195};
-  std::array <int, 3> knoby {25, 135, 245 };
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -636,5 +635,3 @@ UI* createUI()
 // -----------------------------------------------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
-
-
