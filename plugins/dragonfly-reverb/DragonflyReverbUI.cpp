@@ -323,6 +323,9 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
   fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
+  for (uint32_t i = 0; i < paramCount; i++) {
+    setParameterValue(i, preset[i]);
+  }
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
