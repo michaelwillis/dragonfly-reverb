@@ -486,26 +486,24 @@ void DragonflyReverbUI::onDisplay()
   float dry = ( float ( fSliderDry_level->getValue() ) / 100 ) * 271;
   float early = ( float ( fSliderEarly_level->getValue() ) / 100 ) * 271;
   float late = ( float ( fSliderLate_level->getValue() ) / 100 ) * 271;
-  if ( dry < 1.0f )
-    dry = 1.0f;
-  rectSliders[0].setHeight ( dry+0.5 );
-  rectSliders[0].setY ( 32+271-dry+0.5 );
+ 
+  rectSliders[0].setHeight ( dry + 0.5f );
+  rectSliders[0].setY ( 32+271-dry+ 0.5f );
 
-  if ( early < 1.0f )
-    early = 1.0f;
-  rectSliders[1].setHeight ( early+0.5 );
-  rectSliders[1].setY ( 32+271-early + 0.5 );
+  rectSliders[1].setHeight ( early + 0.5f );
+  rectSliders[1].setY ( 32+271-early +0.5);
 
-  if ( late < 1.0f )
-    late = 1.0f;
-  rectSliders[2].setHeight ( late+0.5 );
-  rectSliders[2].setY ( 32+271-late + 0.5 );
+  rectSliders[2].setHeight ( late +0.5f );
+  rectSliders[2].setY ( 32+271-late + 0.5f );
 
-  for ( int i = 0; i < 3 ; i++ )
-    {
-      rectSliders[i].draw();
-    }
-
+  if (int(dry) > 1)
+      rectSliders[0].draw();
+  if (int(early) > 1)
+      rectSliders[1].draw();
+  if (int(late) > 1)
+      rectSliders[2].draw();
+  
+ 
   switch ( int ( currentDisplayMode ) )
     {
     case displayResponse:
