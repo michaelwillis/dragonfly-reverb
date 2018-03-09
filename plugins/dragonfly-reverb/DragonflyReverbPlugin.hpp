@@ -112,12 +112,7 @@ private:
     float late_in_buffer[2][BUFFER_SIZE];
     float late_out_buffer[2][BUFFER_SIZE];
 
-    // needed for initializing the buttons
-
-    float play = 1.0f; // default to 'on'
-    float programs = 0.0f;
-    float about = 0.0f;
-
+ 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };
 
