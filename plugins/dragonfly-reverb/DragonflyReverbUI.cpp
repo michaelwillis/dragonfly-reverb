@@ -19,6 +19,7 @@
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"
+#include "NotoSans_Regular.ttf.hpp"
 #include <array>
 #include <iostream>
 
@@ -40,7 +41,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 {
   // text
   fNanoText.loadSharedResources();
-  fNanoFont  = fNanoText.createFontFromFile ( "lcd_solid","/usr/share/fonts/truetype/noto/NotoSans-Regular.ttf" );
+  fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, true);
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
