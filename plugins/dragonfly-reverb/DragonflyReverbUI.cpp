@@ -40,8 +40,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 
 {
   // text
-  fNanoText.loadSharedResources();
-  fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, true);
+  fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false);
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -324,9 +323,9 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
   fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
-  for (uint32_t i = 0; i < paramCount; i++) {
-    setParameterValue(i, preset[i]);
-  }
+   for (uint32_t i = 0; i < paramCount; i++) {
+     setParameterValue(i, preset[i]);
+}
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
@@ -353,6 +352,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
                   if ( rectPrograms[i].contains ( ev.pos ) )
                     {
                       currentProgram = i;
+		      
                       programLoaded ( currentProgram );
                       repaint();
                     } // end if
