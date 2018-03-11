@@ -1,0 +1,71 @@
+Starting program: /home/rob/git/dragonfly-reverb/bin/DragonflyReverb 
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/i386-linux-gnu/libthread_db.so.1".
+[New Thread 0xb75edb40 (LWP 3677)]
+[New Thread 0xb756cb40 (LWP 3678)]
+[New Thread 0xac1aeb40 (LWP 3682)]
+
+Thread 1 "DragonflyReverb" received signal SIGSEGV, Segmentation fault.
+0xb74e4200 in ?? ()
+
+Thread 4 (Thread 0xac1aeb40 (LWP 3682)):
+#0  0xb7fd7cf9 in __kernel_vsyscall ()
+#1  0xb7a25717 in syscall () at ../sysdeps/unix/sysv/linux/i386/syscall.S:29
+#2  0xb7dda1f1 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#3  0xb7db4490 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#4  0xb7db7464 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#5  0xb7db345b in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#6  0xb7db2b85 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#7  0xb7dd7908 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#8  0xb7892316 in start_thread (arg=0xac1aeb40) at pthread_create.c:465
+#9  0xb7a2a296 in clone () at ../sysdeps/unix/sysv/linux/i386/clone.S:108
+
+Thread 3 (Thread 0xb756cb40 (LWP 3678)):
+#0  0xb7fd7cf9 in __kernel_vsyscall ()
+#1  0xb7a18693 in __GI___libc_read (fd=5, buf=0xb756c13c, nbytes=4) at ../sysdeps/unix/sysv/linux/read.c:26
+#2  0xb7dd9437 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#3  0xb7dddacd in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#4  0xb7dd7908 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#5  0xb7892316 in start_thread (arg=0xb756cb40) at pthread_create.c:465
+#6  0xb7a2a296 in clone () at ../sysdeps/unix/sysv/linux/i386/clone.S:108
+
+Thread 2 (Thread 0xb75edb40 (LWP 3677)):
+#0  0xb7fd7cf9 in __kernel_vsyscall ()
+#1  0xb7898910 in futex_wait_cancelable (private=<optimized out>, expected=0, futex_word=0x65fc8c)
+    at ../sysdeps/unix/sysv/linux/futex-internal.h:88
+#2  __pthread_cond_wait_common (abstime=0x0, mutex=0x65fc48, cond=0x65fc64) at pthread_cond_wait.c:502
+#3  __pthread_cond_wait (cond=0x65fc64, mutex=0x65fc48) at pthread_cond_wait.c:655
+#4  0xb7dd895a in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#5  0xb7dcaf69 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#6  0xb7dd7908 in ?? () from /usr/lib/i386-linux-gnu/libjack.so.0
+#7  0xb7892316 in start_thread (arg=0xb75edb40) at pthread_create.c:465
+#8  0xb7a2a296 in clone () at ../sysdeps/unix/sysv/linux/i386/clone.S:108
+
+Thread 1 (Thread 0xb75f0dc0 (LWP 3673)):
+#0  0xb74e4200 in ?? ()
+#1  0xb0341c88 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#2  0xb034221f in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#3  0xb0256249 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#4  0xb024f110 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#5  0xb024f607 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#6  0xb047d9bb in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#7  0xb0293f94 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#8  0xb047f475 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#9  0xb0299638 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#10 0xb047370e in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#11 0xb0475457 in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#12 0xb0213c1b in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#13 0xb02147ad in ?? () from /usr/lib/i386-linux-gnu/dri/r300_dri.so
+#14 0xb74987a8 in ?? () from /usr/lib/i386-linux-gnu/libGLX_mesa.so.0
+#15 0xb7498c0c in ?? () from /usr/lib/i386-linux-gnu/libGLX_mesa.so.0
+#16 0xb746d7b9 in ?? () from /usr/lib/i386-linux-gnu/libGLX_mesa.so.0
+#17 0x0045320d in puglLeaveContext (view=0x66acd0, flush=true) at src/pugl/pugl_x11.c:225
+#18 0x00453776 in puglDisplay (view=0x66acd0) at src/pugl/pugl_x11.c:379
+#19 0x00453fb7 in puglProcessEvents (view=0x66acd0) at src/pugl/pugl_x11.c:600
+#20 0x004566fd in DGL::Window::PrivateData::idle (this=0x662f50) at src/Window.cpp:639
+#21 0x0045498e in DGL::Window::_idle (this=0xbffff070) at src/Window.cpp:1236
+#22 0x0040f540 in DGL::Application::idle (this=0xbffff064) at src/Application.cpp:37
+#23 0x0040f608 in DGL::Application::exec (this=0xbffff064) at src/Application.cpp:51
+#24 0x0040d7d5 in DISTRHO::UIExporter::exec (this=0xbffff064, cb=0xbffff054) at ../../dpf/distrho/src/DistrhoUIInternal.hpp:343
+#25 0x0040de1e in DISTRHO::PluginJack::PluginJack (this=0xbffff054, client=0x65fd80) at ../../dpf/distrho/src/DistrhoPluginJack.cpp:181
+#26 0x0040be16 in main () at ../../dpf/distrho/src/DistrhoPluginJack.cpp:588
