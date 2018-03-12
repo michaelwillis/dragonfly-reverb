@@ -1,7 +1,7 @@
 /* (Auto-generated binary data file). */
 
 #ifndef BINARY_NOTOSANS_HPP_INCLUDED
-#define BINARY_NOTOSANS_HPP_HPP_INCLUDED
+#define BINARY_NOTOSANS_HPP_INCLUDED
 
 namespace font_notosans
 {
