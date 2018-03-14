@@ -22,6 +22,9 @@
 #include "NotoSans_Regular.ttf.hpp"
 #include <array>
 #include <iostream>
+#include <vector>
+#include <math.h>
+#include <string>
 
 START_NAMESPACE_DISTRHO
 
@@ -511,6 +514,7 @@ void DragonflyReverbUI::onDisplay()
   switch ( int ( currentDisplayMode ) )
     {
     case displayResponse:
+    {
       // print program name
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
@@ -524,6 +528,34 @@ void DragonflyReverbUI::onDisplay()
       fNanoText.textBox ( rectDisplay.getX() +5, rectDisplay.getY() +5, 200.0f , presets[currentProgram].name, nullptr );
       fNanoText.endFrame();
       // draw graph
+
+//        double mid_decay = double(fKnobSize->getValue() / 20.0);
+//        double low_decay = mid_decay * fKnobLow_mult->getValue();
+//        double high_decay = mid_decay * fKnobHigh_mult->getValue();
+      
+      int freq[] = {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
+      std::string freqStrings[]  = {"20", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
+      
+      fNanoText.beginFrame ( this );
+      fNanoText.fontFaceId ( fNanoFont );
+      fNanoText.fontSize ( 16 );
+      fNanoText.textAlign ( NanoVG::ALIGN_LEFT |NanoVG::ALIGN_MIDDLE );
+      r = 230.0f / 256;
+      g = 230.0f / 256;
+      b = 230.0f / 256;
+      fNanoText.fillColor ( Color ( r, g, b ) );
+      
+      float pixel_width = rectDisplay.getWidth()-40;
+      int y = rectDisplay.getHeight()+rectDisplay.getY()-5;
+      int offset_x =  (int) (pixel_width * logf( 20.0 / 20.0) / logf (1000.0));
+      for ( int i = 0 ; i <  10; i++)
+      {
+	int x = (int) (pixel_width * logf( freq[i] / 20.0) / logf (1000.0));
+	fNanoText.textBox ( rectDisplay.getX() + 10 + x - offset_x, y , 50.0f , freqStrings[i].c_str(), nullptr );
+      }
+        fNanoText.endFrame();
+     
+
       // TODO draw graph
 
       // draw tabs
@@ -532,6 +564,7 @@ void DragonflyReverbUI::onDisplay()
       fImgTabOff.drawAt ( 405,85 );
       fImgTabOff.drawAt ( 495,85 );
       break;
+    }
 
     case displayPrograms:
     {
