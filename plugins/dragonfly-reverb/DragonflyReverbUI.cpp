@@ -43,7 +43,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 
 {
   // text
-  fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false);
+  fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -326,9 +326,10 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
   fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
-   for (uint32_t i = 0; i < paramCount; i++) {
-     setParameterValue(i, preset[i]);
-}
+  for ( uint32_t i = 0; i < paramCount; i++ )
+    {
+      setParameterValue ( i, preset[i] );
+    }
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
@@ -355,7 +356,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
                   if ( rectPrograms[i].contains ( ev.pos ) )
                     {
                       currentProgram = i;
-		      
+
                       programLoaded ( currentProgram );
                       repaint();
                     } // end if
@@ -493,24 +494,24 @@ void DragonflyReverbUI::onDisplay()
   float dry = ( float ( fSliderDry_level->getValue() ) / 100 ) * 271;
   float early = ( float ( fSliderEarly_level->getValue() ) / 100 ) * 271;
   float late = ( float ( fSliderLate_level->getValue() ) / 100 ) * 271;
- 
+
   rectSliders[0].setHeight ( dry + 0.5f );
   rectSliders[0].setY ( 32+271-dry+ 0.5f );
 
   rectSliders[1].setHeight ( early + 0.5f );
-  rectSliders[1].setY ( 32+271-early +0.5);
+  rectSliders[1].setY ( 32+271-early +0.5 );
 
   rectSliders[2].setHeight ( late +0.5f );
   rectSliders[2].setY ( 32+271-late + 0.5f );
 
-  if (int(dry) > 1)
-      rectSliders[0].draw();
-  if (int(early) > 1)
-      rectSliders[1].draw();
-  if (int(late) > 1)
-      rectSliders[2].draw();
-  
- 
+  if ( int ( dry ) > 1 )
+    rectSliders[0].draw();
+  if ( int ( early ) > 1 )
+    rectSliders[1].draw();
+  if ( int ( late ) > 1 )
+    rectSliders[2].draw();
+
+
   switch ( int ( currentDisplayMode ) )
     {
     case displayResponse:
@@ -527,36 +528,50 @@ void DragonflyReverbUI::onDisplay()
       fNanoText.fillColor ( Color ( r, g, b ) );
       fNanoText.textBox ( rectDisplay.getX() +5, rectDisplay.getY() +5, 200.0f , presets[currentProgram].name, nullptr );
       fNanoText.endFrame();
-      // draw graph
+      // print graph labels
 
-//        double mid_decay = double(fKnobSize->getValue() / 20.0);
-//        double low_decay = mid_decay * fKnobLow_mult->getValue();
-//        double high_decay = mid_decay * fKnobHigh_mult->getValue();
-      
-      int freq[] = {20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
-      std::string freqStrings[]  = {"20", "50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
-      
+      int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
+      std::string freqStrings[]  = {"50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
+      float decayTime[] = { 0.1f,0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f };
+      std::string decaTimeString [] { "0.1", "0.2", "0.5", "1", "2", "5", "10" };
+
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 16 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT |NanoVG::ALIGN_MIDDLE );
+      // TODO Decide on colour
       r = 230.0f / 256;
       g = 230.0f / 256;
       b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
-      
-      float pixel_width = rectDisplay.getWidth()-40;
-      int y = rectDisplay.getHeight()+rectDisplay.getY()-5;
-      int offset_x =  (int) (pixel_width * logf( 20.0 / 20.0) / logf (1000.0));
-      for ( int i = 0 ; i <  10; i++)
-      {
-	int x = (int) (pixel_width * logf( freq[i] / 20.0) / logf (1000.0));
-	fNanoText.textBox ( rectDisplay.getX() + 10 + x - offset_x, y , 50.0f , freqStrings[i].c_str(), nullptr );
-      }
-        fNanoText.endFrame();
-     
+
+      float pixel_width = rectDisplay.getWidth() - 20.0f ;
+      float pixel_height = rectDisplay.getHeight() - 40.0f ;
+      std::cout << pixel_height;
+      int y = rectDisplay.getHeight() +rectDisplay.getY()-5;
+      for ( int i = 0 ; i < 9 ; i++ )
+        {
+          int x = ( int ) ( pixel_width * logf ( freq[i] / 50.0f ) / logf ( 20000.0f / 50.0f ) );
+          fNanoText.textBox ( rectDisplay.getX() + x , y , 50.0f , freqStrings[i].c_str(), nullptr );
+        }
+
+      for ( int i = 0 ; i < 7 ; i++ )
+        {
+          int y = ( int ) ( pixel_height * logf ( decayTime[i] / 0.1f ) / logf ( 10.0f / 0.1f ) );
+          std::cout << y << std::endl;
+          fNanoText.textBox ( rectDisplay.getX(), rectDisplay.getY() +rectDisplay.getHeight()-y-20.0f , 50.0f , decaTimeString[i].c_str(), nullptr );
+        }
+
+
+      fNanoText.endFrame();
+
 
       // TODO draw graph
+
+//       double mid_decay = double ( fKnobSize->getValue() / 20.0 );
+//       double low_decay = mid_decay * fKnobLow_mult->getValue();
+//       double high_decay = mid_decay * fKnobHigh_mult->getValue();
+
 
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f ); // reset colour
