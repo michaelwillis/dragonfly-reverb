@@ -62,7 +62,7 @@ private:
     Image fImgBackground,fImgTabOff,fImgTabOn;
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
-
+    
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
