@@ -40,7 +40,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGR ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR )
- 
+
 
 {
   // text
@@ -534,7 +534,7 @@ void DragonflyReverbUI::onDisplay()
       int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
       std::string freqStrings[]  = {"50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
       float decayTime[] = { 0.1f,0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f };
-      std::string decaTimeString [] { "0.1", "0.2", "0.5", "1", "2", "5", "10" };
+      std::string decaTimeString [] = { "0.1", "0.2", "0.5", "1", "2", "5", "10" };
 
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
