@@ -15,6 +15,8 @@
  * For a full copy of the GNU General Public License see the LICENSE file.
  */
 
+#include <cstdint>
+
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
 
@@ -35,7 +37,7 @@
 enum Parameters
 {
     paramDry_level = 0,
-    paramEarly_level, 
+    paramEarly_level,
     paramLate_level,
     paramSize,
     paramPredelay,
@@ -51,11 +53,35 @@ enum Parameters
 
 typedef struct {
   const char *name;
+  const char *symbol;
+  float range_min;
+  float range_max;
+  const char *unit;
+} Param;
+
+static Param params[paramCount] = {
+  {"Dry Level",       "dry_level",    0.0f,   100.0f,   "%"},
+  {"Early Level",     "early_level",  0.0f,   100.0f,   "%"},
+  {"Late Level",      "late_level",   0.0f,   100.0f,   "%"},
+  {"Size",            "size",         8.0f,   100.0f,   "m"},
+  {"Predelay",        "delay",        0.0f,   100.0f,  "ms"},
+  {"Diffuse",         "diffuse",      0.0f,   100.0f,   "%"},
+  {"Low Cut",         "low_cut",      0.0f,   100.0f,  "Hz"},
+  {"Low Crossover",   "low_xo",     100.0f,  1000.0f,  "Hz"},
+  {"Low Decay Mult",  "low_mult",     0.1f,     4.0f,   "X"},
+  {"High Cut",        "high_cut",  2000.0f, 20000.0f,  "Hz"},
+  {"High Crossover",  "high_xo",   1000.0f, 20000.0f,  "Hz"},
+  {"High Decay Mult", "high_mult",    0.1f,     2.0f,   "X"}
+};
+
+typedef struct {
+  const char *name;
   const float params[paramCount];
 } Preset;
 
+#define NUM_PRESETS 24
 
-static Preset presets[24] = {
+static Preset presets[NUM_PRESETS] = {
                              // dry, e_lev, l_lev, size, delay, diffuse, low_cut, low_xo, low_mult, high_cut, high_xo, high_mult
   {"Bright Room",            { 80.0,  10.0,  10.0,  8.0,   4.0,    90.0,     4.0,    500,     0.80,    20000,    8000,   0.75 }},
   {"Clear Room",             { 80.0,  10.0,  10.0,  8.0,   4.0,    90.0,     4.0,    500,     0.90,    16000,    6000,   0.50 }},
@@ -64,22 +90,25 @@ static Preset presets[24] = {
   {"Electric Studio",        { 85.0,   5.0,  10.0, 12.0,   6.0,    45.0,     4.0,    250,     1.25,     7500,    6000,   0.70 }},
   {"Percussion Studio",      { 90.0,   0.0,  10.0, 12.0,   6.0,    20.0,    20.0,    200,     1.75,     6000,    5000,   0.45 }},
   {"Vocal Studio",           { 90.0,   0.0,  10.0, 12.0,   0.0,    60.0,     4.0,    400,     1.20,     6000,    5000,   0.40 }},
-  {"Small Chamber",          { 75.0,  10.0,  15.0, 16.0,   8.0,    70.0,     4.0,    500,     1.10,     8000,    5500,   0.35 }},
-  {"Large Chamber",          { 75.0,  10.0,  15.0, 20.0,   8.0,    90.0,     4.0,    500,     1.30,     7000,    5000,   0.25 }},
-  {"Small Bright Hall",      { 75.0,  10.0,  15.0, 24.0,  12.0,    90.0,     4.0,    400,     1.10,    12000,    6000,   0.75 }},
-  {"Small Clear Hall",       { 75.0,  10.0,  15.0, 20.0,   4.0,    90.0,     4.0,    500,     1.30,     7500,    5500,   0.50 }},
-  {"Small Dark Hall",        { 75.0,  10.0,  15.0, 24.0,  12.0,    60.0,     4.0,    500,     1.50,     6000,    4000,   0.35 }},
+  {"Small Chamber",          { 80.0,  10.0,  15.0, 16.0,   8.0,    70.0,     4.0,    500,     1.10,     8000,    5500,   0.35 }},
+  {"Large Chamber",          { 80.0,  10.0,  15.0, 20.0,   8.0,    90.0,     4.0,    500,     1.30,     7000,    5000,   0.25 }},
+  {"Small Bright Hall",      { 80.0,  10.0,  15.0, 24.0,  12.0,    90.0,     4.0,    400,     1.10,    12000,    6000,   0.75 }},
+  {"Small Clear Hall",       { 80.0,  10.0,  15.0, 20.0,   4.0,    90.0,     4.0,    500,     1.30,     7500,    5500,   0.50 }},
+  {"Small Dark Hall",        { 80.0,  10.0,  15.0, 24.0,  12.0,    60.0,     4.0,    500,     1.50,     6000,    4000,   0.35 }},
   {"Small Percussion Hall",  { 85.0,   0.0,  15.0, 24.0,  12.0,    30.0,    20.0,    250,     2.00,     5000,    4000,   0.35 }},
   {"Small Vocal Hall",       { 85.0,   0.0,  15.0, 20.0,   4.0,    60.0,     4.0,    500,     1.25,     6000,    5000,   0.35 }},
-  {"Medium Bright Hall",     { 75.0,   5.0,  20.0, 36.0,  18.0,    90.0,     4.0,    400,     1.25,    10000,    6000,   0.60 }},
-  {"Medium Clear Hall",      { 75.0,   5.0,  20.0, 30.0,   8.0,    90.0,     4.0,    500,     1.50,     7500,    5500,   0.50 }},
-  {"Medium Dark Hall",       { 75.0,   5.0,  20.0, 36.0,  18.0,    60.0,     4.0,    500,     1.75,     6000,    4000,   0.40 }},
+  {"Medium Bright Hall",     { 80.0,   5.0,  20.0, 36.0,  18.0,    90.0,     4.0,    400,     1.25,    10000,    6000,   0.60 }},
+  {"Medium Clear Hall",      { 80.0,   5.0,  20.0, 30.0,   8.0,    90.0,     4.0,    500,     1.50,     7500,    5500,   0.50 }},
+  {"Medium Dark Hall",       { 80.0,   5.0,  20.0, 36.0,  18.0,    60.0,     4.0,    500,     1.75,     6000,    4000,   0.40 }},
   {"Medium Vocal Hall",      { 80.0,   0.0,  20.0, 30.0,   8.0,    75.0,     4.0,    600,     1.50,     6000,    5000,   0.40 }},
   {"Large Bright Hall",      { 75.0,   0.0,  25.0, 48.0,  20.0,    90.0,     4.0,    400,     1.50,     8000,    6000,   0.50 }},
   {"Large Clear Hall",       { 75.0,   0.0,  25.0, 40.0,  12.0,    80.0,     4.0,    550,     2.00,     8000,    5000,   0.40 }},
   {"Large Dark Hall",        { 75.0,   0.0,  25.0, 48.0,  20.0,    60.0,     4.0,    600,     2.50,     6000,    3200,   0.20 }},
   {"Large Vocal Hall",       { 75.0,   0.0,  25.0, 40.0,  12.0,    80.0,     4.0,    700,     2.25,     6000,    4500,   0.30 }},
-  {"Great Hall",             { 70.0,   0.0,  30.0, 60.0,  20.0,    95.0,     4.0,    750,     3.00,     5500,    4000,   0.30 }},
-  {"Cathedral",              { 70.0,   0.0,  30.0, 72.0,  24.0,    90.0,     4.0,    850,     2.25,     6000,    3200,   0.30 }}
+  {"Great Hall",             { 70.0,   0.0,  30.0, 70.0,  20.0,    95.0,     4.0,    750,     3.00,     5500,    4000,   0.30 }},
+  {"Cathedral",              { 70.0,   0.0,  30.0, 80.0,  24.0,    90.0,     4.0,    850,     2.25,     6000,    3200,   0.30 }}
 };
+
+const uint32_t defaultPreset = 15; // Medium Clear Hall
+
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

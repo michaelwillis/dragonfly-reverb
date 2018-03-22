@@ -13,17 +13,24 @@ NAME = DragonflyReverb
 # Files to build
 
 OBJS_DSP = \
-	DragonflyReverbPlugin.cpp.o
-	
+	DragonflyReverbPlugin.cpp.o \
+	DragonflyReverbDSP.cpp.o
+
 OBJS_UI  = \
 	DragonflyReverbUI.cpp.o \
 	DragonflyReverbArtwork.cpp.o \
-	NotoSans_Regular.ttf.cpp.o
+	NotoSans_Regular.ttf.cpp.o \
+	DragonflyReverbDSP.cpp.o
 
 # --------------------------------------------------------------
 # Do some magic
 
 include ../Makefile.mk
+
+# --------------------------------------------------------------
+# Link dependencies
+
+LINK_OPTS += -lfftw3 -lm
 
 # --------------------------------------------------------------
 # Enable all possible plugin types

@@ -16,6 +16,7 @@
  */
 
 #include "DistrhoPlugin.hpp"
+#include "DragonflyReverbDSP.hpp"
 #include "freeverb/earlyref.hpp"
 #include "freeverb/zrev2.hpp"
 
@@ -59,7 +60,7 @@ protected:
 
     uint32_t getVersion() const noexcept override
     {
-        return d_version(0, 0, 3);
+        return d_version(0, 0, 4);
     }
 
     int64_t getUniqueId() const noexcept override
@@ -94,28 +95,8 @@ protected:
     // -------------------------------------------------------------------
 
 private:
-
-    static const uint32_t BUFFER_SIZE = 256;
-
-    float oldParams[paramCount];
-    float newParams[paramCount];
-
-    float dry_level;
-    float early_level;
-    float early_send;
-    float late_level;
-
-    fv3::earlyref_f early;
-    fv3::zrev2_f late;
-
-    float early_out_buffer[2][BUFFER_SIZE];
-    float late_in_buffer[2][BUFFER_SIZE];
-    float late_out_buffer[2][BUFFER_SIZE];
-
- 
+    DragonflyReverbDSP dsp;
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };
-
-// -----------------------------------------------------------------------
 
 END_NAMESPACE_DISTRHO
