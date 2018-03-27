@@ -21,6 +21,7 @@
 #include "ImageWidgets.hpp"
 #include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
+#include "Spectrogram.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -62,10 +63,13 @@ private:
     Image fImgBackground,fImgTabOff,fImgTabOn;
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
-    
+
     ScopedPointer<ImageKnob> fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
+    ScopedPointer<Spectrogram> spectrogram;
+    ScopedPointer<Image> spectrogramImage;
+
     int currentProgram = 0;
 
     enum displayMode {

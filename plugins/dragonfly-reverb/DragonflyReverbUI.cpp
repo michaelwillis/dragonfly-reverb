@@ -40,8 +40,6 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGR ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR )
-
-
 {
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
@@ -183,6 +181,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos ( 285,110 );
   rectDisplay.setSize ( 450,210 );
 
+  spectrogram = new Spectrogram(rectDisplay.getWidth() - 20, rectDisplay.getHeight() - 40);
   // rectangles for programs
 
   for ( int i = 0; i < 3; ++i ) // 3 columns
@@ -293,6 +292,7 @@ void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
   int KnobID = knob->getId();
 
   setParameterValue ( KnobID,value );
+  spectrogram->update();
 }
 
 void  DragonflyReverbUI::imageSliderDragStarted ( ImageSlider* slider )
@@ -327,10 +327,11 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
   fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
-  for ( uint32_t i = 0; i < paramCount; i++ )
-    {
-      setParameterValue ( i, preset[i] );
-    }
+  for ( uint32_t i = 0; i < paramCount; i++ ) {
+    setParameterValue ( i, preset[i] );
+  }
+
+  spectrogram->update();
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
@@ -513,8 +514,7 @@ void DragonflyReverbUI::onDisplay()
     rectSliders[2].draw();
 
 
-  switch ( int ( currentDisplayMode ) )
-    {
+  switch ( int ( currentDisplayMode ) ) {
     case displayResponse:
     {
       // print program name
@@ -563,22 +563,18 @@ void DragonflyReverbUI::onDisplay()
           fNanoText.textBox ( rectDisplay.getX(), rectDisplay.getY() +rectDisplay.getHeight()-y-20.0f , 50.0f , decaTimeString[i].c_str(), nullptr );
         }
 
-
       fNanoText.endFrame();
-
-
-      // TODO draw graph
-
-//       double mid_decay = double ( fKnobSize->getValue() / 20.0 );
-//       double low_decay = mid_decay * fKnobLow_mult->getValue();
-//       double high_decay = mid_decay * fKnobHigh_mult->getValue();
-
 
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f ); // reset colour
+
       fImgTabOn.drawAt ( 315,85 );
       fImgTabOff.drawAt ( 405,85 );
       fImgTabOff.drawAt ( 495,85 );
+
+      // draw spectrogram
+      spectrogram->drawAt (rectDisplay.getX() + 20, rectDisplay.getY() + 20);
+
       break;
     }
 
@@ -653,7 +649,7 @@ void DragonflyReverbUI::onDisplay()
       break;
     }
 
-    } // end switch
+  } // end switch
 
   // draw labels on tabs
   fNanoText.beginFrame ( this );

@@ -20,7 +20,8 @@ OBJS_UI  = \
 	DragonflyReverbUI.cpp.o \
 	DragonflyReverbArtwork.cpp.o \
 	NotoSans_Regular.ttf.cpp.o \
-	DragonflyReverbDSP.cpp.o
+	DragonflyReverbDSP.cpp.o \
+	Spectrogram.cpp.o
 
 # --------------------------------------------------------------
 # Do some magic
