@@ -19,9 +19,9 @@
 #include "DistrhoPluginInfo.h"
 #include "DragonflyReverbDSP.hpp"
 
-DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate, bool muteOnChange) {
+DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
-  early.setMuteOnChange(muteOnChange);
+  early.setMuteOnChange(false);
   early.setdryr(0); // mute dry signal
   early.setwet(0); // 0dB
   early.setwidth(0.8);
@@ -31,7 +31,7 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate, bool muteOnChange) {
   early.setSampleRate(sampleRate);
   early_send = 0.20;
 
-  late.setMuteOnChange(muteOnChange);
+  late.setMuteOnChange(false);
   late.setwet(0); // 0dB
   late.setdryr(0); // mute dry signal
   late.setwidth(1.0);
@@ -122,4 +122,9 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 void DragonflyReverbDSP::sampleRateChanged(double newSampleRate) {
     early.setSampleRate(newSampleRate);
     late.setSampleRate(newSampleRate);
+}
+
+void DragonflyReverbDSP::mute() {
+  early.mute();
+  late.mute();
 }

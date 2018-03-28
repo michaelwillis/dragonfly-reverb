@@ -31,7 +31,7 @@ include ../Makefile.mk
 # --------------------------------------------------------------
 # Link dependencies
 
-LINK_OPTS += -lfftw3 -lm
+LINK_OPTS += -lfftw3f -lm
 
 # --------------------------------------------------------------
 # Enable all possible plugin types

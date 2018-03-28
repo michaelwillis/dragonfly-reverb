@@ -26,7 +26,8 @@
 #include <fftw3.h>
 
 #define SPECTROGRAM_SAMPLE_RATE 48000
-#define SPECTROGRAM_WINDOW_SIZE 4096
+#define SPECTROGRAM_WINDOW_SIZE 4800
+#define SPECTROGRAM_MAX_SECONDS 20
 
 class Spectrogram : public Thread {
   public:
@@ -45,9 +46,14 @@ class Spectrogram : public Thread {
     Image * image;
     uint32_t width, height;
 
-    // float         *fftw_in  = (float*)         fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(float));
-    // fftwf_complex *fftw_out = (fftwf_complex*) fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(fftwf_complex));
-    // fftwf_plan p = fftwf_plan_dft_r2c_1d(SPECTROGRAM_WINDOW_SIZE, fftw_in, fftw_out, FFTW_ESTIMATE);
+    float ** white_noise;
+    float ** no_noise;
+    float ** dsp_result;
+    float window_multiplier[SPECTROGRAM_WINDOW_SIZE];
+
+    float         *fftw_in  = (float*)         fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(float));
+    fftwf_complex *fftw_out = (fftwf_complex*) fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(fftwf_complex));
+    fftwf_plan    fftw_plan = fftwf_plan_dft_r2c_1d(SPECTROGRAM_WINDOW_SIZE, fftw_in, fftw_out, FFTW_ESTIMATE);
 };
 
 #endif

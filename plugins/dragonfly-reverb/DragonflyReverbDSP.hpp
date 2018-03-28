@@ -23,11 +23,12 @@
 
 class DragonflyReverbDSP {
 public:
-  DragonflyReverbDSP(double sampleRate, bool muteOnChange);
+  DragonflyReverbDSP(double sampleRate);
   float getParameterValue(uint32_t index) const;
   void  setParameterValue(uint32_t index, float value);
   void run(const float** inputs, float** outputs, uint32_t frames);
   void sampleRateChanged(double newSampleRate);
+  void mute();
 
 private:
   float oldParams[paramCount];

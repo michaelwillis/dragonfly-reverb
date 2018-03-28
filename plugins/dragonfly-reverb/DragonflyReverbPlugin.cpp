@@ -22,7 +22,7 @@
 
 START_NAMESPACE_DISTRHO
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS, 0), dsp(getSampleRate(), false) {
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS, 0), dsp(getSampleRate()) {
   loadProgram(defaultPreset);
 }
 
