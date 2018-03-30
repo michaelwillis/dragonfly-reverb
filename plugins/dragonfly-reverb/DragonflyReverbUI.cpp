@@ -181,7 +181,9 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos ( 285,110 );
   rectDisplay.setSize ( 450,210 );
 
-  spectrogram = new Spectrogram(rectDisplay.getWidth() - 20, rectDisplay.getHeight() - 40);
+  spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
+  spectrogram->setAbsolutePos (285, 110);
+
   // rectangles for programs
 
   for ( int i = 0; i < 3; ++i ) // 3 columns
@@ -292,6 +294,7 @@ void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
   int KnobID = knob->getId();
 
   setParameterValue ( KnobID,value );
+  spectrogram->setParameterValue ( KnobID, value );
   spectrogram->update();
 }
 
@@ -309,6 +312,8 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 {
   int SliderID = slider->getId();
   setParameterValue ( SliderID,value );
+  spectrogram->setParameterValue ( SliderID, value );
+  spectrogram->update();
 }
 
 void DragonflyReverbUI::programLoaded ( uint32_t index )
@@ -329,6 +334,7 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
   for ( uint32_t i = 0; i < paramCount; i++ ) {
     setParameterValue ( i, preset[i] );
+    spectrogram->setParameterValue(i, preset[i]);
   }
 
   spectrogram->update();
@@ -517,6 +523,8 @@ void DragonflyReverbUI::onDisplay()
   switch ( int ( currentDisplayMode ) ) {
     case displayResponse:
     {
+      spectrogram->setVisible(true);
+
       // print program name
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
@@ -529,41 +537,6 @@ void DragonflyReverbUI::onDisplay()
       fNanoText.fillColor ( Color ( r, g, b ) );
       fNanoText.textBox ( rectDisplay.getX() +5, rectDisplay.getY() +5, 200.0f , presets[currentProgram].name, nullptr );
       fNanoText.endFrame();
-      // print graph labels
-
-      int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
-      std::string freqStrings[]  = {"50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
-      float decayTime[] = { 0.1f,0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f };
-      std::string decaTimeString [] = { "0.1", "0.2", "0.5", "1", "2", "5", "10" };
-
-      fNanoText.beginFrame ( this );
-      fNanoText.fontFaceId ( fNanoFont );
-      fNanoText.fontSize ( 16 );
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT |NanoVG::ALIGN_MIDDLE );
-      // TODO Decide on colour
-      r = 230.0f / 256;
-      g = 230.0f / 256;
-      b = 230.0f / 256;
-      fNanoText.fillColor ( Color ( r, g, b ) );
-
-      float pixel_width = rectDisplay.getWidth() - 20.0f ;
-      float pixel_height = rectDisplay.getHeight() - 40.0f ;
-      std::cout << pixel_height;
-      int y = rectDisplay.getHeight() +rectDisplay.getY()-5;
-      for ( int i = 0 ; i < 9 ; i++ )
-        {
-          int x = ( int ) ( pixel_width * logf ( freq[i] / 50.0f ) / logf ( 20000.0f / 50.0f ) );
-          fNanoText.textBox ( rectDisplay.getX() + x , y , 50.0f , freqStrings[i].c_str(), nullptr );
-        }
-
-      for ( int i = 0 ; i < 7 ; i++ )
-        {
-          int y = ( int ) ( pixel_height * logf ( decayTime[i] / 0.1f ) / logf ( 10.0f / 0.1f ) );
-          std::cout << y << std::endl;
-          fNanoText.textBox ( rectDisplay.getX(), rectDisplay.getY() +rectDisplay.getHeight()-y-20.0f , 50.0f , decaTimeString[i].c_str(), nullptr );
-        }
-
-      fNanoText.endFrame();
 
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f ); // reset colour
@@ -572,14 +545,12 @@ void DragonflyReverbUI::onDisplay()
       fImgTabOff.drawAt ( 405,85 );
       fImgTabOff.drawAt ( 495,85 );
 
-      // draw spectrogram
-      spectrogram->drawAt (rectDisplay.getX() + 20, rectDisplay.getY() + 20);
-
       break;
     }
 
     case displayPrograms:
     {
+      spectrogram->setVisible(false);
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 18 );
@@ -624,6 +595,7 @@ void DragonflyReverbUI::onDisplay()
     }
     case displayAbout:
     {
+      spectrogram->setVisible(false);
       fNanoText.beginFrame ( this );
       fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 24 );

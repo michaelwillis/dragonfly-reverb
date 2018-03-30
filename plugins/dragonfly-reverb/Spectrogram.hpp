@@ -21,30 +21,33 @@
 #include "DistrhoPluginInfo.h"
 #include "DragonflyReverbDSP.hpp"
 #include "ImageWidgets.hpp"
+#include "NanoVG.hpp"
 #include "extra/Thread.hpp"
 #include "extra/Mutex.hpp"
 #include <fftw3.h>
 
 #define SPECTROGRAM_SAMPLE_RATE 48000
 #define SPECTROGRAM_WINDOW_SIZE 4800
-#define SPECTROGRAM_MAX_SECONDS 20
+#define SPECTROGRAM_MAX_SECONDS 10
 
-class Spectrogram : public Thread {
+class Spectrogram : public Thread, public Widget {
   public:
-    Spectrogram(uint32_t width, uint32_t height);
+    Spectrogram(Widget* widget, NanoVG * fNanoText, Rectangle<int> * rect);
     ~Spectrogram();
 
     void run();
     void update();
 
-    void drawAt(uint32_t x, uint32_t y);
+    void setParameterValue(uint32_t i, float v);
+    void onDisplay();
 
   private:
     DragonflyReverbDSP dsp;
     Signal signal;
     char * raster;
     Image * image;
-    uint32_t width, height;
+
+    NanoVG * fNanoText;
 
     float ** white_noise;
     float ** no_noise;
