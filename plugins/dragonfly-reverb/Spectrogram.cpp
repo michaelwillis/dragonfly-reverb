@@ -33,18 +33,22 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
   // setHeight(height);
   this->fNanoText = fNanoText;
 
-  raster = new char[getWidth() * getHeight() * 4];
-  image = new Image(raster, getWidth(), getHeight(), GL_BGRA);
+  int imageWidth = getWidth() - MARGIN * 2;
+  int imageHeight = getHeight() - MARGIN * 2;
 
-  srand(time(NULL));
+  raster = new char[imageWidth * imageHeight * 4];
 
   // fill with transparent white
-  for (uint32_t pixel = 0; pixel < getWidth() * getHeight(); pixel++) {
+  for (uint32_t pixel = 0; pixel < imageWidth * imageHeight; pixel++) {
     raster[pixel * 4]     = (char) 255;
     raster[pixel * 4 + 1] = (char) 255;
     raster[pixel * 4 + 2] = (char) 255;
     raster[pixel * 4 + 3] = (char) 0;
   }
+
+  image = new Image(raster, imageWidth, imageHeight, GL_BGRA);
+
+  srand(time(NULL));
 
   white_noise = new float*[2];
   white_noise[0] = new float[SPECTROGRAM_WINDOW_SIZE];
@@ -69,24 +73,6 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
     // Hann window function, per https://en.wikipedia.org/wiki/Hann_function
     window_multiplier[i] = pow(sin((M_PI * i) / (SPECTROGRAM_WINDOW_SIZE - 1)), 2);
   }
-
-  std::cout << "White noise! "
-       << white_noise[0][0] << ", "
-       << white_noise[0][1] << ", "
-       << white_noise[0][2] << ", "
-       << white_noise[0][3] << ", "
-       << white_noise[0][4] << ", "
-       << white_noise[0][5] << ", "
-       << white_noise[0][6] << ", "
-       << white_noise[0][7] << ", "
-       << white_noise[0][8] << ", "
-       << white_noise[0][9] << ", "
-       << white_noise[0][10];
-
-  std::cout << "Window mult! "
-       << window_multiplier[0] << ", "
-       << window_multiplier[2000] << ", "
-       << window_multiplier[4000];
 
   for (uint32_t i = 0; i < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS; i++) {
     no_noise[0][i] = 0.0f;
@@ -116,9 +102,7 @@ Spectrogram::~Spectrogram() {
 
 void Spectrogram::run() {
   while(!shouldThreadExit()) {
-    std::cout << "Waiting for signal!";
     signal.wait();
-    std::cout << "Got signal!";
 
     dsp.mute();
 
@@ -145,7 +129,7 @@ void Spectrogram::run() {
       fftwf_execute(fftw_plan);
 
       // TOTAL HACK NEED TO BE REPLACED
-      for (uint32_t y = 0; y < getHeight(); y++) {
+      for (uint32_t y = 0; y < image->getHeight(); y++) {
           float val = fftw_out[y * 12][0];
           if (val < 0.0) val = 0.0 - val;
           if (val > 1.0) val = 1.0;
@@ -153,7 +137,7 @@ void Spectrogram::run() {
           char alpha = (char)(val * 200.0f);
 
           // char alpha = (char)((fftw_out[i * 20][0]) * 20.0f);
-          uint32_t pixel = (getHeight() - y) * getWidth() + (offset * 4) / SPECTROGRAM_WINDOW_SIZE;
+          uint32_t pixel = (image->getHeight() - y) * image->getWidth() + (offset * 4) / SPECTROGRAM_WINDOW_SIZE;
 
           raster[pixel * 4 + 3] = alpha;
           raster[pixel * 4 + 7] = alpha;
@@ -164,9 +148,7 @@ void Spectrogram::run() {
 
     t3 = clock();
 
-    std::cout << "Timestamps: " << t1 << ", " << t2 << ", " << t3 << "\n";
-
-    image->loadFromMemory(raster, getWidth(), getHeight(), GL_BGRA);
+    image->loadFromMemory(raster, image->getWidth(), image->getHeight(), GL_BGRA);
   }
 }
 
@@ -175,7 +157,7 @@ void Spectrogram::update() {
 }
 
 void Spectrogram::onDisplay() {
-  image->draw();
+  image->drawAt(MARGIN, MARGIN);
 /*
   int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
   std::string freqStrings[]  = {"50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
