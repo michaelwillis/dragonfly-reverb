@@ -23,8 +23,8 @@
 #include<time.h>
 
 Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * rect) :
-        Widget(widget->getParentWindow()),
         Thread("Spectrogram"),
+        Widget(widget->getParentWindow()),
         dsp(SPECTROGRAM_SAMPLE_RATE) {
   setWidth(rect->getWidth());
   setHeight(rect->getHeight());
@@ -48,45 +48,39 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
 
   srand(time(NULL));
 
-  white_noise = new float*[2];
-  white_noise[0] = new float[SPECTROGRAM_WINDOW_SIZE];
-  white_noise[1] = new float[SPECTROGRAM_WINDOW_SIZE];
+  dsp_input = new float*[2];
+  dsp_input[0] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
+  dsp_input[1] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
 
-  no_noise = new float*[2];
-  no_noise[0] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS];
-  no_noise[1] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS];
-
-  dsp_result = new float*[2];
-  dsp_result[0] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS];
-  dsp_result[1] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS];
+  dsp_output = new float*[2];
+  dsp_output[0] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
+  dsp_output[1] = new float[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
 
   for (uint32_t i = 0; i < SPECTROGRAM_WINDOW_SIZE; i++) {
-    // Random stereo white noise from -1.0 to 1.0
-    white_noise[0][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
-    white_noise[1][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
+    // Fill one window's time of the input buffer with white noise
+    dsp_input[0][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
+    dsp_input[1][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
 
     // Hann window function, per https://en.wikipedia.org/wiki/Hann_function
     window_multiplier[i] = pow(sin((M_PI * i) / (SPECTROGRAM_WINDOW_SIZE - 1)), 2);
   }
 
-  for (uint32_t i = 0; i < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS; i++) {
-    no_noise[0][i] = 0.0f;
-    no_noise[1][i] = 0.0f;
+  for (uint32_t i = SPECTROGRAM_WINDOW_SIZE; i < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE; i++) {
+    // Fill the rest of the input buffer with silence
+    dsp_input[0][i] = 0;
+    dsp_input[1][i] = 0;
   }
 
   startThread();
 }
 
 Spectrogram::~Spectrogram() {
-  delete[] white_noise[0];
-  delete[] white_noise[1];
-  delete[] white_noise;
-  delete[] no_noise[0];
-  delete[] no_noise[1];
-  delete[] no_noise;
-  delete[] dsp_result[0];
-  delete[] dsp_result[1];
-  delete[] dsp_result;
+  delete[] dsp_input[0];
+  delete[] dsp_input[1];
+  delete[] dsp_input;
+  delete[] dsp_output[0];
+  delete[] dsp_output[1];
+  delete[] dsp_output;
   delete[] fftw_in;
   delete[] fftw_out;
   delete[] raster;
@@ -101,47 +95,41 @@ void Spectrogram::run() {
 
     dsp.mute();
 
-    clock_t t1, t2, t3;
+    for (uint32_t i = 0; i < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE; i++) {
+      // std::cout << "dsp input " << i << ": " << dsp_input[0][i] << "\n";
+    }
 
-    t1 = clock();
+    dsp.run((const float**)dsp_input, dsp_output, SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE);
 
-    // Run the DSP with one window's worth of white noise.
-    // Output isn't needed, but the function needs a buffer to put it
-    dsp.run((const float**)white_noise, dsp_result, SPECTROGRAM_WINDOW_SIZE);
+    for (uint32_t x = 0; x < image->getWidth(); x++) {
 
-    // Now run the DSP with no sound input and collect the reverb tail.
-    dsp.run((const float**)no_noise, dsp_result, SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS);
+      // Calculate time in seconds, then determine where that is in the dsp_output buffer
+      float time = pow(M_E, (float) x * logf ( 10.0f / 0.1f ) / image->getWidth()) * 0.1f;
+      uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
 
-    t2 = clock();
-
-    for (uint32_t offset = 0; offset < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS; offset += SPECTROGRAM_WINDOW_SIZE) {
-
-      // No window overlap, to keep things simple
+      // std::cout << "X " << x << ", t " << time << ", offset " << sample_offset << "\n";
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
-        fftw_in[window_sample] = dsp_result[0][offset + window_sample] * window_multiplier[window_sample];
+        fftw_in[window_sample] = dsp_output[0][sample_offset + window_sample] * window_multiplier[window_sample];
+        // std::cout << "  dsp output " << (sample_offset + window_sample) << ": " << dsp_output[0][sample_offset + window_sample] << "\n";
       }
 
       fftwf_execute(fftw_plan);
 
-      // TOTAL HACK NEED TO BE REPLACED
       for (uint32_t y = 0; y < image->getHeight(); y++) {
-          float val = fftw_out[y * 12][0];
+          float freq = powf(M_E, (float) y * logf ( 20000.0f / 50.0f ) / (float) image->getHeight()) * 50.0f;
+          int fftw_out_index = freq / (float)(SPECTROGRAM_SAMPLE_RATE / SPECTROGRAM_WINDOW_SIZE) + 1;
+
+          float val = fftw_out[fftw_out_index][0];
           if (val < 0.0) val = 0.0 - val;
-          if (val > 1.0) val = 1.0;
+          if (val > 4.0) val = 4.0;
 
-          char alpha = (char)(val * 200.0f);
+          char alpha = (char)(val * 63.0f);
 
-          // char alpha = (char)((fftw_out[i * 20][0]) * 20.0f);
-          uint32_t pixel = (image->getHeight() - y) * image->getWidth() + (offset * 4) / SPECTROGRAM_WINDOW_SIZE;
+          uint32_t pixel = (image->getHeight() - y) * image->getWidth() + x;
 
           raster[pixel * 4 + 3] = alpha;
-          raster[pixel * 4 + 7] = alpha;
-          raster[pixel * 4 + 11] = alpha;
-          raster[pixel * 4 + 15] = alpha;
       }
     }
-
-    t3 = clock();
 
     image->loadFromMemory(raster, image->getWidth(), image->getHeight(), GL_BGRA);
   }

@@ -27,13 +27,13 @@
 #include <fftw3.h>
 
 #define SPECTROGRAM_SAMPLE_RATE 48000
-#define SPECTROGRAM_WINDOW_SIZE 4800
+#define SPECTROGRAM_WINDOW_SIZE 9600
 #define SPECTROGRAM_MAX_SECONDS 10
 
 #define MARGIN_TOP    20
 #define MARGIN_RIGHT  20
 #define MARGIN_BOTTOM 20
-#define MARGIN_LEFT   40
+#define MARGIN_LEFT   50
 
 class Spectrogram : public Thread, public Widget {
   public:
@@ -54,9 +54,8 @@ class Spectrogram : public Thread, public Widget {
 
     NanoVG * fNanoText;
 
-    float ** white_noise;
-    float ** no_noise;
-    float ** dsp_result;
+    float ** dsp_input;
+    float ** dsp_output;
     float window_multiplier[SPECTROGRAM_WINDOW_SIZE];
 
     float         *fftw_in  = (float*)         fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(float));
