@@ -95,10 +95,6 @@ void Spectrogram::run() {
 
     dsp.mute();
 
-    for (uint32_t i = 0; i < SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE; i++) {
-      // std::cout << "dsp input " << i << ": " << dsp_input[0][i] << "\n";
-    }
-
     dsp.run((const float**)dsp_input, dsp_output, SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE);
 
     for (uint32_t x = 0; x < image->getWidth(); x++) {
@@ -142,8 +138,8 @@ void Spectrogram::update() {
 void Spectrogram::onDisplay() {
   image->drawAt(MARGIN_LEFT, MARGIN_TOP);
 
-  int freq[] = {50, 100, 250, 500, 1000, 2500, 5000, 10000, 20000};
-  std::string freqStrings[]  = {"50Hz", "100Hz", "250Hz", "500Hz", "1kHz", "2.5kHz", "5kHz", "10kHz", "20kHz"};
+  int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
+  std::string freqStrings[]  = {"50Hz", "100Hz", "200Hz", "500Hz", "1kHz", "2kHz", "5kHz", "10kHz", "20kHz"};
   float decayTime[] = { 0.2f, 0.5f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f };
   std::string decayTimeString [] = { "0.2s", "0.5s", "1s", "2s", "3s", "5s", "10s" };
 

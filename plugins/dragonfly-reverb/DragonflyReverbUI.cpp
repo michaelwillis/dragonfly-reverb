@@ -49,7 +49,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobSize->setId ( paramSize );
   fKnobSize->setAbsolutePos ( knobx[1], knoby[0] );
-  fKnobSize->setRange ( 8.0f, 100.0f );
+  fKnobSize->setRange ( params[paramSize].range_min, params[paramSize].range_max );
   fKnobSize->setDefault ( 40.0f );
   fKnobSize->setValue ( 40.0f );
   fKnobSize->setRotationAngle ( 300 );
@@ -59,7 +59,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobPredelay->setId ( paramPredelay );
   fKnobPredelay->setAbsolutePos ( knobx[0], knoby[0] );
-  fKnobPredelay->setRange ( 0.0f, 100.0f );
+  fKnobPredelay->setRange ( params[paramPredelay].range_min, params[paramPredelay].range_max );
   fKnobPredelay->setDefault ( 14.0f );
   fKnobPredelay->setValue ( 14.0f );
   fKnobPredelay->setRotationAngle ( 300 );
@@ -69,7 +69,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobDiffuse->setId ( paramDiffuse );
   fKnobDiffuse->setAbsolutePos ( knobx[2], knoby[0] );
-  fKnobDiffuse->setRange ( 0.00f, 100.0f );
+  fKnobDiffuse->setRange ( params[paramDiffuse].range_min, params[paramDiffuse].range_max );
   fKnobDiffuse->setDefault ( 80.0f );
   fKnobDiffuse->setValue ( 80.0f );
   fKnobDiffuse->setRotationAngle ( 300 );
@@ -79,7 +79,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_cut->setId ( paramLow_cut );
   fKnobLow_cut->setAbsolutePos ( knobx[0], knoby[2] );
-  fKnobLow_cut->setRange ( 0.0f, 100.0f );
+  fKnobLow_cut->setRange ( params[paramLow_cut].range_min, params[paramLow_cut].range_max );
   fKnobLow_cut->setDefault ( 4.0f );
   fKnobLow_cut->setValue ( 4.0f );
   fKnobLow_cut->setRotationAngle ( 300 );
@@ -89,7 +89,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                    Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_xover->setId ( paramLow_xover );
   fKnobLow_xover->setAbsolutePos ( knobx[1], knoby[2] );
-  fKnobLow_xover->setRange ( 100.0f, 1000.0f );
+  fKnobLow_xover->setRange ( params[paramLow_xover].range_min, params[paramLow_xover].range_max );
   fKnobLow_xover->setDefault ( 600.0f );
   fKnobLow_xover->setValue ( 600.0f );
   fKnobLow_xover->setRotationAngle ( 300 );
@@ -99,7 +99,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobLow_mult->setId ( paramLow_mult );
   fKnobLow_mult->setAbsolutePos ( knobx[2], knoby[2] );
-  fKnobLow_mult->setRange ( 0.1f, 4.0f );
+  fKnobLow_mult->setRange ( params[paramLow_mult].range_min, params[paramLow_mult].range_max );
   fKnobLow_mult->setDefault ( 1.5f );
   fKnobLow_mult->setValue ( 1.5f );
   fKnobLow_mult->setRotationAngle ( 300 );
@@ -109,7 +109,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_cut->setId ( paramHigh_cut );
   fKnobHigh_cut->setAbsolutePos ( knobx[0], knoby[1] );
-  fKnobHigh_cut->setRange ( 2000.0f, 20000.0f );
+  fKnobHigh_cut->setRange ( params[paramHigh_cut].range_min, params[paramHigh_cut].range_max );
   fKnobHigh_cut->setDefault ( 7500.0f );
   fKnobHigh_cut->setValue ( 7500.0f );
   fKnobHigh_cut->setRotationAngle ( 300 );
@@ -119,7 +119,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                     Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_xover->setId ( paramHigh_xover );
   fKnobHigh_xover->setAbsolutePos ( knobx[1], knoby[1] );
-  fKnobHigh_xover->setRange ( 1000.0f, 20000.0f );
+  fKnobHigh_xover->setRange ( params[paramHigh_xover].range_min, params[paramHigh_xover].range_max );
   fKnobHigh_xover->setDefault ( 4500.0f );
   fKnobHigh_xover->setValue ( 4500.0f );
   fKnobHigh_xover->setRotationAngle ( 300 );
@@ -129,7 +129,7 @@ DragonflyReverbUI::DragonflyReverbUI()
                                    Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobHigh_mult->setId ( paramHigh_mult );
   fKnobHigh_mult->setAbsolutePos ( knobx[2], knoby[1] );
-  fKnobHigh_mult->setRange ( 0.01f, 2.0f );
+  fKnobHigh_mult->setRange ( params[paramHigh_mult].range_min, params[paramHigh_mult].range_max );
   fKnobHigh_mult->setDefault ( 0.4f );
   fKnobHigh_mult->setValue ( 0.4f );
   fKnobHigh_mult->setRotationAngle ( 300 );
