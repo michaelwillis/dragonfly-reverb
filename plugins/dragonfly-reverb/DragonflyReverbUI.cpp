@@ -43,6 +43,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 {
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
+  fNanoText.fontFaceId ( fNanoFont );
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -54,7 +55,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobSize->setRotationAngle ( 300 );
   fKnobSize->setCallback ( this );
 
-  //
   fKnobPredelay = new ImageKnob ( this,
                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
   fKnobPredelay->setId ( paramPredelay );
@@ -177,7 +177,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectTabAbout.setSize ( Art::tab_onWidth, Art::tab_onHeight );
 
   // rectangles for display
-
   rectDisplay.setPos ( 285,110 );
   rectDisplay.setSize ( 450,210 );
 
@@ -185,7 +184,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   spectrogram->setAbsolutePos (285, 110);
 
   // rectangles for programs
-
   for ( int i = 0; i < 3; ++i ) // 3 columns
     {
       int startx = 290, starty = 115;
@@ -201,8 +199,8 @@ DragonflyReverbUI::DragonflyReverbUI()
           rectPrograms[programIndex].setSize ( width,height );
         }
     }
-  // rectangles for sliders
 
+  // rectangles for sliders
   rectSliders[0].setPos ( 762,32 );
   rectSliders[0].setSize ( 26,271 );
   rectSliders[1].setPos ( 802,32 );
@@ -423,7 +421,6 @@ void DragonflyReverbUI::onDisplay()
 
   // print parameters
   fNanoText.beginFrame ( this );
-  fNanoText.fontFaceId ( fNanoFont );
   fNanoText.fontSize ( 16 );
   fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
@@ -527,7 +524,6 @@ void DragonflyReverbUI::onDisplay()
 
       // print program name
       fNanoText.beginFrame ( this );
-      fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 16 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_MIDDLE );
 
@@ -552,7 +548,6 @@ void DragonflyReverbUI::onDisplay()
     {
       spectrogram->setVisible(false);
       fNanoText.beginFrame ( this );
-      fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 18 );
       fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
@@ -597,7 +592,6 @@ void DragonflyReverbUI::onDisplay()
     {
       spectrogram->setVisible(false);
       fNanoText.beginFrame ( this );
-      fNanoText.fontFaceId ( fNanoFont );
       fNanoText.fontSize ( 24 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
@@ -625,7 +619,6 @@ void DragonflyReverbUI::onDisplay()
 
   // draw labels on tabs
   fNanoText.beginFrame ( this );
-  fNanoText.fontFaceId ( fNanoFont );
   fNanoText.fontSize ( 18 );
   fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
   r = 205.0f / 256;

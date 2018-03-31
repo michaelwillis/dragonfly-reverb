@@ -29,17 +29,15 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
   setWidth(rect->getWidth());
   setHeight(rect->getHeight());
   setAbsolutePos(rect->getPos());
-  // setWidth(width);
-  // setHeight(height);
   this->fNanoText = fNanoText;
 
-  int imageWidth = getWidth() - MARGIN * 2;
-  int imageHeight = getHeight() - MARGIN * 2;
+  int imageWidth = getWidth() - MARGIN_LEFT - MARGIN_RIGHT;
+  int imageHeight = getHeight() - MARGIN_TOP - MARGIN_BOTTOM;
 
   raster = new char[imageWidth * imageHeight * 4];
 
   // fill with transparent white
-  for (uint32_t pixel = 0; pixel < imageWidth * imageHeight; pixel++) {
+  for (int32_t pixel = 0; pixel < imageWidth * imageHeight; pixel++) {
     raster[pixel * 4]     = (char) 255;
     raster[pixel * 4 + 1] = (char) 255;
     raster[pixel * 4 + 2] = (char) 255;
@@ -64,11 +62,8 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
 
   for (uint32_t i = 0; i < SPECTROGRAM_WINDOW_SIZE; i++) {
     // Random stereo white noise from -1.0 to 1.0
-    // white_noise[0][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
-    // white_noise[1][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
-
-    white_noise[0][i] = (float)(rand() % 4096) / 4096.0f;
-    white_noise[1][i] = (float)(rand() % 4096) / 4096.0f;
+    white_noise[0][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
+    white_noise[1][i] = (float)((rand() % 4096) - 2048) / 2048.0f;
 
     // Hann window function, per https://en.wikipedia.org/wiki/Hann_function
     window_multiplier[i] = pow(sin((M_PI * i) / (SPECTROGRAM_WINDOW_SIZE - 1)), 2);
@@ -157,38 +152,31 @@ void Spectrogram::update() {
 }
 
 void Spectrogram::onDisplay() {
-  image->drawAt(MARGIN, MARGIN);
-/*
-  int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
-  std::string freqStrings[]  = {"50", "100", "200", "500", "1k", "2k", "5k", "10k", "20k"};
-  float decayTime[] = { 0.1f,0.2f, 0.5f, 1.0f, 2.0f, 5.0f, 10.0f };
-  std::string decayTimeString [] = { "0.1", "0.2", "0.5", "1", "2", "5", "10" };
+  image->drawAt(MARGIN_LEFT, MARGIN_TOP);
+
+  int freq[] = {50, 100, 250, 500, 1000, 2500, 5000, 10000, 20000};
+  std::string freqStrings[]  = {"50Hz", "100Hz", "250Hz", "500Hz", "1kHz", "2.5kHz", "5kHz", "10kHz", "20kHz"};
+  float decayTime[] = { 0.2f, 0.5f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f };
+  std::string decayTimeString [] = { "0.2s", "0.5s", "1s", "2s", "3s", "5s", "10s" };
 
   fNanoText->beginFrame ( this );
-  fNanoText->fontFaceId ( fNanoFont );
   fNanoText->fontSize ( 16 );
-  fNanoText->textAlign ( NanoVG::ALIGN_LEFT |NanoVG::ALIGN_MIDDLE );
-  // TODO Decide on colour
-  r = 230.0f / 256;
-  g = 230.0f / 256;
-  b = 230.0f / 256;
-  fNanoText->fillColor ( Color ( r, g, b ) );
+  fNanoText->textAlign ( NanoVG::ALIGN_CENTER |NanoVG::ALIGN_MIDDLE );
 
-  int y = height + y - 5;
-  for ( int i = 0 ; i < 9 ; i++ )
-    {
-      int xx = ( int ) ( width * logf ( freq[i] / 50.0f ) / logf ( 20000.0f / 50.0f ) );
-      fNanoText->textBox ( x + xx , y , 50.0f , freqStrings[i].c_str(), nullptr );
-    }
+  for ( int i = 0 ; i < 7 ; i++ ) {
+    int x = ( int ) ( image->getWidth() * logf ( decayTime[i] / 0.1f ) / logf ( 10.0f / 0.1f ) );
+    fNanoText->textBox ( x , getHeight() - 5 , 40.0f , decayTimeString[i].c_str(), nullptr );
+  }
 
-  for ( int i = 0 ; i < 7 ; i++ )
-    {
-      int yy = ( int ) ( height * logf ( decayTime[i] / 0.1f ) / logf ( 10.0f / 0.1f ) );
-      fNanoText->textBox ( x, y + height - yy - 20.0f , 50.0f , decayTimeString[i].c_str(), nullptr );
-    }
+  fNanoText->textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_MIDDLE );
+
+  for ( int i = 0 ; i < 9 ; i++ ) {
+    int y = ( int ) ( image->getHeight() * logf ( freq[i] / 50.0f ) / logf ( 20000.0f / 50.0f ) );
+    fNanoText->textBox ( 0, getHeight() - y - MARGIN_TOP , 40.0f , freqStrings[i].c_str(), nullptr );
+  }
 
   fNanoText->endFrame();
-*/
+
 }
 
 void Spectrogram::setParameterValue(uint32_t i, float v) {

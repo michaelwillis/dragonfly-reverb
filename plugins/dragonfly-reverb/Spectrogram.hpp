@@ -29,7 +29,11 @@
 #define SPECTROGRAM_SAMPLE_RATE 48000
 #define SPECTROGRAM_WINDOW_SIZE 4800
 #define SPECTROGRAM_MAX_SECONDS 10
-#define MARGIN 20
+
+#define MARGIN_TOP    20
+#define MARGIN_RIGHT  20
+#define MARGIN_BOTTOM 20
+#define MARGIN_LEFT   40
 
 class Spectrogram : public Thread, public Widget {
   public:
