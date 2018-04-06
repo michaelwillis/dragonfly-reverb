@@ -16,11 +16,9 @@
  */
 
 #include "Spectrogram.hpp"
-#include <time.h>
 #include <stdlib.h>
 #include <math.h>
 #include <iostream>
-#include<time.h>
 
 Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * rect) :
         Thread("Spectrogram"),
@@ -85,13 +83,11 @@ Spectrogram::~Spectrogram() {
   delete[] fftw_out;
   delete[] raster;
   delete image;
-
-  stopThread(100);
 }
 
 void Spectrogram::run() {
+
   while(!shouldThreadExit()) {
-    signal.wait();
 
     dsp.mute();
 
@@ -103,10 +99,8 @@ void Spectrogram::run() {
       float time = pow(M_E, (float) x * logf ( 10.0f / 0.1f ) / image->getWidth()) * 0.1f;
       uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
 
-      // std::cout << "X " << x << ", t " << time << ", offset " << sample_offset << "\n";
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
         fftw_in[window_sample] = dsp_output[0][sample_offset + window_sample] * window_multiplier[window_sample];
-        // std::cout << "  dsp output " << (sample_offset + window_sample) << ": " << dsp_output[0][sample_offset + window_sample] << "\n";
       }
 
       fftwf_execute(fftw_plan);
@@ -128,11 +122,16 @@ void Spectrogram::run() {
     }
 
     image->loadFromMemory(raster, image->getWidth(), image->getHeight(), GL_BGRA);
+
+    repaint();
+
+    signal.wait();
   }
 }
 
-void Spectrogram::update() {
-  signal.signal();
+void Spectrogram::signalThreadShouldExit() {
+  Thread::signalThreadShouldExit();
+  signal.signal(); // unblocks the run() method above
 }
 
 void Spectrogram::onDisplay() {
@@ -160,9 +159,9 @@ void Spectrogram::onDisplay() {
   }
 
   fNanoText->endFrame();
-
 }
 
 void Spectrogram::setParameterValue(uint32_t i, float v) {
   dsp.setParameterValue(i, v);
+  signal.signal();
 }

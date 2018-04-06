@@ -41,6 +41,7 @@ class Spectrogram : public Thread, public Widget {
     ~Spectrogram();
 
     void run();
+    void signalThreadShouldExit();
     void update();
 
     void setParameterValue(uint32_t i, float v);

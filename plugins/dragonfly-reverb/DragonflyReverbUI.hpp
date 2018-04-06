@@ -34,6 +34,7 @@ class DragonflyReverbUI : public UI,
 {
 public:
     DragonflyReverbUI();
+    ~DragonflyReverbUI();
 
 protected:
     // -------------------------------------------------------------------

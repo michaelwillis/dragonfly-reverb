@@ -21,7 +21,6 @@
 #include "DistrhoPluginInfo.h"
 #include "NotoSans_Regular.ttf.hpp"
 #include <array>
-#include <iostream>
 #include <vector>
 #include <math.h>
 #include <string>
@@ -209,6 +208,12 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[2].setSize ( 26,271 );
 }
 
+DragonflyReverbUI::~DragonflyReverbUI()
+{
+  spectrogram->signalThreadShouldExit();
+  spectrogram->stopThread(100);
+}
+
 /**
    A parameter has changed on the plugin side
    This is called by the host to inform the UI about parameter changes.
@@ -271,6 +276,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 
     }
 
+    spectrogram->setParameterValue(index, value);
 }
 
 /* ----------------------------------------------------------------------------------------------------------
@@ -289,11 +295,8 @@ void DragonflyReverbUI::imageKnobDragFinished ( ImageKnob* knob )
 
 void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
 {
-  int KnobID = knob->getId();
-
-  setParameterValue ( KnobID,value );
-  spectrogram->setParameterValue ( KnobID, value );
-  spectrogram->update();
+  setParameterValue ( knob->getId(),value );
+  spectrogram->setParameterValue ( knob->getId(), value );
 }
 
 void  DragonflyReverbUI::imageSliderDragStarted ( ImageSlider* slider )
@@ -311,7 +314,6 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
   int SliderID = slider->getId();
   setParameterValue ( SliderID,value );
   spectrogram->setParameterValue ( SliderID, value );
-  spectrogram->update();
 }
 
 void DragonflyReverbUI::programLoaded ( uint32_t index )
@@ -334,15 +336,11 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
     setParameterValue ( i, preset[i] );
     spectrogram->setParameterValue(i, preset[i]);
   }
-
-  spectrogram->update();
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
-
 {
   // display
-
   if ( ev.button != 1 )
     return false;
   if ( ev.press )
@@ -408,7 +406,6 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
 void DragonflyReverbUI::onDisplay()
 {
-
   fImgBackground.draw();
   float r,g,b;
   // wipe display
@@ -520,7 +517,7 @@ void DragonflyReverbUI::onDisplay()
   switch ( int ( currentDisplayMode ) ) {
     case displayResponse:
     {
-      spectrogram->setVisible(true);
+      spectrogram->show();
 
       // print program name
       fNanoText.beginFrame ( this );
@@ -546,7 +543,7 @@ void DragonflyReverbUI::onDisplay()
 
     case displayPrograms:
     {
-      spectrogram->setVisible(false);
+      spectrogram->hide();
       fNanoText.beginFrame ( this );
       fNanoText.fontSize ( 18 );
       fNanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
@@ -590,7 +587,7 @@ void DragonflyReverbUI::onDisplay()
     }
     case displayAbout:
     {
-      spectrogram->setVisible(false);
+      spectrogram->hide();
       fNanoText.beginFrame ( this );
       fNanoText.fontSize ( 24 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
@@ -630,10 +627,7 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.textBox ( 405.0f ,y, 80.0f , "Presets", nullptr );
   fNanoText.textBox ( 495.0f, y, 80.0f , "About"   , nullptr );
   fNanoText.endFrame();
-
-
 }
-
 
 
 /* ------------------------------------------------------------------------------------------------------------
