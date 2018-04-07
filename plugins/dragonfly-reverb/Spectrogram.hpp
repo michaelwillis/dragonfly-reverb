@@ -35,29 +35,38 @@
 #define MARGIN_BOTTOM 20
 #define MARGIN_LEFT   50
 
-class Spectrogram : public Thread, public Widget {
+class Spectrogram : public Widget {
   public:
     Spectrogram(Widget* widget, NanoVG * fNanoText, Rectangle<int> * rect);
     ~Spectrogram();
 
-    void run();
-    void signalThreadShouldExit();
     void update();
 
     void setParameterValue(uint32_t i, float v);
     void onDisplay();
+    void uiIdle();
 
   private:
     DragonflyReverbDSP dsp;
-    Signal signal;
     char * raster;
     Image * image;
 
     NanoVG * fNanoText;
 
-    float ** dsp_input;
+    float ** white_noise;
+    float ** silence;
     float ** dsp_output;
+
+    // Mono for now, but maybe should change this to stereo
+    float reverb_results[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
     float window_multiplier[SPECTROGRAM_WINDOW_SIZE];
+
+    // x coordinate of current column being rendered
+    uint32_t x;
+
+    // index of last sample that was processed through the reverb dsp
+    // in other words, how much of reverb_results is accurately populated
+    uint32_t sample_offset_processed;
 
     float         *fftw_in  = (float*)         fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(float));
     fftwf_complex *fftw_out = (fftwf_complex*) fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(fftwf_complex));

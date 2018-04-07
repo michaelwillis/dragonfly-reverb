@@ -34,7 +34,6 @@ class DragonflyReverbUI : public UI,
 {
 public:
     DragonflyReverbUI();
-    ~DragonflyReverbUI();
 
 protected:
     // -------------------------------------------------------------------
@@ -53,12 +52,9 @@ protected:
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
 
-    // preset browser stuff
     bool onMouse(const MouseEvent&) override;
-
-
-
     void onDisplay() override;
+    void uiIdle() override;
 
 private:
     Image fImgBackground,fImgTabOff,fImgTabOn;

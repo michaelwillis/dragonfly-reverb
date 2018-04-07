@@ -208,12 +208,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[2].setSize ( 26,271 );
 }
 
-DragonflyReverbUI::~DragonflyReverbUI()
-{
-  spectrogram->signalThreadShouldExit();
-  spectrogram->stopThread(100);
-}
-
 /**
    A parameter has changed on the plugin side
    This is called by the host to inform the UI about parameter changes.
@@ -629,6 +623,9 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.endFrame();
 }
 
+void DragonflyReverbUI::uiIdle() {
+  spectrogram->uiIdle();
+}
 
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */
