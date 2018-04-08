@@ -128,7 +128,7 @@ void Spectrogram::uiIdle() {
 
           char alpha = (char)(val * 63.0f);
 
-          uint32_t pixel = (image->getHeight() - y) * image->getWidth() + x;
+          uint32_t pixel = (image->getHeight() - y - 1) * image->getWidth() + x;
 
           raster[pixel * 4 + 3] = alpha;
       }
