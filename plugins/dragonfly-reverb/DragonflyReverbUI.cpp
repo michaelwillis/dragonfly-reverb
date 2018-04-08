@@ -49,8 +49,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobSize->setId ( paramSize );
   fKnobSize->setAbsolutePos ( knobx[1], knoby[0] );
   fKnobSize->setRange ( params[paramSize].range_min, params[paramSize].range_max );
-  fKnobSize->setDefault ( 40.0f );
-  fKnobSize->setValue ( 40.0f );
   fKnobSize->setRotationAngle ( 300 );
   fKnobSize->setCallback ( this );
 
@@ -59,8 +57,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobPredelay->setId ( paramPredelay );
   fKnobPredelay->setAbsolutePos ( knobx[0], knoby[0] );
   fKnobPredelay->setRange ( params[paramPredelay].range_min, params[paramPredelay].range_max );
-  fKnobPredelay->setDefault ( 14.0f );
-  fKnobPredelay->setValue ( 14.0f );
   fKnobPredelay->setRotationAngle ( 300 );
   fKnobPredelay->setCallback ( this );
 
@@ -69,8 +65,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobDiffuse->setId ( paramDiffuse );
   fKnobDiffuse->setAbsolutePos ( knobx[2], knoby[0] );
   fKnobDiffuse->setRange ( params[paramDiffuse].range_min, params[paramDiffuse].range_max );
-  fKnobDiffuse->setDefault ( 80.0f );
-  fKnobDiffuse->setValue ( 80.0f );
   fKnobDiffuse->setRotationAngle ( 300 );
   fKnobDiffuse->setCallback ( this );
 
@@ -79,8 +73,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobLow_cut->setId ( paramLow_cut );
   fKnobLow_cut->setAbsolutePos ( knobx[0], knoby[2] );
   fKnobLow_cut->setRange ( params[paramLow_cut].range_min, params[paramLow_cut].range_max );
-  fKnobLow_cut->setDefault ( 4.0f );
-  fKnobLow_cut->setValue ( 4.0f );
   fKnobLow_cut->setRotationAngle ( 300 );
   fKnobLow_cut->setCallback ( this );
 
@@ -89,8 +81,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobLow_xover->setId ( paramLow_xover );
   fKnobLow_xover->setAbsolutePos ( knobx[1], knoby[2] );
   fKnobLow_xover->setRange ( params[paramLow_xover].range_min, params[paramLow_xover].range_max );
-  fKnobLow_xover->setDefault ( 600.0f );
-  fKnobLow_xover->setValue ( 600.0f );
   fKnobLow_xover->setRotationAngle ( 300 );
   fKnobLow_xover->setCallback ( this );
 
@@ -99,8 +89,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobLow_mult->setId ( paramLow_mult );
   fKnobLow_mult->setAbsolutePos ( knobx[2], knoby[2] );
   fKnobLow_mult->setRange ( params[paramLow_mult].range_min, params[paramLow_mult].range_max );
-  fKnobLow_mult->setDefault ( 1.5f );
-  fKnobLow_mult->setValue ( 1.5f );
   fKnobLow_mult->setRotationAngle ( 300 );
   fKnobLow_mult->setCallback ( this );
 
@@ -109,8 +97,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobHigh_cut->setId ( paramHigh_cut );
   fKnobHigh_cut->setAbsolutePos ( knobx[0], knoby[1] );
   fKnobHigh_cut->setRange ( params[paramHigh_cut].range_min, params[paramHigh_cut].range_max );
-  fKnobHigh_cut->setDefault ( 7500.0f );
-  fKnobHigh_cut->setValue ( 7500.0f );
   fKnobHigh_cut->setRotationAngle ( 300 );
   fKnobHigh_cut->setCallback ( this );
 
@@ -119,8 +105,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobHigh_xover->setId ( paramHigh_xover );
   fKnobHigh_xover->setAbsolutePos ( knobx[1], knoby[1] );
   fKnobHigh_xover->setRange ( params[paramHigh_xover].range_min, params[paramHigh_xover].range_max );
-  fKnobHigh_xover->setDefault ( 4500.0f );
-  fKnobHigh_xover->setValue ( 4500.0f );
   fKnobHigh_xover->setRotationAngle ( 300 );
   fKnobHigh_xover->setCallback ( this );
 
@@ -129,8 +113,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobHigh_mult->setId ( paramHigh_mult );
   fKnobHigh_mult->setAbsolutePos ( knobx[2], knoby[1] );
   fKnobHigh_mult->setRange ( params[paramHigh_mult].range_min, params[paramHigh_mult].range_max );
-  fKnobHigh_mult->setDefault ( 0.4f );
-  fKnobHigh_mult->setValue ( 0.4f );
   fKnobHigh_mult->setRotationAngle ( 300 );
   fKnobHigh_mult->setCallback ( this );
 
@@ -143,7 +125,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level->setStartPos ( 760, 32 );
   fSliderDry_level->setEndPos ( 760, 300 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
-  fSliderDry_level->setValue ( 50.0f );
   fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
 
@@ -153,7 +134,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level->setStartPos ( 800, 32 );
   fSliderEarly_level->setEndPos ( 800, 300 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
-  fSliderEarly_level->setValue ( 50.0f );
   fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
 
@@ -163,7 +143,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level->setStartPos ( 840, 32 );
   fSliderLate_level->setEndPos ( 840, 300 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
-  fSliderLate_level->setValue ( 50.0f );
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
@@ -206,6 +185,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[1].setSize ( 26,271 );
   rectSliders[2].setPos ( 842,32 );
   rectSliders[2].setSize ( 26,271 );
+
+  programLoaded(defaultPreset);
 }
 
 /**
@@ -512,18 +493,6 @@ void DragonflyReverbUI::onDisplay()
     case displayResponse:
     {
       spectrogram->show();
-
-      // print program name
-      fNanoText.beginFrame ( this );
-      fNanoText.fontSize ( 16 );
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_MIDDLE );
-
-      r = 230.0f / 256;
-      g = 230.0f / 256;
-      b = 230.0f / 256;
-      fNanoText.fillColor ( Color ( r, g, b ) );
-      fNanoText.textBox ( rectDisplay.getX() +5, rectDisplay.getY() +5, 200.0f , presets[currentProgram].name, nullptr );
-      fNanoText.endFrame();
 
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f ); // reset colour
