@@ -94,12 +94,16 @@ Spectrogram::~Spectrogram() {
 }
 
 void Spectrogram::uiIdle() {
-  if (x < image->getWidth()) {
+  uint32_t max_x = x + 20;
+  if (max_x > image->getWidth()) {
+    max_x = image->getWidth();
+  }
+  while(x < max_x) {
     // Calculate time in seconds, then determine where that is in the dsp_output buffer
     float time = pow(M_E, (float) x * logf ( 10.0f / 0.1f ) / image->getWidth()) * 0.1f;
     uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
 
-    if (sample_offset_processed < sample_offset + SPECTROGRAM_WINDOW_SIZE) {
+    if (sample_offset_processed < sample_offset + SPECTROGRAM_WINDOW_SIZE * 2) {
       if (sample_offset_processed == 0) {
         dsp.run((const float **)white_noise, dsp_output, SPECTROGRAM_WINDOW_SIZE);
       } else {
@@ -114,7 +118,7 @@ void Spectrogram::uiIdle() {
     }
     else {
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
-        fftw_in[window_sample] = reverb_results[sample_offset + window_sample] * window_multiplier[window_sample];
+        fftw_in[window_sample] = reverb_results[sample_offset + SPECTROGRAM_WINDOW_SIZE + window_sample] * window_multiplier[window_sample];
       }
       fftwf_execute(fftw_plan);
 

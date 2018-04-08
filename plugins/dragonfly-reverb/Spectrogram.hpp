@@ -58,7 +58,7 @@ class Spectrogram : public Widget {
     float ** dsp_output;
 
     // Mono for now, but maybe should change this to stereo
-    float reverb_results[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE];
+    float reverb_results[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE * 2];
     float window_multiplier[SPECTROGRAM_WINDOW_SIZE];
 
     // x coordinate of current column being rendered
