@@ -36,6 +36,10 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   late.setdryr(0); // mute dry signal
   late.setwidth(1.0);
   late.setSampleRate(sampleRate);
+
+  for (uint32_t param = 0; param < paramCount; param++) {
+    setParameterValue(param, presets[defaultPreset].params[param]);
+  }
 }
 
 float DragonflyReverbDSP::getParameterValue(uint32_t index) const {

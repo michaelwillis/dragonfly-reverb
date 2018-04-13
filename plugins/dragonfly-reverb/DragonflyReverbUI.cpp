@@ -185,8 +185,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[1].setSize ( 26,271 );
   rectSliders[2].setPos ( 842,32 );
   rectSliders[2].setSize ( 26,271 );
-
-  programLoaded(defaultPreset);
 }
 
 /**
@@ -337,6 +335,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
                       currentProgram = i;
 
                       programLoaded ( currentProgram );
+                      currentDisplayMode = displayResponse;
                       repaint();
                     } // end if
                 } // end for
@@ -537,7 +536,7 @@ void DragonflyReverbUI::onDisplay()
 //       for ( int i = 0 ; i < 24 ; i++ )
 // 	rectPrograms[i].drawOutline();
 //
-      rectPrograms[currentProgram].drawOutline();
+      // rectPrograms[currentProgram].drawOutline();
 
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );

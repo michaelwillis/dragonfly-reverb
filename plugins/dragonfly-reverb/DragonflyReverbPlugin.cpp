@@ -18,13 +18,9 @@
 #include "DragonflyReverbPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 
-#define NUM_PRESETS 24
-
 START_NAMESPACE_DISTRHO
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, NUM_PRESETS, 0), dsp(getSampleRate()) {
-  loadProgram(defaultPreset);
-}
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 0), dsp(getSampleRate()) { }
 
 // -----------------------------------------------------------------------
 // Init
@@ -41,10 +37,6 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
   }
 }
 
-void DragonflyReverbPlugin::initProgramName(uint32_t index, String& programName) {
-  programName = presets[index].name;
-}
-
 // -----------------------------------------------------------------------
 // Internal data
 
@@ -54,13 +46,6 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const {
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
   dsp.setParameterValue(index, value);
-}
-
-void DragonflyReverbPlugin::loadProgram(uint32_t index) {
-    const float *preset = presets[index].params;
-    for (uint32_t param_index = 0; param_index < paramCount; param_index++) {
-        setParameterValue(param_index, preset[param_index]);
-    }
 }
 
 // -----------------------------------------------------------------------

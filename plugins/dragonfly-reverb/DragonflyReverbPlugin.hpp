@@ -60,7 +60,7 @@ protected:
 
     uint32_t getVersion() const noexcept override
     {
-        return d_version(0, 0, 9);
+        return d_version(0, 9, 1);
     }
 
     int64_t getUniqueId() const noexcept override
@@ -72,14 +72,12 @@ protected:
     // Init
 
     void initParameter(uint32_t index, Parameter& parameter) override;
-    void initProgramName(uint32_t index, String& programName) override;
 
     // -------------------------------------------------------------------
     // Internal data
 
     float getParameterValue(uint32_t index) const override;
     void  setParameterValue(uint32_t index, float value) override;
-    void  loadProgram(uint32_t index) override;
 
     // -------------------------------------------------------------------
     // Process

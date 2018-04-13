@@ -18,6 +18,7 @@
 #include "Spectrogram.hpp"
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 #include <iostream>
 
 Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * rect) :
