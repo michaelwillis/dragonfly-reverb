@@ -551,7 +551,7 @@ void DragonflyReverbUI::onDisplay()
     {
       spectrogram->hide();
       fNanoText.beginFrame ( this );
-      fNanoText.fontSize ( 24 );
+      fNanoText.fontSize ( 18 );
       fNanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
       r = 230.0f / 256;
@@ -559,11 +559,18 @@ void DragonflyReverbUI::onDisplay()
       b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
 
-      int x = rectDisplay.getX();
-      int y = rectDisplay.getY();
-      int w = rectDisplay.getWidth();
+      int x = rectDisplay.getX() + 10;
+      int y = rectDisplay.getY() + 5;
+      int w = rectDisplay.getWidth() - 20;
 
-      fNanoText.textBox ( x, y , w , "This plugin is licenced under the <insert licence here> \n Code is based on freeverb3. \n Plugin is developed using the DPF framework", nullptr );
+      fNanoText.textBox ( x, y , w ,
+        "A hall-style reverb based on algorithms from Freeverb3\n"
+        "License: GPL 3+ (https://www.gnu.org/licenses/gpl-3.0.en.html)\n\n"
+        "Michael Willis - Initial concept, plugin, and spectrogram\n\n"
+        "Rob van dev Berg - Graphical interface\n\n"
+        "Teru Kamogashira - Freeverb3\n\n"
+        "Thanks to Filipe \"falkTX\" Coelho for developing the excellent Distrho Plugin Framework and providing plenty of advice."
+        , nullptr );
       fNanoText.endFrame();
       // draw tabs
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );
