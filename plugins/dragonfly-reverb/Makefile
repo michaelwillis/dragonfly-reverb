@@ -21,7 +21,8 @@ OBJS_UI  = \
 	DragonflyReverbArtwork.cpp.o \
 	NotoSans_Regular.ttf.cpp.o \
 	DragonflyReverbDSP.cpp.o \
-	Spectrogram.cpp.o
+	Spectrogram.cpp.o \
+	fft.c.o
 
 # --------------------------------------------------------------
 # Do some magic
@@ -31,7 +32,7 @@ include ../Makefile.mk
 # --------------------------------------------------------------
 # Link dependencies
 
-LINK_OPTS += -lfftw3f -lm -lpthread
+LINK_OPTS += -lm
 
 # --------------------------------------------------------------
 # Enable all possible plugin types

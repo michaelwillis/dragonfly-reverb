@@ -76,9 +76,6 @@ all:
 %.c.o: %.c
 	$(CC) $< $(BUILD_C_FLAGS) -MD -MP -c -o $@
 
-%.cpp.o: freeverb/%.cpp
-	$(CXX) $< $(BUILD_CXX_FLAGS) -MD -MP -c -o $@
-
 %.cpp.o: %.cpp
 	$(CXX) $< $(BUILD_CXX_FLAGS) -MD -MP -c -o $@
 

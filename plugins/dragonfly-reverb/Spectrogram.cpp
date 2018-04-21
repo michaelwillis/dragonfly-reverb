@@ -68,6 +68,9 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * r
 
     // Hann window function, per https://en.wikipedia.org/wiki/Hann_function
     window_multiplier[i] = pow(sin((M_PI * i) / (SPECTROGRAM_WINDOW_SIZE - 1)), 2);
+
+    fft_real[i] = 0.0;
+    fft_imag[i] = 0.0;
   }
 
   x = 0;
@@ -88,8 +91,6 @@ Spectrogram::~Spectrogram() {
   delete[] dsp_output[1];
   delete[] dsp_output;
 
-  delete[] fftw_in;
-  delete[] fftw_out;
   delete[] raster;
   delete image;
 }
@@ -119,15 +120,17 @@ void Spectrogram::uiIdle() {
     }
     else {
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
-        fftw_in[window_sample] = reverb_results[sample_offset + SPECTROGRAM_WINDOW_SIZE + window_sample] * window_multiplier[window_sample];
+        fft_real[window_sample] = reverb_results[sample_offset + SPECTROGRAM_WINDOW_SIZE + window_sample] * window_multiplier[window_sample];
+        fft_imag[window_sample] = 0.0;
       }
-      fftwf_execute(fftw_plan);
+
+      Fft_transform(fft_real, fft_imag, (size_t) SPECTROGRAM_WINDOW_SIZE);
 
       for (uint32_t y = 0; y < image->getHeight(); y++) {
           float freq = powf(M_E, (float) y * logf ( 20000.0f / 50.0f ) / (float) image->getHeight()) * 50.0f;
-          int fftw_out_index = freq / (float)(SPECTROGRAM_SAMPLE_RATE / SPECTROGRAM_WINDOW_SIZE) + 1;
+          int fft_index = freq / (float)(SPECTROGRAM_SAMPLE_RATE / SPECTROGRAM_WINDOW_SIZE) + 1;
 
-          float val = fftw_out[fftw_out_index][0];
+          float val = fft_real[fft_index];
           if (val < 0.0) val = 0.0 - val;
           if (val > 4.0) val = 4.0;
 

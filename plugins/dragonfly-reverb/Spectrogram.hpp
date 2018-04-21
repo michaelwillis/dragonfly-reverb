@@ -24,10 +24,13 @@
 #include "NanoVG.hpp"
 #include "extra/Thread.hpp"
 #include "extra/Mutex.hpp"
-#include <fftw3.h>
 
-#define SPECTROGRAM_SAMPLE_RATE 48000
-#define SPECTROGRAM_WINDOW_SIZE 9600
+extern "C" {
+#include "fft.h"
+}
+
+#define SPECTROGRAM_SAMPLE_RATE 40960
+#define SPECTROGRAM_WINDOW_SIZE 8192
 #define SPECTROGRAM_MAX_SECONDS 10
 
 #define MARGIN_TOP    20
@@ -68,9 +71,8 @@ class Spectrogram : public Widget {
     // in other words, how much of reverb_results is accurately populated
     uint32_t sample_offset_processed;
 
-    float         *fftw_in  = (float*)         fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(float));
-    fftwf_complex *fftw_out = (fftwf_complex*) fftwf_malloc(SPECTROGRAM_WINDOW_SIZE * sizeof(fftwf_complex));
-    fftwf_plan    fftw_plan = fftwf_plan_dft_r2c_1d(SPECTROGRAM_WINDOW_SIZE, fftw_in, fftw_out, FFTW_ESTIMATE);
+    double fft_real[SPECTROGRAM_WINDOW_SIZE];
+    double fft_imag[SPECTROGRAM_WINDOW_SIZE];
 };
 
 #endif
