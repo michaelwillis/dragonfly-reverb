@@ -21,7 +21,7 @@
 #include <time.h>
 #include <iostream>
 
-Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, Rectangle<int> * rect) :
+Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, DGL::Rectangle<int> * rect) :
         Widget(widget->getParentWindow()),
         dsp(SPECTROGRAM_SAMPLE_RATE) {
   setWidth(rect->getWidth());

@@ -40,7 +40,7 @@ extern "C" {
 
 class Spectrogram : public Widget {
   public:
-    Spectrogram(Widget* widget, NanoVG * fNanoText, Rectangle<int> * rect);
+  Spectrogram(Widget* widget, NanoVG * fNanoText, DGL::Rectangle<int> * rect);
     ~Spectrogram();
 
     void update();

@@ -76,13 +76,13 @@ private:
     };
     int currentDisplayMode = displayResponse;
 
-    Rectangle<int> rectDisplay,rectTabResponse,rectTabPrograms,rectTabAbout;
+    DGL::Rectangle<int> rectDisplay,rectTabResponse,rectTabPrograms,rectTabAbout;
 
     // boxes for programs
-    Rectangle<int> rectPrograms[24]; // TODO check Programs constant
+    DGL::Rectangle<int> rectPrograms[24]; // TODO check Programs constant
 
     // to fill sliders
-    Rectangle<int> rectSliders[3];
+    DGL::Rectangle<int> rectSliders[3];
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };

@@ -34,6 +34,11 @@ include ../Makefile.mk
 
 LINK_OPTS += -lm
 
+ifeq ($(WIN32),true)
+LINK_OPTS += -static -static-libgcc -static-libstdc++
+endif
+
+
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
