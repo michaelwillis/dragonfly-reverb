@@ -69,6 +69,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case          paramSize: early.setRSFactor  (value / 60.0);
                                  late.setRSFactor   (value / 80.0);
                                  late.setrt60       (value / 20.0);  break;
+        case         paramWidth: early.setwidth     (value / 100.0);
+                                 late.setwidth      (value / 100.0); break;
         case      paramPredelay: late.setPreDelay   (value);         break;
         case       paramDiffuse: late.setidiffusion1(value / 140.0);
                                  late.setapfeedback (value / 140.0);
@@ -80,6 +82,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
                                  late.setoutputlpf  (value);         break;
         case    paramHigh_xover: late.setxover_high (value);         break;
         case     paramHigh_mult: late.setrt60_factor_high(value);    break;
+        case          paramSpin: late.setspin(value);                break;
+        case        paramWander: late.setwander(value);              break;
       }
     }
   }
