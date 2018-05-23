@@ -1,7 +1,7 @@
 /**
  *  FFT impulse fragment square multiplier
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ FV3_(fragfft)::FV3_(fragfft)()
 {
   fragmentSize = 0;
   simdSize = 1;
-  setSIMD(0);
+  setSIMD(0,0);
 }
 
 FV3_(fragfft)::FV3_(~fragfft)()
@@ -36,64 +36,9 @@ FV3_(fragfft)::FV3_(~fragfft)()
   freeFFT();
 }
 
-void FV3_(fragfft)::setSIMD(uint32_t simdFlag)
+long FV3_(fragfft)::getSIMDSize()
 {
-  if(simdFlag == 0) simdFlag = FV3_(utils)::getSIMDFlag();
-  simdSize = 1;
-
-#ifdef LIBFV3_FLOAT
-#if defined(ENABLE_3DNOW)
-  if((simdFlag&FV3_FLAG_3DNOW))
-    simdSize = 2;
-#endif
-#if defined(ENABLE_SSE)
-  if((simdFlag&FV3_FLAG_SSE))
-    simdSize = 4;
-#endif
-#if defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)
-  if((simdFlag&FV3_FLAG_SSE))
-    simdSize = 1;
-#endif
-#if defined(ENABLE_SSE3)||defined(ENABLE_SSE4)
-  if((simdFlag&FV3_FLAG_SSE3))
-    simdSize = 1;
-#endif
-#if defined(ENABLE_AVX)
-  if((simdFlag&FV3_FLAG_AVX))
-    simdSize = 8;
-#endif
-#if defined(ENABLE_FMA3)
-  if((simdFlag&FV3_FLAG_FMA3))
-    simdSize = 8;
-#endif
-#if defined(ENABLE_FMA4)
-  if((simdFlag&FV3_FLAG_FMA4))
-    simdSize = 8;
-#endif
-#endif
-
-#ifdef LIBFV3_DOUBLE
-#if defined(ENABLE_SSE2)||defined(ENABLE_SSE3)
-  if((simdFlag&FV3_FLAG_SSE2))
-    simdSize = 2;
-#endif
-#if defined(ENABLE_SSE4)
-  if((simdFlag&FV3_FLAG_SSE4_1))
-    simdSize = 1;
-#endif
-#if defined(ENABLE_AVX)
-  if((simdFlag&FV3_FLAG_AVX))
-    simdSize = 4;
-#endif
-#if defined(ENABLE_FMA3)
-  if((simdFlag&FV3_FLAG_FMA3))
-    simdSize = 4;
-#endif
-#if defined(ENABLE_FMA4)
-  if((simdFlag&FV3_FLAG_FMA4))
-    simdSize = 4;
-#endif
-#endif
+  return simdSize;
 }
 
 long FV3_(fragfft)::getFragmentSize()
@@ -109,8 +54,7 @@ void FV3_(fragfft)::allocFFT(long size, unsigned fftflags)
 #endif
   if(FV3_IR_Min_FragmentSize > size)
     {
-      std::fprintf(stderr, "fragfft::allocFFT(size=%ld): fragmentSize(>%d) is too small! \n",
-		   size, FV3_IR_Min_FragmentSize);
+      std::fprintf(stderr, "fragfft::allocFFT(size=%ld): fragmentSize (>%d) is too small! \n", size, FV3_IR_Min_FragmentSize);
       throw std::bad_alloc();
     }
   if(size != FV3_(utils)::checkPow2(size))
@@ -119,7 +63,8 @@ void FV3_(fragfft)::allocFFT(long size, unsigned fftflags)
       throw std::bad_alloc();
     }
   freeFFT();
-  fftOrig.alloc(2*size, 2);
+  fftOrig.alloc(2*size, 1);
+  planRevrL = FFTW_(plan_r2r_1d)(2*size, fftOrig.L, fftOrig.L, FFTW_HC2R, fftflags);
   planOrigL = FFTW_(plan_r2r_1d)(2*size, fftOrig.L, fftOrig.L, FFTW_R2HC, fftflags);
   planOrigR = FFTW_(plan_r2r_1d)(2*size, fftOrig.R, fftOrig.R, FFTW_R2HC, fftflags);
   planRevL = FFTW_(plan_r2r_1d)(2*size, fftOrig.L, fftOrig.L, FFTW_HC2R, fftflags);
@@ -130,8 +75,7 @@ void FV3_(fragfft)::allocFFT(long size, unsigned fftflags)
 void FV3_(fragfft)::freeFFT()
 {
   if(fragmentSize == 0) return;
-  FFTW_(destroy_plan)(planRevL);
-  FFTW_(destroy_plan)(planRevR);
+  FFTW_(destroy_plan)(planRevrL);
   FFTW_(destroy_plan)(planOrigL);
   FFTW_(destroy_plan)(planOrigR);
   fftOrig.free();

@@ -2,7 +2,7 @@
  *  Simple FDN Reverb based on zita-rev1
  *
  *  Copyright (C) 2003-2010 Fons Adriaensen <fons@linuxaudio.org>
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

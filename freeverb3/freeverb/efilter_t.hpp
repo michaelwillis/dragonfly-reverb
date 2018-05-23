@@ -1,7 +1,7 @@
 /**
  *  Many Types of 1st order Filters
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -173,7 +173,7 @@ class _FV3_(lfo)
 	UNDENORMAL(arc_r);
 	re /= arc_r; im /= arc_r;
       }
-    if(out < -1) out = -1; if(out > 1) out = 1;
+    LIMIT_PLUSMINUS_ONE(out);
     return out;
   }
   inline _fv3_float_t process(_fv3_float_t input){ return this->process()*input; }

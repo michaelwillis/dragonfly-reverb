@@ -1,7 +1,7 @@
 /**
  *  FFT impulse fragment square multiplier
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -23,13 +23,17 @@ class _FV3_(fragfft)
  public:
   _FV3_(fragfft)();
   _FV3_(~fragfft)();
+  void setSIMD(uint32_t flag1, uint32_t flag2);
+  uint32_t getSIMD(uint32_t select);
+  long getSIMDSize();
   void allocFFT(long size, unsigned fftflags) throw(std::bad_alloc);
   void freeFFT();
   long getFragmentSize();
   // replace size, size*2
-  void R2HC(const _fv3_float_t * iL, const _fv3_float_t * iR, _fv3_float_t * oL, _fv3_float_t * oR);
+  void R2HC(const _fv3_float_t * iL, _fv3_float_t * oL);
   // add size*2, size*2
-  void HC2R(const _fv3_float_t * iL, const _fv3_float_t * iR, _fv3_float_t * oL, _fv3_float_t * oR);
+  void HC2R(const _fv3_float_t * iL, _fv3_float_t * oL);
+
  private:
   _FV3_(fragfft)(const _FV3_(fragfft)& x);
   _FV3_(fragfft)& operator=(const _FV3_(fragfft)& x);
@@ -37,9 +41,9 @@ class _FV3_(fragfft)
   void R2SA(const _fv3_float_t * in, _fv3_float_t * out, long n);
   void SA2R(const _fv3_float_t * in, _fv3_float_t * out, long n, long simd);
   void SA2R(const _fv3_float_t * in, _fv3_float_t * out, long n);
-  void setSIMD(uint32_t simdFlag);
-  _FFTW_(plan) planRevL, planRevR, planOrigL, planOrigR;
   long fragmentSize, simdSize;
+  uint32_t simdFlag1, simdFlag2;
+  _FFTW_(plan) planRevrL, planOrigL;
   _FV3_(slot) fftOrig;
 };
 
@@ -50,26 +54,27 @@ class _FV3_(frag)
  public:
   _FV3_(frag)();
   _FV3_(~frag)();
-  void loadImpulse(const _fv3_float_t * L, const _fv3_float_t * R, long size, long limit, unsigned fftflags)
+  void setSIMD(uint32_t flag1, uint32_t flag2);
+  uint32_t getSIMD(uint32_t select);
+  void loadImpulse(const _fv3_float_t * L, long size, long limit, unsigned fftflags)
     throw(std::bad_alloc);
-  void loadImpulse(const _fv3_float_t * L, const _fv3_float_t * R, long size, long limit, unsigned fftflags,
-		   _fv3_float_t * preAllocatedL, _fv3_float_t * preAllocatedR)
+  void loadImpulse(const _fv3_float_t * L, long size, long limit, unsigned fftflags, _fv3_float_t * preAllocatedL)
     throw(std::bad_alloc);
   void unloadImpulse();
   long getFragmentSize();
   // add size*2, size*2
-  void MULT(const _fv3_float_t * iL, const _fv3_float_t * iR, _fv3_float_t * oL, _fv3_float_t * oR);
+  void MULT(const _fv3_float_t * iL, _fv3_float_t * oL);
   // replace size*2
-  void getFFT(_fv3_float_t * oL, _fv3_float_t * oR);
+  void getFFT(_fv3_float_t * oL);
   
 private:
   _FV3_(frag)(const _FV3_(frag)& x);
   _FV3_(frag)& operator=(const _FV3_(frag)& x);  
-  void setSIMD(uint32_t simdFlag);
   _FV3_(MULT_T) MULT_M;
   void allocImpulse(long size) throw(std::bad_alloc);
-  void registerPreallocatedBlock(_fv3_float_t * _L, _fv3_float_t * _R, long size);
+  void registerPreallocatedBlock(_fv3_float_t * _L, long size);
   void freeImpulse();
   long fragmentSize;
   _FV3_(slot) fftImpulse;
+  uint32_t simdFlag1, simdFlag2;
 };

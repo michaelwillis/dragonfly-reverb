@@ -1,7 +1,7 @@
 /**
  *  Limiter model implementation
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -184,8 +184,10 @@ void FV3_(limitmodel)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR, 
 	  outputL[i] = inputL[i]*gainL;
 	  outputR[i] = inputR[i]*gainR;
 	}
-      if(outputL[i] > ceiling_r) outputL[i] = ceiling_r; if(outputL[i] < ceiling_m) outputL[i] = ceiling_m;
-      if(outputR[i] > ceiling_r) outputR[i] = ceiling_r; if(outputR[i] < ceiling_m) outputR[i] = ceiling_m;
+      if(outputL[i] > ceiling_r) outputL[i] = ceiling_r;
+      if(outputL[i] < ceiling_m) outputL[i] = ceiling_m;
+      if(outputR[i] > ceiling_r) outputR[i] = ceiling_r;
+      if(outputR[i] < ceiling_m) outputR[i] = ceiling_m;
     }
   currentGain = gainL, currentGain2 = gainR;
 }

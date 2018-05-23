@@ -1,7 +1,7 @@
 /**
  *  Impulse Response Processor model implementation
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -27,25 +27,24 @@ typedef struct {
   CRITICAL_SECTION *threadSection;
 } _FV3_(lfThreadInfoW);
 
-class _FV3_(irmodel3w) : public _FV3_(irmodel3)
+
+class _FV3_(irmodel3wm) : public _FV3_(irmodel3m)
 {
  public:
-  _FV3_(irmodel3w)();
-  virtual _FV3_(~irmodel3w)();
-  virtual void loadImpulse(_fv3_float_t * inputL, _fv3_float_t * inputR, long size)
+  _FV3_(irmodel3wm)();
+  virtual _FV3_(~irmodel3wm)();
+  virtual void loadImpulse(const _fv3_float_t * inputL, long size)
     throw(std::bad_alloc);
   virtual void unloadImpulse();
   virtual void resume();
   virtual void suspend();
   virtual void mute();
   virtual void setFragmentSize(long size, long factor);
+
   bool setLFThreadPriority(int priority);
 
  protected:
-  _FV3_(irmodel3w)(const _FV3_(irmodel3w)& x);
-  _FV3_(irmodel3w)& operator=(const _FV3_(irmodel3w)& x);
-  virtual void processZL(_fv3_float_t *inputL, _fv3_float_t *inputR, _fv3_float_t *outputL, _fv3_float_t *outputR,
-			 long numsamples, unsigned options);
+  virtual void processZL(_fv3_float_t *inputL, long numsamples);
   bool validThread;
   _FV3_(lfThreadInfoW) hostThreadData;
   HANDLE lFragmentThreadHandle;
@@ -55,4 +54,34 @@ class _FV3_(irmodel3w) : public _FV3_(irmodel3)
   CRITICAL_SECTION threadSection, mainSection;
   HANDLE event_StartThread, event_ThreadEnded, event_waitfor, event_trigger;
   wchar_t eventName_StartThread[_MAX_PATH], eventName_ThreadEnded[_MAX_PATH];
+
+ private:
+  _FV3_(irmodel3wm)(const _FV3_(irmodel3wm)& x);
+  _FV3_(irmodel3wm)& operator=(const _FV3_(irmodel3wm)& x);
+};
+
+class _FV3_(irmodel3w) : public _FV3_(irmodel3)
+{
+ public:
+  _FV3_(irmodel3w)();
+  virtual _FV3_(~irmodel3w)();
+  virtual void loadImpulse(const _fv3_float_t * inputL, const _fv3_float_t * inputR, long size)
+    throw(std::bad_alloc);
+  virtual void unloadImpulse();
+  virtual void resume();
+  virtual void suspend();
+  virtual void mute();
+  virtual void setFragmentSize(long size, long factor);
+  virtual void setInitialDelay(long numsamples)
+    throw(std::bad_alloc);
+
+  bool setLFThreadPriority(int priority);
+
+ protected:
+  CRITICAL_SECTION mainSection;
+  _FV3_(irmodel3wm) *ir3wmL, *ir3wmR;
+
+ private:
+  _FV3_(irmodel3w)(const _FV3_(irmodel3)& x);
+  _FV3_(irmodel3w)& operator=(const _FV3_(irmodel3)& x);
 };

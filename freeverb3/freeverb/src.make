@@ -1,6 +1,6 @@
 #  freeverb3 Makefile.am
 #
-#  Copyright (C) 2006-2014 Teru Kamogashira
+#  Copyright (C) 2006-2018 Teru Kamogashira
 #
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -62,9 +62,9 @@ FV3_SRC = \
 	../freeverb/irbase.cpp \
 	../freeverb/irbase.hpp \
 	../freeverb/irbase_t.hpp \
-	../freeverb/irmodel.cpp \
-	../freeverb/irmodel.hpp \
-	../freeverb/irmodel_t.hpp \
+	../freeverb/irmodel1.cpp \
+	../freeverb/irmodel1.hpp \
+	../freeverb/irmodel1_t.hpp \
 	../freeverb/irmodel2.cpp \
 	../freeverb/irmodel2.hpp \
 	../freeverb/irmodel2_t.hpp \

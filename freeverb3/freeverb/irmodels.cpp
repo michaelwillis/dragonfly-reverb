@@ -1,7 +1,7 @@
 /**
  *  Impulse Response Processor model implementation
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -47,9 +47,7 @@ void FV3_(irmodels)::loadImpulse(const fv3_float_t * inputL, const fv3_float_t *
   mute();
 }
 
-void FV3_(irmodels)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR,
-				   fv3_float_t *outputL, fv3_float_t *outputR,
-				   long numsamples, unsigned options)
+void FV3_(irmodels)::processreplace(const fv3_float_t *inputL, const fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR, long numsamples)
 {
   if(numsamples <= 0||impulseSize <= 0) return;
   for(long i = 0;i < numsamples;i ++)
@@ -71,19 +69,19 @@ void FV3_(irmodels)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR,
       else
 	current --;
       
-      if((options & FV3_IR_SKIP_FILTER) == 0)
+      if((processoptions & FV3_IR_SKIP_FILTER) == 0)
 	{
 	  L = filter.processL(L);
 	  R = filter.processR(R);
 	}
       
       outputL[i] = outputR[i] = 0;
-      if((options & FV3_IR_MUTE_DRY) == 0)
+      if((processoptions & FV3_IR_MUTE_DRY) == 0)
 	{
 	  outputL[i] += inputL[i]*dry;
 	  outputR[i] += inputR[i]*dry;
 	}
-      if((options & FV3_IR_MUTE_WET) == 0)
+      if((processoptions & FV3_IR_MUTE_WET) == 0)
 	{
 	  outputL[i] += L*wet1L+R*wet2L;
 	  outputR[i] += R*wet1R+L*wet2R;

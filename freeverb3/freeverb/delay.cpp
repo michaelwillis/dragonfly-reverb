@@ -1,7 +1,7 @@
 /**
  *  Simple Delay
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -42,9 +42,6 @@ long FV3_(delay)::getsize()
 void FV3_(delay)::setsize(long size)
                  throw(std::bad_alloc)
 {
-#ifdef DEBUG
-  std::fprintf(stderr, "delay::setsize(%ld)\n", size);
-#endif
   if(size <= 0) return;
   fv3_float_t * new_buffer = NULL;
   try
@@ -143,7 +140,8 @@ void FV3_(delaym)::setsize(long size, long modsize)
 #ifdef DEBUG
   std::fprintf(stderr, "delaym::setsize(%ld,%ld)\n", size, modsize);
 #endif
-  if(size <= 0) return; if(modsize < 0) modsize = 0;
+  if(size <= 0) return;
+  if(modsize < 0) modsize = 0;
   if(modsize > size) modsize = size;
   long newsize = size + modsize;
   fv3_float_t * new_buffer = NULL;

@@ -2,7 +2,7 @@
  *  Comb (delay) filter with LPF
  *
  *  Copyright (C) 2000 Jezar at Dreampoint
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -150,7 +150,8 @@ void FV3_(combm)::setsize(long size, long modsize)
 #ifdef DEBUG
   std::fprintf(stderr, "comb::setsize(%ld,%ld)\n", size, modsize);
 #endif
- if(size <= 0) return; if(modsize < 0) modsize = 0;
+ if(size <= 0) return;
+ if(modsize < 0) modsize = 0;
   if(modsize > size) modsize = size;
   long newsize = size+modsize;
   fv3_float_t * new_buffer = NULL;

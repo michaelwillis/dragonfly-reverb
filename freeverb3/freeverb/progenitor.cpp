@@ -2,7 +2,7 @@
  *  Progenitor reverberator after Griesinger ca.1978.
  *
  *  Copyright (C) 1977-1978 David Griesinger
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by

@@ -2,7 +2,7 @@
  *  Allpass filter
  *
  *  Copyright (C) 2000 Jezar at Dreampoint
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -153,7 +153,8 @@ void FV3_(allpassm)::setsize(long size, long modsize)
 #ifdef DEBUG
   std::fprintf(stderr, "allpassm::setsize(%ld,%ld)\n", size, modsize);
 #endif
-  if(size <= 0) return; if(modsize < 0) modsize = 0;
+  if(size <= 0) return;
+  if(modsize < 0) modsize = 0;
   if(modsize > size) modsize = size;
   long newsize = size + modsize;
   fv3_float_t * new_buffer = NULL;
@@ -319,7 +320,8 @@ void FV3_(allpass3)::setsize(long size1, long size1mod, long size2, long size3)
 #ifdef DEBUG
   std::fprintf(stderr, "allpass3::setsize(%ld,%ld,%ld,%ld)\n", size1, size1mod, size2, size3);
 #endif
-  if(size1 <= 0||size2 <= 0||size3 <= 0) return; if(size1mod < 0) size1mod = 0;
+  if(size1 <= 0||size2 <= 0||size3 <= 0) return;
+  if(size1mod < 0) size1mod = 0;
   if(size1mod > size1) size1mod = size1;
   this->free();
   try

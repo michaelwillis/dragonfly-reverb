@@ -1,7 +1,7 @@
 /**
  *  Impulse Response Processor model implementation
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,30 +18,36 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+class _FV3_(irmodel2zlm) : public _FV3_(irmodel2m)
+{
+ public:
+  _FV3_(irmodel2zlm)();
+  virtual _FV3_(~irmodel2zlm)();
+  virtual void loadImpulse(const _fv3_float_t * inputL, long size)
+    throw(std::bad_alloc);
+  virtual void unloadImpulse();
+  virtual void processreplace(_fv3_float_t *inputL, long numsamples);
+  virtual void mute();
+
+ protected:
+  void processZL(_fv3_float_t *inputL, _fv3_float_t *outputL, long numsamples);
+  long ZLstart;
+  _FV3_(slot) zlFrameSlot, zlOnlySlot;
+  
+ private:
+  _FV3_(irmodel2zlm)(const _FV3_(irmodel2zlm)& x);
+  _FV3_(irmodel2zlm)& operator=(const _FV3_(irmodel2zlm)& x);
+};
+
 class _FV3_(irmodel2zl) : public _FV3_(irmodel2)
 {
  public:
   _FV3_(irmodel2zl)();
   virtual _FV3_(~irmodel2zl)();
-  virtual void processreplace(_fv3_float_t *inputL, _fv3_float_t *inputR,
-			      _fv3_float_t *outputL, _fv3_float_t *outputR,
-			      long numsamples, unsigned options);
-  virtual void mute();
-  virtual void setInitialDelay(long numsamples)
+  virtual void loadImpulse(const _fv3_float_t * inputL, const _fv3_float_t * inputR, long size)
     throw(std::bad_alloc);
-  virtual long getLatency();
-  
- protected:
-  virtual void allocSwap(long numsaples) throw(std::bad_alloc);
-  virtual void freeSwap();
-  long ZLstart;
-  _FV3_(slot) zlFrameSlot, zlOnlySlot;
-  _FV3_(delay) ZLdelayL, ZLdelayR, ZLdelayWL, ZLdelayWR;
   
  private:
   _FV3_(irmodel2zl)(const _FV3_(irmodel2zl)& x);
   _FV3_(irmodel2zl)& operator=(const _FV3_(irmodel2zl)& x);
-  void processZL(_fv3_float_t *inputL, _fv3_float_t *inputR,
-		 _fv3_float_t *outputL, _fv3_float_t *outputR,
-		 long numsamples, unsigned options);
 };

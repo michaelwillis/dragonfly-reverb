@@ -1,7 +1,7 @@
 /**
  *  Utility
  *
- *  Copyright (C) 2006-2014 Teru Kamogashira
+ *  Copyright (C) 2006-2018 Teru Kamogashira
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -95,8 +95,7 @@ void FV3_(utils)::aligned_free(void *ptr)
 uint16_t FV3_(utils)::getX87CW()
 {
   uint16_t x87cw = 0;
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
+#if defined(ENABLE_X86SIMD)
   __asm__ __volatile__ ("fstcw %0" : "=m" (x87cw));
 #endif
   return x87cw;
@@ -104,8 +103,7 @@ uint16_t FV3_(utils)::getX87CW()
 
 void FV3_(utils)::setX87CW(uint16_t cw)
 {
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
+#if defined(ENABLE_X86SIMD)
   __asm__  __volatile__ ("fldcw %0" : : "m"(cw));
 #endif
 }
@@ -113,9 +111,8 @@ void FV3_(utils)::setX87CW(uint16_t cw)
 uint32_t FV3_(utils)::getMXCSR()
 {
   uint32_t mxcsr = 0;
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
-  if(getSIMDFlag()&FV3_FLAG_SSE)
+#if defined(ENABLE_X86SIMD)
+  if(getSIMDFlag()&FV3_X86SIMD_FLAG_SSE)
     {
       __asm__ __volatile__ ("stmxcsr %0" : "=m" (mxcsr));
     }
@@ -126,9 +123,8 @@ uint32_t FV3_(utils)::getMXCSR()
 uint32_t FV3_(utils)::getMXCSR_MASK()
 {
   uint32_t mxcsr_mask = 0;
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
-  if(getSIMDFlag()&FV3_FLAG_SSE)
+#if defined(ENABLE_X86SIMD)
+  if(getSIMDFlag()&FV3_X86SIMD_FLAG_SSE)
     {
       unsigned char * fxsave_s = NULL;
       fxsave_s = (unsigned char *)aligned_malloc(512, FV3_PTR_ALIGN_BYTE);
@@ -145,9 +141,8 @@ uint32_t FV3_(utils)::getMXCSR_MASK()
 
 void FV3_(utils)::setMXCSR(uint32_t mxcsr)
 {
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
-  if(getSIMDFlag()&FV3_FLAG_SSE)
+#if defined(ENABLE_X86SIMD)
+  if(getSIMDFlag()&FV3_X86SIMD_FLAG_SSE)
     {
       mxcsr &= getMXCSR_MASK();
       __asm__  __volatile__ ("ldmxcsr %0" : : "m"(mxcsr));
@@ -157,21 +152,21 @@ void FV3_(utils)::setMXCSR(uint32_t mxcsr)
 
 void FV3_(utils)::XGETBV(uint32_t op, uint32_t * _eax, uint32_t *_edx)
 {
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
+#if defined(ENABLE_X86SIMD)
+#if __GNUC__ > 4 || __GNUC__ == 4 && __GNUC_MINOR__ >= 4
   uint32_t j[5] = {0,0,0,0,0,};
   cpuid(0x1,&j[1],&j[2],&j[3],&j[4]);
-  if((j[3] & (FV3_FLAG_OSXSAVE)) == (FV3_FLAG_OSXSAVE))
+  if((j[3] & (FV3_X86SIMD_CPUID_OSXSAVE)) == (FV3_X86SIMD_CPUID_OSXSAVE))
     {
       __asm__ __volatile__ ("xgetbv" : "=a" (*_eax), "=d" (*_edx) : "c" (op) :);
     }
+#endif
 #endif
 }
 
 void FV3_(utils)::cpuid(uint32_t op, uint32_t *out_eax, uint32_t *out_ebx, uint32_t *out_ecx, uint32_t *out_edx)
 {
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
+#if defined(ENABLE_X86SIMD)
   uint32_t c_eax, c_ebx, c_ecx, c_edx;
 #if defined(__amd64__)||defined(__x86_64__)
   __asm__ __volatile__("cpuid\n\t"
@@ -188,30 +183,51 @@ void FV3_(utils)::cpuid(uint32_t op, uint32_t *out_eax, uint32_t *out_ebx, uint3
 
 uint32_t FV3_(utils)::getSIMDFlag()
 {
-  uint32_t simdFlag = FV3_FLAG_NULL;
-#if defined(ENABLE_SSE)||defined(ENABLE_SSE_V2)||defined(ENABLE_SSE2)||defined(ENABLE_SSE3)||defined(ENABLE_SSE4) \
-  ||defined(ENABLE_AVX)||defined(ENABLE_XOP)||defined(ENABLE_FMA3)||defined(ENABLE_FMA4)
+  uint32_t simdFlag = FV3_X86SIMD_FLAG_FPU;
+#if defined(ENABLE_X86SIMD)
   uint32_t j[5];
   memset(j,0,sizeof(uint32_t)*5);
   cpuid(0x80000001,&j[1],&j[2],&j[3],&j[4]);
-  if(((j[4] & (FV3_FLAG_3DNOW)) == (FV3_FLAG_3DNOW))&&((j[3] & (FV3_FLAG_3DNOW_PREF)) == (FV3_FLAG_3DNOW_PREF)))
+  if((j[4] & FV3_X86SIMD_CPUID_3DNOW)&&
+     (j[3] & FV3_X86SIMD_CPUID_3DNOW_PREF))
     {
-      simdFlag |= FV3_FLAG_3DNOW;
+      simdFlag |= FV3_X86SIMD_FLAG_3DNOWP;
     }
+
   memset(j,0,sizeof(uint32_t)*5);
   cpuid(0x1,&j[1],&j[2],&j[3],&j[4]);
-  simdFlag |= (j[4] & (FV3_FLAG_SSE|FV3_FLAG_SSE2));
-  simdFlag |= (j[3] & (FV3_FLAG_SSE3|FV3_FLAG_SSE4_1));
-  if((j[3] & (FV3_FLAG_OSXSAVE|FV3_FLAG_AVX)) == (FV3_FLAG_OSXSAVE|FV3_FLAG_AVX))
+  if(j[4] & FV3_X86SIMD_CPUID_SSE)
+    {
+      simdFlag |= FV3_X86SIMD_FLAG_SSE;
+    }
+  if(j[4] & FV3_X86SIMD_CPUID_SSE2)
+    {
+      simdFlag |= FV3_X86SIMD_FLAG_SSE2;
+    }
+  if(j[3] & FV3_X86SIMD_CPUID_SSE3)
+    {
+      simdFlag |= FV3_X86SIMD_FLAG_SSE3;
+    }
+  if(j[3] & FV3_X86SIMD_CPUID_SSE4_1)
+    {
+      simdFlag |= FV3_X86SIMD_FLAG_SSE4_1;
+    }
+  if((j[3] & (FV3_X86SIMD_CPUID_OSXSAVE|FV3_X86SIMD_CPUID_AVX)) == (FV3_X86SIMD_CPUID_OSXSAVE|FV3_X86SIMD_CPUID_AVX))
     {
       uint32_t k[2] = {0,0,};
       XGETBV(0, &k[0], &k[1]);
       if((k[0] & 0x6) == 0x6)
 	{
-	  simdFlag |= FV3_FLAG_AVX;
-	  simdFlag |= (j[3] & (FV3_FLAG_FMA3));
+	  simdFlag |= FV3_X86SIMD_FLAG_AVX;
+	  if(j[3] & FV3_X86SIMD_CPUID_FMA3)
+	    {
+	      simdFlag |= FV3_X86SIMD_FLAG_FMA3;
+	    }
 	  cpuid(0x80000001,&j[1],&j[2],&j[3],&j[4]);
-	  simdFlag |= (j[3] & (FV3_FLAG_FMA4));
+	  if(j[3] & FV3_X86SIMD_CPUID_FMA4)
+	    {
+	      simdFlag |= FV3_X86SIMD_FLAG_FMA4;
+	    }
 	}
     }
 #endif
