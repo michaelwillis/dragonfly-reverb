@@ -30,7 +30,7 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[] = {20, 108, 195};
+static const int knobx[] = {20, 108, 196, 240};
 static const int knoby[] = {25, 135, 245};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -43,6 +43,30 @@ DragonflyReverbUI::DragonflyReverbUI()
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
+
+  fKnobWidth = new ImageKnob ( this,
+                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
+  fKnobWidth->setId ( paramWidth );
+  fKnobWidth->setAbsolutePos ( knobx[3], knoby[0] );
+  fKnobWidth->setRange ( params[paramWidth].range_min, params[paramWidth].range_max );
+  fKnobWidth->setRotationAngle ( 300 );
+  fKnobWidth->setCallback ( this );
+
+  fKnobSpin = new ImageKnob ( this,
+                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
+  fKnobSpin->setId ( paramSpin );
+  fKnobSpin->setAbsolutePos ( knobx[3], knoby[1] );
+  fKnobSpin->setRange ( params[paramSpin].range_min, params[paramSpin].range_max );
+  fKnobSpin->setRotationAngle ( 300 );
+  fKnobSpin->setCallback ( this );
+
+  fKnobWander = new ImageKnob ( this,
+                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
+  fKnobWander->setId ( paramWander );
+  fKnobWander->setAbsolutePos ( knobx[3], knoby[2] );
+  fKnobWander->setRange ( params[paramWander].range_min, params[paramWander].range_max );
+  fKnobWander->setRotationAngle ( 300 );
+  fKnobWander->setCallback ( this );
 
   fKnobSize = new ImageKnob ( this,
                               Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
@@ -247,6 +271,17 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
       fKnobHigh_mult->setValue ( value );
       break;
 
+    case paramWidth:
+      fKnobHigh_cut->setValue ( value );
+      break;
+
+    case paramSpin:
+      fKnobHigh_xover->setValue ( value );
+      break;
+
+    case paramWander:
+      fKnobHigh_mult->setValue ( value );
+      break;
     }
 
     spectrogram->setParameterValue(index, value);
@@ -305,6 +340,9 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
   fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
   fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
+  fKnobWidth->setValue ( preset[paramWidth] );
+  fKnobSpin->setValue ( preset[paramSpin] );
+  fKnobWander->setValue ( preset[paramWander] );
   for ( uint32_t i = 0; i < paramCount; i++ ) {
     setParameterValue ( i, preset[i] );
     spectrogram->setParameterValue(i, preset[i]);
