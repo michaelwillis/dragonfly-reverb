@@ -22,6 +22,7 @@ OBJS_UI  = \
 	NotoSans_Regular.ttf.cpp.o \
 	DragonflyReverbDSP.cpp.o \
 	Spectrogram.cpp.o \
+	LabelledKnob.cpp.o \
 	fft.c.o
 
 # --------------------------------------------------------------
