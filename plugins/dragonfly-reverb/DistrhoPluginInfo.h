@@ -43,12 +43,12 @@ enum Parameters
     paramWidth,
     paramPredelay,
     paramDiffuse,
-    paramLow_cut,
-    paramLow_xover,
-    paramLow_mult,
-    paramHigh_cut,
-    paramHigh_xover,
-    paramHigh_mult,
+    paramLowCut,
+    paramLowXover,
+    paramLowMult,
+    paramHighCut,
+    paramHighXover,
+    paramHighMult,
     paramSpin,
     paramWander,
     paramCount
@@ -63,21 +63,21 @@ typedef struct {
 } Param;
 
 static Param params[paramCount] = {
-  {"Dry Level",       "dry_level",    0.0f,   100.0f,   "%"},
-  {"Early Level",     "early_level",  0.0f,   100.0f,   "%"},
-  {"Late Level",      "late_level",   0.0f,   100.0f,   "%"},
-  {"Size",            "size",        10.0f,    60.0f,   "m"},
-  {"Width",           "width",       50.0f,   150.0f,   "%"},
-  {"Predelay",        "delay",        0.0f,   100.0f,  "ms"},
-  {"Diffuse",         "diffuse",      0.0f,   100.0f,   "%"},
-  {"Low Cut",         "low_cut",      0.0f,   100.0f,  "Hz"},
-  {"Low Crossover",   "low_xo",     200.0f,  1200.0f,  "Hz"},
-  {"Low Decay Mult",  "low_mult",     0.5f,     2.5f,   "X"},
-  {"High Cut",        "high_cut",     0.0f, 20000.0f,  "Hz"},
-  {"High Crossover",  "high_xo",      0.0f, 20000.0f,  "Hz"},
-  {"High Decay Mult", "high_mult",    0.2f,     1.2f,   "X"},
-  {"Spin",            "spin",         1.0f,     5.0f,  "Hz"},
-  {"Wander",          "wander",       5.0f,    25.0f,  "ms"}
+  {"Dry Level",   "dry_level",    0.0f,   100.0f,   "%"},
+  {"Early Level", "early_level",  0.0f,   100.0f,   "%"},
+  {"Late Level",  "late_level",   0.0f,   100.0f,   "%"},
+  {"Size",        "size",        10.0f,    60.0f,   "m"},
+  {"Width",       "width",       50.0f,   150.0f,   "%"},
+  {"Predelay",    "delay",        0.0f,   100.0f,  "ms"},
+  {"Diffuse",     "diffuse",      0.0f,   100.0f,   "%"},
+  {"Low Cut",     "low_cut",      0.0f,   100.0f,  "Hz"},
+  {"Low Cross",   "low_xo",     200.0f,  1200.0f,  "Hz"},
+  {"Low Mult",    "low_mult",     0.5f,     2.5f,   "X"},
+  {"High Cut",    "high_cut",     0.0f, 20000.0f,  "Hz"},
+  {"High Cross",  "high_xo",      0.0f, 20000.0f,  "Hz"},
+  {"High Mult",   "high_mult",    0.2f,     1.2f,   "X"},
+  {"Spin",        "spin",         1.0f,     5.0f,  "Hz"},
+  {"Wander",      "wander",       5.0f,    25.0f,  "ms"}
 };
 
 typedef struct {

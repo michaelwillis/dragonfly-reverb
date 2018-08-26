@@ -74,14 +74,14 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case      paramPredelay: late.setPreDelay   (value);         break;
         case       paramDiffuse: late.setidiffusion1(value / 140.0);
                                  late.setapfeedback (value / 140.0);
-        case       paramLow_cut: early.setoutputhpf (value);
+        case       paramLowCut:  early.setoutputhpf (value);
                                  late.setoutputhpf  (value);         break;
-        case     paramLow_xover: late.setxover_low  (value);         break;
-        case      paramLow_mult: late.setrt60_factor_low(value);     break;
-        case      paramHigh_cut: early.setoutputlpf (value);
+        case     paramLowXover:  late.setxover_low  (value);         break;
+        case      paramLowMult:  late.setrt60_factor_low(value);     break;
+        case      paramHighCut:  early.setoutputlpf (value);
                                  late.setoutputlpf  (value);         break;
-        case    paramHigh_xover: late.setxover_high (value);         break;
-        case     paramHigh_mult: late.setrt60_factor_high(value);    break;
+        case    paramHighXover:  late.setxover_high (value);         break;
+        case     paramHighMult:  late.setrt60_factor_high(value);    break;
         case          paramSpin: late.setspin(value);                break;
         case        paramWander: late.setwander(value);              break;
       }

@@ -25,7 +25,13 @@
 class LabelledKnob : public Widget
 {
 public:
-  LabelledKnob(Widget* parent, ImageKnob::Callback *callback, NanoVG *fNanoText, uint id, int x, int y);
+  LabelledKnob(
+    Widget* parent,
+    ImageKnob::Callback *callback,
+    NanoVG *nanoText,
+    uint id,
+    char *numberFormat,
+    int x, int y);
   float getValue() const noexcept;
   void setValue(float value);
 
@@ -33,8 +39,9 @@ protected:
   void onDisplay() override;
 
 private:
-  ScopedPointer<ImageKnob> fKnob;
   NanoVG *fNanoText;
+  char *fNumberFormat;
+  ScopedPointer<ImageKnob> fKnob;
 };
 
 #endif

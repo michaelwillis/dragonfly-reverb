@@ -6,7 +6,7 @@
 namespace DragonflyReverbArtwork
 {
     extern const char* backgroundData;
-    const unsigned int backgroundDataSize = 876150;
+    const unsigned int backgroundDataSize = 1293600;
     const unsigned int backgroundWidth    = 980;
     const unsigned int backgroundHeight   = 330;
 
@@ -32,3 +32,4 @@ namespace DragonflyReverbArtwork
 }
 
 #endif // BINARY_DRAGONFLYREVERBARTWORK_HPP
+

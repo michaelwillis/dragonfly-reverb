@@ -22,6 +22,7 @@
 #include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
 #include "Spectrogram.hpp"
+#include "LabelledKnob.hpp"
 
 START_NAMESPACE_DISTRHO
 
@@ -29,7 +30,6 @@ START_NAMESPACE_DISTRHO
 
 class DragonflyReverbUI : public UI,
 		 public ImageKnob::Callback,
-//		 public ImageSwitch::Callback,
 		 public ImageSlider::Callback
 {
 public:
@@ -61,7 +61,7 @@ private:
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 
-    ScopedPointer<ImageKnob> fKnobWidth, fKnobSpin, fKnobWander, fKnobSize, fKnobPredelay, fKnobDiffuse, fKnobLow_cut, fKnobLow_xover, fKnobLow_mult, fKnobHigh_cut, fKnobHigh_xover, fKnobHigh_mult;
+    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobSpin, fKnobWander, fKnobPredelay, fKnobDiffuse, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     ScopedPointer<Spectrogram> spectrogram;

@@ -21,18 +21,19 @@
 
 namespace Art = DragonflyReverbArtwork;
 
-LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG *nanoText, uint id, int x, int y)
+LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG *nanoText, uint id, char * numberFormat, int x, int y)
     : Widget(widget->getParentWindow())
 {
-  setWidth(Art::knobWidth);
-  setHeight(Art::knobHeight + 20);
+  setWidth(Art::knobWidth + 20);
+  setHeight(Art::knobHeight + 28);
   setAbsolutePos(x, y);
 
+  fNumberFormat = numberFormat;
   fNanoText = nanoText;
 
   fKnob = new ImageKnob(this, Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ));
   fKnob->setId(id);
-  fKnob->setAbsolutePos(x, y + 10);
+  fKnob->setAbsolutePos(x + 10, y + 12);
   fKnob->setRange(params[id].range_min, params[id].range_max);
   fKnob->setRotationAngle(300);
   fKnob->setCallback(callback);
@@ -56,16 +57,22 @@ void LabelledKnob::onDisplay()
   b = 255.0f / 256;
 
   fNanoText->beginFrame ( this );
-  fNanoText->fontSize ( 16 );
   fNanoText->textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
+  fNanoText->fontSize ( 18 );
   fNanoText->fillColor ( Color ( r, g, b ) );
-  fNanoText->textBox ( 0, 5, 60.0f, params[fKnob->getId()].name, nullptr );
+  fNanoText->textBox ( 0, 8, getWidth(), params[fKnob->getId()].name, nullptr );
 
   char strBuf[32+1];
   strBuf[32] = '\0';
-  std::snprintf ( strBuf, 32, " %4.2f m", fKnob->getValue() );
-  fNanoText->textBox ( 0, getHeight() - 5, 60.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, fNumberFormat, fKnob->getValue() );
+
+  r = 230.0f / 256;
+  g = 230.0f / 256;
+  b = 230.0f / 256;
+  fNanoText->fontSize ( 16 );
+  fNanoText->fillColor ( Color ( r, g, b ) );
+  fNanoText->textBox ( 0, getHeight() - 8, getWidth(), strBuf, nullptr );
 
   fNanoText->endFrame();
 }

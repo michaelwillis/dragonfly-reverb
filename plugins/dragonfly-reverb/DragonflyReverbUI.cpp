@@ -30,13 +30,13 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[] = {20, 108, 196, 240};
-static const int knoby[] = {25, 135, 245};
+static const int knobx[]  = {144, 710, 796, 884};
+static const int knoby[]  = {12,  122, 232};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGR ),
+    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR )
 {
@@ -44,101 +44,18 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobWidth = new ImageKnob ( this,
-                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobWidth->setId ( paramWidth );
-  fKnobWidth->setAbsolutePos ( knobx[3], knoby[0] );
-  fKnobWidth->setRange ( params[paramWidth].range_min, params[paramWidth].range_max );
-  fKnobWidth->setRotationAngle ( 300 );
-  fKnobWidth->setCallback ( this );
-
-  fKnobSpin = new ImageKnob ( this,
-                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobSpin->setId ( paramSpin );
-  fKnobSpin->setAbsolutePos ( knobx[3], knoby[1] );
-  fKnobSpin->setRange ( params[paramSpin].range_min, params[paramSpin].range_max );
-  fKnobSpin->setRotationAngle ( 300 );
-  fKnobSpin->setCallback ( this );
-
-  fKnobWander = new ImageKnob ( this,
-                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobWander->setId ( paramWander );
-  fKnobWander->setAbsolutePos ( knobx[3], knoby[2] );
-  fKnobWander->setRange ( params[paramWander].range_min, params[paramWander].range_max );
-  fKnobWander->setRotationAngle ( 300 );
-  fKnobWander->setCallback ( this );
-
-  fKnobSize = new ImageKnob ( this,
-                              Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobSize->setId ( paramSize );
-  fKnobSize->setAbsolutePos ( knobx[1], knoby[0] );
-  fKnobSize->setRange ( params[paramSize].range_min, params[paramSize].range_max );
-  fKnobSize->setRotationAngle ( 300 );
-  fKnobSize->setCallback ( this );
-
-  fKnobPredelay = new ImageKnob ( this,
-                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobPredelay->setId ( paramPredelay );
-  fKnobPredelay->setAbsolutePos ( knobx[0], knoby[0] );
-  fKnobPredelay->setRange ( params[paramPredelay].range_min, params[paramPredelay].range_max );
-  fKnobPredelay->setRotationAngle ( 300 );
-  fKnobPredelay->setCallback ( this );
-
-  fKnobDiffuse = new ImageKnob ( this,
-                                 Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobDiffuse->setId ( paramDiffuse );
-  fKnobDiffuse->setAbsolutePos ( knobx[2], knoby[0] );
-  fKnobDiffuse->setRange ( params[paramDiffuse].range_min, params[paramDiffuse].range_max );
-  fKnobDiffuse->setRotationAngle ( 300 );
-  fKnobDiffuse->setCallback ( this );
-
-  fKnobLow_cut = new ImageKnob ( this,
-                                 Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobLow_cut->setId ( paramLow_cut );
-  fKnobLow_cut->setAbsolutePos ( knobx[0], knoby[2] );
-  fKnobLow_cut->setRange ( params[paramLow_cut].range_min, params[paramLow_cut].range_max );
-  fKnobLow_cut->setRotationAngle ( 300 );
-  fKnobLow_cut->setCallback ( this );
-
-  fKnobLow_xover = new ImageKnob ( this,
-                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobLow_xover->setId ( paramLow_xover );
-  fKnobLow_xover->setAbsolutePos ( knobx[1], knoby[2] );
-  fKnobLow_xover->setRange ( params[paramLow_xover].range_min, params[paramLow_xover].range_max );
-  fKnobLow_xover->setRotationAngle ( 300 );
-  fKnobLow_xover->setCallback ( this );
-
-  fKnobLow_mult = new ImageKnob ( this,
-                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobLow_mult->setId ( paramLow_mult );
-  fKnobLow_mult->setAbsolutePos ( knobx[2], knoby[2] );
-  fKnobLow_mult->setRange ( params[paramLow_mult].range_min, params[paramLow_mult].range_max );
-  fKnobLow_mult->setRotationAngle ( 300 );
-  fKnobLow_mult->setCallback ( this );
-
-  fKnobHigh_cut = new ImageKnob ( this,
-                                  Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobHigh_cut->setId ( paramHigh_cut );
-  fKnobHigh_cut->setAbsolutePos ( knobx[0], knoby[1] );
-  fKnobHigh_cut->setRange ( params[paramHigh_cut].range_min, params[paramHigh_cut].range_max );
-  fKnobHigh_cut->setRotationAngle ( 300 );
-  fKnobHigh_cut->setCallback ( this );
-
-  fKnobHigh_xover = new ImageKnob ( this,
-                                    Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobHigh_xover->setId ( paramHigh_xover );
-  fKnobHigh_xover->setAbsolutePos ( knobx[1], knoby[1] );
-  fKnobHigh_xover->setRange ( params[paramHigh_xover].range_min, params[paramHigh_xover].range_max );
-  fKnobHigh_xover->setRotationAngle ( 300 );
-  fKnobHigh_xover->setCallback ( this );
-
-  fKnobHigh_mult = new ImageKnob ( this,
-                                   Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ) );
-  fKnobHigh_mult->setId ( paramHigh_mult );
-  fKnobHigh_mult->setAbsolutePos ( knobx[2], knoby[1] );
-  fKnobHigh_mult->setRange ( params[paramHigh_mult].range_min, params[paramHigh_mult].range_max );
-  fKnobHigh_mult->setRotationAngle ( 300 );
-  fKnobHigh_mult->setCallback ( this );
+  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.2f m",  knobx[0], knoby[0]);
+  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.2f %%", knobx[3], knoby[0]);
+  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.1f Hz", knobx[3], knoby[1]);
+  fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.1f ms", knobx[3], knoby[2]);
+  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%4.2f ms", knobx[1], knoby[0]);
+  fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.1f %%", knobx[2], knoby[0]);
+  fKnobLowCut    = new LabelledKnob (this, this, &fNanoText, paramLowCut,    "%4.1f Hz", knobx[0], knoby[2]);
+  fKnobLowXover  = new LabelledKnob (this, this, &fNanoText, paramLowXover,  "%4.1f Hz", knobx[1], knoby[2]);
+  fKnobLowMult   = new LabelledKnob (this, this, &fNanoText, paramLowMult,   "%2.2f X",  knobx[2], knoby[2]);
+  fKnobHighCut   = new LabelledKnob (this, this, &fNanoText, paramHighCut,   "%5.0f Hz", knobx[0], knoby[1]);
+  fKnobHighXover = new LabelledKnob (this, this, &fNanoText, paramHighXover, "%5.0f Hz", knobx[1], knoby[1]);
+  fKnobHighMult  = new LabelledKnob (this, this, &fNanoText, paramHighMult,  "%2.2f X",  knobx[2], knoby[1]);
 
   // sliders
 
@@ -146,8 +63,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level = new ImageSlider ( this,
                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
-  fSliderDry_level->setStartPos ( 760, 32 );
-  fSliderDry_level->setEndPos ( 760, 300 );
+  fSliderDry_level->setStartPos ( 17, 102 );
+  fSliderDry_level->setEndPos ( 17, 302 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
   fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
@@ -155,8 +72,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level = new ImageSlider ( this,
                                          Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarly_level->setId ( paramEarly_level );
-  fSliderEarly_level->setStartPos ( 800, 32 );
-  fSliderEarly_level->setEndPos ( 800, 300 );
+  fSliderEarly_level->setStartPos ( 57, 102 );
+  fSliderEarly_level->setEndPos ( 57, 302 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
   fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
@@ -164,8 +81,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level = new ImageSlider ( this,
                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderLate_level->setId ( paramLate_level );
-  fSliderLate_level->setStartPos ( 840, 32 );
-  fSliderLate_level->setEndPos ( 840, 300 );
+  fSliderLate_level->setStartPos ( 97, 102 );
+  fSliderLate_level->setEndPos ( 97, 302 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
@@ -179,11 +96,11 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectTabAbout.setSize ( Art::tab_onWidth, Art::tab_onHeight );
 
   // rectangles for display
-  rectDisplay.setPos ( 285,110 );
+  rectDisplay.setPos ( 245,110 );
   rectDisplay.setSize ( 450,210 );
 
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
-  spectrogram->setAbsolutePos (285, 110);
+  spectrogram->setAbsolutePos (245, 110);
 
   // rectangles for programs
   for ( int i = 0; i < 3; ++i ) // 3 columns
@@ -203,12 +120,12 @@ DragonflyReverbUI::DragonflyReverbUI()
     }
 
   // rectangles for sliders
-  rectSliders[0].setPos ( 762,32 );
-  rectSliders[0].setSize ( 26,271 );
-  rectSliders[1].setPos ( 802,32 );
-  rectSliders[1].setSize ( 26,271 );
-  rectSliders[2].setPos ( 842,32 );
-  rectSliders[2].setSize ( 26,271 );
+  rectSliders[0].setPos ( 17,102 );
+  rectSliders[0].setSize ( 26,200 );
+  rectSliders[1].setPos ( 57,102 );
+  rectSliders[1].setSize ( 26,200 );
+  rectSliders[2].setPos ( 97,102 );
+  rectSliders[2].setSize ( 26,200 );
 }
 
 /**
@@ -247,40 +164,40 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
       fKnobDiffuse->setValue ( value );
       break;
 
-    case paramLow_cut:
-      fKnobLow_cut->setValue ( value );
+    case paramLowCut:
+      fKnobLowCut->setValue ( value );
       break;
 
-    case paramLow_xover:
-      fKnobLow_xover->setValue ( value );
+    case paramLowXover:
+      fKnobLowXover->setValue ( value );
       break;
 
-    case paramLow_mult:
-      fKnobLow_mult->setValue ( value );
+    case paramLowMult:
+      fKnobLowMult->setValue ( value );
       break;
 
-    case paramHigh_cut:
-      fKnobHigh_cut->setValue ( value );
+    case paramHighCut:
+      fKnobHighCut->setValue ( value );
       break;
 
-    case paramHigh_xover:
-      fKnobHigh_xover->setValue ( value );
+    case paramHighXover:
+      fKnobHighXover->setValue ( value );
       break;
 
-    case paramHigh_mult:
-      fKnobHigh_mult->setValue ( value );
+    case paramHighMult:
+      fKnobHighMult->setValue ( value );
       break;
 
     case paramWidth:
-      fKnobHigh_cut->setValue ( value );
+      fKnobHighCut->setValue ( value );
       break;
 
     case paramSpin:
-      fKnobHigh_xover->setValue ( value );
+      fKnobHighXover->setValue ( value );
       break;
 
     case paramWander:
-      fKnobHigh_mult->setValue ( value );
+      fKnobHighMult->setValue ( value );
       break;
     }
 
@@ -334,12 +251,12 @@ void DragonflyReverbUI::programLoaded ( uint32_t index )
   fKnobSize->setValue ( preset[paramSize] );
   fKnobPredelay->setValue ( preset[paramPredelay] );
   fKnobDiffuse->setValue ( preset[paramDiffuse] );
-  fKnobLow_cut->setValue ( preset[paramLow_cut] );
-  fKnobLow_xover->setValue ( preset[paramLow_xover] );
-  fKnobLow_mult->setValue ( preset[paramLow_mult] );
-  fKnobHigh_cut->setValue ( preset[paramHigh_cut] );
-  fKnobHigh_xover->setValue ( preset[paramHigh_xover] );
-  fKnobHigh_mult->setValue ( preset[paramHigh_mult] );
+  fKnobLowCut->setValue ( preset[paramLowCut] );
+  fKnobLowXover->setValue ( preset[paramLowXover] );
+  fKnobLowMult->setValue ( preset[paramLowMult] );
+  fKnobHighCut->setValue ( preset[paramHighCut] );
+  fKnobHighXover->setValue ( preset[paramHighXover] );
+  fKnobHighMult->setValue ( preset[paramHighMult] );
   fKnobWidth->setValue ( preset[paramWidth] );
   fKnobSpin->setValue ( preset[paramSpin] );
   fKnobWander->setValue ( preset[paramWander] );
@@ -444,35 +361,12 @@ void DragonflyReverbUI::onDisplay()
   float xstart = 20.0f, ystart= 92.0f;
   float xoffset = 88.0f, yoffset = 110.0f;
 
-
-  std::snprintf ( strBuf, 32, "%4.2f ms", fKnobPredelay->getValue() );
-  fNanoText.textBox ( xstart             , ystart , 60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%i Hz", int ( fKnobHigh_cut->getValue() ) );
-  fNanoText.textBox ( xstart             , ystart + yoffset ,60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%4.2f Hz", fKnobLow_cut->getValue() );
-  fNanoText.textBox ( xstart             , ystart + yoffset*2 ,60.0f, strBuf, nullptr );
-
-  std::snprintf ( strBuf, 32, " %4.2f m", fKnobSize->getValue() );
-  fNanoText.textBox ( xstart + xoffset   , ystart , 60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, " %i Hz", int ( fKnobHigh_xover->getValue() ) );
-  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset, 60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%4.2f Hz", fKnobLow_xover->getValue() );
-  fNanoText.textBox ( xstart + xoffset   , ystart + yoffset*2, 65.0f, strBuf, nullptr );
-
-
-  std::snprintf ( strBuf, 32, "%i %%", int ( fKnobDiffuse->getValue() ) );
-  fNanoText.textBox ( xstart  + xoffset*2 , ystart , 60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%4.2f X", fKnobHigh_mult->getValue() );
-  fNanoText.textBox ( xstart  + xoffset*2 , ystart + yoffset, 60.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%4.2f X", fKnobLow_mult->getValue() );
-  fNanoText.textBox ( xstart  + xoffset*2 , ystart + yoffset*2, 60.0f, strBuf, nullptr );
-
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderDry_level->getValue() ) );
-  fNanoText.textBox ( 760 - 2  , 314 , 35.0f, strBuf, nullptr );
+  fNanoText.textBox ( 17 - 2  , 314 , 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderEarly_level->getValue() ) );
-  fNanoText.textBox ( 800 - 2, 314, 35.0f, strBuf, nullptr );
+  fNanoText.textBox ( 57 - 2, 314, 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderLate_level->getValue() ) );
-  fNanoText.textBox ( 840 - 2, 314 , 35.0f, strBuf, nullptr );
+  fNanoText.textBox ( 97 - 2, 314 , 35.0f, strBuf, nullptr );
 
   // print lables;
   r = 205.0f / 256;
@@ -480,23 +374,11 @@ void DragonflyReverbUI::onDisplay()
   b = 255.0f / 256;
   fNanoText.fillColor ( Color ( r, g, b ) );
   fNanoText.fontSize ( 18 );
-  int labelX[6]= {20,105,194,760,800,840};
-  int labelY[4]= {18,128,238,20};
-  float labelWidth = 65.0f;
-  fNanoText.textBox ( labelX[0], labelY[0] , labelWidth, "Pre-Delay", nullptr );
-  fNanoText.textBox ( labelX[1], labelY[0] , labelWidth, "Size", nullptr );
-  fNanoText.textBox ( labelX[2], labelY[0] , labelWidth, "Diffuse", nullptr );
-  fNanoText.textBox ( labelX[0], labelY[1] , labelWidth, "High Cut", nullptr );
-  fNanoText.textBox ( labelX[1], labelY[1] , labelWidth, "High Cross", nullptr );
-  fNanoText.textBox ( labelX[2], labelY[1] , labelWidth, "High Multi", nullptr );
-  fNanoText.textBox ( labelX[0], labelY[2] , labelWidth, "Low Cut", nullptr );
-  fNanoText.textBox ( labelX[1], labelY[2] , labelWidth, "Low Cross", nullptr );
-  fNanoText.textBox ( labelX[2], labelY[2] , labelWidth, "Low Multi", nullptr );
-  fNanoText.textBox ( labelX[3], labelY[3] , 30 , "Dry", nullptr );
-  fNanoText.textBox ( labelX[4], labelY[3] , 30, "Early", nullptr );
-  fNanoText.textBox ( labelX[5], labelY[3] , 30, "Late", nullptr );
 
-  //fNanoText.textBox( 325 , 90 , 30, "Repsonse", nullptr);
+  float labelWidth = 65.0f;
+  fNanoText.textBox ( 17 - 2, 90, 30, "Dry",   nullptr );
+  fNanoText.textBox ( 57 - 2, 90, 30, "Early", nullptr );
+  fNanoText.textBox ( 97 - 2, 90, 30, "Late",  nullptr );
 
   fNanoText.endFrame();
 
@@ -505,18 +387,18 @@ void DragonflyReverbUI::onDisplay()
   g = 148.0f/255.f;
   b = 88.0f/255.f;
   glColor4f ( r, g, b, 1.0f );
-  float dry = ( float ( fSliderDry_level->getValue() ) / 100 ) * 271;
-  float early = ( float ( fSliderEarly_level->getValue() ) / 100 ) * 271;
-  float late = ( float ( fSliderLate_level->getValue() ) / 100 ) * 271;
+  float dry = ( float ( fSliderDry_level->getValue() ) / 100 ) * 200;
+  float early = ( float ( fSliderEarly_level->getValue() ) / 100 ) * 200;
+  float late = ( float ( fSliderLate_level->getValue() ) / 100 ) * 200;
 
   rectSliders[0].setHeight ( dry + 0.5f );
-  rectSliders[0].setY ( 32+271-dry+ 0.5f );
+  rectSliders[0].setY ( 103 + 200 - dry + 0.5f );
 
   rectSliders[1].setHeight ( early + 0.5f );
-  rectSliders[1].setY ( 32+271-early +0.5 );
+  rectSliders[1].setY ( 103 + 200 - early + 0.5f );
 
-  rectSliders[2].setHeight ( late +0.5f );
-  rectSliders[2].setY ( 32+271-late + 0.5f );
+  rectSliders[2].setHeight ( late + 0.5f );
+  rectSliders[2].setY ( 103 + 200 - late + 0.5f );
 
   if ( int ( dry ) > 1 )
     rectSliders[0].draw();
