@@ -31,7 +31,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
     parameter.name       = params[index].name;
     parameter.symbol     = params[index].symbol;
     parameter.ranges.min = params[index].range_min;
-    parameter.ranges.def = presets[defaultPreset].params[index];
+    parameter.ranges.def = banks[DEFAULT_BANK].presets[DEFAULT_PRESET].params[index];
     parameter.ranges.max = params[index].range_max;
     parameter.unit       = params[index].unit;
   }

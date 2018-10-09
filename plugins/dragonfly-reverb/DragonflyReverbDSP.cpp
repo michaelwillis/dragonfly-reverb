@@ -38,7 +38,7 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   late.setSampleRate(sampleRate);
 
   for (uint32_t param = 0; param < paramCount; param++) {
-    setParameterValue(param, presets[defaultPreset].params[param]);
+    setParameterValue(param, banks[DEFAULT_BANK].presets[DEFAULT_PRESET].params[param]);
   }
 }
 

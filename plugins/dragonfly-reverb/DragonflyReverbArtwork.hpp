@@ -21,14 +21,14 @@ namespace DragonflyReverbArtwork
     const unsigned int sliderHeight   = 3;
 
     extern const char* tab_offData;
-    const unsigned int tab_offDataSize = 5280;
-    const unsigned int tab_offWidth    = 80;
-    const unsigned int tab_offHeight   = 22;
+    const unsigned int tab_offDataSize = 7200;
+    const unsigned int tab_offWidth    = 100;
+    const unsigned int tab_offHeight   = 24;
 
     extern const char* tab_onData;
-    const unsigned int tab_onDataSize = 5280;
-    const unsigned int tab_onWidth    = 80;
-    const unsigned int tab_onHeight   = 22;
+    const unsigned int tab_onDataSize = 7200;
+    const unsigned int tab_onWidth    = 100;
+    const unsigned int tab_onHeight   = 24;
 }
 
 #endif // BINARY_DRAGONFLYREVERBARTWORK_HPP

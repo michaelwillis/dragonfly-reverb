@@ -67,22 +67,25 @@ private:
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<Image> spectrogramImage;
 
-    int currentProgram = 0;
-
-    enum displayMode {
-      displayResponse,
-      displayPrograms,
-      displayAbout
+    int currentBank = DEFAULT_BANK;
+    int currentProgram[NUM_BANKS] = {
+      DEFAULT_PRESET,
+      DEFAULT_PRESET,
+      DEFAULT_PRESET,
+      DEFAULT_PRESET,
+      DEFAULT_PRESET
     };
-    int currentDisplayMode = displayResponse;
 
-    DGL::Rectangle<int> rectDisplay,rectTabResponse,rectTabPrograms,rectTabAbout;
+    bool displayAbout = false;
 
-    // boxes for programs
-    DGL::Rectangle<int> rectPrograms[24]; // TODO check Programs constant
-
-    // to fill sliders
     DGL::Rectangle<int> rectSliders[3];
+
+    DGL::Rectangle<int> rectDisplay;
+
+    DGL::Rectangle<int> rectBanks[5];
+    DGL::Rectangle<int> rectPrograms[5];
+
+    DGL::Rectangle<int> rectAbout;
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
