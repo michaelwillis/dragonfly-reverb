@@ -96,13 +96,13 @@ Spectrogram::~Spectrogram() {
 }
 
 void Spectrogram::uiIdle() {
-  uint32_t max_x = x + 20;
+  uint32_t max_x = x + 50;
   if (max_x > image->getWidth()) {
     max_x = image->getWidth();
   }
   while(x < max_x) {
     // Calculate time in seconds, then determine where that is in the dsp_output buffer
-    float time = pow(M_E, (float) x * logf ( 10.0f / 0.1f ) / image->getWidth()) * 0.1f;
+    float time = pow(M_E, (float) x * logf ( (float)SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) / image->getWidth()) * SPECTROGRAM_MIN_SECONDS;
     uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
 
     if (sample_offset_processed < sample_offset + SPECTROGRAM_WINDOW_SIZE * 2) {
@@ -120,21 +120,21 @@ void Spectrogram::uiIdle() {
     }
     else {
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
-        fft_real[window_sample] = reverb_results[sample_offset + SPECTROGRAM_WINDOW_SIZE + window_sample] * window_multiplier[window_sample];
+        fft_real[window_sample] = reverb_results[sample_offset + window_sample] * window_multiplier[window_sample];
         fft_imag[window_sample] = 0.0;
       }
 
       Fft_transform(fft_real, fft_imag, (size_t) SPECTROGRAM_WINDOW_SIZE);
 
       for (uint32_t y = 0; y < image->getHeight(); y++) {
-          float freq = powf(M_E, (float) y * logf ( 20000.0f / 50.0f ) / (float) image->getHeight()) * 50.0f;
+          float freq = powf(M_E, (float) y * logf ( SPECTROGRAM_MAX_FREQ / SPECTROGRAM_MIN_FREQ ) / (float) image->getHeight()) * SPECTROGRAM_MIN_FREQ;
           int fft_index = freq / (float)(SPECTROGRAM_SAMPLE_RATE / SPECTROGRAM_WINDOW_SIZE) + 1;
 
           float val = fft_real[fft_index];
           if (val < 0.0) val = 0.0 - val;
-          if (val > 4.0) val = 4.0;
+          if (val > 8.0) val = 8.0;
 
-          char alpha = (char)(val * 63.0f);
+          char alpha = (char)(sqrt(val * 2) * 63.0f);
 
           uint32_t pixel = (image->getHeight() - y - 1) * image->getWidth() + x;
 
@@ -151,24 +151,24 @@ void Spectrogram::uiIdle() {
 void Spectrogram::onDisplay() {
   image->drawAt(MARGIN_LEFT, MARGIN_TOP);
 
-  int freq[] = {50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000};
-  std::string freqStrings[]  = {"50Hz", "100Hz", "200Hz", "500Hz", "1kHz", "2kHz", "5kHz", "10kHz", "20kHz"};
-  float decayTime[] = { 0.2f, 0.5f, 1.0f, 2.0f, 3.0f, 5.0f, 10.0f };
-  std::string decayTimeString [] = { "0.2s", "0.5s", "1s", "2s", "3s", "5s", "10s" };
+  int freq[] = {125, 250, 500, 1000, 2000, 4000, 8000, 16000};
+  std::string freqStrings[]  = {"125 Hz", "250 Hz", "500 Hz", "1 kHz", "2 kHz", "4 kHz", "8 kHz", "16 kHz"};
+  float decayTime[] = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f, 8.0f };
+  std::string decayTimeString [] = { ".25 s", ".5 s", "1 s", "2 s", "4 s", "8 s" };
 
   fNanoText->beginFrame ( this );
   fNanoText->fontSize ( 16 );
-  fNanoText->textAlign ( NanoVG::ALIGN_CENTER |NanoVG::ALIGN_MIDDLE );
+  fNanoText->textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_MIDDLE );
 
-  for ( int i = 0 ; i < 7 ; i++ ) {
-    int x = ( int ) ( image->getWidth() * logf ( decayTime[i] / 0.1f ) / logf ( 10.0f / 0.1f ) );
+  for ( int i = 0 ; i < 6 ; i++ ) {
+    int x = ( int ) ( image->getWidth() * logf ( decayTime[i] / SPECTROGRAM_MIN_SECONDS ) / logf ( SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) );
     fNanoText->textBox ( x , getHeight() - 5 , 40.0f , decayTimeString[i].c_str(), nullptr );
   }
 
   fNanoText->textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_MIDDLE );
 
-  for ( int i = 0 ; i < 9 ; i++ ) {
-    int y = ( int ) ( image->getHeight() * logf ( freq[i] / 50.0f ) / logf ( 20000.0f / 50.0f ) );
+  for ( int i = 0 ; i < 8 ; i++ ) {
+    int y = ( int ) ( image->getHeight() * logf ( freq[i] / SPECTROGRAM_MIN_FREQ ) / logf ( SPECTROGRAM_MAX_FREQ / SPECTROGRAM_MIN_FREQ ) );
     fNanoText->textBox ( 0, getHeight() - y - MARGIN_TOP , 40.0f , freqStrings[i].c_str(), nullptr );
   }
 
@@ -176,6 +176,10 @@ void Spectrogram::onDisplay() {
 }
 
 void Spectrogram::setParameterValue(uint32_t i, float v) {
+  if (i == paramDry_level) {
+    v = 0.0f;
+  }
+
   dsp.setParameterValue(i, v);
   dsp.mute();
   x = 0;

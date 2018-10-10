@@ -31,7 +31,10 @@ extern "C" {
 
 #define SPECTROGRAM_SAMPLE_RATE 40960
 #define SPECTROGRAM_WINDOW_SIZE 8192
-#define SPECTROGRAM_MAX_SECONDS 10
+#define SPECTROGRAM_MIN_SECONDS 0.1f
+#define SPECTROGRAM_MAX_SECONDS 8.0f
+#define SPECTROGRAM_MIN_FREQ    100.0f
+#define SPECTROGRAM_MAX_FREQ    16000.0f
 
 #define MARGIN_TOP    20
 #define MARGIN_RIGHT  20
@@ -61,7 +64,7 @@ class Spectrogram : public Widget {
     float ** dsp_output;
 
     // Mono for now, but maybe should change this to stereo
-    float reverb_results[SPECTROGRAM_SAMPLE_RATE * SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE * 2];
+    float reverb_results[SPECTROGRAM_SAMPLE_RATE * (int) SPECTROGRAM_MAX_SECONDS + SPECTROGRAM_WINDOW_SIZE * 2];
     float window_multiplier[SPECTROGRAM_WINDOW_SIZE];
 
     // x coordinate of current column being rendered

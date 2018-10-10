@@ -378,6 +378,37 @@ void DragonflyReverbUI::onDisplay()
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
   fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
 
+  fNanoText.beginFrame ( this );
+  fNanoText.fontSize ( 18 );
+  fNanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
+
+  r = 230.0f / 256;
+  g = 230.0f / 256;
+  b = 230.0f / 256;
+  fNanoText.fillColor ( Color ( r, g, b ) );
+
+  for (int row = 0; row < NUM_BANKS; row ++)
+  {
+    DGL::Rectangle<int> bank = rectBanks[row];
+    if (currentBank == row) {
+      fImgTabOn.drawAt ( bank.getX(), bank.getY() );
+    } else {
+      fImgTabOff.drawAt ( bank.getX(), bank.getY() );
+    }
+
+    fNanoText.textBox ( bank.getX(), bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
+  }
+
+  fNanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
+
+  for (int row = 0; row < PRESETS_PER_BANK; row ++)
+  {
+    DGL::Rectangle<int> program = rectPrograms[row];
+    fNanoText.textBox ( program.getX(), program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
+  }
+
+  fNanoText.endFrame();
+
   if (displayAbout) {
     spectrogram->hide();
     fNanoText.beginFrame ( this );
@@ -406,48 +437,6 @@ void DragonflyReverbUI::onDisplay()
   else
   {
       spectrogram->show();
-
-      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
-
-      fNanoText.beginFrame ( this );
-      fNanoText.fontSize ( 18 );
-      fNanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
-
-      r = 230.0f / 256;
-      g = 230.0f / 256;
-      b = 230.0f / 256;
-      fNanoText.fillColor ( Color ( r, g, b ) );
-
-      for (int row = 0; row < NUM_BANKS; row ++)
-      {
-        DGL::Rectangle<int> bank = rectBanks[row];
-        if (currentBank == row) {
-          fImgTabOn.drawAt ( bank.getX(), bank.getY() );
-        } else {
-          fImgTabOff.drawAt ( bank.getX(), bank.getY() );
-        }
-
-        fNanoText.textBox ( bank.getX(), bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
-      }
-
-      fNanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-
-      for (int row = 0; row < PRESETS_PER_BANK; row ++)
-      {
-        DGL::Rectangle<int> program = rectPrograms[row];
-        fNanoText.textBox ( program.getX(), program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
-      }
-
-      fNanoText.endFrame();
-
-      // draw box around current program
-      // r = 230.0f / 256;
-      // g = 230.0f / 256;
-      // b = 230.0f / 256;
-      // glColor4f ( r,g,b ,1.0f );
-      // rectPrograms[currentProgram].drawOutline();
-
   }
 
 }
