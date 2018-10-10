@@ -15,6 +15,11 @@ namespace DragonflyReverbArtwork
     const unsigned int knobWidth    = 60;
     const unsigned int knobHeight   = 60;
 
+    extern const char* questionData;
+    const unsigned int questionDataSize = 1200;
+    const unsigned int questionWidth    = 20;
+    const unsigned int questionHeight   = 20;
+
     extern const char* sliderData;
     const unsigned int sliderDataSize = 360;
     const unsigned int sliderWidth    = 30;

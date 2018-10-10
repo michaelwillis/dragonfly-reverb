@@ -57,7 +57,7 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn;
+    Image fImgBackground,fImgTabOff,fImgTabOn,fImgQuestion;
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 

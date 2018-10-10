@@ -40,7 +40,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   : UI ( Art::backgroundWidth, Art::backgroundHeight ),
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR )
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
+    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGR )
 {
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
@@ -112,8 +113,8 @@ DragonflyReverbUI::DragonflyReverbUI()
     rectPrograms[i].setSize( 150, 21 );
   }
 
-  rectAbout.setPos ( 545, 5 );
-  rectAbout.setSize ( 21, 21 );
+  rectAbout.setPos ( 115, 50 );
+  rectAbout.setSize ( 20, 20 );
 
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
   spectrogram->setAbsolutePos (245, 140);
@@ -125,6 +126,8 @@ DragonflyReverbUI::DragonflyReverbUI()
  */
 void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 {
+  displayAbout = false;
+
   switch ( index )
     {
       // sliders
@@ -372,6 +375,9 @@ void DragonflyReverbUI::onDisplay()
   if ( late > 1 )
     rectSliders[2].draw();
 
+  glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+  fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
+
   if (displayAbout) {
     spectrogram->hide();
     fNanoText.beginFrame ( this );
@@ -401,6 +407,9 @@ void DragonflyReverbUI::onDisplay()
   {
       spectrogram->show();
 
+      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
+
       fNanoText.beginFrame ( this );
       fNanoText.fontSize ( 18 );
       fNanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
@@ -410,7 +419,6 @@ void DragonflyReverbUI::onDisplay()
       b = 230.0f / 256;
       fNanoText.fillColor ( Color ( r, g, b ) );
 
-      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
       for (int row = 0; row < NUM_BANKS; row ++)
       {
         DGL::Rectangle<int> bank = rectBanks[row];
