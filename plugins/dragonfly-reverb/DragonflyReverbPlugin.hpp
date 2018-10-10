@@ -45,7 +45,7 @@ protected:
 
     const char* getMaker() const noexcept override
     {
-        return "Michael Willis";
+        return "Michael Willis and Rob van den Berg";
     }
 
     const char* getHomePage() const override
@@ -60,7 +60,7 @@ protected:
 
     uint32_t getVersion() const noexcept override
     {
-        return d_version(0, 9, 1);
+        return d_version(0, 9, 2);
     }
 
     int64_t getUniqueId() const noexcept override

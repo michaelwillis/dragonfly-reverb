@@ -169,7 +169,7 @@ void Spectrogram::onDisplay() {
 
   for ( int i = 0 ; i < 8 ; i++ ) {
     int y = ( int ) ( image->getHeight() * logf ( freq[i] / SPECTROGRAM_MIN_FREQ ) / logf ( SPECTROGRAM_MAX_FREQ / SPECTROGRAM_MIN_FREQ ) );
-    fNanoText->textBox ( 0, getHeight() - y - MARGIN_TOP , 40.0f , freqStrings[i].c_str(), nullptr );
+    fNanoText->textBox ( 0, getHeight() - y - MARGIN_BOTTOM , 40.0f , freqStrings[i].c_str(), nullptr );
   }
 
   fNanoText->endFrame();

@@ -51,27 +51,19 @@ void LabelledKnob::setValue(float value)
 
 void LabelledKnob::onDisplay()
 {
-  float r,g,b;
-  r = 205.0f / 256;
-  g = 241.0f / 256;
-  b = 255.0f / 256;
-
   fNanoText->beginFrame ( this );
   fNanoText->textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
   fNanoText->fontSize ( 18 );
-  fNanoText->fillColor ( Color ( r, g, b ) );
+  fNanoText->fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
   fNanoText->textBox ( 0, 8, getWidth(), params[fKnob->getId()].name, nullptr );
 
   char strBuf[32+1];
   strBuf[32] = '\0';
   std::snprintf ( strBuf, 32, fNumberFormat, fKnob->getValue() );
 
-  r = 230.0f / 256;
-  g = 230.0f / 256;
-  b = 230.0f / 256;
   fNanoText->fontSize ( 16 );
-  fNanoText->fillColor ( Color ( r, g, b ) );
+  fNanoText->fillColor ( Color ( 0.9f, 0.9f, 0.9f ) );
   fNanoText->textBox ( 0, getHeight() - 8, getWidth(), strBuf, nullptr );
 
   fNanoText->endFrame();

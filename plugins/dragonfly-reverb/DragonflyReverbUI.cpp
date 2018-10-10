@@ -32,7 +32,7 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[]  = {145, 710, 796, 884};
+static const int knobx[]  = {145, 615, 700, 790};
 static const int knoby[]  = {12,  122, 232};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[2].setSize ( 26,200 );
 
   rectDisplay.setPos ( 245, 140 );
-  rectDisplay.setSize ( 450, 180 );
+  rectDisplay.setSize ( 365, 180 );
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
@@ -382,18 +382,18 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.fontSize ( 18 );
   fNanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
 
-  r = 230.0f / 256;
-  g = 230.0f / 256;
-  b = 230.0f / 256;
-  fNanoText.fillColor ( Color ( r, g, b ) );
+  Color bright = Color ( 0.90f, 0.95f, 1.00f );
+  Color dim    = Color ( 0.70f, 0.70f, 0.70f );
 
   for (int row = 0; row < NUM_BANKS; row ++)
   {
     DGL::Rectangle<int> bank = rectBanks[row];
     if (currentBank == row) {
       fImgTabOn.drawAt ( bank.getX(), bank.getY() );
+      fNanoText.fillColor ( bright );
     } else {
       fImgTabOff.drawAt ( bank.getX(), bank.getY() );
+      fNanoText.fillColor ( dim );
     }
 
     fNanoText.textBox ( bank.getX(), bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
@@ -404,6 +404,7 @@ void DragonflyReverbUI::onDisplay()
   for (int row = 0; row < PRESETS_PER_BANK; row ++)
   {
     DGL::Rectangle<int> program = rectPrograms[row];
+    fNanoText.fillColor( row == currentProgram[currentBank] ? bright : dim );
     fNanoText.textBox ( program.getX(), program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
   }
 
@@ -424,13 +425,13 @@ void DragonflyReverbUI::onDisplay()
     int y = rectDisplay.getY() + 5;
     int w = rectDisplay.getWidth() - 20;
 
-    fNanoText.textBox ( x, y , w ,
-      "A hall-style reverb based on algorithms from Freeverb3\n"
+    fNanoText.textBox ( x, y, w,
+      "Dragonfly is a hall-style reverb plugin\n\n"
       "Developed by Michael Willis and Rob van den Berg\n\n"
       "Acknowledgments:\n"
       "Teru Kamogashira - Freeverb3\n"
       "Filipe \"falkTX\" Coelho - Distrho Plugin Framework\n\n"
-      "License: GPL 3+ (https://www.gnu.org/licenses/gpl-3.0.en.html)"
+      "License: GPL 3+"
       , nullptr );
     fNanoText.endFrame();
   }
