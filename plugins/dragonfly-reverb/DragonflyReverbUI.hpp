@@ -40,6 +40,8 @@ protected:
     // DSP Callbacks
 
     void parameterChanged ( uint32_t index, float value ) override;
+    void stateChanged(const char* key, const char* value) override;
+
     void programLoaded (uint32_t index);
 
     // -------------------------------------------------------------------

@@ -198,6 +198,22 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     spectrogram->setParameterValue(index, value);
 }
 
+void DragonflyReverbUI::stateChanged(const char* key, const char* value) override
+{
+  if (std::strcmp(key, "preset") == 0) {
+    for (int b = 0; b < NUM_BANKS; b++) {
+      for (int p = 0; p < PRESETS_PER_BANK; p++) {
+        if (std::strcmp(value, banks[b].presets[p].name) == 0) {
+          currentBank = b;
+          currentProgram[currentBank] = p;
+        }
+      }
+    }
+  }
+
+  repaint();
+}
+
 /* ----------------------------------------------------------------------------------------------------------
  * Widget Callbacks
  *----------------------------------------------------------------------------------------------------------*/
@@ -271,6 +287,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
       if (currentBank != previousBank || currentProgram[currentBank] != previousProgram)
       {
+        setState("preset", banks[currentBank].presets[currentProgram[currentBank]].name);
         const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
         fSliderDry_level->setValue ( preset[paramDry_level] );
         fSliderEarly_level->setValue ( preset[paramEarly_level] );

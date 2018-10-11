@@ -20,7 +20,10 @@
 
 START_NAMESPACE_DISTRHO
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 0), dsp(getSampleRate()) { }
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 1), dsp(getSampleRate()) {
+  bank = DEFAULT_BANK;
+  preset = DEFAULT_PRESET;
+}
 
 // -----------------------------------------------------------------------
 // Init
@@ -37,6 +40,13 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
   }
 }
 
+void DragonflyReverbPlugin::initState(uint32_t index, String& stateKey, String& defaultStateValue) {
+  if (index == 0) {
+    stateKey = "preset";
+    defaultStateValue = "Small Clear Hall";
+  }
+}
+
 // -----------------------------------------------------------------------
 // Internal data
 
@@ -46,6 +56,27 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const {
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
   dsp.setParameterValue(index, value);
+}
+
+String DragonflyReverbPlugin::getState(const char* key) const override {
+  if (std::strcmp(key, "preset") == 0) {
+    return String(banks[bank].presets[preset].name);
+  }
+
+  return String("");
+}
+
+void DragonflyReverbPlugin::setState(const char* key, const char* value) {
+  if (std::strcmp(key, "preset") == 0) {
+    for (int b = 0; b < NUM_BANKS; b++) {
+      for (int p = 0; p < PRESETS_PER_BANK; p++) {
+        if (std::strcmp(value, banks[b].presets[p].name) == 0) {
+          bank = b;
+          preset = p;
+        }
+      }
+    }
+  }
 }
 
 // -----------------------------------------------------------------------
