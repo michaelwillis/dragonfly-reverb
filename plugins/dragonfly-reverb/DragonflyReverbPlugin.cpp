@@ -58,14 +58,6 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
   dsp.setParameterValue(index, value);
 }
 
-String DragonflyReverbPlugin::getState(const char* key) const override {
-  if (std::strcmp(key, "preset") == 0) {
-    return String(banks[bank].presets[preset].name);
-  }
-
-  return String("");
-}
-
 void DragonflyReverbPlugin::setState(const char* key, const char* value) {
   if (std::strcmp(key, "preset") == 0) {
     for (int b = 0; b < NUM_BANKS; b++) {
