@@ -410,7 +410,7 @@ void DragonflyReverbUI::onDisplay()
       fNanoText.fillColor ( dim );
     }
 
-    fNanoText.textBox ( bank.getX(), bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
+    fNanoText.textBox ( bank.getX() - 3, bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
   }
 
   fNanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
@@ -419,7 +419,7 @@ void DragonflyReverbUI::onDisplay()
   {
     DGL::Rectangle<int> program = rectPrograms[row];
     fNanoText.fillColor( row == currentProgram[currentBank] ? bright : dim );
-    fNanoText.textBox ( program.getX(), program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
+    fNanoText.textBox ( program.getX() + 3, program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
   }
 
   fNanoText.endFrame();

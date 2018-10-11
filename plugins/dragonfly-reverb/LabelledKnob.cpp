@@ -56,7 +56,7 @@ void LabelledKnob::onDisplay()
 
   fNanoText->fontSize ( 18 );
   fNanoText->fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
-  fNanoText->textBox ( 0, 8, getWidth(), params[fKnob->getId()].name, nullptr );
+  fNanoText->textBox ( 0, 7, getWidth(), params[fKnob->getId()].name, nullptr );
 
   char strBuf[32+1];
   strBuf[32] = '\0';
@@ -64,7 +64,7 @@ void LabelledKnob::onDisplay()
 
   fNanoText->fontSize ( 16 );
   fNanoText->fillColor ( Color ( 0.9f, 0.9f, 0.9f ) );
-  fNanoText->textBox ( 0, getHeight() - 8, getWidth(), strBuf, nullptr );
+  fNanoText->textBox ( 0, getHeight() - 7, getWidth(), strBuf, nullptr );
 
   fNanoText->endFrame();
 }
