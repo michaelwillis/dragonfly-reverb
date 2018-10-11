@@ -353,11 +353,8 @@ void DragonflyReverbUI::onDisplay()
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderLate_level->getValue() ) );
   fNanoText.textBox ( 97 - 2, 314 , 35.0f, strBuf, nullptr );
 
-  // print lables;
-  r = 205.0f / 256;
-  g = 241.0f / 256;
-  b = 255.0f / 256;
-  fNanoText.fillColor ( Color ( r, g, b ) );
+  // print labels;
+  fNanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
   fNanoText.fontSize ( 18 );
 
   float labelWidth = 65.0f;
@@ -400,7 +397,7 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
 
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
-  Color dim    = Color ( 0.70f, 0.70f, 0.70f );
+  Color dim    = Color ( 0.65f, 0.65f, 0.65f );
 
   for (int row = 0; row < NUM_BANKS; row ++)
   {
