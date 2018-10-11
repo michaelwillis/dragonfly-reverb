@@ -198,7 +198,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     spectrogram->setParameterValue(index, value);
 }
 
-void DragonflyReverbUI::stateChanged(const char* key, const char* value) override
+void DragonflyReverbUI::stateChanged(const char* key, const char* value)
 {
   if (std::strcmp(key, "preset") == 0) {
     for (int b = 0; b < NUM_BANKS; b++) {
