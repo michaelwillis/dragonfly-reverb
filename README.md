@@ -15,7 +15,7 @@ A free hall-style reverb based on freeverb3 algorithms
 
 Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
 
-### Build Dependencies
+### Linux Build Dependencies
 
 * libx11-dev
 * libgl1-mesa-dev
