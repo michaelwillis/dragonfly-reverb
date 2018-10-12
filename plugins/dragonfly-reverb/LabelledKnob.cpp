@@ -21,7 +21,7 @@
 
 namespace Art = DragonflyReverbArtwork;
 
-LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG *nanoText, uint id, char * numberFormat, int x, int y)
+LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG *nanoText, uint id, const char * numberFormat, int x, int y)
     : Widget(widget->getParentWindow())
 {
   setWidth(Art::knobWidth + 20);

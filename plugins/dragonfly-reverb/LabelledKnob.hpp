@@ -30,7 +30,7 @@ public:
     ImageKnob::Callback *callback,
     NanoVG *nanoText,
     uint id,
-    char *numberFormat,
+    const char *numberFormat,
     int x, int y);
   float getValue() const noexcept;
   void setValue(float value);
@@ -40,7 +40,7 @@ protected:
 
 private:
   NanoVG *fNanoText;
-  char *fNumberFormat;
+  const char *fNumberFormat;
   ScopedPointer<ImageKnob> fKnob;
 };
 

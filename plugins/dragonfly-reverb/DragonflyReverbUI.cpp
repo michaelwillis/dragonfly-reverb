@@ -43,6 +43,15 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
     fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGR )
 {
+  currentBank = DEFAULT_BANK;
+
+  for (int b = 0; b < NUM_BANKS; b++)
+  {
+    currentProgram[b] = DEFAULT_PRESET;
+  }
+
+  displayAbout = false;
+
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
@@ -343,9 +352,6 @@ void DragonflyReverbUI::onDisplay()
   char strBuf[32+1];
   strBuf[32] = '\0';
 
-  float xstart = 20.0f, ystart= 92.0f;
-  float xoffset = 88.0f, yoffset = 110.0f;
-
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderDry_level->getValue() ) );
   fNanoText.textBox ( 17 - 2  , 314 , 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i %%", int ( fSliderEarly_level->getValue() ) );
@@ -356,8 +362,6 @@ void DragonflyReverbUI::onDisplay()
   // print labels;
   fNanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
   fNanoText.fontSize ( 18 );
-
-  float labelWidth = 65.0f;
   fNanoText.textBox ( 17 - 2, 90, 30, "Dry",   nullptr );
   fNanoText.textBox ( 57 - 2, 90, 30, "Early", nullptr );
   fNanoText.textBox ( 97 - 2, 90, 30, "Late",  nullptr );

@@ -69,16 +69,10 @@ private:
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<Image> spectrogramImage;
 
-    int currentBank = DEFAULT_BANK;
-    int currentProgram[NUM_BANKS] = {
-      DEFAULT_PRESET,
-      DEFAULT_PRESET,
-      DEFAULT_PRESET,
-      DEFAULT_PRESET,
-      DEFAULT_PRESET
-    };
+    int currentBank;
+    int currentProgram[NUM_BANKS];
 
-    bool displayAbout = false;
+    bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[3];
 
