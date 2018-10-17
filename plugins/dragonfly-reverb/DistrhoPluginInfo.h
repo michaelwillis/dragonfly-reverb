@@ -1,6 +1,6 @@
 /*
  * Dragonfly Reverb, a hall-style reverb plugin
- * Copyright (c) 2018 Michael Willis
+ * Copyright (c) 2018 Michael Willis, Rob van den Berg
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
