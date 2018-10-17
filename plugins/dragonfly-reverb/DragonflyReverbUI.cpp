@@ -262,7 +262,6 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 {
-  // display
   if ( ev.button != 1 )
     return false;
   if ( ev.press )
@@ -298,6 +297,20 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
       {
         setState("preset", banks[currentBank].presets[currentProgram[currentBank]].name);
         const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
+
+        fKnobSize->setDefault ( preset[paramSize] );
+        fKnobPredelay->setDefault ( preset[paramPredelay] );
+        fKnobDiffuse->setDefault ( preset[paramDiffuse] );
+        fKnobLowCut->setDefault ( preset[paramLowCut] );
+        fKnobLowXover->setDefault ( preset[paramLowXover] );
+        fKnobLowMult->setDefault ( preset[paramLowMult] );
+        fKnobHighCut->setDefault ( preset[paramHighCut] );
+        fKnobHighXover->setDefault ( preset[paramHighXover] );
+        fKnobHighMult->setDefault ( preset[paramHighMult] );
+        fKnobWidth->setDefault ( preset[paramWidth] );
+        fKnobSpin->setDefault ( preset[paramSpin] );
+        fKnobWander->setDefault ( preset[paramWander] );
+
         fSliderDry_level->setValue ( preset[paramDry_level] );
         fSliderEarly_level->setValue ( preset[paramEarly_level] );
         fSliderLate_level->setValue ( preset[paramLate_level] );

@@ -39,6 +39,11 @@ LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG
   fKnob->setCallback(callback);
 }
 
+void LabelledKnob::setDefault(float value) noexcept
+{
+    fKnob->setDefault(value);
+}
+
 float LabelledKnob::getValue() const noexcept
 {
   return fKnob->getValue();

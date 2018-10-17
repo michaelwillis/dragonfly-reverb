@@ -34,6 +34,7 @@ public:
     int x, int y);
   float getValue() const noexcept;
   void setValue(float value);
+  void setDefault(float value) noexcept;
 
 protected:
   void onDisplay() override;
