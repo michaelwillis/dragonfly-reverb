@@ -21,6 +21,9 @@
 #include <time.h>
 #include <iostream>
 #include <ctime>
+#include <chrono>
+
+using namespace std::chrono;
 
 Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, DGL::Rectangle<int> * rect) :
         Widget(widget->getParentWindow()),
@@ -97,11 +100,10 @@ Spectrogram::~Spectrogram() {
 }
 
 void Spectrogram::uiIdle() {
-  uint32_t max_x = x + 50;
-  if (max_x > image->getWidth()) {
-    max_x = image->getWidth();
-  }
-  while(x < max_x) {
+  // twenty millisecond budget to render a chunk of the spectrogram
+  int64_t limit = (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() + 20;
+
+  while(x < image->getWidth() && (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() < limit) {
     // Calculate time in seconds, then determine where that is in the dsp_output buffer
     float time = pow(M_E, (float) x * logf ( (float)SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) / image->getWidth()) * SPECTROGRAM_MIN_SECONDS;
     uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
