@@ -34,6 +34,10 @@
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 
+#define MAJOR_VERSION 0
+#define MINOR_VERSION 9
+#define PATCH_VERSION 4
+
 enum Parameters
 {
     paramDry_level = 0,

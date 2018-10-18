@@ -456,14 +456,19 @@ void DragonflyReverbUI::onDisplay()
     int y = rectDisplay.getY() + 5;
     int w = rectDisplay.getWidth() - 20;
 
-    fNanoText.textBox ( x, y, w,
-      "Dragonfly is a hall-style reverb plugin\n\n"
+    char textBuffer[256];
+
+    std::snprintf(textBuffer, 256,
+      "Dragonfly is a free hall-style reverb plugin\n\n"
       "Developed by Michael Willis and Rob van den Berg\n\n"
       "Acknowledgments:\n"
       "Teru Kamogashira - Freeverb3\n"
       "Filipe \"falkTX\" Coelho - Distrho Plugin Framework\n\n"
-      "License: GPL 3+"
-      , nullptr );
+      "Version: %d.%d.%d  License: GPL 3+",
+      MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION
+    );
+
+    fNanoText.textBox ( x, y, w, textBuffer, nullptr );
     fNanoText.endFrame();
   }
   else
