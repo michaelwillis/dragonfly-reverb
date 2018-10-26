@@ -61,7 +61,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%4.0f ms", knobx[0], knoby[2]);
 
   fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f %%", knobx[1], knoby[0]);
-  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.1f Hz", knobx[2], knoby[0]);
+  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[2], knoby[0]);
   fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.1f ms", knobx[3], knoby[0]);
 
   fKnobHighCut   = new LabelledKnob (this, this, &fNanoText, paramHighCut,   "%5.0f Hz", knobx[1], knoby[1]);

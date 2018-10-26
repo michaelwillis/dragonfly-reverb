@@ -80,8 +80,8 @@ static Param params[paramCount] = {
   {"High Cut",    "high_cut",  5000.0f, 15000.0f,  "Hz"},
   {"High Cross",  "high_xo",   2000.0f, 12000.0f,  "Hz"},
   {"High Mult",   "high_mult",    0.2f,     1.2f,   "X"},
-  {"Spin",        "spin",         1.0f,     5.0f,  "Hz"},
-  {"Wander",      "wander",       5.0f,    25.0f,  "ms"}
+  {"Spin",        "spin",         0.0f,    10.0f,  "Hz"},
+  {"Wander",      "wander",       0.0f,    40.0f,  "ms"}
 };
 
 const int NUM_BANKS = 5;
