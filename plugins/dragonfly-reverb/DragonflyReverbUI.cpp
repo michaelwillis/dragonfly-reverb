@@ -218,6 +218,8 @@ void DragonflyReverbUI::stateChanged(const char* key, const char* value)
         }
       }
     }
+
+    updatePresetDefaults();
   }
 
   repaint();
@@ -296,20 +298,9 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
       if (currentBank != previousBank || currentProgram[currentBank] != previousProgram)
       {
         setState("preset", banks[currentBank].presets[currentProgram[currentBank]].name);
-        const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
+        updatePresetDefaults();
 
-        fKnobSize->setDefault ( preset[paramSize] );
-        fKnobPredelay->setDefault ( preset[paramPredelay] );
-        fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-        fKnobLowCut->setDefault ( preset[paramLowCut] );
-        fKnobLowXover->setDefault ( preset[paramLowXover] );
-        fKnobLowMult->setDefault ( preset[paramLowMult] );
-        fKnobHighCut->setDefault ( preset[paramHighCut] );
-        fKnobHighXover->setDefault ( preset[paramHighXover] );
-        fKnobHighMult->setDefault ( preset[paramHighMult] );
-        fKnobWidth->setDefault ( preset[paramWidth] );
-        fKnobSpin->setDefault ( preset[paramSpin] );
-        fKnobWander->setDefault ( preset[paramWander] );
+        const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
 
         fSliderDry_level->setValue ( preset[paramDry_level] );
         fSliderEarly_level->setValue ( preset[paramEarly_level] );
@@ -480,6 +471,23 @@ void DragonflyReverbUI::onDisplay()
 
 void DragonflyReverbUI::uiIdle() {
   spectrogram->uiIdle();
+}
+
+void DragonflyReverbUI::updatePresetDefaults() {
+  const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
+
+  fKnobSize->setDefault ( preset[paramSize] );
+  fKnobPredelay->setDefault ( preset[paramPredelay] );
+  fKnobDiffuse->setDefault ( preset[paramDiffuse] );
+  fKnobLowCut->setDefault ( preset[paramLowCut] );
+  fKnobLowXover->setDefault ( preset[paramLowXover] );
+  fKnobLowMult->setDefault ( preset[paramLowMult] );
+  fKnobHighCut->setDefault ( preset[paramHighCut] );
+  fKnobHighXover->setDefault ( preset[paramHighXover] );
+  fKnobHighMult->setDefault ( preset[paramHighMult] );
+  fKnobWidth->setDefault ( preset[paramWidth] );
+  fKnobSpin->setDefault ( preset[paramSpin] );
+  fKnobWander->setDefault ( preset[paramWander] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

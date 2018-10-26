@@ -84,6 +84,8 @@ private:
 
     DGL::Rectangle<int> rectAbout;
 
+    void updatePresetDefaults();
+
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
 };
 
