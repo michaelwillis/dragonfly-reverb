@@ -12,23 +12,25 @@ NAME = DragonflyReverb
 # --------------------------------------------------------------
 # Files to build
 
-OBJS_DSP = \
-	DragonflyReverbPlugin.cpp.o \
-	DragonflyReverbDSP.cpp.o
+FILES_DSP = \
+	DragonflyReverbPlugin.cpp \
+	DragonflyReverbDSP.cpp
 
-OBJS_UI  = \
-	DragonflyReverbUI.cpp.o \
-	DragonflyReverbArtwork.cpp.o \
-	NotoSans_Regular.ttf.cpp.o \
-	DragonflyReverbDSP.cpp.o \
-	Spectrogram.cpp.o \
-	LabelledKnob.cpp.o \
-	fft.c.o
+FILES_UI  = \
+	DragonflyReverbUI.cpp \
+	DragonflyReverbArtwork.cpp \
+	NotoSans_Regular.ttf.cpp \
+	DragonflyReverbDSP.cpp \
+	Spectrogram.cpp \
+	LabelledKnob.cpp \
+	fft.c
 
 # --------------------------------------------------------------
 # Do some magic
 
-include ../Makefile.mk
+include ../../dpf/Makefile.plugins.mk
+
+BUILD_CXX_FLAGS := ../../freeverb3/*.cpp.o ../../freeverb3/*.c.o -I../../freeverb3 $(BUILD_CXX_FLAGS)
 
 # --------------------------------------------------------------
 # Link dependencies
@@ -43,8 +45,10 @@ endif
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
+ifeq ($(HAVE_DGL),true)
 ifeq ($(HAVE_JACK),true)
 TARGETS += jack
+endif
 endif
 
 ifeq ($(HAVE_DGL),true)

@@ -4,21 +4,24 @@
 # Created by falkTX
 #
 
-include Makefile.mk
+include dpf/Makefile.base.mk
 
-all: libs plugins gen
+all: libs dgl plugins gen
 
 # --------------------------------------------------------------
 
 libs:
 	$(MAKE) -C freeverb3
+
+dgl:
 ifeq ($(HAVE_DGL),true)
 	$(MAKE) -C dpf/dgl
 endif
 
-plugins: libs
+plugins: libs dgl
 	$(MAKE) all -C plugins/dragonfly-reverb
 
+ifneq ($(CROSS_COMPILING),true)
 gen: plugins dpf/utils/lv2_ttl_generator
 	@$(CURDIR)/dpf/utils/generate-ttl.sh
 ifeq ($(MACOS),true)
@@ -27,15 +30,17 @@ endif
 
 dpf/utils/lv2_ttl_generator:
 	$(MAKE) -C dpf/utils/lv2-ttl-generator
+else
+gen:
+endif
 
 # --------------------------------------------------------------
 
 clean:
-ifeq ($(HAVE_DGL),true)
 	$(MAKE) clean -C dpf/dgl
-endif
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
 	$(MAKE) clean -C plugins/dragonfly-reverb
+	rm -rf bin build
 
 # --------------------------------------------------------------
 
