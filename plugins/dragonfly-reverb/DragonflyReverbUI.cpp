@@ -276,14 +276,14 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
     }
     else
     {
-      int previousBank = currentBank;
-      int previousProgram = currentProgram[currentBank];
+      bool presetClicked = false;
 
       for (int row = 0; row < NUM_BANKS; row++)
       {
         if (rectBanks[row].contains ( ev.pos ))
         {
           currentBank = row;
+          presetClicked = true;
         }
       }
 
@@ -292,10 +292,11 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         if (rectPrograms[row].contains ( ev.pos ))
         {
           currentProgram[currentBank] = row;
+          presetClicked = true;
         }
       }
 
-      if (currentBank != previousBank || currentProgram[currentBank] != previousProgram)
+      if (presetClicked)
       {
         setState("preset", banks[currentBank].presets[currentProgram[currentBank]].name);
         updatePresetDefaults();
