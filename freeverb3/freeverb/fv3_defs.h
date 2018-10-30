@@ -23,8 +23,6 @@
 
 #include <cmath>
 
-#include "fv3_config.h"
-
 #ifndef isfinite
 #define isfinite(v) std::isfinite(v)
 #endif

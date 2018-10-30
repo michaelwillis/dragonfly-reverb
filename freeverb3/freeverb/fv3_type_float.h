@@ -21,8 +21,6 @@
 #ifndef _FV3_TYPE_FLOAT_H
 #define _FV3_TYPE_FLOAT_H
 
-#include "fv3_config.h"
-
 #ifdef LIBFV3_FLOAT
 typedef float fv3_float_t;
 #define FV3_(name) name ## _f
