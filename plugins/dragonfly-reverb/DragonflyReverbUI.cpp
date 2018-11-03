@@ -57,7 +57,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoText.fontFaceId ( fNanoFont );
 
   fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  knobx[0], knoby[0]);
-  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f %%", knobx[0], knoby[1]);
+  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  knobx[0], knoby[1]);
   fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%4.0f ms", knobx[0], knoby[2]);
 
   fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f %%", knobx[1], knoby[0]);
@@ -135,6 +135,7 @@ DragonflyReverbUI::DragonflyReverbUI()
  */
 void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 {
+  std::cout << "DragonflyReverbUI::parameterChanged(\"" << index << "\", \"" << value << "\")\n";
   displayAbout = false;
 
   switch ( index )
@@ -191,8 +192,8 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
       fKnobHighMult->setValue ( value );
       break;
 
-    case paramWidth:
-      fKnobWidth->setValue ( value );
+    case paramDecay:
+      fKnobDecay->setValue ( value );
       break;
 
     case paramSpin:
@@ -315,7 +316,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobHighCut->setValue ( preset[paramHighCut] );
         fKnobHighXover->setValue ( preset[paramHighXover] );
         fKnobHighMult->setValue ( preset[paramHighMult] );
-        fKnobWidth->setValue ( preset[paramWidth] );
+        fKnobDecay->setValue ( preset[paramDecay] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
         for ( uint32_t i = 0; i < paramCount; i++ ) {
@@ -486,7 +487,7 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobHighCut->setDefault ( preset[paramHighCut] );
   fKnobHighXover->setDefault ( preset[paramHighXover] );
   fKnobHighMult->setDefault ( preset[paramHighMult] );
-  fKnobWidth->setDefault ( preset[paramWidth] );
+  fKnobDecay->setDefault ( preset[paramDecay] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
 }
