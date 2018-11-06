@@ -303,9 +303,6 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
         const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
 
-        fSliderDry_level->setValue ( preset[paramDry_level] );
-        fSliderEarly_level->setValue ( preset[paramEarly_level] );
-        fSliderLate_level->setValue ( preset[paramLate_level] );
         fKnobSize->setValue ( preset[paramSize] );
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
@@ -318,7 +315,9 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobWidth->setValue ( preset[paramWidth] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
-        for ( uint32_t i = 0; i < paramCount; i++ ) {
+
+        // Ignore first three parameters: dry, early, and late levels
+        for ( uint32_t i = 3; i < paramCount; i++ ) {
           setParameterValue ( i, preset[i] );
           spectrogram->setParameterValue(i, preset[i]);
         }
@@ -456,8 +455,8 @@ void DragonflyReverbUI::onDisplay()
       "Acknowledgments:\n"
       "Teru Kamogashira - Freeverb3\n"
       "Filipe \"falkTX\" Coelho - Distrho Plugin Framework\n\n"
-      "Version: %d.%d.%d  License: GPL 3+",
-      MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION
+      "Version: %d.%d.%d%s  License: GPL 3+",
+      MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );
 
     fNanoText.textBox ( x, y, w, textBuffer, nullptr );
