@@ -40,6 +40,7 @@ clean:
 	$(MAKE) clean -C dpf/dgl
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
 	$(MAKE) clean -C plugins/dragonfly-reverb
+	$(MAKE) clean -C freeverb3
 	rm -rf bin build
 
 # --------------------------------------------------------------
