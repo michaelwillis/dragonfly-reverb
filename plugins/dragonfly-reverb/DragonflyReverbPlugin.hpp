@@ -40,7 +40,7 @@ protected:
 
     const char* getDescription() const override
     {
-        return "A hall-style reverb based on freeverb3 algorithms";
+        return "A hall-style reverb";
     }
 
     const char* getMaker() const noexcept override

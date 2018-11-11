@@ -79,6 +79,7 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, DGL::Rectangle<int
 
   x = 0;
   sample_offset_processed = 0;
+  std::cout << "Spectrogram CTOR done!\n";
 }
 
 Spectrogram::~Spectrogram() {
@@ -101,9 +102,13 @@ Spectrogram::~Spectrogram() {
 
 void Spectrogram::uiIdle() {
   // twenty millisecond budget to render a chunk of the spectrogram
+
   int64_t limit = (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() + 20;
 
+  std::cout << "Spectrogram uiIdle! limit: " << limit << "\n";
+
   while(x < image->getWidth() && (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() < limit) {
+    std::cout << "Rendering X = " << x << "\n";
     // Calculate time in seconds, then determine where that is in the dsp_output buffer
     float time = pow(M_E, (float) x * logf ( (float)SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) / image->getWidth()) * SPECTROGRAM_MIN_SECONDS;
     uint32_t sample_offset = (time * (float) SPECTROGRAM_SAMPLE_RATE);
@@ -126,6 +131,14 @@ void Spectrogram::uiIdle() {
         fft_real[window_sample] = reverb_results[sample_offset + window_sample] * window_multiplier[window_sample];
         fft_imag[window_sample] = 0.0;
       }
+
+      std::cout << "fft_real numbers: " << fft_real[0] << ", " << fft_real[10] << ", "
+        << fft_real[100] << ", " << fft_real[101] << ", " << fft_real[102] << ", "
+        << fft_real[103] << ", " << fft_real[104] << ", " << fft_real[105] << ", "
+          << fft_real[106] << ", " << fft_real[107] << ", " << fft_real[108] << ", "
+          << fft_real[109] << ", " << fft_real[110] << ", " << fft_real[111] << ", "
+            << fft_real[1000] << ", " << fft_real[1001] << ", " << fft_real[1002] << ", "
+            << fft_real[1003] << ", " << fft_real[1004] << ", " << fft_real[1005] << "\n";
 
       Fft_transform(fft_real, fft_imag, (size_t) SPECTROGRAM_WINDOW_SIZE);
 
@@ -182,7 +195,7 @@ void Spectrogram::setParameterValue(uint32_t i, float v) {
   if (i == paramDry_level) {
     v = 0.0f;
   }
-
+  std::cout << "Setting parameter value of spectrogram DSP! " << i << ", " << v << "\n";
   dsp.setParameterValue(i, v);
   dsp.mute();
   x = 0;

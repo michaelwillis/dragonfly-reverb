@@ -108,7 +108,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[2].setSize ( 26,200 );
 
   rectDisplay.setPos ( 245, 140 );
-  rectDisplay.setSize ( 365, 180 );
+  rectDisplay.setSize ( 350, 180 );
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
