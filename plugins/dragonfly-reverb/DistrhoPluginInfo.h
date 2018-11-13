@@ -29,15 +29,13 @@
 #define DISTRHO_PLUGIN_NUM_INPUTS    2
 #define DISTRHO_PLUGIN_NUM_OUTPUTS   2
 #define DISTRHO_PLUGIN_WANT_STATE    1
-// #define DISTRHO_PLUGIN_WANT_PROGRAMS 1
-// #define DISTRHO_UI_USE_NANOVG      1
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 
 #define MAJOR_VERSION 1
 #define MINOR_VERSION 0
 #define PATCH_VERSION 0
-#define VERSION_SUFFIX "-rc3"
+#define VERSION_SUFFIX ""
 
 enum Parameters
 {
