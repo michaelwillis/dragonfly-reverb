@@ -101,6 +101,7 @@ Spectrogram::~Spectrogram() {
 
 void Spectrogram::uiIdle() {
   // twenty millisecond budget to render a chunk of the spectrogram
+
   int64_t limit = (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() + 20;
 
   while(x < image->getWidth() && (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() < limit) {
@@ -182,7 +183,6 @@ void Spectrogram::setParameterValue(uint32_t i, float v) {
   if (i == paramDry_level) {
     v = 0.0f;
   }
-
   dsp.setParameterValue(i, v);
   dsp.mute();
   x = 0;
