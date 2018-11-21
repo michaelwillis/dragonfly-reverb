@@ -18,6 +18,7 @@
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 #include "DragonflyReverbDSP.hpp"
+#include <iostream>
 
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
@@ -51,13 +52,18 @@ float DragonflyReverbDSP::getParameterValue(uint32_t index) const {
 }
 
 void DragonflyReverbDSP::setParameterValue(uint32_t index, float value) {
+  std::cout << "DSP Setting value! " << index << ", " << value << "\n";
   if (index < paramCount) {
     newParams[index] = value;
   }
 }
 
 void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t frames) {
+  std::cout << "Running DSP!\n";
   for (uint32_t index = 0; index < paramCount; index++) {
+    if (index == 15) {
+      std::cout << "Old decay " << oldParams[index] << ", new "  << newParams[index] << "\n";
+    }
     if (d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];
       float value = newParams[index];
@@ -83,7 +89,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case     paramHighMult:  late.setrt60_factor_high(value);    break;
         case          paramSpin: late.setspin       (value);         break;
         case        paramWander: late.setwander     (value);         break;
-        case         paramDecay: late.setrt60       (value);         break;
+        case         paramDecay: std::cout << "Setting late rt60! " << value << "\n"; late.setrt60       (value);         break;
       }
     }
   }

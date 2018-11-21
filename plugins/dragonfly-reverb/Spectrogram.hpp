@@ -37,9 +37,9 @@ extern "C" {
 #define SPECTROGRAM_MAX_FREQ    16000.0f
 
 #define MARGIN_TOP    10
-#define MARGIN_RIGHT  10
+#define MARGIN_RIGHT  15
 #define MARGIN_BOTTOM 20
-#define MARGIN_LEFT   50
+#define MARGIN_LEFT   55
 
 class Spectrogram : public Widget {
   public:
