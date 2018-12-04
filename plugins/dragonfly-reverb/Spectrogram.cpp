@@ -183,7 +183,6 @@ void Spectrogram::setParameterValue(uint32_t i, float v) {
   if (i == paramDry_level) {
     v = 0.0f;
   }
-  std::cout << "Spectrogram set param! " << i << ", " << v << "\n";
   dsp.setParameterValue(i, v);
   dsp.mute();
   x = 0;

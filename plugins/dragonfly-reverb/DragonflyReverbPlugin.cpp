@@ -18,8 +18,6 @@
 #include "DragonflyReverbPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 
-#include <iostream>
-
 START_NAMESPACE_DISTRHO
 
 DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 1), dsp(getSampleRate()) {
@@ -57,12 +55,10 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const {
 }
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
-  std::cout << "DragonflyReverbPlugin::setParameterValue(" << index << ", " << value << ")\n";
   dsp.setParameterValue(index, value);
 }
 
 void DragonflyReverbPlugin::setState(const char* key, const char* value) {
-  std::cout << "DragonflyReverbPlugin::setState(\"" << key << "\", \"" << value << "\")\n";
   if (std::strcmp(key, "preset") == 0) {
     for (int b = 0; b < NUM_BANKS; b++) {
       for (int p = 0; p < PRESETS_PER_BANK; p++) {
@@ -70,8 +66,7 @@ void DragonflyReverbPlugin::setState(const char* key, const char* value) {
           bank = b;
           preset = p;
 
-          // backward compatibility, remove this after 1.0 release
-          std::cout << "Backward compatibility!\n";
+          // backward compatibility
           setParameterValue(paramDecay, banks[b].presets[p].params[paramDecay]);
         }
       }

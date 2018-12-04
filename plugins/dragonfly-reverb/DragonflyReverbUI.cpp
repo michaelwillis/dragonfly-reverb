@@ -55,9 +55,10 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  knobx[0], knoby[0]);
-  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  knobx[0], knoby[1]);
-  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  knobx[0], knoby[2]);
+  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  145, 122);
+  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  230, 122);
+  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%2.0f ms", 145, 232);
+  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  230, 232);
 
   fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f%%",  knobx[1], knoby[0]);
   fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[2], knoby[0]);
@@ -99,44 +100,33 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
-  fSliderPredelay = new ImageSlider ( this,
-                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
-  fSliderPredelay->setId ( paramPredelay );
-  fSliderPredelay->setStartPos ( 137, 102 );
-  fSliderPredelay->setEndPos ( 137, 302 );
-  fSliderPredelay->setRange ( 0.0f, 100.0f );
-  fSliderPredelay->setInverted ( true );
-  fSliderPredelay->setCallback ( this );
-
   rectSliders[0].setPos ( 17,102 );
   rectSliders[0].setSize ( 26,200 );
   rectSliders[1].setPos ( 57,102 );
   rectSliders[1].setSize ( 26,200 );
   rectSliders[2].setPos ( 97,102 );
   rectSliders[2].setSize ( 26,200 );
-  rectSliders[3].setPos ( 137,102 );
-  rectSliders[3].setSize ( 26,200 );
 
-  rectDisplay.setPos ( 280, 140 );
-  rectDisplay.setSize ( 320, 180 );
+  rectDisplay.setPos ( 325, 140 );
+  rectDisplay.setSize ( 275, 180 );
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
-    rectBanks[i].setPos ( 275, 5 + (i * 24) );
+    rectBanks[i].setPos ( 320, 5 + (i * 24) );
     rectBanks[i].setSize ( 95, 24 );
   }
 
   for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPrograms[i].setPos( 380, 5 + (i * 24) );
+    rectPrograms[i].setPos( 425, 5 + (i * 24) );
     rectPrograms[i].setSize( 150, 21 );
   }
 
-  rectAbout.setPos ( 155, 5  );
+  rectAbout.setPos ( 280, 10  );
   rectAbout.setSize ( 20, 20 );
 
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
-  spectrogram->setAbsolutePos (285, 140);
+  spectrogram->setAbsolutePos (325, 140);
 }
 
 /**
@@ -163,14 +153,14 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
       fSliderLate_level->setValue ( value );
       break;
 
-    case paramPredelay:
-      fSliderPredelay->setValue ( value );
-      break;
-
     // knobs
 
     case paramSize:
       fKnobSize->setValue ( value );
+      break;
+
+    case paramPredelay:
+      fKnobPredelay->setValue ( value );
       break;
 
     case paramDiffuse:
@@ -319,6 +309,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
         fKnobSize->setValue ( preset[paramSize] );
         fKnobWidth->setValue ( preset[paramWidth] );
+        fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
         fKnobLowCut->setValue ( preset[paramLowCut] );
@@ -330,13 +321,10 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
 
-        // Ignore dry, early, late, and predelay levels
+        // Ignore dry, early, and late levels
         for ( uint32_t i = 3; i < paramCount; i++ ) {
-          if (i != paramPredelay) {
-            std::cout << "Setting spectrogram parameter because preset loaded! " << i << ", " << preset[i] << "\n";
             setParameterValue ( i, preset[i] );
             spectrogram->setParameterValue(i, preset[i]);
-          }
         }
 
         repaint();
@@ -379,8 +367,6 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.textBox ( 57 - 2, 314, 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i%%", int ( fSliderLate_level->getValue() ) );
   fNanoText.textBox ( 97 - 2, 314 , 35.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%ims", int ( fSliderPredelay->getValue() ) );
-  fNanoText.textBox ( 137 - 2, 314 , 35.0f, strBuf, nullptr );
 
   // print labels;
   fNanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
@@ -388,7 +374,6 @@ void DragonflyReverbUI::onDisplay()
   fNanoText.textBox ( 10, 90, 38, "Dry",   nullptr );
   fNanoText.textBox ( 50, 90, 38, "Early", nullptr );
   fNanoText.textBox ( 90, 90, 38, "Late",  nullptr );
-  fNanoText.textBox (130, 90, 38, "Delay",  nullptr );
 
   fNanoText.endFrame();
 
@@ -400,7 +385,6 @@ void DragonflyReverbUI::onDisplay()
   uint dry = ( float ( fSliderDry_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
   uint early = ( float ( fSliderEarly_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
   uint late = ( float ( fSliderLate_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
-  uint predelay = ( float ( fSliderPredelay->getValue() ) / 100.0 ) * 200.0 + 1.0f;
 
   rectSliders[0].setHeight ( dry );
   rectSliders[0].setY ( 103 + 200 - dry );
@@ -411,17 +395,12 @@ void DragonflyReverbUI::onDisplay()
   rectSliders[2].setHeight ( late );
   rectSliders[2].setY ( 103 + 200 - late );
 
-  rectSliders[3].setHeight ( predelay );
-  rectSliders[3].setY ( 103 + 200 - predelay );
-
   if ( dry > 1 )
     rectSliders[0].draw();
   if ( early > 1 )
     rectSliders[1].draw();
   if ( late > 1 )
     rectSliders[2].draw();
-  if ( predelay > 1 )
-    rectSliders[3].draw();
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
   fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
@@ -504,6 +483,7 @@ void DragonflyReverbUI::updatePresetDefaults() {
 
   fKnobSize->setDefault ( preset[paramSize] );
   fKnobWidth->setDefault ( preset[paramWidth] );
+  fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );
   fKnobDiffuse->setDefault ( preset[paramDiffuse] );
   fKnobLowCut->setDefault ( preset[paramLowCut] );

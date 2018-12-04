@@ -82,7 +82,7 @@ static Param params[paramCount] = {
   {"High Mult",   "high_mult",    0.2f,     1.2f,   "X"},
   {"Spin",        "spin",         0.0f,    10.0f,  "Hz"},
   {"Wander",      "wander",       0.0f,    40.0f,  "ms"},
-  {"Decay Time",  "decay",        0.0f,    10.0f,   "s"}
+  {"Decay",       "decay",        0.0f,    10.0f,   "s"}
 };
 
 const int NUM_BANKS = 5;
