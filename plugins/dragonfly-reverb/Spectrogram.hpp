@@ -39,7 +39,7 @@ extern "C" {
 #define MARGIN_TOP    10
 #define MARGIN_RIGHT  15
 #define MARGIN_BOTTOM 20
-#define MARGIN_LEFT   55
+#define MARGIN_LEFT   50
 
 class Spectrogram : public Widget {
   public:

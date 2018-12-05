@@ -31,7 +31,7 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[]  = {185, 615, 700, 790};
+static const int knobx[]  = {145, 220, 640, 715, 790};
 static const int knoby[]  = {12,  122, 232};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -55,28 +55,28 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  145, 122);
-  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  230, 122);
-  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%2.0f ms", 145, 232);
-  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  230, 232);
+  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  knobx[0], knoby[1]);
+  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  knobx[1], knoby[1]);
+  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%2.0f ms", knobx[0], knoby[2]);
+  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  knobx[1], knoby[2]);
 
-  fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f%%",  knobx[1], knoby[0]);
-  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[2], knoby[0]);
-  fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.1f ms", knobx[3], knoby[0]);
+  fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f%%",  knobx[2], knoby[0]);
+  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[3], knoby[0]);
+  fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.1f ms", knobx[4], knoby[0]);
 
-  fKnobHighCut   = new LabelledKnob (this, this, &fNanoText, paramHighCut,   "%5.0f Hz", knobx[1], knoby[1]);
-  fKnobHighXover = new LabelledKnob (this, this, &fNanoText, paramHighXover, "%5.0f Hz", knobx[2], knoby[1]);
-  fKnobHighMult  = new LabelledKnob (this, this, &fNanoText, paramHighMult,  "%2.1f X",  knobx[3], knoby[1]);
+  fKnobHighCut   = new LabelledKnob (this, this, &fNanoText, paramHighCut,   "%5.0f Hz", knobx[2], knoby[1]);
+  fKnobHighXover = new LabelledKnob (this, this, &fNanoText, paramHighXover, "%5.0f Hz", knobx[3], knoby[1]);
+  fKnobHighMult  = new LabelledKnob (this, this, &fNanoText, paramHighMult,  "%2.1f X",  knobx[4], knoby[1]);
 
-  fKnobLowCut    = new LabelledKnob (this, this, &fNanoText, paramLowCut,    "%4.0f Hz", knobx[1], knoby[2]);
-  fKnobLowXover  = new LabelledKnob (this, this, &fNanoText, paramLowXover,  "%4.0f Hz", knobx[2], knoby[2]);
-  fKnobLowMult   = new LabelledKnob (this, this, &fNanoText, paramLowMult,   "%2.1f X",  knobx[3], knoby[2]);
+  fKnobLowCut    = new LabelledKnob (this, this, &fNanoText, paramLowCut,    "%4.0f Hz", knobx[2], knoby[2]);
+  fKnobLowXover  = new LabelledKnob (this, this, &fNanoText, paramLowXover,  "%4.0f Hz", knobx[3], knoby[2]);
+  fKnobLowMult   = new LabelledKnob (this, this, &fNanoText, paramLowMult,   "%2.1f X",  knobx[4], knoby[2]);
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,
                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
-  fSliderDry_level->setStartPos ( 17, 102 );
+  fSliderDry_level->setStartPos ( 17, 142 );
   fSliderDry_level->setEndPos ( 17, 302 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
   fSliderDry_level->setInverted ( true );
@@ -85,7 +85,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level = new ImageSlider ( this,
                                          Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarly_level->setId ( paramEarly_level );
-  fSliderEarly_level->setStartPos ( 57, 102 );
+  fSliderEarly_level->setStartPos ( 57, 142 );
   fSliderEarly_level->setEndPos ( 57, 302 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
   fSliderEarly_level->setInverted ( true );
@@ -94,31 +94,31 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderLate_level = new ImageSlider ( this,
                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderLate_level->setId ( paramLate_level );
-  fSliderLate_level->setStartPos ( 97, 102 );
+  fSliderLate_level->setStartPos ( 97, 142 );
   fSliderLate_level->setEndPos ( 97, 302 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
-  rectSliders[0].setPos ( 17,102 );
-  rectSliders[0].setSize ( 26,200 );
-  rectSliders[1].setPos ( 57,102 );
-  rectSliders[1].setSize ( 26,200 );
-  rectSliders[2].setPos ( 97,102 );
-  rectSliders[2].setSize ( 26,200 );
+  rectSliders[0].setPos  ( 17, 142 );
+  rectSliders[0].setSize ( 26, 160 );
+  rectSliders[1].setPos  ( 57, 142 );
+  rectSliders[1].setSize ( 26, 160 );
+  rectSliders[2].setPos  ( 97, 142 );
+  rectSliders[2].setSize ( 26, 160 );
 
-  rectDisplay.setPos ( 325, 140 );
-  rectDisplay.setSize ( 275, 180 );
+  rectDisplay.setPos ( 315, 140 );
+  rectDisplay.setSize ( 305, 180 );
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
-    rectBanks[i].setPos ( 320, 5 + (i * 24) );
+    rectBanks[i].setPos ( 310, 5 + (i * 24) );
     rectBanks[i].setSize ( 95, 24 );
   }
 
   for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPrograms[i].setPos( 425, 5 + (i * 24) );
+    rectPrograms[i].setPos( 420, 5 + (i * 24) );
     rectPrograms[i].setSize( 150, 21 );
   }
 
@@ -126,7 +126,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectAbout.setSize ( 20, 20 );
 
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
-  spectrogram->setAbsolutePos (325, 140);
+  spectrogram->setAbsolutePos (315, 140);
 }
 
 /**
@@ -371,9 +371,9 @@ void DragonflyReverbUI::onDisplay()
   // print labels;
   fNanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
   fNanoText.fontSize ( 18 );
-  fNanoText.textBox ( 10, 90, 38, "Dry",   nullptr );
-  fNanoText.textBox ( 50, 90, 38, "Early", nullptr );
-  fNanoText.textBox ( 90, 90, 38, "Late",  nullptr );
+  fNanoText.textBox ( 10, 130, 38, "Dry",   nullptr );
+  fNanoText.textBox ( 50, 130, 38, "Early", nullptr );
+  fNanoText.textBox ( 90, 130, 38, "Late",  nullptr );
 
   fNanoText.endFrame();
 
@@ -382,9 +382,9 @@ void DragonflyReverbUI::onDisplay()
   g = 148.0f/255.f;
   b = 88.0f/255.f;
   glColor4f ( r, g, b, 1.0f );
-  uint dry = ( float ( fSliderDry_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
-  uint early = ( float ( fSliderEarly_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
-  uint late = ( float ( fSliderLate_level->getValue() ) / 100.0 ) * 200.0 + 1.0f;
+  uint dry = ( float ( fSliderDry_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint early = ( float ( fSliderEarly_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint late = ( float ( fSliderLate_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
 
   rectSliders[0].setHeight ( dry );
   rectSliders[0].setY ( 103 + 200 - dry );
@@ -448,9 +448,9 @@ void DragonflyReverbUI::onDisplay()
     b = 230.0f / 256;
     fNanoText.fillColor ( Color ( r, g, b ) );
 
-    int x = rectDisplay.getX() + 10;
+    int x = rectDisplay.getX() + 5;
     int y = rectDisplay.getY() + 5;
-    int w = rectDisplay.getWidth() - 20;
+    int w = rectDisplay.getWidth() - 10;
 
     char textBuffer[256];
 
@@ -460,7 +460,8 @@ void DragonflyReverbUI::onDisplay()
       "Acknowledgments:\n"
       "• Teru Kamogashira - Freeverb3\n"
       "• \"falkTX\" Coelho - Distrho Plugin Framework\n\n"
-      "Version: %d.%d.%d%s  License: GPL 3+",
+      "Version: %d.%d.%d%s\n"
+      "License: GPL 3+",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );
 

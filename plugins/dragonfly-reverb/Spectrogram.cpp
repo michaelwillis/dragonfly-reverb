@@ -138,7 +138,7 @@ void Spectrogram::uiIdle() {
           if (val < 0.0) val = 0.0 - val;
           if (val > 8.0) val = 8.0;
 
-          char alpha = (char)(sqrt(val * 2) * 63.0f);
+          char alpha = (char)(val * 30.0f);
 
           uint32_t pixel = (image->getHeight() - y - 1) * image->getWidth() + x;
 
