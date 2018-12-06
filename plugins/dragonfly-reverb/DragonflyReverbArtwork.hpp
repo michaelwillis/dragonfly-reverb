@@ -16,7 +16,7 @@ namespace DragonflyReverbArtwork
     const unsigned int knobHeight   = 60;
 
     extern const char* questionData;
-    const unsigned int questionDataSize = 1200;
+    const unsigned int questionDataSize = 1600;
     const unsigned int questionWidth    = 20;
     const unsigned int questionHeight   = 20;
 

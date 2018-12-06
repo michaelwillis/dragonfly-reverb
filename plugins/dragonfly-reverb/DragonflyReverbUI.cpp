@@ -40,7 +40,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
-    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGR )
+    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
 {
   currentBank = DEFAULT_BANK;
 
@@ -122,7 +122,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     rectPrograms[i].setSize( 150, 21 );
   }
 
-  rectAbout.setPos ( 280, 10  );
+  rectAbout.setPos ( 595, 145  );
   rectAbout.setSize ( 20, 20 );
 
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
@@ -403,7 +403,6 @@ void DragonflyReverbUI::onDisplay()
     rectSliders[2].draw();
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-  fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
 
   fNanoText.beginFrame ( this );
   fNanoText.fontSize ( 18 );
@@ -471,6 +470,8 @@ void DragonflyReverbUI::onDisplay()
   else
   {
       spectrogram->show();
+      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
   }
 
 }
