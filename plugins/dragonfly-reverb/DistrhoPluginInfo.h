@@ -33,7 +33,7 @@
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 
 #define MAJOR_VERSION 1
-#define MINOR_VERSION 0
+#define MINOR_VERSION 1
 #define PATCH_VERSION 0
 #define VERSION_SUFFIX ""
 
