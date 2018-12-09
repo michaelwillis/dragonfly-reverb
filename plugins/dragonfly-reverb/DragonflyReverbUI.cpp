@@ -24,7 +24,6 @@
 #include <vector>
 #include <math.h>
 #include <string>
-#include <iostream>
 
 START_NAMESPACE_DISTRHO
 
@@ -138,75 +137,27 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
   displayAbout = false;
 
   switch ( index )
-    {
-      // sliders
+  {
+    case paramDry_level:     fSliderDry_level->setValue ( value ); break;
+    case paramEarly_level: fSliderEarly_level->setValue ( value ); break;
+    case paramLate_level:   fSliderLate_level->setValue ( value ); break;
 
-    case paramDry_level:
-      fSliderDry_level->setValue ( value );
-      break;
+    case paramSize:                 fKnobSize->setValue ( value ); break;
+    case paramWidth:               fKnobWidth->setValue ( value ); break;
+    case paramPredelay:         fKnobPredelay->setValue ( value ); break;
+    case paramDiffuse:           fKnobDiffuse->setValue ( value ); break;
+    case paramLowCut:             fKnobLowCut->setValue ( value ); break;
+    case paramLowXover:         fKnobLowXover->setValue ( value ); break;
+    case paramLowMult:           fKnobLowMult->setValue ( value ); break;
+    case paramHighCut:           fKnobHighCut->setValue ( value ); break;
+    case paramHighXover:       fKnobHighXover->setValue ( value ); break;
+    case paramHighMult:         fKnobHighMult->setValue ( value ); break;
+    case paramDecay:               fKnobDecay->setValue ( value ); break;
+    case paramSpin:                 fKnobSpin->setValue ( value ); break;
+    case paramWander:             fKnobWander->setValue ( value ); break;
+  }
 
-    case paramEarly_level:
-      fSliderEarly_level->setValue ( value );
-      break;
-
-    case paramLate_level:
-      fSliderLate_level->setValue ( value );
-      break;
-
-    // knobs
-
-    case paramSize:
-      fKnobSize->setValue ( value );
-      break;
-
-    case paramPredelay:
-      fKnobPredelay->setValue ( value );
-      break;
-
-    case paramDiffuse:
-      fKnobDiffuse->setValue ( value );
-      break;
-
-    case paramLowCut:
-      fKnobLowCut->setValue ( value );
-      break;
-
-    case paramLowXover:
-      fKnobLowXover->setValue ( value );
-      break;
-
-    case paramLowMult:
-      fKnobLowMult->setValue ( value );
-      break;
-
-    case paramHighCut:
-      fKnobHighCut->setValue ( value );
-      break;
-
-    case paramHighXover:
-      fKnobHighXover->setValue ( value );
-      break;
-
-    case paramHighMult:
-      fKnobHighMult->setValue ( value );
-      break;
-
-    case paramDecay:
-      std::cout << "Decay param set! " << value << "\n";
-      fKnobDecay->setValue ( value );
-      break;
-
-    case paramSpin:
-      fKnobSpin->setValue ( value );
-      break;
-
-    case paramWander:
-      fKnobWander->setValue ( value );
-      break;
-    }
-
-    std::cout << "Setting spectrogram parameter because plugin changed!\n";
-    spectrogram->setParameterValue(index, value);
+  spectrogram->setParameterValue(index, value);
 }
 
 void DragonflyReverbUI::stateChanged(const char* key, const char* value)
@@ -243,7 +194,6 @@ void DragonflyReverbUI::imageKnobDragFinished ( ImageKnob* knob )
 
 void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
 {
-  std::cout << "Setting spectrogram parameter because knob changed!" << knob->getId() << ", " << value << "\n";
   setParameterValue ( knob->getId(),value );
   spectrogram->setParameterValue ( knob->getId(), value );
 }
@@ -261,7 +211,6 @@ void  DragonflyReverbUI::imageSliderDragFinished ( ImageSlider* slider )
 void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float value )
 {
   int SliderID = slider->getId();
-    std::cout << "Setting spectrogram parameter because slider changed!" << SliderID << ", " << value << "\n";
   setParameterValue ( SliderID,value );
   spectrogram->setParameterValue ( SliderID, value );
 }
