@@ -400,16 +400,16 @@ void DragonflyReverbUI::onDisplay()
     int y = rectDisplay.getY() + 5;
     int w = rectDisplay.getWidth() - 10;
 
-    char textBuffer[256];
+    char textBuffer[300];
 
-    std::snprintf(textBuffer, 256,
-      "Dragonfly is a free hall-style reverb developed by\n"
-      "Michael Willis and Rob van den Berg\n\n"
-      "Acknowledgments:\n"
+    std::snprintf(textBuffer, 300,
+      "Dragonfly is a free hall-style reverb\n"
+      "Version: %d.%d.%d%s  License: GPL 3+\n\n"
+      "• Michael Willis - Plugin Development\n"
+      "• Rob van den Berg - Plugin Development\n"
+      "• James Peters - Quality Assurance\n"
       "• Teru Kamogashira - Freeverb3\n"
-      "• \"falkTX\" Coelho - Distrho Plugin Framework\n\n"
-      "Version: %d.%d.%d%s\n"
-      "License: GPL 3+",
+      "• \"falkTX\" Coelho - Distrho Plugin Framework",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );
 
