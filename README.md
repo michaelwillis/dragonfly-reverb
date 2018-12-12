@@ -5,10 +5,9 @@ A free hall-style reverb based on freeverb3 algorithms
 
 ## Download
 
-* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.0.0/DragonflyReverb-Linux-64bit-v1.0.0.tar.gz)**
-* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.0.0/DragonflyReverb-MacOS-64bit-v1.0.0.zip)**
-* **[Windows 64 bit](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.0.0/DragonflyReverb-Windows-64bit-v1.0.0.zip)**
-* **[Windows 32 bit](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.0.0/DragonflyReverb-Windows-32bit-v1.0.0.zip)**
+* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.2/DragonflyReverb-Linux-64bit-v1.1.2.tgz)**
+* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.2/DragonflyReverb-MacOS-64bit-v1.1.2.zip)**
+* **[Windows](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.2/DragonflyReverb-Windows-64bit-v1.1.2.zip)**
 
 ## Dependencies
 
