@@ -27,7 +27,11 @@
 typedef float fv3_float_t;
 #define FV3_(name) name ## _f
 #define FFTW_(name) fftwf_ ## name
+#ifdef LIBSRATE1
+#define SRC_(name) name
+#else // LIBSRATE1
 #define SRC_(name) name ## _f
+#endif // LIBSRATE1
 #else
 #ifdef LIBFV3_DOUBLE
 typedef double fv3_float_t;

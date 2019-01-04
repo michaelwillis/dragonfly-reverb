@@ -37,6 +37,8 @@ namespace fv3
 #undef _FV3_
 #undef _fv3_float_t
 
+#ifndef LIBSRATE1
+
 #define _fv3_float_t double
 #define _FV3_(name) name ## _
 #include "freeverb/zrev2_t.hpp"
@@ -48,6 +50,8 @@ namespace fv3
 #include "freeverb/zrev2_t.hpp"
 #undef _FV3_
 #undef _fv3_float_t
+
+#endif // LIBSRATE1
 
 };
 

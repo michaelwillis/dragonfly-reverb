@@ -22,7 +22,11 @@
 #define _FV3_SRC_HPP
 
 #include <cstdio>
+#ifdef LIBSRATE1
+#include <samplerate.h>
+#else
 #include <libsamplerate2/samplerate2.h>
+#endif
 #include "freeverb/utils.hpp"
 #include "freeverb/efilter.hpp"
 #include "freeverb/biquad.hpp"
@@ -30,6 +34,18 @@
 
 namespace fv3
 {
+
+#ifdef LIBSRATE1
+
+#define _fv3_float_t float
+#define _FV3_(name) name ## _f
+#define _SRC_(name) name
+#include "freeverb/src_t.hpp"
+#undef _FV3_
+#undef _SRC_
+#undef _fv3_float_t
+
+#else // LIBSRATE1
 
 #define _fv3_float_t float
 #define _FV3_(name) name ## _f
@@ -54,6 +70,8 @@ namespace fv3
 #undef _FV3_
 #undef _SRC_
 #undef _fv3_float_t
+
+#endif // LIBSRATE1
 
 };
 
