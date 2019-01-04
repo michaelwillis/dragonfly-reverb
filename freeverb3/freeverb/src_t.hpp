@@ -47,7 +47,11 @@ class _FV3_(src)
   long overSamplingFactor, src_converter, latency;
   _SRC_(SRC_STATE) *src_stateL, *src_stateR, *src_stateLV, *src_stateRV;
   _SRC_(SRC_DATA) src_dataL, src_dataR, src_dataLV, src_dataRV;
+#ifdef LIBSRATE1
+  int src_errorL, src_errorR;
+#else
   long src_errorL, src_errorR;
+#endif
   _FV3_(iir_1st) up1L, up1R, down1L, down1R;
   _FV3_(biquad) up2L, up2R, down2L, down2R;
   _fv3_float_t lpf_iir2_bw;

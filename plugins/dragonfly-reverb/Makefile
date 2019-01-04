@@ -30,10 +30,19 @@ FILES_UI  = \
 
 include ../../dpf/Makefile.plugins.mk
 
-BUILD_CXX_FLAGS := ../../freeverb3/*.cpp.o ../../freeverb3/*.c.o -I../../freeverb3 $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := ../../freeverb3/*.cpp.o -I../../freeverb3 $(BUILD_CXX_FLAGS)
+ifneq ($(SYSTEM_LIBSAMPLERATE),true)
+BUILD_CXX_FLAGS := ../../freeverb3/*.c.o $(BUILD_CXX_FLAGS)
+endif
 
 # --------------------------------------------------------------
 # Link dependencies
+
+ifeq ($(SYSTEM_LIBSAMPLERATE),true)
+BUILD_C_FLAGS := -DLIBSRATE1 $(BUILD_C_FLAGS)
+BUILD_CXX_FLAGS := -DLIBSRATE1 $(BUILD_CXX_FLAGS)
+LINK_OPTS += -lsamplerate
+endif
 
 LINK_OPTS += -lm
 
