@@ -31,15 +31,17 @@ const long FV3_(zrev2)::allpM_EXCURSION = 32;
 FV3_(zrev2)::FV3_(zrev2)()
             throw(std::bad_alloc)
 {
-  setrt60(2.0);
-  setrt60_factor_low (1.3);
-  setrt60_factor_high(0.3);
-  setxover_low (500);
-  setxover_high(3600);
-  setidiffusion1(0.78);
-  setwander(22);
-  setspin(2.4);
-  setspinfactor(0.3);
+  rt60 = 2.0;
+  rt60_f_low = 1.3;
+  rt60_f_high = 0.3;
+  rt60_xo_low = 500;
+  rt60_xo_high = 3600;
+  idiff1 = 0.78;
+  wander_ms = 22;
+  spin_fq = 2.4;
+  spin_factor = 0.3;
+
+  setFsFactors();
 }
 
 void FV3_(zrev2)::mute()
@@ -264,9 +266,11 @@ void FV3_(zrev2)::setFsFactors()
       iAllpassL[i].setsize(p_(iAllpassLCo[i],totalFactor), p_(allpM_EXCURSION/3,excurFactor));
       iAllpassR[i].setsize(p_(iAllpassRCo[i],totalFactor), p_(allpM_EXCURSION/3,excurFactor));
     }
+
   setrt60(getrt60());
   setxover_low(getxover_low());
   setxover_high(getxover_high());
+  setidiffusion1(getidiffusion1());
   setwander(getwander());
   setspin(getspin());
 }
