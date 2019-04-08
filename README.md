@@ -10,6 +10,10 @@ A free hall-style reverb based on freeverb3 algorithms
 * **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-Windows-32bit-v1.1.3.zip)**
 * **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-Windows-64bit-v1.1.3.zip)**
 
+## Support
+
+[Support on Patreon](https://www.patreon.com/dragonflyplugins)
+
 ## Dependencies
 
 Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
