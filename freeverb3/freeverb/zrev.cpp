@@ -31,14 +31,16 @@ const fv3_float_t FV3_(zrev)::delay_EXCURSION = 0.001;
 FV3_(zrev)::FV3_(zrev)()
 	    throw(std::bad_alloc)
 {
-  setrt60(2.0);
-  setapfeedback(0.6);
-  setoutputlpf(10000);
-  setoutputhpf(4);
-  setdccutfreq(2.5);
-  setlfo1freq(0.9);
-  setlfo2freq(1.3);
-  setlfofactor(0.31);
+  rt60 = 2.0;
+  apfeedback = 0.6;
+  loopdamp = 3600;
+  outputlpf = 10000;
+  outputhpf = 4;
+  dccutfq = 2.5;
+  lfo1freq = 0.9;
+  lfo2freq = 1.3;
+  lfofactor = 0.31;
+  setFsFactors();
 }
 
 void FV3_(zrev)::mute()
@@ -231,6 +233,7 @@ void FV3_(zrev)::setFsFactors()
   for(long i = 0;i < FV3_ZREV_NUM_DELAYS;i ++) _delay[i].setsize(p_(Total[i]-Diff[i],getTotalFactorFs()), f_(delay_EXCURSION,getTotalSampleRate()));
   for(long i = 0;i < FV3_ZREV_NUM_DELAYS;i ++) _diff1[i].setsize(p_(Diff[i],getTotalFactorFs()), f_(delay_EXCURSION,getTotalSampleRate()));
   setrt60(getrt60());
+  setapfeedback(getapfeedback());
   setloopdamp(getloopdamp());
   setoutputlpf(getoutputlpf());
   setoutputhpf(getoutputhpf());
