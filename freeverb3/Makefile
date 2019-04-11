@@ -8,6 +8,8 @@ OBJS_FV3 = \
 	delayline.cpp.o \
 	earlyref.cpp.o \
 	efilter.cpp.o \
+	progenitor.cpp.o \
+	progenitor2.cpp.o \
 	revbase.cpp.o \
 	src.cpp.o \
 	slot.cpp.o \

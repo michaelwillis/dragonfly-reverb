@@ -1,0 +1,95 @@
+/*
+ * Dragonfly Reverb, copyright (c) 2019 Michael Willis, Rob van den Berg
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 3 of
+ * the License, or any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * For a full copy of the GNU General Public License see the LICENSE file.
+ */
+
+#include "DragonflyReverbPlugin.hpp"
+#include "DistrhoPluginInfo.h"
+
+START_NAMESPACE_DISTRHO
+
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 1), dsp(getSampleRate()) {
+  preset = DEFAULT_PRESET;
+}
+
+// -----------------------------------------------------------------------
+// Init
+
+void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) {
+  if (index < paramCount) {
+    parameter.hints      = kParameterIsAutomable;
+    parameter.name       = params[index].name;
+    parameter.symbol     = params[index].symbol;
+    parameter.ranges.min = params[index].range_min;
+    parameter.ranges.def = presets[DEFAULT_PRESET].params[index];
+    parameter.ranges.max = params[index].range_max;
+    parameter.unit       = params[index].unit;
+  }
+}
+
+void DragonflyReverbPlugin::initState(uint32_t index, String& stateKey, String& defaultStateValue) {
+  if (index == 0) {
+    stateKey = "preset";
+    defaultStateValue = "Small Bright Room";
+  }
+}
+
+// -----------------------------------------------------------------------
+// Internal data
+
+float DragonflyReverbPlugin::getParameterValue(uint32_t index) const {
+  return dsp.getParameterValue(index);
+}
+
+void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
+  dsp.setParameterValue(index, value);
+}
+
+void DragonflyReverbPlugin::setState(const char* key, const char* value) {
+  if (std::strcmp(key, "preset") == 0) {
+    for (int p = 0; p < PRESET_COUNT; p++) {
+      if (std::strcmp(value, presets[p].name) == 0) {
+        preset = p;
+      }
+    }
+  }
+}
+
+// -----------------------------------------------------------------------
+// Process
+
+void DragonflyReverbPlugin::activate() {
+  sampleRateChanged(getSampleRate());
+}
+
+void DragonflyReverbPlugin::run(const float** inputs, float** outputs, uint32_t frames) {
+  dsp.run(inputs, outputs, frames);
+}
+
+// -----------------------------------------------------------------------
+// Callbacks
+
+void DragonflyReverbPlugin::sampleRateChanged(double newSampleRate) {
+  dsp.sampleRateChanged(newSampleRate);
+}
+
+// -----------------------------------------------------------------------
+
+Plugin* createPlugin() {
+    return new DragonflyReverbPlugin();
+}
+
+// -----------------------------------------------------------------------
+
+END_NAMESPACE_DISTRHO

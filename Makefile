@@ -19,7 +19,8 @@ ifeq ($(HAVE_DGL),true)
 endif
 
 plugins: libs dgl
-	$(MAKE) all -C plugins/dragonfly-reverb
+	$(MAKE) all -C plugins/dragonfly-hall-reverb
+	$(MAKE) all -C plugins/dragonfly-room-reverb
 
 ifneq ($(CROSS_COMPILING),true)
 gen: plugins dpf/utils/lv2_ttl_generator
@@ -39,7 +40,8 @@ endif
 clean:
 	$(MAKE) clean -C dpf/dgl
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
-	$(MAKE) clean -C plugins/dragonfly-reverb
+	$(MAKE) clean -C plugins/dragonfly-hall-reverb
+	$(MAKE) clean -C plugins/dragonfly-room-reverb
 	$(MAKE) clean -C freeverb3
 	rm -rf bin build
 
