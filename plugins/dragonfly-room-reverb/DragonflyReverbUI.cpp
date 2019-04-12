@@ -41,26 +41,26 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
 {
 
-  currentProgram = DEFAULT_PRESET;
+  currentPreset = DEFAULT_PRESET;
   displayAbout = false;
 
   // text
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  knobx[0], knoby[1]);
-  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  knobx[1], knoby[1]);
-  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%2.0f ms", knobx[0], knoby[2]);
-  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  knobx[1], knoby[2]);
+  fKnobOversample  = new LabelledKnob (this, this, &fNanoText, paramOversample,  "%2.1f x",  knobx[0], knoby[1]);
+  fKnobWidth       = new LabelledKnob (this, this, &fNanoText, paramWidth,       "%3.0f%%",  knobx[1], knoby[1]);
+  fKnobPredelay    = new LabelledKnob (this, this, &fNanoText, paramPredelay,    "%2.0f ms", knobx[0], knoby[2]);
+  fKnobDecay       = new LabelledKnob (this, this, &fNanoText, paramDecay,       "%2.1f s",  knobx[1], knoby[2]);
 
-  fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f%%",  knobx[2], knoby[0]);
-  fKnobDampenLPF = new LabelledKnob (this, this, &fNanoText, paramDampenLPF, "%5.0f Hz", knobx[3], knoby[0]);
+  fKnobDiffuse     = new LabelledKnob (this, this, &fNanoText, paramDiffuse,     "%2.0f%%",  knobx[2], knoby[0]);
+  fKnobDampenFreq  = new LabelledKnob (this, this, &fNanoText, paramDampenFreq,  "%5.0f Hz", knobx[3], knoby[0]);
 
-  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[2], knoby[1]);
-  fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.0f%%",  knobx[3], knoby[1]);
+  fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[2], knoby[1]);
+  fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[3], knoby[1]);
 
-  fKnobBassLPF   = new LabelledKnob (this, this, &fNanoText, paramBassLPF,    "%4.0f Hz", knobx[2], knoby[2]);
-  fKnobBassBoost = new LabelledKnob (this, this, &fNanoText, paramBassBoost,  "%1.2f%%",   knobx[3], knoby[2]);
+  fKnobBoostFreq   = new LabelledKnob (this, this, &fNanoText, paramBoostFreq,   "%4.0f Hz", knobx[2], knoby[2]);
+  fKnobBoostFactor = new LabelledKnob (this, this, &fNanoText, paramBoostFactor, "%1.2f%%",   knobx[3], knoby[2]);
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,
@@ -134,16 +134,16 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramEarly_level: fSliderEarly_level->setValue ( value ); break;
     case paramLate_level:   fSliderLate_level->setValue ( value ); break;
 
-    case paramSize:                 fKnobSize->setValue ( value ); break;
+    case paramOversample:     fKnobOversample->setValue ( value ); break;
     case paramWidth:               fKnobWidth->setValue ( value ); break;
     case paramPredelay:         fKnobPredelay->setValue ( value ); break;
     case paramDecay:               fKnobDecay->setValue ( value ); break;
     case paramDiffuse:           fKnobDiffuse->setValue ( value ); break;
-    case paramDampenLPF:       fKnobDampenLPF->setValue ( value ); break;
+    case paramDampenFreq:     fKnobDampenFreq->setValue ( value ); break;
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
-    case paramBassLPF:           fKnobBassLPF->setValue ( value ); break;
-    case paramBassBoost:       fKnobBassBoost->setValue ( value ); break;
+    case paramBoostFreq:       fKnobBoostFreq->setValue ( value ); break;
+    case paramBoostFactor:   fKnobBoostFactor->setValue ( value ); break;
   }
 
   spectrogram->setParameterValue(index, value);
@@ -154,7 +154,7 @@ void DragonflyReverbUI::stateChanged(const char* key, const char* value)
   if (std::strcmp(key, "preset") == 0) {
     for (int p = 0; p < PRESET_COUNT; p++) {
       if (std::strcmp(value, presets[p].name) == 0) {
-        currentProgram = p;
+        currentPreset = p;
       }
     }
 
@@ -242,7 +242,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
         const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
 
-        fKnobSize->setValue ( preset[paramSize] );
+        fKnobOversample->setValue ( preset[paramOversample] );
         fKnobWidth->setValue ( preset[paramWidth] );
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
@@ -417,18 +417,18 @@ void DragonflyReverbUI::uiIdle() {
 }
 
 void DragonflyReverbUI::updatePresetDefaults() {
-  const float *preset = presets[currentProgram].params;
+  const float *preset = presets[currentPreset].params;
 
-  fKnobSize->setDefault ( preset[paramSize] );
+  fKnobOversample->setDefault ( preset[paramOversample] );
   fKnobWidth->setDefault ( preset[paramWidth] );
   fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );
   fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-  fKnobDampenLPF->setDefault ( preset[paramDampenLPF] );
+  fKnobDampenFreq->setDefault ( preset[paramDampenFreq] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
-  fKnobBassLPF->setDefault ( preset[paramBassLPF] );
-  fKnobBassBoost->setDefault ( preset[paramBassBoost] );
+  fKnobBoostFreq->setDefault ( preset[paramBoostFreq] );
+  fKnobBoostFactor->setDefault ( preset[paramBoostFactor] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

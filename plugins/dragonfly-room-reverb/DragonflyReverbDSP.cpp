@@ -159,20 +159,20 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case     paramDry_level: dry_level        = (value / 100.0); break;
         case   paramEarly_level: early_level      = (value / 100.0); break;
         case    paramLate_level: late_level       = (value / 100.0); break;
-        case          paramSize: early.setRSFactor  (value /  10.0);
-                                 late.setOSFactor   (value /   5.0); break;
+        case    paramOversample: early.setOSFactor  (value);
+                                 late.setOSFactor   (value);         break;
         case         paramWidth: early.setwidth     (value / 100.0);
                                  late.setwidth      (value / 100.0); break;
         case      paramPredelay: late.setPreDelay   (value);         break;
         case         paramDecay: late.setrt60       (value);         break;
         case       paramDiffuse: late.setidiffusion1(value / 120.0);
                                  late.setodiffusion1(value / 120.0); break;
-        case     paramDampenLPF: late.setdamp       (value);         break;
+        case    paramDampenFreq: late.setdamp       (value);         break;
         case          paramSpin: late.setspin       (value);         break;
         case        paramWander: late.setwander     (value / 200.0 + 0.1);
                                  late.setwander2    (value / 200.0 + 0.1);
-        case       paramBassLPF: late.setdamp2      (value);         break;
-        case     paramBassBoost: late.setbassboost  (value / 100.0); break;
+        case     paramBoostFreq: late.setdamp2      (value);         break;
+        case   paramBoostFactor: late.setbassboost  (value / 100.0); break;
       }
     }
   }

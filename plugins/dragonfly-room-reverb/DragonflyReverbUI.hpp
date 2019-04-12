@@ -63,21 +63,21 @@ private:
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 
-    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobDiffuse, fKnobDampenLPF, fKnobSpin, fKnobWander, fKnobBassLPF, fKnobBassBoost;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<Spectrogram> spectrogram;
+    ScopedPointer<LabelledKnob>
+      fKnobOversample, fKnobWidth,
+      fKnobPredelay, fKnobDecay,
+      fKnobDiffuse, fKnobDampenFreq,
+      fKnobSpin, fKnobWander,
+      fKnobBoostFreq, fKnobBoostFactor;
 
-    int currentProgram;
-
+    int currentPreset;
     bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[3];
-
+    DGL::Rectangle<int> rectPreset[PRESET_COUNT];
     DGL::Rectangle<int> rectDisplay;
-
-    DGL::Rectangle<int> rectBanks[5];
-    DGL::Rectangle<int> rectPrograms[5];
-
     DGL::Rectangle<int> rectAbout;
 
     void updatePresetDefaults();
