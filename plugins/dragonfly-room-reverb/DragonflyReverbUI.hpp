@@ -70,13 +70,18 @@ private:
       fKnobPredelay, fKnobDecay,
       fKnobDiffuse, fKnobDampenFreq,
       fKnobSpin, fKnobWander,
-      fKnobBoostFreq, fKnobBoostFactor;
+      fKnobBassBoost, fKnobBoostFreq;
 
-    int currentPreset;
+
+    int currentBank;
+    int currentPreset[NUM_BANKS];
     bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[3];
-    DGL::Rectangle<int> rectPreset[PRESET_COUNT];
+
+    DGL::Rectangle<int> rectBanks[NUM_BANKS];
+    DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
+
     DGL::Rectangle<int> rectDisplay;
     DGL::Rectangle<int> rectAbout;
 

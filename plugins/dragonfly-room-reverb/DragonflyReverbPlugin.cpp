@@ -20,6 +20,7 @@
 START_NAMESPACE_DISTRHO
 
 DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 1), dsp(getSampleRate()) {
+  bank = DEFAULT_BANK;
   preset = DEFAULT_PRESET;
 }
 
@@ -32,7 +33,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
     parameter.name       = params[index].name;
     parameter.symbol     = params[index].symbol;
     parameter.ranges.min = params[index].range_min;
-    parameter.ranges.def = presets[DEFAULT_PRESET].params[index];
+    parameter.ranges.def = banks[DEFAULT_BANK].presets[DEFAULT_PRESET].params[index];
     parameter.ranges.max = params[index].range_max;
     parameter.unit       = params[index].unit;
   }
@@ -58,9 +59,12 @@ void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
 
 void DragonflyReverbPlugin::setState(const char* key, const char* value) {
   if (std::strcmp(key, "preset") == 0) {
-    for (int p = 0; p < PRESET_COUNT; p++) {
-      if (std::strcmp(value, presets[p].name) == 0) {
-        preset = p;
+    for (int b = 0; b < NUM_BANKS; b++) {
+      for (int p = 0; p < PRESETS_PER_BANK; p++) {
+        if (std::strcmp(value, banks[b].presets[p].name) == 0) {
+          bank = b;
+          preset = p;
+        }
       }
     }
   }

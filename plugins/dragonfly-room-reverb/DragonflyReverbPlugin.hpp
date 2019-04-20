@@ -96,6 +96,7 @@ protected:
 
 private:
     DragonflyReverbDSP dsp;
+    int bank;
     int preset;
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };

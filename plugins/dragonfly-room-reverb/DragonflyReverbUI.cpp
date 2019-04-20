@@ -40,8 +40,12 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
     fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
 {
+  currentBank = DEFAULT_BANK;
+  for (int b = 0; b < NUM_BANKS; b++)
+  {
+    currentPreset[b] = DEFAULT_PRESET;
+  }
 
-  currentPreset = DEFAULT_PRESET;
   displayAbout = false;
 
   // text
@@ -60,7 +64,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[3], knoby[1]);
 
   fKnobBoostFreq   = new LabelledKnob (this, this, &fNanoText, paramBoostFreq,   "%4.0f Hz", knobx[2], knoby[2]);
-  fKnobBoostFactor = new LabelledKnob (this, this, &fNanoText, paramBoostFactor, "%1.2f%%",   knobx[3], knoby[2]);
+  fKnobBassBoost = new LabelledKnob (this, this, &fNanoText, paramBassBoost, "%1.2f%%",   knobx[3], knoby[2]);
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,
@@ -99,20 +103,19 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   rectDisplay.setPos ( 315, 140 );
   rectDisplay.setSize ( 305, 180 );
-/*
+
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
     rectBanks[i].setPos ( 310, 5 + (i * 24) );
     rectBanks[i].setSize ( 95, 24 );
   }
-*/
-/*
-  for ( int i = 0; i < PRESET_COUNT; ++i)
+
+  for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPrograms[i].setPos( 420, 5 + (i * 24) );
-    rectPrograms[i].setSize( 150, 21 );
+    rectPresets[i].setPos( 420, 5 + (i * 24) );
+    rectPresets[i].setSize( 150, 21 );
   }
-*/
+
   rectAbout.setPos ( 595, 145  );
   rectAbout.setSize ( 20, 20 );
 
@@ -143,7 +146,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
     case paramBoostFreq:       fKnobBoostFreq->setValue ( value ); break;
-    case paramBoostFactor:   fKnobBoostFactor->setValue ( value ); break;
+    case paramBassBoost:   fKnobBassBoost->setValue ( value ); break;
   }
 
   spectrogram->setParameterValue(index, value);
@@ -152,9 +155,12 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 void DragonflyReverbUI::stateChanged(const char* key, const char* value)
 {
   if (std::strcmp(key, "preset") == 0) {
-    for (int p = 0; p < PRESET_COUNT; p++) {
-      if (std::strcmp(value, presets[p].name) == 0) {
-        currentPreset = p;
+    for (int b = 0; b < NUM_BANKS; b++) {
+      for (int p = 0; p < PRESETS_PER_BANK; p++) {
+        if (std::strcmp(value, banks[b].presets[p].name) == 0) {
+          currentBank = b;
+          currentPreset[currentBank] = p;
+        }
       }
     }
 
@@ -216,7 +222,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
     else
     {
       bool presetClicked = false;
-/*
+
       for (int row = 0; row < NUM_BANKS; row++)
       {
         if (rectBanks[row].contains ( ev.pos ))
@@ -228,33 +234,30 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
       for (int row = 0; row < PRESETS_PER_BANK; row++)
       {
-        if (rectPrograms[row].contains ( ev.pos ))
+        if (rectPresets[row].contains ( ev.pos ))
         {
-          currentProgram[currentBank] = row;
+          currentPreset[currentBank] = row;
           presetClicked = true;
         }
       }
 
       if (presetClicked)
       {
-        setState("preset", banks[currentBank].presets[currentProgram[currentBank]].name);
+        setState("preset", banks[currentBank].presets[currentPreset[currentBank]].name);
         updatePresetDefaults();
 
-        const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;
+        const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
         fKnobOversample->setValue ( preset[paramOversample] );
         fKnobWidth->setValue ( preset[paramWidth] );
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
-        fKnobLowCut->setValue ( preset[paramLowCut] );
-        fKnobLowXover->setValue ( preset[paramLowXover] );
-        fKnobLowMult->setValue ( preset[paramLowMult] );
-        fKnobHighCut->setValue ( preset[paramHighCut] );
-        fKnobHighXover->setValue ( preset[paramHighXover] );
-        fKnobHighMult->setValue ( preset[paramHighMult] );
+	fKnobDampenFreq->setValue ( preset[paramDampenFreq] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
+	fKnobBoostFreq->setValue ( preset[paramBoostFreq] );
+	fKnobBassBoost->setValue ( preset[paramBassBoost] );
 
         // Ignore dry, early, and late levels
         for ( uint32_t i = 3; i < paramCount; i++ ) {
@@ -265,7 +268,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         repaint();
         return true;
       }
-*/
+
       if ( rectAbout.contains ( ev.pos ) )
       {
         displayAbout = true;
@@ -345,7 +348,7 @@ void DragonflyReverbUI::onDisplay()
 
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
   Color dim    = Color ( 0.65f, 0.65f, 0.65f );
-/*
+
   for (int row = 0; row < NUM_BANKS; row ++)
   {
     DGL::Rectangle<int> bank = rectBanks[row];
@@ -359,17 +362,17 @@ void DragonflyReverbUI::onDisplay()
 
     fNanoText.textBox ( bank.getX() - 3, bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
   }
-*/
+
 
   fNanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-/*
+
   for (int row = 0; row < PRESETS_PER_BANK; row ++)
   {
-    DGL::Rectangle<int> program = rectPrograms[row];
-    fNanoText.fillColor( row == currentProgram[currentBank] ? bright : dim );
-    fNanoText.textBox ( program.getX() + 3, program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
+    DGL::Rectangle<int> presetRect = rectPresets[row];
+    fNanoText.fillColor( row == currentPreset[currentBank] ? bright : dim );
+    fNanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), banks[currentBank].presets[row].name, nullptr );
   }
-*/
+
   fNanoText.endFrame();
 
   if (displayAbout) {
@@ -390,7 +393,7 @@ void DragonflyReverbUI::onDisplay()
     char textBuffer[300];
 
     std::snprintf(textBuffer, 300,
-      "Dragonfly is a free hall-style reverb\n"
+      "Dragonfly Room is a free reverb\n"
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
       "• Rob van den Berg - Plugin Development\n"
@@ -417,7 +420,7 @@ void DragonflyReverbUI::uiIdle() {
 }
 
 void DragonflyReverbUI::updatePresetDefaults() {
-  const float *preset = presets[currentPreset].params;
+  const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
   fKnobOversample->setDefault ( preset[paramOversample] );
   fKnobWidth->setDefault ( preset[paramWidth] );
@@ -427,8 +430,8 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobDampenFreq->setDefault ( preset[paramDampenFreq] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
+  fKnobBassBoost->setDefault ( preset[paramBassBoost] );
   fKnobBoostFreq->setDefault ( preset[paramBoostFreq] );
-  fKnobBoostFactor->setDefault ( preset[paramBoostFactor] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------
