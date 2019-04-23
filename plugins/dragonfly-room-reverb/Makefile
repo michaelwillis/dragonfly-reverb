@@ -19,20 +19,22 @@ FILES_DSP = \
 FILES_UI  = \
 	DragonflyReverbUI.cpp \
 	DragonflyReverbArtwork.cpp \
-	NotoSans_Regular.ttf.cpp \
 	DragonflyReverbDSP.cpp \
 	Spectrogram.cpp \
 	LabelledKnob.cpp \
-	fft.c
 
 # --------------------------------------------------------------
 # Do some magic
 
 include ../../dpf/Makefile.plugins.mk
 
-BUILD_CXX_FLAGS := ../../freeverb3/*.cpp.o -I../../freeverb3 $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := -I../../common $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := ../../common/*.c.o $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := ../../common/*.cpp.o $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := ../../common/freeverb/*.cpp.o $(BUILD_CXX_FLAGS)
+
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
-BUILD_CXX_FLAGS := ../../freeverb3/*.c.o $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := ../../common/libsamplerate2/*.c.o $(BUILD_CXX_FLAGS)
 endif
 
 # --------------------------------------------------------------

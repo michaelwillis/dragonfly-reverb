@@ -16,6 +16,7 @@
 
 #include "DragonflyReverbPlugin.hpp"
 #include "DistrhoPluginInfo.h"
+#include "DragonflyVersion.h"
 
 START_NAMESPACE_DISTRHO
 

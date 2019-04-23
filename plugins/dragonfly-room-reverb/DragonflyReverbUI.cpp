@@ -15,6 +15,7 @@
  */
 
 #include "DistrhoUI.hpp"
+#include "DragonflyVersion.h"
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"
@@ -63,8 +64,9 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[2], knoby[1]);
   fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[3], knoby[1]);
 
-  fKnobBoostFreq   = new LabelledKnob (this, this, &fNanoText, paramBoostFreq,   "%4.0f Hz", knobx[2], knoby[2]);
-  fKnobBassBoost = new LabelledKnob (this, this, &fNanoText, paramBassBoost, "%1.2f%%",   knobx[3], knoby[2]);
+  fKnobBassBoost   = new LabelledKnob (this, this, &fNanoText, paramBassBoost,   "%1.2f%%",  knobx[2], knoby[2]);
+  fKnobBoostFreq   = new LabelledKnob (this, this, &fNanoText, paramBoostFreq,   "%4.0f Hz", knobx[3], knoby[2]);
+
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,

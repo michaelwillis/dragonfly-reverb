@@ -16,6 +16,7 @@
  */
 
 #include "DistrhoUI.hpp"
+#include "DragonflyVersion.h"
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"

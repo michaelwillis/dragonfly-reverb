@@ -31,11 +31,6 @@
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 
-#define MAJOR_VERSION 1
-#define MINOR_VERSION 1
-#define PATCH_VERSION 4
-#define VERSION_SUFFIX ""
-
 enum Parameters
 {
     paramDry_level = 0,
@@ -71,9 +66,9 @@ static Param params[paramCount] = {
   {"Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
   {"Decay",        "decay",          0.5f,     2.5f,   "s"},
   {"Diffuse",      "diffuse",        0.0f,   100.0f,   "%"},
-  {"Dampen LPF",   "dampen_lpf",  5000.0f, 15000.0f,  "Hz"},
+  {"Dampen",       "dampen",      5000.0f, 15000.0f,  "Hz"},
   {"Spin",         "spin",           0.0f,    10.0f,  "Hz"},
-  {"Wander",       "wander",         0.0f,    40.0f,  "ms"},
+  {"Wander",       "wander",         0.0f,   100.0f,   "%"},
   {"Bass Boost",   "bass_boost",     0.0f,   100.0f,   "%"},
   {"Boost Freq",   "boost_freq",    50.0f,  1050.0f,  "Hz"}
 };

@@ -11,7 +11,7 @@ all: libs dgl plugins gen
 # --------------------------------------------------------------
 
 libs:
-	$(MAKE) -C freeverb3
+	$(MAKE) -C common
 
 dgl:
 ifeq ($(HAVE_DGL),true)
@@ -42,7 +42,7 @@ clean:
 	$(MAKE) clean -C dpf/utils/lv2-ttl-generator
 	$(MAKE) clean -C plugins/dragonfly-hall-reverb
 	$(MAKE) clean -C plugins/dragonfly-room-reverb
-	$(MAKE) clean -C freeverb3
+	$(MAKE) clean -C common
 	rm -rf bin build
 
 # --------------------------------------------------------------

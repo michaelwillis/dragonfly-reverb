@@ -15,6 +15,7 @@
  */
 
 #include "DistrhoPlugin.hpp"
+#include "DragonflyVersion.h"
 #include "DragonflyReverbDSP.hpp"
 #include "freeverb/earlyref.hpp"
 #include "freeverb/zrev2.hpp"
