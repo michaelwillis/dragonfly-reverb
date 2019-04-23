@@ -31,21 +31,21 @@ all: $(OBJS)
 
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 libsamplerate2/%.c.o: libsamplerate2/%.c
-	$(CC) $< $(BUILD_C_FLAGS) -I. -DLIBSRATE2_FLOAT -c -o $@
+	$(CC) $< $(BUILD_C_FLAGS) -I. -fPIC -DLIBSRATE2_FLOAT -c -o $@
 endif
 
 freeverb/%.cpp.o: freeverb/%.cpp
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
-	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -DLIBSRATE2_FLOAT -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
+	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -fPIC -DLIBSRATE2_FLOAT -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
 else
-	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -DLIBSRATE1 -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
+	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -fPIC -DLIBSRATE1 -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
 endif
 
 NotoSans_Regular.ttf.cpp.o: NotoSans_Regular.ttf.cpp
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -c -o $@
 
 fft.c.o: fft.c
-	$(CC) $< $(BUILD_C_FLAGS) -I. -c -o $@
+	$(CC) $< $(BUILD_C_FLAGS) -I. -fPIC -c -o $@
 
 clean:
-	rm -f *.d *.o
+	rm -f *.d *.o freeverb/*.d freeverb/*.o libsamplerate2/*.d libsamplerate2/*.o
