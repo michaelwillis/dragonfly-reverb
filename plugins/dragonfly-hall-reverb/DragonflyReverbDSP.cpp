@@ -20,16 +20,22 @@
 #include "DragonflyReverbDSP.hpp"
 
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
-  early.setSampleRate(sampleRate);
+  early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
   early.setMuteOnChange(false);
   early.setdryr(0); // mute dry signal
   early.setwet(0); // 0dB
+  early.setwidth(0.8);
+  early.setLRDelay(0.3);
+  early.setLRCrossApFreq(750, 4);
+  early.setDiffusionApFreq(150, 4);
+  early.setSampleRate(sampleRate);
   early_send = 0.20;
 
-  late.setSampleRate(sampleRate);
   late.setMuteOnChange(false);
-  late.setdryr(0); // mute dry signal
   late.setwet(0); // 0dB
+  late.setdryr(0); // mute dry signal
+  late.setwidth(1.0);
+  late.setSampleRate(sampleRate);
 
   for (uint32_t param = 0; param < paramCount; param++) {
     newParams[param] = banks[DEFAULT_BANK].presets[DEFAULT_PRESET].params[param];

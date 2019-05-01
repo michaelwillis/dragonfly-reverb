@@ -16,5 +16,5 @@
 
 #define MAJOR_VERSION 1
 #define MINOR_VERSION 9
-#define PATCH_VERSION 1
+#define PATCH_VERSION 2
 #define VERSION_SUFFIX "beta"
