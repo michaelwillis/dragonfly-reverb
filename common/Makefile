@@ -17,7 +17,8 @@ OBJS = \
 	freeverb/zrev.cpp.o \
 	freeverb/zrev2.cpp.o \
 	NotoSans_Regular.ttf.cpp.o \
-	fft.c.o
+	kiss_fft/kiss_fft.c.o \
+	kiss_fft/kiss_fftr.c.o
 
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 OBJS += \
@@ -46,8 +47,8 @@ endif
 NotoSans_Regular.ttf.cpp.o: NotoSans_Regular.ttf.cpp
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -c -o $@
 
-fft.c.o: fft.c
+kiss_fft/%.c.o: kiss_fft/%.c
 	$(CC) $< $(BUILD_C_FLAGS) -I. -c -o $@
 
 clean:
-	rm -f *.d *.o freeverb/*.d freeverb/*.o libsamplerate2/*.d libsamplerate2/*.o
+	rm -f *.[od] */*.[od]

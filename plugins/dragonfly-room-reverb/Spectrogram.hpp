@@ -25,7 +25,7 @@
 #include "extra/Mutex.hpp"
 
 extern "C" {
-#include "fft.h"
+#include "kiss_fft/kiss_fftr.h"
 }
 
 #define SPECTROGRAM_SAMPLE_RATE 40960
@@ -73,8 +73,9 @@ class Spectrogram : public Widget {
     // in other words, how much of reverb_results is accurately populated
     uint32_t sample_offset_processed;
 
-    double fft_real[SPECTROGRAM_WINDOW_SIZE];
-    double fft_imag[SPECTROGRAM_WINDOW_SIZE];
+    kiss_fftr_cfg   fft_cfg;
+    kiss_fft_scalar fft_in[SPECTROGRAM_WINDOW_SIZE];
+    kiss_fft_cpx    fft_out[SPECTROGRAM_WINDOW_SIZE];
 };
 
 #endif

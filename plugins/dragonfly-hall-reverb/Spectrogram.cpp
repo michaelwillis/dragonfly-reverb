@@ -72,13 +72,12 @@ Spectrogram::Spectrogram(Widget * widget, NanoVG * fNanoText, DGL::Rectangle<int
 
     // Hann window function, per https://en.wikipedia.org/wiki/Hann_function
     window_multiplier[i] = pow(sin((M_PI * i) / (SPECTROGRAM_WINDOW_SIZE - 1)), 2);
-
-    fft_real[i] = 0.0;
-    fft_imag[i] = 0.0;
   }
 
   x = 0;
   sample_offset_processed = 0;
+
+  fft_cfg = kiss_fftr_alloc(SPECTROGRAM_WINDOW_SIZE, 0, nullptr, nullptr);
 }
 
 Spectrogram::~Spectrogram() {
@@ -97,12 +96,14 @@ Spectrogram::~Spectrogram() {
 
   delete[] raster;
   delete image;
+
+  kiss_fftr_free(fft_cfg);
 }
 
 void Spectrogram::uiIdle() {
-  // twenty millisecond budget to render a chunk of the spectrogram
+  // ten millisecond budget to render a chunk of the spectrogram
 
-  int64_t limit = (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() + 20;
+  int64_t limit = (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() + 10;
 
   while(x < image->getWidth() && (duration_cast< milliseconds >(system_clock::now().time_since_epoch())).count() < limit) {
     // Calculate time in seconds, then determine where that is in the dsp_output buffer
@@ -124,17 +125,16 @@ void Spectrogram::uiIdle() {
     }
     else {
       for (uint32_t window_sample = 0; window_sample < SPECTROGRAM_WINDOW_SIZE; window_sample++) {
-        fft_real[window_sample] = reverb_results[sample_offset + window_sample] * window_multiplier[window_sample];
-        fft_imag[window_sample] = 0.0;
+        fft_in[window_sample] = reverb_results[sample_offset + window_sample] * window_multiplier[window_sample];
       }
 
-      Fft_transform(fft_real, fft_imag, (size_t) SPECTROGRAM_WINDOW_SIZE);
+      kiss_fftr(fft_cfg, fft_in, fft_out);
 
       for (uint32_t y = 0; y < image->getHeight(); y++) {
           float freq = powf(M_E, (float) y * logf ( SPECTROGRAM_MAX_FREQ / SPECTROGRAM_MIN_FREQ ) / (float) image->getHeight()) * SPECTROGRAM_MIN_FREQ;
           int fft_index = freq / (float)(SPECTROGRAM_SAMPLE_RATE / SPECTROGRAM_WINDOW_SIZE) + 1;
 
-          float val = fft_real[fft_index];
+          float val = fft_out[fft_index].r;
           if (val < 0.0) val = 0.0 - val;
           if (val > 8.0) val = 8.0;
 
