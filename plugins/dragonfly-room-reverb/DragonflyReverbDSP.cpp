@@ -18,6 +18,9 @@
 #include "DistrhoPluginInfo.h"
 #include "DragonflyReverbDSP.hpp"
 
+// Increase the late level by approx 8dB
+#define LATE_GAIN 2.5f
+
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   early.loadPresetReflection(FV3_EARLYREF_PRESET_1);
   early.setMuteOnChange(false);
@@ -80,7 +83,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
                                  break;
         case        paramWander: late.setwander     (value / 200.0 + 0.1);
                                  late.setwander2    (value / 200.0 + 0.1); break;
-        case     paramBassBoost: late.setbassboost  (value / 100.0); break;
+        case     paramBassBoost: late.setbassboost  (value / 200.0); break;
         case     paramBoostFreq: late.setdamp2      (value);         break;
       }
     }
@@ -114,12 +117,12 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       outputs[0][offset + i] =
         dry_level   * inputs[0][offset + i]  +
         early_level * early_out_buffer[0][i] +
-        late_level  * late_out_buffer[0][i];
+        late_level  * late_out_buffer[0][i] * LATE_GAIN;
 
       outputs[1][offset + i] =
         dry_level   * inputs[1][offset + i]  +
         early_level * early_out_buffer[1][i] +
-        late_level  * late_out_buffer[1][i];
+        late_level  * late_out_buffer[1][i] * LATE_GAIN;
     }
   }
 }
