@@ -46,7 +46,6 @@ protected:
 
     // -------------------------------------------------------------------
     // Widget Callbacks
-//    void imageSwitchClicked ( ImageSwitch* ImageSwitch, bool down ) override;
     void imageKnobDragStarted ( ImageKnob* knob ) override;
     void imageKnobDragFinished ( ImageKnob* knob ) override;
     void imageKnobValueChanged ( ImageKnob* knob, float value ) override;
@@ -68,10 +67,9 @@ private:
     ScopedPointer<LabelledKnob>
       fKnobOversample, fKnobWidth,
       fKnobPredelay, fKnobDecay,
-      fKnobDiffuse, fKnobDampenFreq,
-      fKnobSpin, fKnobWander,
-      fKnobBassBoost, fKnobBoostFreq;
-
+      fKnobDiffuse, fKnobSpin, fKnobWander,
+      fKnobInputLPF, fKnobDampenLPF, fKnobOutputLPF,
+      fKnobBoostFactor, fKnobBoostLPF, fKnobBoostBand;
 
     int currentBank;
     int currentPreset[NUM_BANKS];

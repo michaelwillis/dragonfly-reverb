@@ -17,6 +17,7 @@
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 #include "DragonflyReverbDSP.hpp"
+#include "math.h"
 
 // Increase the late level by approx 8dB
 #define LATE_GAIN 2.5f
@@ -74,17 +75,22 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case         paramWidth: early.setwidth     (value / 120.0);
                                  late.setwidth      (value / 100.0); break;
         case      paramPredelay: late.setPreDelay   (value);         break;
-        case         paramDecay: late.setrt60       (value);         break;
+        case         paramDecay: late.setrt60       (value);
+                                 late.setbassboost( (newParams[paramBoostFactor] / 100.0) * newParams[paramBoostBand] / pow(newParams[paramDecay], 2)); break;
         case       paramDiffuse: late.setidiffusion1(value / 120.0);
                                  late.setodiffusion1(value / 120.0); break;
-        case    paramDampenFreq: late.setdamp       (value);         break;
+        case    paramDampenLPF:  late.setdamp       (value);         break;
         case          paramSpin: late.setspin       (value);
                                  late.setspin2      (std::sqrt(100.0 - (10.0 - value) * (10.0 - value)) / 2.0);
                                  break;
         case        paramWander: late.setwander     (value / 200.0 + 0.1);
                                  late.setwander2    (value / 200.0 + 0.1); break;
-        case     paramBassBoost: late.setbassboost  (value / 200.0); break;
-        case     paramBoostFreq: late.setdamp2      (value);         break;
+        case     paramBoostFactor: late.setbassboost( (newParams[paramBoostFactor] / 100.0) * newParams[paramBoostBand] / pow(newParams[paramDecay], 2)); break;
+        case     paramBoostLPF:    late.setdamp2      (newParams[paramBoostLPF]); break;
+        case     paramBoostBand: late.setbassbw     (value);
+	                         late.setbassboost( (newParams[paramBoostFactor] / 100.0) * newParams[paramBoostBand] / pow(newParams[paramDecay], 2)); break;
+        case      paramInputLPF: late.setinputdamp  (value); break;
+        case     paramOutputLPF: late.setoutputdamp (value); break;
       }
     }
   }

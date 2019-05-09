@@ -17,6 +17,7 @@
 
 #include "DistrhoUI.hpp"
 #include "DragonflyVersion.h"
+#include "DragonflyReverbDSP.hpp"
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"
@@ -125,7 +126,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectAbout.setPos ( 595, 145  );
   rectAbout.setSize ( 20, 20 );
 
-  spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
+  AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
+  spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay, dsp);
   spectrogram->setAbsolutePos (315, 140);
 }
 
@@ -158,7 +160,10 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramWander:             fKnobWander->setValue ( value ); break;
   }
 
-  spectrogram->setParameterValue(index, value);
+  if (index != paramDry_level) {
+    spectrogram->setParameterValue(index, value);
+  }
+
 }
 
 void DragonflyReverbUI::stateChanged(const char* key, const char* value)

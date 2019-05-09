@@ -16,6 +16,7 @@
 
 #include "DistrhoUI.hpp"
 #include "DragonflyVersion.h"
+#include "DragonflyReverbDSP.hpp"
 #include "DragonflyReverbUI.hpp"
 #include "DragonflyReverbArtwork.hpp"
 #include "DistrhoPluginInfo.h"
@@ -30,7 +31,7 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[]  = {145, 220, 640, 715};
+static const int knobx[]  = {145, 220, 640, 715, 790};
 static const int knoby[]  = {12,  122, 232};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -59,14 +60,16 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobDecay       = new LabelledKnob (this, this, &fNanoText, paramDecay,       "%2.1f s",  knobx[1], knoby[2]);
 
   fKnobDiffuse     = new LabelledKnob (this, this, &fNanoText, paramDiffuse,     "%2.0f%%",  knobx[2], knoby[0]);
-  fKnobDampenFreq  = new LabelledKnob (this, this, &fNanoText, paramDampenFreq,  "%5.0f Hz", knobx[3], knoby[0]);
+  fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[3], knoby[0]);
+  fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[4], knoby[0]);
 
-  fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[2], knoby[1]);
-  fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[3], knoby[1]);
+  fKnobInputLPF    = new LabelledKnob (this, this, &fNanoText, paramInputLPF,    "%5.0f Hz", knobx[2], knoby[1]);
+  fKnobDampenLPF   = new LabelledKnob (this, this, &fNanoText, paramDampenLPF,   "%5.0f Hz", knobx[3], knoby[1]);
+  fKnobOutputLPF   = new LabelledKnob (this, this, &fNanoText, paramOutputLPF,   "%5.0f Hz", knobx[4], knoby[1]);
 
-  fKnobBassBoost   = new LabelledKnob (this, this, &fNanoText, paramBassBoost,   "%1.2f%%",  knobx[2], knoby[2]);
-  fKnobBoostFreq   = new LabelledKnob (this, this, &fNanoText, paramBoostFreq,   "%4.0f Hz", knobx[3], knoby[2]);
-
+  fKnobBoostFactor = new LabelledKnob (this, this, &fNanoText, paramBoostFactor, "%1.2f%%",  knobx[2], knoby[2]);
+  fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
+  fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%5.0f Hz", knobx[4], knoby[2]);
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,
@@ -121,7 +124,8 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectAbout.setPos ( 595, 145  );
   rectAbout.setSize ( 20, 20 );
 
-  spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay);
+  AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
+  spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay, dsp);
   spectrogram->setAbsolutePos (315, 140);
 }
 
@@ -143,15 +147,23 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramWidth:               fKnobWidth->setValue ( value ); break;
     case paramPredelay:         fKnobPredelay->setValue ( value ); break;
     case paramDecay:               fKnobDecay->setValue ( value ); break;
+
     case paramDiffuse:           fKnobDiffuse->setValue ( value ); break;
-    case paramDampenFreq:     fKnobDampenFreq->setValue ( value ); break;
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
-    case paramBoostFreq:       fKnobBoostFreq->setValue ( value ); break;
-    case paramBassBoost:   fKnobBassBoost->setValue ( value ); break;
+
+    case paramInputLPF:         fKnobInputLPF->setValue ( value ); break;
+    case paramDampenLPF:       fKnobDampenLPF->setValue ( value ); break;
+    case paramOutputLPF:       fKnobOutputLPF->setValue ( value ); break;
+
+    case paramBoostFactor:   fKnobBoostFactor->setValue ( value ); break;
+    case paramBoostLPF:         fKnobBoostLPF->setValue ( value ); break;
+    case paramBoostBand:       fKnobBoostBand->setValue ( value ); break;
   }
 
-  spectrogram->setParameterValue(index, value);
+  if (index != paramDry_level) {
+    spectrogram->setParameterValue(index, value);
+  }
 }
 
 void DragonflyReverbUI::stateChanged(const char* key, const char* value)
@@ -255,11 +267,13 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
-	fKnobDampenFreq->setValue ( preset[paramDampenFreq] );
+	fKnobDampenLPF->setValue ( preset[paramDampenLPF] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
-	fKnobBoostFreq->setValue ( preset[paramBoostFreq] );
-	fKnobBassBoost->setValue ( preset[paramBassBoost] );
+	fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
+	fKnobBoostFactor->setValue ( preset[paramBoostFactor] );
+	fKnobInputLPF->setValue ( preset[paramInputLPF] );
+	fKnobOutputLPF->setValue ( preset[paramOutputLPF] );
 
         // Ignore dry, early, and late levels
         for ( uint32_t i = 3; i < paramCount; i++ ) {
@@ -429,11 +443,14 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );
   fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-  fKnobDampenFreq->setDefault ( preset[paramDampenFreq] );
+  fKnobDampenLPF->setDefault ( preset[paramDampenLPF] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
-  fKnobBassBoost->setDefault ( preset[paramBassBoost] );
-  fKnobBoostFreq->setDefault ( preset[paramBoostFreq] );
+  fKnobBoostFactor->setDefault ( preset[paramBoostFactor] );
+  fKnobBoostLPF->setDefault ( preset[paramBoostLPF] );
+  fKnobBoostBand->setDefault ( preset[paramBoostBand] );
+  fKnobInputLPF->setDefault ( preset[paramInputLPF] );
+  fKnobOutputLPF->setDefault ( preset[paramOutputLPF] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

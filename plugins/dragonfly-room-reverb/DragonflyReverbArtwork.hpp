@@ -6,8 +6,8 @@
 namespace DragonflyReverbArtwork
 {
     extern const char* backgroundData;
-    const unsigned int backgroundDataSize = 1062600;
-    const unsigned int backgroundWidth    = 805;
+    const unsigned int backgroundDataSize = 1161600;
+    const unsigned int backgroundWidth    = 880;
     const unsigned int backgroundHeight   = 330;
 
     extern const char* knobData;

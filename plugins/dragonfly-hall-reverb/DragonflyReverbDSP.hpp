@@ -18,10 +18,11 @@
 #ifndef DRAGONFLY_REVERB_DSP_HPP_INCLUDED
 #define DRAGONFLY_REVERB_DSP_HPP_INCLUDED
 
+#include "AbstractDSP.hpp"
 #include "freeverb/earlyref.hpp"
 #include "freeverb/zrev2.hpp"
 
-class DragonflyReverbDSP {
+class DragonflyReverbDSP : public AbstractDSP {
 public:
   DragonflyReverbDSP(double sampleRate);
   float getParameterValue(uint32_t index) const;

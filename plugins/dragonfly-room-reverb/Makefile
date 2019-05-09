@@ -20,7 +20,6 @@ FILES_UI  = \
 	DragonflyReverbUI.cpp \
 	DragonflyReverbArtwork.cpp \
 	DragonflyReverbDSP.cpp \
-	Spectrogram.cpp \
 	LabelledKnob.cpp \
 
 # --------------------------------------------------------------
