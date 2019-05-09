@@ -64,10 +64,10 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[4], knoby[0]);
 
   fKnobInputLPF    = new LabelledKnob (this, this, &fNanoText, paramInputLPF,    "%5.0f Hz", knobx[2], knoby[1]);
-  fKnobDampenLPF   = new LabelledKnob (this, this, &fNanoText, paramDampenLPF,   "%5.0f Hz", knobx[3], knoby[1]);
+  fKnobDampen      = new LabelledKnob (this, this, &fNanoText, paramDampen,      "%5.0f Hz", knobx[3], knoby[1]);
   fKnobOutputLPF   = new LabelledKnob (this, this, &fNanoText, paramOutputLPF,   "%5.0f Hz", knobx[4], knoby[1]);
 
-  fKnobBoostFactor = new LabelledKnob (this, this, &fNanoText, paramBoostFactor, "%1.2f%%",  knobx[2], knoby[2]);
+  fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.2f%%",  knobx[2], knoby[2]);
   fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
   fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%5.0f Hz", knobx[4], knoby[2]);
 
@@ -153,10 +153,10 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramWander:             fKnobWander->setValue ( value ); break;
 
     case paramInputLPF:         fKnobInputLPF->setValue ( value ); break;
-    case paramDampenLPF:       fKnobDampenLPF->setValue ( value ); break;
+    case paramDampen:             fKnobDampen->setValue ( value ); break;
     case paramOutputLPF:       fKnobOutputLPF->setValue ( value ); break;
 
-    case paramBoostFactor:   fKnobBoostFactor->setValue ( value ); break;
+    case paramBoost:               fKnobBoost->setValue ( value ); break;
     case paramBoostLPF:         fKnobBoostLPF->setValue ( value ); break;
     case paramBoostBand:       fKnobBoostBand->setValue ( value ); break;
   }
@@ -267,11 +267,11 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
-	fKnobDampenLPF->setValue ( preset[paramDampenLPF] );
+	fKnobDampen->setValue ( preset[paramDampen] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
 	fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
-	fKnobBoostFactor->setValue ( preset[paramBoostFactor] );
+	fKnobBoost->setValue ( preset[paramBoost] );
 	fKnobInputLPF->setValue ( preset[paramInputLPF] );
 	fKnobOutputLPF->setValue ( preset[paramOutputLPF] );
 
@@ -443,10 +443,10 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );
   fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-  fKnobDampenLPF->setDefault ( preset[paramDampenLPF] );
+  fKnobDampen->setDefault ( preset[paramDampen] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
-  fKnobBoostFactor->setDefault ( preset[paramBoostFactor] );
+  fKnobBoost->setDefault ( preset[paramBoost] );
   fKnobBoostLPF->setDefault ( preset[paramBoostLPF] );
   fKnobBoostBand->setDefault ( preset[paramBoostBand] );
   fKnobInputLPF->setDefault ( preset[paramInputLPF] );

@@ -68,8 +68,8 @@ private:
       fKnobOversample, fKnobWidth,
       fKnobPredelay, fKnobDecay,
       fKnobDiffuse, fKnobSpin, fKnobWander,
-      fKnobInputLPF, fKnobDampenLPF, fKnobOutputLPF,
-      fKnobBoostFactor, fKnobBoostLPF, fKnobBoostBand;
+      fKnobInputLPF, fKnobDampen, fKnobOutputLPF,
+      fKnobBoost, fKnobBoostLPF, fKnobBoostBand;
 
     int currentBank;
     int currentPreset[NUM_BANKS];
