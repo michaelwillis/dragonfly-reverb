@@ -67,9 +67,9 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobDampen      = new LabelledKnob (this, this, &fNanoText, paramDampen,      "%5.0f Hz", knobx[3], knoby[1]);
   fKnobOutputLPF   = new LabelledKnob (this, this, &fNanoText, paramOutputLPF,   "%5.0f Hz", knobx[4], knoby[1]);
 
-  fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.2f%%",  knobx[2], knoby[2]);
+  fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.0f%%",  knobx[2], knoby[2]);
   fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
-  fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%5.0f Hz", knobx[4], knoby[2]);
+  fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%1.1f x", knobx[4], knoby[2]);
 
   // sliders
   fSliderDry_level = new ImageSlider ( this,
