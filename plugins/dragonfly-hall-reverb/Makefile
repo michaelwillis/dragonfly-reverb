@@ -21,6 +21,8 @@ FILES_UI  = \
 	DragonflyReverbArtwork.cpp \
 	DragonflyReverbDSP.cpp \
 	LabelledKnob.cpp \
+	../../common/Spectrogram.cpp \
+	../../common/NotoSans_Regular.ttf.cpp
 
 # --------------------------------------------------------------
 # Do some magic
@@ -28,7 +30,6 @@ FILES_UI  = \
 include ../../dpf/Makefile.plugins.mk
 
 BUILD_CXX_FLAGS := -I../../common $(BUILD_CXX_FLAGS)
-BUILD_CXX_FLAGS := ../../common/*.cpp.o $(BUILD_CXX_FLAGS)
 BUILD_CXX_FLAGS := ../../common/kiss_fft/*.c.o $(BUILD_CXX_FLAGS)
 BUILD_CXX_FLAGS := ../../common/freeverb/*.cpp.o $(BUILD_CXX_FLAGS)
 

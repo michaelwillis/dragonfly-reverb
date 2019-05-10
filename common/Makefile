@@ -16,8 +16,6 @@ OBJS = \
 	freeverb/utils.cpp.o \
 	freeverb/zrev.cpp.o \
 	freeverb/zrev2.cpp.o \
-	NotoSans_Regular.ttf.cpp.o \
-	Spectrogram.cpp.o \
 	kiss_fft/kiss_fft.c.o \
 	kiss_fft/kiss_fftr.c.o
 
@@ -44,9 +42,6 @@ ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 else
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -DLIBSRATE1 -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
 endif
-
-%.cpp.o: %.cpp
-	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -I../dpf/dgl -c -o $@
 
 kiss_fft/%.c.o: kiss_fft/%.c
 	$(CC) $< $(BUILD_C_FLAGS) -I. -c -o $@
