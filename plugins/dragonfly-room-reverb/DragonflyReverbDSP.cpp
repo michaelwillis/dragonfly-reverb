@@ -69,6 +69,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       switch(index) {
         case     paramDry_level: dry_level        = (value / 100.0); break;
         case   paramEarly_level: early_level      = (value / 100.0); break;
+        case     paramEarlySend: early_send       = (value / 100.0); break;
         case    paramLate_level: late_level       = (value / 100.0); break;
         case    paramOversample: early.setOSFactor  (value);
                                  late.setOSFactor   (value);         break;
@@ -90,7 +91,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case     paramBoostBand: late.setbassbw     (value);
 	                         late.setbassboost( (newParams[paramBoost] / 100.0) * newParams[paramBoostBand] / pow(newParams[paramDecay], 2)); break;
         case      paramInputLPF: late.setinputdamp  (value); break;
-        case     paramOutputLPF: late.setoutputdamp (value); break;
+        case     paramOutputLPF: early.setoutputlpf(value);  break;
+	                         late.setoutputdamp (value); break;
       }
     }
   }
