@@ -275,8 +275,8 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 	fKnobInputLPF->setValue ( preset[paramInputLPF] );
 	fKnobOutputLPF->setValue ( preset[paramOutputLPF] );
 
-        // Ignore dry, early, and late levels
-        for ( uint32_t i = 3; i < paramCount; i++ ) {
+        // Ignore dry, early, early send, and late levels
+        for ( uint32_t i = 4; i < paramCount; i++ ) {
             setParameterValue ( i, preset[i] );
             spectrogram->setParameterValue(i, preset[i]);
         }
