@@ -63,9 +63,9 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[3], knoby[0]);
   fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[4], knoby[0]);
 
-  fKnobInputLPF    = new LabelledKnob (this, this, &fNanoText, paramInputLPF,    "%5.0f Hz", knobx[2], knoby[1]);
-  fKnobDampen      = new LabelledKnob (this, this, &fNanoText, paramDampen,      "%5.0f Hz", knobx[3], knoby[1]);
-  fKnobOutputLPF   = new LabelledKnob (this, this, &fNanoText, paramOutputLPF,   "%5.0f Hz", knobx[4], knoby[1]);
+  fKnobInputDamp   = new LabelledKnob (this, this, &fNanoText, paramInputDamp,   "%5.0f Hz", knobx[2], knoby[1]);
+  fKnobEarlyDamp   = new LabelledKnob (this, this, &fNanoText, paramEarlyDamp,   "%5.0f Hz", knobx[3], knoby[1]);
+  fKnobLateDamp    = new LabelledKnob (this, this, &fNanoText, paramLateDamp,    "%5.0f Hz", knobx[4], knoby[1]);
 
   fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.0f%%",  knobx[2], knoby[2]);
   fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
@@ -152,9 +152,9 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
 
-    case paramInputLPF:         fKnobInputLPF->setValue ( value ); break;
-    case paramDampen:             fKnobDampen->setValue ( value ); break;
-    case paramOutputLPF:       fKnobOutputLPF->setValue ( value ); break;
+    case paramInputDamp:       fKnobInputDamp->setValue ( value ); break;
+    case paramEarlyDamp:       fKnobEarlyDamp->setValue ( value ); break;
+    case paramLateDamp:         fKnobLateDamp->setValue ( value ); break;
 
     case paramBoost:               fKnobBoost->setValue ( value ); break;
     case paramBoostLPF:         fKnobBoostLPF->setValue ( value ); break;
@@ -266,14 +266,18 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobWidth->setValue ( preset[paramWidth] );
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
+
         fKnobDiffuse->setValue ( preset[paramDiffuse] );
-	fKnobDampen->setValue ( preset[paramDampen] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
-	fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
+
+	fKnobInputDamp->setValue ( preset[paramInputDamp] );
+	fKnobEarlyDamp->setValue ( preset[paramEarlyDamp] );
+	fKnobLateDamp->setValue ( preset[paramLateDamp] );
+
 	fKnobBoost->setValue ( preset[paramBoost] );
-	fKnobInputLPF->setValue ( preset[paramInputLPF] );
-	fKnobOutputLPF->setValue ( preset[paramOutputLPF] );
+	fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
+	fKnobBoostBand->setValue ( preset[paramBoostBand] );
 
         // Ignore dry, early, early send, and late levels
         for ( uint32_t i = 4; i < paramCount; i++ ) {
@@ -442,15 +446,18 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobWidth->setDefault ( preset[paramWidth] );
   fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );
+
   fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-  fKnobDampen->setDefault ( preset[paramDampen] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
+
+  fKnobInputDamp->setDefault ( preset[paramInputDamp] );
+  fKnobEarlyDamp->setDefault ( preset[paramEarlyDamp] );
+  fKnobLateDamp->setDefault ( preset[paramLateDamp] );
+
   fKnobBoost->setDefault ( preset[paramBoost] );
   fKnobBoostLPF->setDefault ( preset[paramBoostLPF] );
   fKnobBoostBand->setDefault ( preset[paramBoostBand] );
-  fKnobInputLPF->setDefault ( preset[paramInputLPF] );
-  fKnobOutputLPF->setDefault ( preset[paramOutputLPF] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

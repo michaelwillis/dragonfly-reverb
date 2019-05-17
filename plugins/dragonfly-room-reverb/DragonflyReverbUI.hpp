@@ -68,7 +68,7 @@ private:
       fKnobOversample, fKnobWidth,
       fKnobPredelay, fKnobDecay,
       fKnobDiffuse, fKnobSpin, fKnobWander,
-      fKnobInputLPF, fKnobDampen, fKnobOutputLPF,
+      fKnobInputDamp, fKnobEarlyDamp, fKnobLateDamp,
       fKnobBoost, fKnobBoostLPF, fKnobBoostBand;
 
     int currentBank;
