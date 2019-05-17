@@ -410,13 +410,13 @@ void DragonflyReverbUI::onDisplay()
     int y = rectDisplay.getY() + 5;
     int w = rectDisplay.getWidth() - 10;
 
-    char textBuffer[300];
+    char textBuffer[400];
 
-    std::snprintf(textBuffer, 300,
-      "Dragonfly Room is a free reverb\n"
+    std::snprintf(textBuffer, 400,
+      "Dragonfly Room Reverb is a free audio effect\n"
+      "plugin based on Freeverb3's ProG algorithm.\n"
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
-      "• Rob van den Berg - Plugin Development\n"
       "• James Peters - Quality Assurance\n"
       "• Teru Kamogashira - Freeverb3\n"
       "• \"falkTX\" Coelho - Distrho Plugin Framework",
