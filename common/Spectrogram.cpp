@@ -32,6 +32,7 @@ Spectrogram::Spectrogram(
   AbstractDSP * dsp) : Widget(widget->getParentWindow()) {
 
   this->dsp = dsp;
+  setParameterValue(0, 0.0f);
   
   setWidth(rect->getWidth());
   setHeight(rect->getHeight());
@@ -187,6 +188,9 @@ void Spectrogram::onDisplay() {
 }
 
 void Spectrogram::setParameterValue(uint32_t i, float v) {
+  if (i == 0) {
+    v = 0; // Don't show dry signal on spectrogram
+  }
   dsp->setParameterValue(i, v);
   dsp->mute();
   x = 0;
