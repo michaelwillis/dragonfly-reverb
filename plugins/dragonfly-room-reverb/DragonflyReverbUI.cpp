@@ -54,7 +54,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobOversample  = new LabelledKnob (this, this, &fNanoText, paramOversample,  "%2.1f x",  knobx[0], knoby[1]);
+  fKnobSize        = new LabelledKnob (this, this, &fNanoText, paramSize,        "%2.0f m",  knobx[0], knoby[1]);
   fKnobWidth       = new LabelledKnob (this, this, &fNanoText, paramWidth,       "%3.0f%%",  knobx[1], knoby[1]);
   fKnobPredelay    = new LabelledKnob (this, this, &fNanoText, paramPredelay,    "%2.0f ms", knobx[0], knoby[2]);
   fKnobDecay       = new LabelledKnob (this, this, &fNanoText, paramDecay,       "%2.1f s",  knobx[1], knoby[2]);
@@ -143,7 +143,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramEarly_level: fSliderEarly_level->setValue ( value ); break;
     case paramLate_level:   fSliderLate_level->setValue ( value ); break;
 
-    case paramOversample:     fKnobOversample->setValue ( value ); break;
+    case paramSize:                 fKnobSize->setValue ( value ); break;
     case paramWidth:               fKnobWidth->setValue ( value ); break;
     case paramPredelay:         fKnobPredelay->setValue ( value ); break;
     case paramDecay:               fKnobDecay->setValue ( value ); break;
@@ -262,7 +262,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
         const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
-        fKnobOversample->setValue ( preset[paramOversample] );
+        fKnobSize->setValue ( preset[paramSize] );
         fKnobWidth->setValue ( preset[paramWidth] );
         fKnobPredelay->setValue ( preset[paramPredelay] );
         fKnobDecay->setValue ( preset[paramDecay] );
@@ -442,7 +442,7 @@ void DragonflyReverbUI::uiIdle() {
 void DragonflyReverbUI::updatePresetDefaults() {
   const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
-  fKnobOversample->setDefault ( preset[paramOversample] );
+  fKnobSize->setDefault ( preset[paramSize] );
   fKnobWidth->setDefault ( preset[paramWidth] );
   fKnobPredelay->setDefault ( preset[paramPredelay] );
   fKnobDecay->setDefault ( preset[paramDecay] );

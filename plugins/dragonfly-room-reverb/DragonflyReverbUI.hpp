@@ -65,7 +65,7 @@ private:
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob>
-      fKnobOversample, fKnobWidth,
+      fKnobSize, fKnobWidth,
       fKnobPredelay, fKnobDecay,
       fKnobDiffuse, fKnobSpin, fKnobWander,
       fKnobInputDamp, fKnobEarlyDamp, fKnobLateDamp,
