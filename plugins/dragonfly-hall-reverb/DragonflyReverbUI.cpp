@@ -276,10 +276,16 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
 
-        // Ignore dry, early, and late levels
-        for ( uint32_t i = 3; i < paramCount; i++ ) {
+
+        for ( uint32_t i = 0; i < paramCount; i++ ) {
+	  // Don't set sliders
+	  if (i != paramDry_level   &&
+	      i != paramEarly_level &&
+	      i != paramEarlySend   &&
+	      i != paramLate_level) {
             setParameterValue ( i, preset[i] );
             spectrogram->setParameterValue(i, preset[i]);
+	  }
         }
 
         repaint();
