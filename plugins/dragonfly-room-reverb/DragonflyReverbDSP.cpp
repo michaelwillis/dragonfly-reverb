@@ -77,7 +77,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case     paramEarlySend: early_send       = (value / 100.0); break;
         case    paramLate_level: late_level       = (value / 100.0); break;
         case          paramSize: early.setRSFactor  (value /  10.0);
-                                 late.setRSFactor   (value /  10.0);
+                                 late.setRSFactor   (value /  10.0); break;
         case         paramWidth: early.setwidth     (value / 120.0);
                                  late.setwidth      (value / 100.0); break;
         case      paramPredelay: late.setPreDelay   (value);         break;
