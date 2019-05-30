@@ -165,12 +165,12 @@ void Spectrogram::onDisplay() {
 
   int freq[] = {125, 250, 500, 1000, 2000, 4000, 8000, 16000};
   std::string freqStrings[]  = {"125 Hz", "250 Hz", "500 Hz", "1 kHz", "2 kHz", "4 kHz", "8 kHz", "16 kHz"};
-  float decayTime[] = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f, 8.0f };
-  std::string decayTimeString [] = { ".25 s", ".5 s", "1 s", "2 s", "4 s", "8 s" };
+  float decayTime[] = { 0.5f, 1.0f, 2.0f, 4.0f, 8.0f };
+  std::string decayTimeString [] = { "½s", "1s", "2s", "4s", "8s" };
 
   fNanoText->beginFrame ( this );
   fNanoText->fontSize ( 16 );
-  fNanoText->textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_MIDDLE );
+  fNanoText->textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_MIDDLE );
 
   for ( int i = 0 ; i < 6 ; i++ ) {
     int x = ( int ) ( image->getWidth() * logf ( decayTime[i] / SPECTROGRAM_MIN_SECONDS ) / logf ( SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) );
