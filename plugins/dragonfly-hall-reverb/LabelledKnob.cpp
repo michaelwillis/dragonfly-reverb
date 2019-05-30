@@ -25,7 +25,7 @@ LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG
     : Widget(widget->getParentWindow())
 {
   setWidth(Art::knobWidth + 20);
-  setHeight(Art::knobHeight + 28);
+  setHeight(Art::knobHeight + 30);
   setAbsolutePos(x, y);
 
   fNumberFormat = numberFormat;
@@ -33,7 +33,7 @@ LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback *callback, NanoVG
 
   fKnob = new ImageKnob(this, Image ( Art::knobData, Art::knobWidth, Art::knobHeight, GL_BGRA ));
   fKnob->setId(id);
-  fKnob->setAbsolutePos(x + 10, y + 12);
+  fKnob->setAbsolutePos(x + 10, y + 14);
   fKnob->setRange(params[id].range_min, params[id].range_max);
   fKnob->setRotationAngle(300);
   fKnob->setCallback(callback);

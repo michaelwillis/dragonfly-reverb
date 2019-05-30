@@ -47,7 +47,6 @@ protected:
 
     // -------------------------------------------------------------------
     // Widget Callbacks
-//    void imageSwitchClicked ( ImageSwitch* ImageSwitch, bool down ) override;
     void imageKnobDragStarted ( ImageKnob* knob ) override;
     void imageKnobDragFinished ( ImageKnob* knob ) override;
     void imageKnobValueChanged ( ImageKnob* knob, float value ) override;
@@ -64,8 +63,8 @@ private:
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 
-    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
-    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
+    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobFlutter, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
+    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<Image> spectrogramImage;
@@ -75,7 +74,7 @@ private:
 
     bool displayAbout;
 
-    DGL::Rectangle<int> rectSliders[3];
+    DGL::Rectangle<int> rectSliders[4];
 
     DGL::Rectangle<int> rectDisplay;
 

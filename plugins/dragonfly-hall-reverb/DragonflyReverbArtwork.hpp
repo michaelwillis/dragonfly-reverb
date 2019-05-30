@@ -6,9 +6,9 @@
 namespace DragonflyReverbArtwork
 {
     extern const char* backgroundData;
-    const unsigned int backgroundDataSize = 1161600;
-    const unsigned int backgroundWidth    = 880;
-    const unsigned int backgroundHeight   = 330;
+    const unsigned int backgroundDataSize = 1269600;
+    const unsigned int backgroundWidth    = 920;
+    const unsigned int backgroundHeight   = 345;
 
     extern const char* knobData;
     const unsigned int knobDataSize = 14400;
@@ -26,14 +26,14 @@ namespace DragonflyReverbArtwork
     const unsigned int sliderHeight   = 3;
 
     extern const char* tab_offData;
-    const unsigned int tab_offDataSize = 7200;
+    const unsigned int tab_offDataSize = 8800;
     const unsigned int tab_offWidth    = 100;
-    const unsigned int tab_offHeight   = 24;
+    const unsigned int tab_offHeight   = 22;
 
     extern const char* tab_onData;
-    const unsigned int tab_onDataSize = 7200;
+    const unsigned int tab_onDataSize = 8800;
     const unsigned int tab_onWidth    = 100;
-    const unsigned int tab_onHeight   = 24;
+    const unsigned int tab_onHeight   = 22;
 }
 
 #endif // BINARY_DRAGONFLYREVERBARTWORK_HPP
