@@ -74,9 +74,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobLowXover  = new LabelledKnob (this, this, &fNanoText, paramLowXover,  "%4.0f Hz", knobx[4], knoby[2]);
   fKnobLowMult   = new LabelledKnob (this, this, &fNanoText, paramLowMult,   "%2.1f X",  knobx[5], knoby[2]);
 
-  // sliders
-  fSliderDry_level = new ImageSlider ( this,
-                                       Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
   fSliderDry_level->setStartPos ( 17, 157 );
   fSliderDry_level->setEndPos ( 17, 317 );
@@ -84,8 +82,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
 
-  fSliderEarly_level = new ImageSlider ( this,
-                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarly_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarly_level->setId ( paramEarly_level );
   fSliderEarly_level->setStartPos ( 57, 157 );
   fSliderEarly_level->setEndPos ( 57, 317 );
@@ -93,8 +90,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
 
-  fSliderEarlySend = new ImageSlider ( this,
-                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarlySend->setId ( paramEarlySend );
   fSliderEarlySend->setStartPos ( 97, 157 );
   fSliderEarlySend->setEndPos ( 97, 317 );
@@ -102,8 +98,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarlySend->setInverted ( true );
   fSliderEarlySend->setCallback ( this );
 
-  fSliderLate_level = new ImageSlider ( this,
-                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderLate_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderLate_level->setId ( paramLate_level );
   fSliderLate_level->setStartPos ( 137, 157 );
   fSliderLate_level->setEndPos ( 137, 317 );
@@ -131,8 +126,8 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPrograms[i].setPos( 420, 5 + (i * 21) );
-    rectPrograms[i].setSize( 150, 21 );
+    rectPresets[i].setPos( 420, 5 + (i * 21) );
+    rectPresets[i].setSize( 150, 21 );
   }
 
   rectAbout.setPos  ( 635, 130 );
@@ -262,7 +257,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
       for (int row = 0; row < PRESETS_PER_BANK; row++)
       {
-        if (rectPrograms[row].contains ( ev.pos ))
+        if (rectPresets[row].contains ( ev.pos ))
         {
           currentProgram[currentBank] = row;
           presetClicked = true;
@@ -413,7 +408,7 @@ void DragonflyReverbUI::onDisplay()
 
   for (int row = 0; row < PRESETS_PER_BANK; row ++)
   {
-    DGL::Rectangle<int> program = rectPrograms[row];
+    DGL::Rectangle<int> program = rectPresets[row];
     fNanoText.fillColor( row == currentProgram[currentBank] ? bright : dim );
     fNanoText.textBox ( program.getX() + 3, program.getY() + 2, program.getWidth(), banks[currentBank].presets[row].name, nullptr );
   }

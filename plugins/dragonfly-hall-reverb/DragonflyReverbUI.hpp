@@ -78,8 +78,8 @@ private:
 
     DGL::Rectangle<int> rectDisplay;
 
-    DGL::Rectangle<int> rectBanks[5];
-    DGL::Rectangle<int> rectPrograms[5];
+    DGL::Rectangle<int> rectBanks[NUM_BANKS];
+    DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
 
     DGL::Rectangle<int> rectAbout;
 
