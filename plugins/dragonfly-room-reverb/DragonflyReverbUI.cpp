@@ -31,8 +31,8 @@ START_NAMESPACE_DISTRHO
 namespace Art = DragonflyReverbArtwork;
 using DGL::Color;
 
-static const int knobx[]  = {145, 220, 640, 715, 790};
-static const int knoby[]  = {12,  122, 232};
+static const int knobx[]  = {185, 260, 680, 755, 830};
+static const int knoby[]  = {15,  130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
@@ -71,62 +71,68 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
   fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%1.1f x", knobx[4], knoby[2]);
 
-  // sliders
-  fSliderDry_level = new ImageSlider ( this,
-                                       Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
-  fSliderDry_level->setStartPos ( 17, 142 );
-  fSliderDry_level->setEndPos ( 17, 302 );
+  fSliderDry_level->setStartPos ( 17, 157 );
+  fSliderDry_level->setEndPos ( 17, 317 );
   fSliderDry_level->setRange ( 0.0f, 100.0f );
   fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
 
-  fSliderEarly_level = new ImageSlider ( this,
-                                         Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarly_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderEarly_level->setId ( paramEarly_level );
-  fSliderEarly_level->setStartPos ( 57, 142 );
-  fSliderEarly_level->setEndPos ( 57, 302 );
+  fSliderEarly_level->setStartPos ( 57, 157 );
+  fSliderEarly_level->setEndPos ( 57, 317 );
   fSliderEarly_level->setRange ( 0.0f, 100.0f );
   fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
 
-  fSliderLate_level = new ImageSlider ( this,
-                                        Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarlySend->setId ( paramEarlySend );
+  fSliderEarlySend->setStartPos ( 97, 157 );
+  fSliderEarlySend->setEndPos ( 97, 317 );
+  fSliderEarlySend->setRange ( 0.0f, 100.0f );
+  fSliderEarlySend->setInverted ( true );
+  fSliderEarlySend->setCallback ( this );
+
+  fSliderLate_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderLate_level->setId ( paramLate_level );
-  fSliderLate_level->setStartPos ( 97, 142 );
-  fSliderLate_level->setEndPos ( 97, 302 );
+  fSliderLate_level->setStartPos ( 137, 157 );
+  fSliderLate_level->setEndPos ( 137, 317 );
   fSliderLate_level->setRange ( 0.0f, 100.0f );
   fSliderLate_level->setInverted ( true );
   fSliderLate_level->setCallback ( this );
 
-  rectSliders[0].setPos  ( 17, 142 );
-  rectSliders[0].setSize ( 26, 160 );
-  rectSliders[1].setPos  ( 57, 142 );
-  rectSliders[1].setSize ( 26, 160 );
-  rectSliders[2].setPos  ( 97, 142 );
-  rectSliders[2].setSize ( 26, 160 );
+  rectSliders[0].setPos  ( 17,  157 );
+  rectSliders[0].setSize ( 26,  160 );
+  rectSliders[1].setPos  ( 57,  157 );
+  rectSliders[1].setSize ( 26,  160 );
+  rectSliders[2].setPos  ( 97,  157 );
+  rectSliders[2].setSize ( 26,  160 );
+  rectSliders[3].setPos  ( 137, 157 );
+  rectSliders[3].setSize ( 26,  160 );
 
-  rectDisplay.setPos ( 315, 140 );
-  rectDisplay.setSize ( 305, 180 );
+  rectDisplay.setPos  ( 355, 126 );
+  rectDisplay.setSize ( 305, 207 );
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
-    rectBanks[i].setPos ( 310, 5 + (i * 24) );
+    rectBanks[i].setPos ( 350, 5 + (i * 21) );
     rectBanks[i].setSize ( 95, 24 );
   }
 
   for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPresets[i].setPos( 420, 5 + (i * 24) );
+    rectPresets[i].setPos( 460, 5 + (i * 21) );
     rectPresets[i].setSize( 150, 21 );
   }
 
-  rectAbout.setPos ( 595, 145  );
-  rectAbout.setSize ( 20, 20 );
+  rectAbout.setPos  ( 635, 130 );
+  rectAbout.setSize ( 20,  20  );
 
   AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
   spectrogram = new Spectrogram(this, &fNanoText, &rectDisplay, dsp);
-  spectrogram->setAbsolutePos (315, 140);
+  spectrogram->setAbsolutePos (355, 126);
 }
 
 /**
@@ -141,6 +147,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
   {
     case paramDry_level:     fSliderDry_level->setValue ( value ); break;
     case paramEarly_level: fSliderEarly_level->setValue ( value ); break;
+    case paramEarlySend:     fSliderEarlySend->setValue ( value ); break;
     case paramLate_level:   fSliderLate_level->setValue ( value ); break;
 
     case paramSize:                 fKnobSize->setValue ( value ); break;
@@ -325,18 +332,21 @@ void DragonflyReverbUI::onDisplay()
   strBuf[32] = '\0';
 
   std::snprintf ( strBuf, 32, "%i%%", int ( fSliderDry_level->getValue() ) );
-  fNanoText.textBox ( 17 - 2  , 314 , 35.0f, strBuf, nullptr );
+  fNanoText.textBox ( 17 - 2, 330, 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i%%", int ( fSliderEarly_level->getValue() ) );
-  fNanoText.textBox ( 57 - 2, 314, 35.0f, strBuf, nullptr );
+  fNanoText.textBox ( 57 - 2, 330, 35.0f, strBuf, nullptr );
+  std::snprintf ( strBuf, 32, "%i%%", int ( fSliderEarlySend->getValue() ) );
+  fNanoText.textBox ( 97 - 2, 330, 35.0f, strBuf, nullptr );
   std::snprintf ( strBuf, 32, "%i%%", int ( fSliderLate_level->getValue() ) );
-  fNanoText.textBox ( 97 - 2, 314 , 35.0f, strBuf, nullptr );
+  fNanoText.textBox (137 - 2, 330, 35.0f, strBuf, nullptr );
 
   // print labels;
   fNanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
-  fNanoText.fontSize ( 18 );
-  fNanoText.textBox ( 10, 130, 38, "Dry",   nullptr );
-  fNanoText.textBox ( 50, 130, 38, "Early", nullptr );
-  fNanoText.textBox ( 90, 130, 38, "Late",  nullptr );
+  fNanoText.fontSize ( 16 );
+  fNanoText.textBox (  10, 130, 40, "Dry\nLevel",   nullptr );
+  fNanoText.textBox (  50, 130, 40, "Early\nLevel", nullptr );
+  fNanoText.textBox (  90, 130, 40, "Early\nSend",  nullptr );
+  fNanoText.textBox ( 130, 130, 40, "Late\nLevel",  nullptr );
 
   fNanoText.endFrame();
 
@@ -347,23 +357,30 @@ void DragonflyReverbUI::onDisplay()
   glColor4f ( r, g, b, 1.0f );
   uint dry = ( float ( fSliderDry_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
   uint early = ( float ( fSliderEarly_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint early_send = ( float ( fSliderEarlySend->getValue() ) / 100.0 ) * 160.0 + 1.0f;
   uint late = ( float ( fSliderLate_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
 
+
   rectSliders[0].setHeight ( dry );
-  rectSliders[0].setY ( 103 + 200 - dry );
+  rectSliders[0].setY ( 118 + 200 - dry );
 
   rectSliders[1].setHeight ( early );
-  rectSliders[1].setY ( 103 + 200 - early );
+  rectSliders[1].setY ( 118 + 200 - early );
 
-  rectSliders[2].setHeight ( late );
-  rectSliders[2].setY ( 103 + 200 - late );
+  rectSliders[2].setHeight ( early_send );
+  rectSliders[2].setY ( 118 + 200 - early_send );
+
+  rectSliders[3].setHeight ( late );
+  rectSliders[3].setY ( 118 + 200 - late );
 
   if ( dry > 1 )
     rectSliders[0].draw();
   if ( early > 1 )
     rectSliders[1].draw();
-  if ( late > 1 )
+  if ( early_send > 1 )
     rectSliders[2].draw();
+  if ( late > 1 )
+    rectSliders[3].draw();
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
@@ -419,7 +436,7 @@ void DragonflyReverbUI::onDisplay()
 
     std::snprintf(textBuffer, 400,
       "Dragonfly Room Reverb is a free audio effect\n"
-      "plugin based on Freeverb3's ProG algorithm.\n"
+      "based on Freeverb3 ProG.\n\n"
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
       "• James Peters - Quality Assurance\n"

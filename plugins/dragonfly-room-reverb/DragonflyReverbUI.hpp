@@ -62,7 +62,7 @@ private:
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 
-    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderLate_level;
+    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob>
       fKnobSize, fKnobWidth,
@@ -75,7 +75,7 @@ private:
     int currentPreset[NUM_BANKS];
     bool displayAbout;
 
-    DGL::Rectangle<int> rectSliders[3];
+    DGL::Rectangle<int> rectSliders[4];
 
     DGL::Rectangle<int> rectBanks[NUM_BANKS];
     DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
