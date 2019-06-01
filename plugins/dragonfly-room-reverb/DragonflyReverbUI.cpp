@@ -63,13 +63,14 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobSpin        = new LabelledKnob (this, this, &fNanoText, paramSpin,        "%2.2f Hz", knobx[3], knoby[0]);
   fKnobWander      = new LabelledKnob (this, this, &fNanoText, paramWander,      "%2.0f%%",  knobx[4], knoby[0]);
 
-  fKnobInputDamp   = new LabelledKnob (this, this, &fNanoText, paramInputDamp,   "%5.0f Hz", knobx[2], knoby[1]);
+  fKnobInHighCut   = new LabelledKnob (this, this, &fNanoText, paramInHighCut,   "%5.0f Hz", knobx[2], knoby[1]);
   fKnobEarlyDamp   = new LabelledKnob (this, this, &fNanoText, paramEarlyDamp,   "%5.0f Hz", knobx[3], knoby[1]);
   fKnobLateDamp    = new LabelledKnob (this, this, &fNanoText, paramLateDamp,    "%5.0f Hz", knobx[4], knoby[1]);
 
-  fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.0f%%",  knobx[2], knoby[2]);
-  fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[3], knoby[2]);
-  fKnobBoostBand   = new LabelledKnob (this, this, &fNanoText, paramBoostBand,   "%1.1f x", knobx[4], knoby[2]);
+  fKnobInLowCut    = new LabelledKnob (this, this, &fNanoText, paramInLowCut,    "%4.0f Hz", knobx[2], knoby[2]);
+  fKnobBoost       = new LabelledKnob (this, this, &fNanoText, paramBoost,       "%1.0f%%",  knobx[3], knoby[2]);
+  fKnobBoostLPF    = new LabelledKnob (this, this, &fNanoText, paramBoostLPF,    "%4.0f Hz", knobx[4], knoby[2]);
+
 
   fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
@@ -159,13 +160,13 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
 
-    case paramInputDamp:       fKnobInputDamp->setValue ( value ); break;
+    case paramInHighCut:       fKnobInHighCut->setValue ( value ); break;
     case paramEarlyDamp:       fKnobEarlyDamp->setValue ( value ); break;
     case paramLateDamp:         fKnobLateDamp->setValue ( value ); break;
 
+    case paramInLowCut:         fKnobInLowCut->setValue ( value ); break;
     case paramBoost:               fKnobBoost->setValue ( value ); break;
     case paramBoostLPF:         fKnobBoostLPF->setValue ( value ); break;
-    case paramBoostBand:       fKnobBoostBand->setValue ( value ); break;
   }
 
   if (index != paramDry_level) {
@@ -278,13 +279,13 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
 
-	fKnobInputDamp->setValue ( preset[paramInputDamp] );
+	fKnobInHighCut->setValue ( preset[paramInHighCut] );
 	fKnobEarlyDamp->setValue ( preset[paramEarlyDamp] );
 	fKnobLateDamp->setValue ( preset[paramLateDamp] );
 
+	fKnobInLowCut->setValue ( preset[paramInLowCut] );
 	fKnobBoost->setValue ( preset[paramBoost] );
 	fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
-	fKnobBoostBand->setValue ( preset[paramBoostBand] );
 
         for ( uint32_t i = 0; i < paramCount; i++ ) {
 	  // Don't set sliders
@@ -473,13 +474,13 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
 
-  fKnobInputDamp->setDefault ( preset[paramInputDamp] );
+  fKnobInHighCut->setDefault ( preset[paramInHighCut] );
   fKnobEarlyDamp->setDefault ( preset[paramEarlyDamp] );
   fKnobLateDamp->setDefault ( preset[paramLateDamp] );
 
+  fKnobInLowCut->setDefault ( preset[paramInLowCut] );
   fKnobBoost->setDefault ( preset[paramBoost] );
   fKnobBoostLPF->setDefault ( preset[paramBoostLPF] );
-  fKnobBoostBand->setDefault ( preset[paramBoostBand] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

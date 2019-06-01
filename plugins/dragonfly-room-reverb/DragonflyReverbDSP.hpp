@@ -41,18 +41,19 @@ private:
   float early_send;
   float late_level;
 
-  fv3::iir_1st_f input_lpf_0, input_lpf_1;
+  fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
 
   fv3::earlyref_f early;
   fv3::progenitor2_f late;
 
   static const uint32_t BUFFER_SIZE = 256;
-  float input_after_lpf_buffer[2][BUFFER_SIZE];
+  float filtered_input_buffer[2][BUFFER_SIZE];
   float early_out_buffer[2][BUFFER_SIZE];
   float late_in_buffer[2][BUFFER_SIZE];
   float late_out_buffer[2][BUFFER_SIZE];
 
-  void setInputDamp(float freq);
+  void setInputLPF(float freq);
+  void setInputHPF(float freq);
 };
 
 #endif
