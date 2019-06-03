@@ -172,7 +172,7 @@ void Spectrogram::onDisplay() {
   fNanoText->fontSize ( 16 );
   fNanoText->textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_MIDDLE );
 
-  for ( int i = 0 ; i < 6 ; i++ ) {
+  for ( int i = 0 ; i < 5 ; i++ ) {
     int x = ( int ) ( image->getWidth() * logf ( decayTime[i] / SPECTROGRAM_MIN_SECONDS ) / logf ( SPECTROGRAM_MAX_SECONDS / SPECTROGRAM_MIN_SECONDS ) );
     fNanoText->textBox ( x , getHeight() - 5 , 40.0f , decayTimeString[i].c_str(), nullptr );
   }
