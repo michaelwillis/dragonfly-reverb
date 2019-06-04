@@ -63,7 +63,7 @@ private:
     NanoVG fNanoText;
     NanoVG::FontId fNanoFont;
 
-    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobFlutter, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
+    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobModulation, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     ScopedPointer<Spectrogram> spectrogram;

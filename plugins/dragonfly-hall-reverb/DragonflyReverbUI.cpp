@@ -56,23 +56,24 @@ DragonflyReverbUI::DragonflyReverbUI()
   fNanoFont  = fNanoText.createFontFromMemory ( "notosans", font_notosans::notosans_ttf, font_notosans::notosans_ttf_size, false );
   fNanoText.fontFaceId ( fNanoFont );
 
-  fKnobSize      = new LabelledKnob (this, this, &fNanoText, paramSize,      "%3.0f m",  knobx[0], knoby[1]);
-  fKnobWidth     = new LabelledKnob (this, this, &fNanoText, paramWidth,     "%3.0f%%",  knobx[1], knoby[1]);
-  fKnobPredelay  = new LabelledKnob (this, this, &fNanoText, paramPredelay,  "%2.0f ms", knobx[0], knoby[2]);
-  fKnobDecay     = new LabelledKnob (this, this, &fNanoText, paramDecay,     "%2.1f s",  knobx[1], knoby[2]);
+  fKnobSize       = new LabelledKnob (this, this, &fNanoText, paramSize,       "%3.0f m",  knobx[0], knoby[1]);
+  fKnobWidth      = new LabelledKnob (this, this, &fNanoText, paramWidth,      "%3.0f%%",  knobx[1], knoby[1]);
+  fKnobPredelay   = new LabelledKnob (this, this, &fNanoText, paramPredelay,   "%2.0f ms", knobx[0], knoby[2]);
+  fKnobDecay      = new LabelledKnob (this, this, &fNanoText, paramDecay,      "%2.1f s",  knobx[1], knoby[2]);
 
-  fKnobDiffuse   = new LabelledKnob (this, this, &fNanoText, paramDiffuse,   "%2.0f%%",  knobx[2], knoby[0]);
-  fKnobSpin      = new LabelledKnob (this, this, &fNanoText, paramSpin,      "%2.2f Hz", knobx[3], knoby[0]);
-  fKnobWander    = new LabelledKnob (this, this, &fNanoText, paramWander,    "%2.1f ms", knobx[4], knoby[0]);
-  fKnobFlutter   = new LabelledKnob (this, this, &fNanoText, paramFlutter,   "%2.0f%%",  knobx[5], knoby[0]);
+  fKnobDiffuse    = new LabelledKnob (this, this, &fNanoText, paramDiffuse,    "%2.0f%%",  knobx[2], knoby[0]);
+  fKnobModulation = new LabelledKnob (this, this, &fNanoText, paramModulation, "%2.0f%%",  knobx[3], knoby[0]);
+  fKnobSpin       = new LabelledKnob (this, this, &fNanoText, paramSpin,       "%2.2f Hz", knobx[4], knoby[0]);
+  fKnobWander     = new LabelledKnob (this, this, &fNanoText, paramWander,     "%2.1f ms", knobx[5], knoby[0]);
 
-  fKnobHighCut   = new LabelledKnob (this, this, &fNanoText, paramHighCut,   "%5.0f Hz", knobx[3], knoby[1]);
-  fKnobHighXover = new LabelledKnob (this, this, &fNanoText, paramHighXover, "%5.0f Hz", knobx[4], knoby[1]);
-  fKnobHighMult  = new LabelledKnob (this, this, &fNanoText, paramHighMult,  "%2.1f X",  knobx[5], knoby[1]);
 
-  fKnobLowCut    = new LabelledKnob (this, this, &fNanoText, paramLowCut,    "%4.0f Hz", knobx[3], knoby[2]);
-  fKnobLowXover  = new LabelledKnob (this, this, &fNanoText, paramLowXover,  "%4.0f Hz", knobx[4], knoby[2]);
-  fKnobLowMult   = new LabelledKnob (this, this, &fNanoText, paramLowMult,   "%2.1f X",  knobx[5], knoby[2]);
+  fKnobHighCut    = new LabelledKnob (this, this, &fNanoText, paramHighCut,    "%5.0f Hz", knobx[3], knoby[1]);
+  fKnobHighXover  = new LabelledKnob (this, this, &fNanoText, paramHighXover,  "%5.0f Hz", knobx[4], knoby[1]);
+  fKnobHighMult   = new LabelledKnob (this, this, &fNanoText, paramHighMult,   "%2.1f X",  knobx[5], knoby[1]);
+
+  fKnobLowCut     = new LabelledKnob (this, this, &fNanoText, paramLowCut,     "%4.0f Hz", knobx[3], knoby[2]);
+  fKnobLowXover   = new LabelledKnob (this, this, &fNanoText, paramLowXover,   "%4.0f Hz", knobx[4], knoby[2]);
+  fKnobLowMult    = new LabelledKnob (this, this, &fNanoText, paramLowMult,    "%2.1f X",  knobx[5], knoby[2]);
 
   fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   fSliderDry_level->setId ( paramDry_level );
@@ -166,7 +167,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramDecay:               fKnobDecay->setValue ( value ); break;
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
-    case paramFlutter:           fKnobFlutter->setValue ( value ); break;
+    case paramModulation:           fKnobModulation->setValue ( value ); break;
   }
 
   if (index != paramDry_level) {
@@ -284,7 +285,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         fKnobHighMult->setValue ( preset[paramHighMult] );
         fKnobSpin->setValue ( preset[paramSpin] );
         fKnobWander->setValue ( preset[paramWander] );
-        fKnobFlutter->setValue ( preset[paramFlutter] );
+        fKnobModulation->setValue ( preset[paramModulation] );
 
         for ( uint32_t i = 0; i < paramCount; i++ ) {
 	  // Don't set sliders
@@ -476,7 +477,7 @@ void DragonflyReverbUI::updatePresetDefaults() {
   fKnobHighMult->setDefault ( preset[paramHighMult] );
   fKnobSpin->setDefault ( preset[paramSpin] );
   fKnobWander->setDefault ( preset[paramWander] );
-  fKnobFlutter->setDefault ( preset[paramFlutter] );
+  fKnobModulation->setDefault ( preset[paramModulation] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------
