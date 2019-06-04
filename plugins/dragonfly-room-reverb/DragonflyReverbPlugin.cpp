@@ -43,7 +43,7 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
 void DragonflyReverbPlugin::initState(uint32_t index, String& stateKey, String& defaultStateValue) {
   if (index == 0) {
     stateKey = "preset";
-    defaultStateValue = "Small Bright Room";
+    defaultStateValue = "Medium Clear Room";
   }
 }
 
