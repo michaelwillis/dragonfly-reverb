@@ -14,7 +14,7 @@
  * For a full copy of the GNU General Public License see the LICENSE file.
  */
 
-#define MAJOR_VERSION 1
-#define MINOR_VERSION 9
-#define PATCH_VERSION 9
-#define VERSION_SUFFIX "-beta"
+#define MAJOR_VERSION 2
+#define MINOR_VERSION 0
+#define PATCH_VERSION 0
+#define VERSION_SUFFIX "-rc1"
