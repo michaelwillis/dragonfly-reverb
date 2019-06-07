@@ -77,7 +77,7 @@ static Param params[paramCount] = {
   {"Early Damp",   "early_damp",  1000.0f, 16000.0f,  "Hz"},
   {"Late Damp",    "late_damp",   1000.0f, 16000.0f,  "Hz"},
   {"Low Boost",    "low_boost",      0.0f,   100.0f,   "%"},
-  {"Boost LPF",    "boost_freq",    50.0f,  1050.0f,  "Hz"},
+  {"Boost Freq",   "boost_freq",    50.0f,  1050.0f,  "Hz"},
   {"Low Cut",      "in_low_cut",     0.0f,   200.0f,  "Hz"}
 };
 
