@@ -11,6 +11,7 @@
 body {
     background-color: #3d3d3d;
     margin: 20px 5%;
+    max-width: 60em;
     font-family: noto-sans;
     color: #f4ffff;
 }
@@ -28,17 +29,21 @@ a:hover {
 }
 
 dl {
-    padding: 0.5em;
+    padding: 0.5em 0 0;
+    margin: 0.5em 0 0;
 }
 dt {
     float: left;
     clear: left;
-    width: 7em;
-    text-align: right;
+    width: 6em;
     font-weight: bold;
 }
 
 dd {
-    margin: 0 0 0 8em;
-    padding: 0 0 0.5em ;
+    margin: 0 0 0 7em;
+    padding: 0 0 0.5em;
+}
+
+p {
+    margin: 0 0 1em 0;
 }
