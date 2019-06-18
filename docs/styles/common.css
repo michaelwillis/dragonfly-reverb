@@ -1,0 +1,30 @@
+@font-face {
+  font-family: averia;
+  src: url(../fonts/Averia-Regular.ttf);
+}
+
+@font-face {
+  font-family: noto-sans;
+  src: url(../fonts/NotoSans-Regular.ttf);
+}
+
+body {
+    background-color: #3d3d3d;
+    margin: 20px 5%;
+    max-width: 60em;
+    font-family: noto-sans;
+    color: #f4ffff;
+}
+
+h1, h2 {
+    font-family: averia;
+}
+
+a {
+    color: #f4ffff;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
