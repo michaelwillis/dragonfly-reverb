@@ -5,21 +5,21 @@
   <link rel="stylesheet" href="styles/manual.css">
   <body>
     <div class="logos">
-      <img src="images/dragonfly-hall-reverb/dragonfly-hall-logo.png" />
+      <img src="images/dragonfly-room-reverb/dragonfly-room-logo.png" />
     </div>
     <h1>Introduction</h1>
     <p>
-      Dragonfly Hall Reverb is a free stereo-to-stereo reverb effect.
-      It is primarily intended for use as a concert hall reverb. It
-      also has numerous smaller presets representing rooms, studios,
-      and chambers.  It is based on Hibiki Reverb from Freeverb3VST,
-      which uses Moorer's early reflection model and a modified FDN
-      allpass Zita reverb.
+      Dragonfly Room Reverb is a free stereo-to-stereo reverb effect.
+      It has several different room presets, as well as a small number
+      of hall presets and effect presets. It is based on ProG Reverb
+      from Freeverb3VST, which uses Moorer's early reflection model
+      and an implementation of Jon Dattorro's Progenitor Reverb
+      algorithm.
     </p>
     <h1>User Interface</h1>
-    <img src="images/dragonfly-hall-reverb/interface.png" />
+    <img src="images/dragonfly-room-reverb/interface.png" />
     <h2>Sliders</h2>
-    <img src="images/dragonfly-hall-reverb/sliders.png" />
+    <img src="images/dragonfly-room-reverb/sliders.png" />
     <dl>
       <dt>Dry Level</dt>
       <dd>
@@ -43,7 +43,7 @@
       The output of the Dry, Early, and Late controls are combined to
       form the reverb’s output signal. Note that sliders are not
       controlled by the presets. This allows you to set the levels in
-      a way that works for your project, and then explore different
+      a way that works for you project, and then explore different
       presets without the sliders changing.
     </p>
     <h2>Basic Dials</h2>
@@ -51,7 +51,7 @@
       Note that holding the Shift key and clicking a dial will reset
       the dial to the default for the current preset.
     </p>
-    <img src="images/dragonfly-hall-reverb/size-width-dials.png" />
+    <img src="images/dragonfly-room-reverb/size-width-dials.png" />
     <dl>
       <dt>Size</dt>
       <dd>
@@ -59,33 +59,30 @@
 	  Length of the reverb’s internal delay lines. Increasing the
 	  Size parameter generally leads to a smoother, less resonant
 	  output however it can also increase the reverb’s attack time
-	  and make individual early reflections more
-	  audible. Decreasing the Size parameter generally has the
-	  opposite effect, decreasing the reverb’s attack time and
-	  making individual early reflections less audible although it
-	  can increase the presence of metallic resonances.
+	  and make individual early reflections more audible.
+	  Decreasing the Size parameter generally has the opposite
+	  effect, decreasing the reverb’s attack time and making
+	  individual early reflections less audible although it can
+	  increase the presence of metallic resonances.
 	</p>
 	<p>
 	  In physical terms, the Size control corresponds to the
 	  largest dimension of an imaginary space. When the size is
 	  small, the “walls” of this space are closer together and the
 	  resultant reflection density increases. When the size is
-	  large, that reflection density decreases. It is recommended
-	  that for natural sounding reverbs the Size range be limited
-	  to around 24 meters to 45 meters. However, there are many
-	  useful reverbs that are outside this range.
+	  large, that reflection density decreases.
 	</p>
       </dd>
       <dt>Width</dt>
       <dd>
 	<p>
 	  The Width control sets the output stereo width. Note that
-	  this applies to both the early reflections and the late
+	  the this applies to both the early reflections and the late
 	  reverberation.
 	</p>
       </dd>
     </dl>
-    <img src="images/dragonfly-hall-reverb/predelay-decay-dials.png" />
+    <img src="images/dragonfly-room-reverb/predelay-decay-dials.png" />
     <dl>
       <dt>Predelay</dt>
       <dd>
@@ -110,17 +107,17 @@
       </dd>
     </dl>
     <h2>Preset Browser</h2>
-    <img src="images/dragonfly-hall-reverb/presets.png" />
+    <img src="images/dragonfly-room-reverb/presets.png" />
     <p>
       The Preset Browser section presents the user with a range of
       room, studio, and hall presets.
     </p>
     <h2>Spectrogram</h2>
-    <img src="images/dragonfly-hall-reverb/spectrogram.png" />
+    <img src="images/dragonfly-room-reverb/spectrogram.png" />
     <p>
       The spectrogram has been included so that the user can get a
-      better idea of how the various reverb parameters affect the
-      plugin’s output. The spectrogram is rendered by simulating a
+      better idea of how the various reverb paramters affect the
+      plug-in’s output. The spectrogram is rendered by simulating a
       burst of white noise through the reverb algorithm with the
       current settings, and then processing the output with a fast
       fourier transform algorithm.
@@ -130,7 +127,7 @@
       and credits.
     </p>
     <h2>Advanced Dials</h2>
-    <img src="images/dragonfly-hall-reverb/modulation-dials.png" />
+    <img src="images/dragonfly-room-reverb/modulation-dials.png" />
     <dl>
       <dt>Diffuse</dt>
       <dd>
@@ -155,10 +152,10 @@
 	  the perception of discrete echoes. In the case of
 	  transient-rich sounds this can lead to “machine-gun-like”
 	  effects in which individual echoes are heard. For sustained
-	  sounds, this is less of an issue. Increasing the Diffuse
+	  sounds, this is less of an issue. Increasing the Diffusion
 	  setting makes individual echoes less perceptible and
-	  generally leads to a smoother, more lush reverb sound.
-	  However it also can introduce metallic resonances which can
+	  generally leads to a smoother, more lush reverb sound
+	  however it also can introduce metallic resonances which can
 	  be noticeable but depend to a large extent on the nature of
 	  the input signal.
 	</p>
@@ -172,26 +169,14 @@
 	  reverberation having a smoother and richer sound.
 	</p>
       </dd>
-      <dt>Modulation</dt>
-      <dd>
-	<p>
-	  Level of modulation on the late reverberation signal. If
-	  this is set to 0%, the following Spin and Wander dials will
-	  have no effect.
-	</p>
-      </dd>
       <dt>Spin</dt>
       <dd>
 	<p>
 	  Rate of modulated chorus effect on the late
-	  reverberation. In most cases, values from 1–2 Hz are
-	  appropriate. Typically, these values should be smaller for
-	  small rooms and chambers, however it’s always best to set
-	  the parameters according to the musical context. Higher Spin
-	  values can lead to an audible “wobble” particularly in real
-	  instruments such as acoustic guitar or piano and can also
-	  cause noise on pure tones. This effect tends to be less
-	  noticeable on speech.
+	  reverberation. Higher Spin values can lead to an audible
+	  “wobble” particularly in real instruments such as acoustic
+	  guitar or piano and can also cause noise on pure tones. This
+	  effect tends to be less noticeable on speech.
 	</p>
       </dd>
       <dt>Wander</dt>
@@ -203,7 +188,7 @@
 	<p>
 	  To better understand the effects of Spin and Wander, set a
 	  large room size, a long delay, Modulation to 100%, and
-	  Wander to 0 ms. Then play an abrupt sound such as a
+	  Wander to 0%. Then play an abrupt sound such as a
 	  percussion hit or a chord on piano or guitar. You'll notice
 	  the reverb tail panning alternately left and right in the
 	  stereo field at the rate set by Spin control. There are
@@ -216,71 +201,55 @@
 	</p>
       </dd>
     </dl>
-    <img src="images/dragonfly-hall-reverb/high-dials.png" />
+    <img src="images/dragonfly-room-reverb/high-dials.png" />
     <dl>
       <dt>High Cut</dt>
       <dd>
 	<p>
-	  Cutoff frequency of the reverb’s low pass filter, applied to
-	  both the early reflections and late reverberation.
+	  Low pass filter frequency applied to the input signal before
+	  it is processed by the early reflection and late
+	  reverberation algorithms.
 	</p>
       </dd>
-      <dt>High Cross</dt>
+      <dt>Early Damp</dt>
       <dd>
 	<p>
-	  Short for High Crossover, the threshold in Hz above which
-	  the High Multiplier parameter affects the high frequency
-	  component of the late reverberation.
+	  Low pass filter frequency applied to the output signal of
+	  the early reflection algorithm.
 	</p>
       </dd>
-      <dt>High Mult</dt>
+      <dt>Late Damp</dt>
       <dd>
 	<p>
-	  Short for High Multiplier. Multiplies the decay time of
-	  frequencies above the High Crossover frequency. Applies only
-	  to the late reverberation signal.
+	  Low pass filter frequency applied to the output signal of
+	  the late reverberation algorithm.	  
 	</p>
       </dd>
     </dl>
-    <img src="images/dragonfly-hall-reverb/low-dials.png" />
+    <img src="images/dragonfly-room-reverb/low-dials.png" />
     <dl>
       <dt>Low Cut</dt>
       <dd>
 	<p>
-	  Cutoff frequency of the reverb’s high pass filter, is applied
-	  to both the early reflectinos and late reverberation.
+	  High pass filter frequency applied to the input signal
+	  before it is processed by the early reflection and late
+	  reverberation algorithms.
 	</p>
       </dd>
-      <dt>Low Cross</dt>
+      <dt>Low Boost</dt>
       <dd>
 	<p>
-	  Short for Low Crossover, the threshold below which the Low
-	  Multiplier parameter affects the low frequency component of
-	  the late reverberation.
+	  Increases the decay time for a band of low frequencies. Note
+	  that the boost feature does not have a significant effect
+	  with a short decay time of less than 1s.
 	</p>
       </dd>
-      <dt>Low Mult</dt>
+      <dt>Boost Freq</dt>
       <dd>
 	<p>
-	  Short for Low Multiplier. Multiplies the decay time below
-	  the Low Crossover frequency. Applies only to the late
-	  reverberation signal.
+	  Approximately the top of the frequency band to be boosted.
 	</p>
       </dd>
-      <p>
-	The Crossover and Multiplier parameters work together to
-	determine the characteristics of the late reverberation. For
-	example, with Decay set to 2.0s, High Crossover set to 5 kHz,
-	and High Multiplier set to 0.8 X, frequencies above 5kHz will
-	generally have a decay time of 2.0s x 0.8 = 1.6s. Note that
-	the crossover frequency isn't a hard boundary, so the decay
-	time will be ramped near the threshold. The same applies to
-	the Low Crossover and Low Multiplier parameters. For example,
-	with Decay set to 2.0s, Low Crossover set to 1 kHz and Low
-	Multiplier set to 1.5, frequencies under 1 kHz will have a
-	decay time of 2.0s x 1.5 = 3.0s.
-      </p>
-
     </dl>
   </body>
 </html>
