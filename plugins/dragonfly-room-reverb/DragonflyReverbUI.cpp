@@ -441,6 +441,7 @@ void DragonflyReverbUI::onDisplay()
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
       "• James Peters - Quality Assurance\n"
+      "• Chris Share - Technical Writer\n"
       "• Teru Kamogashira - Freeverb3\n"
       "• \"falkTX\" Coelho - Distrho Plugin Framework",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX

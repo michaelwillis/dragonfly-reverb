@@ -436,10 +436,11 @@ void DragonflyReverbUI::onDisplay()
     std::snprintf(textBuffer, 400,
       "Dragonfly Hall Reverb is a free audio effect\n"
       "based on Freeverb3 Hibiki.\n\n"
-      "Version: %d.%d.%d%s,  License: GPL 3+\n\n"
+      "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
       "• Rob van den Berg - Plugin Development\n"
       "• James Peters - Quality Assurance\n"
+      "• Chris Share - Technical Writer\n"
       "• Teru Kamogashira - Freeverb3\n"
       "• \"falkTX\" Coelho - Distrho Plugin Framework",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
