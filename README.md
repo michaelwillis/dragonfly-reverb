@@ -1,6 +1,8 @@
 # Dragonfly Reverb
 Dragonfly Reverb is a bundle of two free audio effects: a concert hall reverb and a room reverb. Both are available as VST and LV2 plugins for Linux, Mac, and Windows. 
 
+[Home Page](https://michaelwillis.github.io/dragonfly-reverb/)
+
 ![Dragonfly Hall Reverb](dragonfly-hall-screenshot.png)
 ![Dragonfly Room Reverb](dragonfly-room-screenshot.png)
 
@@ -19,13 +21,13 @@ Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
 
 On Linux or MacOS, invoke `make` to build Dragonfly Reverb.
 
-You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=true at build time. Unless this, the bundled libsamplerate will be used.
-
 ### Linux Build Dependencies
 
 * libx11-dev
 * libgl1-mesa-dev
 * libjack-jackd2-dev
+
+You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=true at build time. If this flag is not set, the bundled libsamplerate will be used.
 
 ### Cross compiling for Windows (on Linux)
 
