@@ -1,23 +1,10 @@
-body {
-    display: flex;
-    flex-wrap: wrap;
+div.header {
+    background-image: url(../images/background.png);
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
-div.logos {
-    width: 100%;
-}
-
-div.description {
-    width: 100%;
-}
-
-div.link-sections {
-    display: flex;
-    align-content: center;
-    width: 40em;
-}
-
-div.download, div.manual {
-    width: 40em;
-    text-align: center;
+div.header h1 {
+    padding: 0.25em 2em;
+    font-size: 32pt;
 }
