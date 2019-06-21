@@ -1,22 +1,25 @@
 # Dragonfly Reverb
-A free hall-style reverb based on freeverb3 algorithms
+Dragonfly Reverb is a bundle of two free audio effects: a concert hall reverb and a room reverb. Both are available as VST and LV2 plugins for Linux, Mac, and Windows. 
 
-![Screenshot](screenshot.png)
+![Dragonfly Hall Reverb](dragonfly-hall-screenshot.png)
+![Dragonfly Room Reverb](dragonfly-room-screenshot.png)
 
 ## Download
 
-* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-Linux-64bit-v1.1.3.tgz)**
-* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-MacOS-64bit-v1.1.3.zip)**
-* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-Windows-32bit-v1.1.3.zip)**
-* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/1.1.3/DragonflyReverb-Windows-64bit-v1.1.3.zip)**
-
-## Support
-
-[Support on Patreon](https://www.patreon.com/dragonflyplugins)
+* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Linux-64bit-v2.0.0.tgz)**
+* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-MacOS-64bit-v2.0.0.zip)**
+* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Windows-32bit-v2.0.0.zip)**
+* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Windows-64bit-v2.0.0.zip)**
 
 ## Dependencies
 
 Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
+
+## Building
+
+On Linux or MacOS, invoke `make` to build Dragonfly Reverb.
+
+You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=true at build time. Unless this, the bundled libsamplerate will be used.
 
 ### Linux Build Dependencies
 
@@ -24,9 +27,19 @@ Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
 * libgl1-mesa-dev
 * libjack-jackd2-dev
 
-## Building
+### Cross compiling for Windows (on Linux)
 
-You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=true at build time. Unless this, the bundled libsamplerate will be used.
+#### 32 bit
+```
+sudo apt install wine i686-w64-mingw32-gcc i686-w64-mingw32-g++
+make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
+```
+
+#### 64 bit
+```
+sudo apt install wine x86_64-w64-mingw32-gcc x86_64-w64-mingw32-g++
+make WIN32=true CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
+```
 
 ## License
 
