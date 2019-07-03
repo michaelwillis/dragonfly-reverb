@@ -1,6 +1,11 @@
 include Makefile.mk
 
 OBJS = \
+	kiss_fft/kiss_fft.c.o \
+	kiss_fft/kiss_fftr.c.o
+
+ifneq ($(SYSTEM_FREEVERB3),true)
+OBJS += \
 	freeverb/allpass.cpp.o \
 	freeverb/biquad.cpp.o \
 	freeverb/comb.cpp.o \
@@ -18,6 +23,7 @@ OBJS = \
 	freeverb/zrev2.cpp.o \
 	kiss_fft/kiss_fft.c.o \
 	kiss_fft/kiss_fftr.c.o
+endif
 
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 OBJS += \
@@ -36,11 +42,14 @@ libsamplerate2/%.c.o: libsamplerate2/%.c
 	$(CC) $< $(BUILD_C_FLAGS) -I. -DLIBSRATE2_FLOAT -c -o $@
 endif
 
+
+ifneq ($(SYSTEM_FREEVERB3),true)
 freeverb/%.cpp.o: freeverb/%.cpp
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -DLIBSRATE2_FLOAT -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
 else
 	$(CXX) $< $(BUILD_CXX_FLAGS) -I. -DLIBSRATE1 -DLIBFV3_FLOAT -Wno-unused-parameter -c -o $@
+endif
 endif
 
 kiss_fft/%.c.o: kiss_fft/%.c

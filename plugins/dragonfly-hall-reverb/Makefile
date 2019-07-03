@@ -31,7 +31,11 @@ include ../../dpf/Makefile.plugins.mk
 
 BUILD_CXX_FLAGS := -I../../common $(BUILD_CXX_FLAGS)
 BUILD_CXX_FLAGS := ../../common/kiss_fft/*.c.o $(BUILD_CXX_FLAGS)
+ifneq ($(SYSTEM_FREEVERB3),true)
 BUILD_CXX_FLAGS := ../../common/freeverb/*.cpp.o $(BUILD_CXX_FLAGS)
+else
+BUILD_CXX_FLAGS := $(shell pkg-config --cflags freeverb3-3) $(BUILD_CXX_FLAGS)
+endif
 
 ifneq ($(SYSTEM_LIBSAMPLERATE),true)
 BUILD_CXX_FLAGS := ../../common/libsamplerate2/*.c.o $(BUILD_CXX_FLAGS)
@@ -46,7 +50,12 @@ BUILD_CXX_FLAGS := -DLIBSRATE1 $(BUILD_CXX_FLAGS)
 LINK_OPTS += -lsamplerate
 endif
 
+ifneq ($(SYSTEM_FREEVERB3),true)
 LINK_OPTS += -lm
+else
+LINK_OPTS += -lm $(shell pkg-config --libs freeverb3-3)
+endif
+
 
 ifeq ($(WIN32),true)
 LINK_OPTS += -static -static-libgcc -static-libstdc++
