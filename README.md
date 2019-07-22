@@ -31,16 +31,19 @@ You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=t
 
 ### Cross compiling for Windows (on Linux)
 
+#### Dependencies 
+```
+sudo apt install wine i686-w64-mingw32-gcc i686-w64-mingw32-g++ x86_64-w64-mingw32-gcc x86_64-w64-mingw32-g++
+```
+
 #### 32 bit
 ```
-sudo apt install wine i686-w64-mingw32-gcc i686-w64-mingw32-g++
 make clean
 make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
 ```
 
 #### 64 bit
 ```
-sudo apt install wine x86_64-w64-mingw32-gcc x86_64-w64-mingw32-g++
 make clean
 make WIN32=true CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
 ```
