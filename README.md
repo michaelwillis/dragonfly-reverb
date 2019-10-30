@@ -1,8 +1,7 @@
 # [Dragonfly Reverb](https://michaelwillis.github.io/dragonfly-reverb/)
 Dragonfly Reverb is a bundle of two free audio effects: a concert hall reverb and a room reverb. Both are available as VST and LV2 plugins for Linux, Mac, and Windows. 
 
-![Dragonfly Hall Reverb](dragonfly-hall-screenshot.png)
-![Dragonfly Room Reverb](dragonfly-room-screenshot.png)
+![Dragonfly Reverb](collage.png)
 
 ## Download
 
