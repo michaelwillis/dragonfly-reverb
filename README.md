@@ -26,6 +26,8 @@ On Linux or MacOS, invoke `make` to build Dragonfly Reverb.
 
 You can build against the system libsamplerate with using SYSTEM_LIBSAMPLERATE=true at build time. If this flag is not set, the bundled libsamplerate will be used.
 
+You can build against the system freeverb3 with using SYSTEM_FREEVERB3=true at build time. If this flag is not set, the bundled freeverb3 will be used.
+
 ### Cross compiling for Windows (on Linux)
 
 #### Dependencies 
