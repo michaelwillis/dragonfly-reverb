@@ -1,0 +1,134 @@
+------------------------------------------------
+Freeverb3 Impulse Response Processor (freeverb3)
+------------------------------------------------
+
+Freeverb3 is a signal processing library.
+
+This library includes many types of audio processing effects and signal
+generators. The linear feedback shift register (LFSR) maximum length
+sequence (MLS) generator, multiple types of high quality mono and stereo reverb
+effects, an multi slot impulse response processor, multiband hardknee and softknee
+compressor and limiter, a stereo enhancer, a limiter and a lot of
+types of infinite impulse respose (IIR) and finite impulse response (FIR)
+filters are available.
+
+The convolution reverb algorithm is highly optimized
+for x86 processors by using hand optimized codes of 3DNow!/SSE/SSE3/AVX/FMA/FMA4
+(single precision), SSE2/SSE4/AVX/FMA/FMA4 (double precision), which can be
+used for zero latency realtime sound effect processing. This library supports
+any environment which GCC supports including x86/ppc/sparc. 
+
+This library includes audacious effect plugins and sample programs,
+which can be used to test the sound effect easily.
+Please report any bugs or advices.
+
+The hand-optimized SIMD codes for some CPUs are included in this library,
+which will provide fast convolution processing.
+
+Dependencies of libfreeverb3
+============================
+
+* FFTW3 [http://www.fftw.org/]
+  This library needs at least one precision version
+  (single or double or long double) of fftw3 libraries,
+  which are called fftw3f or fftw3 or fftw3l.
+  fftw-3.1.2 was tested.
+
+Dependencies of programs
+========================
+
+Sample programs      : libsndfile
+Jack sample programs : libsndfile jack
+                       (The configdb subset library is included in jack dir,
+		       so jack programs do not depend on audacious.)
+audacious            : libsndfile audacious glib2 GTK+3 gthread pango
+
+* libsndfile [http://www.mega-nerd.com/libsndfile/]
+  libsndfile-1.0.17 was tested.
+
+* jack [http://jackaudio.org/]
+  jackd version 0.101.1 was tested.
+
+* audacious [https://audacious-media-player.org/]
+  audacious >= 3.5 is required. Only GTK3 version is supported.
+
+* GTK+ [http://www.gtk.org/]
+  gtk-3.x >= 3.0.0 is required.
+
+* glib2 [http://www.gtk.org/]
+  glib-2.x >= 2.6.0 is required.
+
+* gthread, pango
+
+If you are building this from the source repository sources,
+you will need the following tools:
+
+* autotools (autoconf, automake and libtool)
+* autogen
+
+configure OPTIONS
+=================
+
+See configure --help.
+
+SIMD optimization codes for the impulse convolution
+===================================================
+
+binutils >= 2.19.51.0.12 is required to build SIMD codes including AMD FMA4.
+
+3DNow! uses primitive 3DNow! codes.
+This can be used on AMD CPUs which have 3DNow! instructions.
+(K6-2, Athlon, ...)
+
+SSE can be used on Intel or AMD CPUs which have SSE instrunctions.
+(PentiumIII, ..., AthlonXP, Athlon64, ...)
+SSE is used on x86_64/amd64.
+
+SSE2 can be used on Intel or AMD CPUs which have SSE2 instrunctions.
+(Pentium4, ..., Opteron, ...)
+SSE2 is enabled on x86_64/amd64.
+
+Use --disable-x86simd to disable x86 SIMD codes on x86/x86_64/amd64.
+
+Supported instructions:
+single floating point | 3DNow!, SSE, SSE3, AVX, FMA3, FMA4
+double floating ponit | SSE2, SSE4, AVX, FMA3, FMA4
+
+CONTACTS
+========
+
+Freeverb3 is written by Teru Kamogashira.
+The Freeverb3 home page is at:
+
+	http://www.nongnu.org/freeverb3/
+
+COPYING
+=======
+
+Copyright:  Copyright (C) 2006-2018 Teru Kamogashira
+Licence:    GPL v2
+
+ChangeLog	This is a current ChangeLog file.
+ChangeLog.v2	This is a ChangeLog of obsolete versions.
+samples/IR/*.wav
+
+Copyright:  Copyright (C) 2006-2018 Teru Kamogashira
+Licence:    GPL v2
+
+This file is part of Freeverb3.
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+
