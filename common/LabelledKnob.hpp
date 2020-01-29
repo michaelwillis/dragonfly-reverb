@@ -20,16 +20,18 @@
 #include "DistrhoUI.hpp"
 #include "NanoVG.hpp"
 #include "ImageWidgets.hpp"
+#include "Param.hpp"
 
 class LabelledKnob : public Widget
 {
 public:
   LabelledKnob(
     Widget* parent,
-    ImageKnob::Callback *callback,
-    NanoVG *nanoText,
-    uint id,
-    const char *numberFormat,
+    ImageKnob::Callback* callback,
+    Image* image,
+    NanoVG* nanoText,
+    Param* param,
+    const char* numberFormat,
     int x, int y);
   float getValue() const noexcept;
   void setValue(float value);
@@ -41,6 +43,7 @@ protected:
 private:
   NanoVG *fNanoText;
   const char *fNumberFormat;
+  const char *fName;
   ScopedPointer<ImageKnob> fKnob;
 };
 

@@ -13,13 +13,14 @@ NAME = DragonflyHallReverb
 # Files to build
 
 FILES_DSP = \
-	DragonflyReverbPlugin.cpp \
-	DragonflyReverbDSP.cpp
+	Plugin.cpp \
+	DSP.cpp
 
 FILES_UI  = \
-	DragonflyReverbUI.cpp \
-	DragonflyReverbArtwork.cpp \
-	DragonflyReverbDSP.cpp \
+	UI.cpp \
+	Artwork.cpp \
+	DSP.cpp \
+	../../common/AbstractUI.cpp \
 	../../common/LabelledKnob.cpp \
 	../../common/Spectrogram.cpp \
 	../../common/NotoSans_Regular.ttf.cpp

@@ -15,6 +15,7 @@
  */
 
 #include <cstdint>
+#include <Param.hpp>
 
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
@@ -33,10 +34,10 @@
 
 enum Parameters
 {
-    paramDry_level = 0,
-    paramEarly_level,
+    paramDry = 0,
+    paramEarly,
     paramEarlySend,
-    paramLate_level,
+    paramLate,
     paramSize,
     paramWidth,
     paramPredelay,
@@ -53,32 +54,24 @@ enum Parameters
     paramCount
 };
 
-typedef struct {
-  const char *name;
-  const char *symbol;
-  float range_min;
-  float range_max;
-  const char *unit;
-} Param;
-
-static Param params[paramCount] = {
-  {"Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
-  {"Early Level",  "early_level",    0.0f,   100.0f,   "%"},
-  {"Early Send",   "early_send",     0.0f,   100.0f,   "%"},
-  {"Late Level",   "late_level",     0.0f,   100.0f,   "%"},
-  {"Size",         "size",           8.0f,    32.0f,   "m"},
-  {"Width",        "width",         50.0f,   150.0f,   "%"},
-  {"Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
-  {"Decay",        "decay",          0.1f,    10.0f,   "s"},
-  {"Diffuse",      "diffuse",        0.0f,   100.0f,   "%"},
-  {"Spin",         "spin",           0.0f,     5.0f,  "Hz"},
-  {"Wander",       "wander",         0.0f,   100.0f,   "%"},
-  {"High Cut",     "in_high_cut", 1000.0f, 16000.0f,  "Hz"},
-  {"Early Damp",   "early_damp",  1000.0f, 16000.0f,  "Hz"},
-  {"Late Damp",    "late_damp",   1000.0f, 16000.0f,  "Hz"},
-  {"Low Boost",    "low_boost",      0.0f,   100.0f,   "%"},
-  {"Boost Freq",   "boost_freq",    50.0f,  1050.0f,  "Hz"},
-  {"Low Cut",      "in_low_cut",     0.0f,   200.0f,  "Hz"}
+static Param PARAMS[paramCount] = {
+  {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
+  {paramEarly,      "Early Level",  "early_level",    0.0f,   100.0f,   "%"},
+  {paramEarlySend,  "Early Send",   "early_send",     0.0f,   100.0f,   "%"},
+  {paramLate,       "Late Level",   "late_level",     0.0f,   100.0f,   "%"},
+  {paramSize,       "Size",         "size",           8.0f,    32.0f,   "m"},
+  {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
+  {paramPredelay,   "Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
+  {paramDecay,      "Decay",        "decay",          0.1f,    10.0f,   "s"},
+  {paramDiffuse,    "Diffuse",      "diffuse",        0.0f,   100.0f,   "%"},
+  {paramSpin,       "Spin",         "spin",           0.0f,     5.0f,  "Hz"},
+  {paramWander,     "Wander",       "wander",         0.0f,   100.0f,   "%"},
+  {paramInHighCut,  "High Cut",     "in_high_cut", 1000.0f, 16000.0f,  "Hz"},
+  {paramEarlyDamp,  "Early Damp",   "early_damp",  1000.0f, 16000.0f,  "Hz"},
+  {paramLateDamp,   "Late Damp",    "late_damp",   1000.0f, 16000.0f,  "Hz"},
+  {paramBoost,      "Low Boost",    "low_boost",      0.0f,   100.0f,   "%"},
+  {paramBoostLPF,   "Boost Freq",   "boost_freq",    50.0f,  1050.0f,  "Hz"},
+  {paramInLowCut,   "Low Cut",      "in_low_cut",     0.0f,   200.0f,  "Hz"}
 };
 
 const int NUM_BANKS = 5;
