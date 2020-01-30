@@ -65,9 +65,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 //                               model.setidiffusion2(value / 144.0);
 //                               model.setdiffusion1 (value / 128.0);
 //                               model.setdiffusion2 (value / 180.0); break;
-        case          paramSpin: model.setspin       (value);
-        case        paramWander: model.setwander     (value);
-
+        case          paramSpin: model.setspin       (value);         break;
+        case        paramWander: model.setwander     (value / 100.0); break;
         case       paramHighCut: model.setinputdamp  (value);         break;
         case          paramDamp: model.setdamp       (value);
                                  model.setoutputdamp (fmax(value * 2.0, 16000)); break;
