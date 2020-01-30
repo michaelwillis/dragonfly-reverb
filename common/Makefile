@@ -18,6 +18,7 @@ OBJS += \
 	freeverb/revbase.cpp.o \
 	freeverb/src.cpp.o \
 	freeverb/slot.cpp.o \
+	freeverb/strev.cpp.o \
 	freeverb/utils.cpp.o \
 	freeverb/zrev.cpp.o \
 	freeverb/zrev2.cpp.o \
