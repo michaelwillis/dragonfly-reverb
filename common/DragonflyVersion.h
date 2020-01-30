@@ -15,6 +15,6 @@
  */
 
 #define MAJOR_VERSION 2
-#define MINOR_VERSION 0
-#define PATCH_VERSION 1
-#define VERSION_SUFFIX ""
+#define MINOR_VERSION 9
+#define PATCH_VERSION 0
+#define VERSION_SUFFIX "-beta"
