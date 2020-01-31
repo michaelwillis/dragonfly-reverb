@@ -38,10 +38,15 @@ private:
   float dry_level;
   float wet_level;
 
-  // TODO: Get rid of this?
-  fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
+  static const uint32_t BUFFER_SIZE = 256;
 
+  fv3::iir_1st_f input_hpf_0, input_hpf_1;
   fv3::strev_f model;
+
+  float filtered_input_buffer[2][BUFFER_SIZE];
+  float output_buffer[2][BUFFER_SIZE];
+
+  void setInputHPF(float freq);
 };
 
 #endif

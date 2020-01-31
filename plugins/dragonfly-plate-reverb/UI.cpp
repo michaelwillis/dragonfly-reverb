@@ -46,15 +46,17 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   displayAbout = false;
 
-  knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[1], knoby[1]);
-  knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[0], knoby[2]);
-  knobDecay       = createLabelledKnob(&params[paramDecay],      "%2.1f s", knobx[1], knoby[2]);
+  knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[2], knoby[0]);
+  knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[3], knoby[0]);
+  knobDecay       = createLabelledKnob(&params[paramDecay],      "%2.1f s", knobx[4], knoby[0]);
 
-  knobSpin        = createLabelledKnob(&params[paramSpin],      "%2.2f Hz", knobx[3], knoby[0]);
-  knobWander      = createLabelledKnob(&params[paramWander],     "%2.0f%%", knobx[4], knoby[0]);
+  knobDiffuse     = createLabelledKnob(&params[paramDiffuse],   "%2.0f%%",  knobx[2], knoby[1]);
+  knobSpin        = createLabelledKnob(&params[paramSpin],      "%2.2f Hz", knobx[3], knoby[1]);
+  knobWander      = createLabelledKnob(&params[paramWander],     "%2.0f%%", knobx[4], knoby[1]);
 
-  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[2], knoby[1]);
-  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[3], knoby[1]);
+  knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[2], knoby[2]);
+  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[3], knoby[2]);
+  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[4], knoby[2]);
 
   sliderDry = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   sliderDry->setId ( paramDry );
@@ -115,9 +117,11 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramPredelay:    knobPredelay->setValue ( value ); break;
     case paramDecay:          knobDecay->setValue ( value ); break;
 
+    case paramDiffuse:      knobDiffuse->setValue ( value ); break;
     case paramSpin:            knobSpin->setValue ( value ); break;
     case paramWander:        knobWander->setValue ( value ); break;
 
+    case paramLowCut:        knobLowCut->setValue ( value ); break;
     case paramHighCut:      knobHighCut->setValue ( value ); break;
     case paramDamp:            knobDamp->setValue ( value ); break;
   }
@@ -215,9 +219,11 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         knobPredelay->setValue ( preset[paramPredelay] );
         knobDecay->setValue ( preset[paramDecay] );
 
+	knobDiffuse->setValue ( preset[paramDiffuse] );
         knobSpin->setValue ( preset[paramSpin] );
         knobWander->setValue ( preset[paramWander] );
 
+	knobLowCut->setValue ( preset[paramLowCut] );
 	knobHighCut->setValue ( preset[paramHighCut] );
 	knobDamp->setValue ( preset[paramDamp] );
 
@@ -364,9 +370,11 @@ void DragonflyReverbUI::updatePresetDefaults() {
   knobPredelay->setDefault ( preset[paramPredelay] );
   knobDecay->setDefault ( preset[paramDecay] );
 
+  knobDiffuse->setDefault ( preset[paramDiffuse] );
   knobSpin->setDefault ( preset[paramSpin] );
   knobWander->setDefault ( preset[paramWander] );
 
+  knobLowCut->setDefault ( preset[paramLowCut] );
   knobHighCut->setDefault ( preset[paramHighCut] );
   knobDamp->setDefault ( preset[paramDamp] );
 }

@@ -41,9 +41,11 @@ enum Parameters
     paramPredelay,
     paramDecay,
 
+    paramDiffuse,
     paramSpin,
     paramWander,
 
+    paramLowCut,
     paramHighCut,
     paramDamp,
 
@@ -56,8 +58,10 @@ static Param PARAMS[paramCount] = {
   {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
   {paramPredelay,   "Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
   {paramDecay,      "Decay",        "decay",          0.1f,    10.0f,   "s"},
+  {paramDiffuse,    "Diffuse",      "diffuse",        0.0f,   100.0f,   "%"},
   {paramSpin,       "Spin",         "spin",           0.0f,     5.0f,  "Hz"},
   {paramWander,     "Wander",       "wander",         0.0f,   100.0f,   "%"},
+  {paramLowCut,     "Low Cut",      "low_cut",        0.0f,   200.0f,  "Hz"},
   {paramHighCut,    "High Cut",     "high_cut",    1000.0f, 16000.0f,  "Hz"},
   {paramDamp,       "Dampen",       "early_damp",  1000.0f, 16000.0f,  "Hz"}
 };
@@ -70,12 +74,12 @@ typedef struct {
 } Preset;
 
 static Preset presets[NUM_PRESETS] = {
-                  //  dry,  wet, width, delay, decay, spin, wander, high cut,  damp
-  {"Bright Plate", { 80.0, 20.0,   100,  20.0,   0.4,  1.0,   60.0,    16000, 10000 } },
-  {"Clear Plate",  { 80.0, 20.0,   100,  20.0,   0.6,  1.0,   50.0,    13000,  7000 } },
-  {"Dark Plate",   { 80.0, 20.0,   100,  20.0,   0.8,  0.8,   40.0,     7000,  4000 } },
-  {"Narrow Plate", { 80.0, 20.0,    60,   0.0,   0.6,  2.0,   30.0,    10000,  7000 } },
-  {"Phat Plate",   { 80.0, 20.0,   150,   0.0,   1.0,  0.6,   60.0,    10000,  4000 } }
+                  //  dry,  wet, width, delay, decay, diffuse, spin, wander, low cut, high cut,  damp
+  {"Bright Plate", { 80.0, 20.0,   100,  20.0,   0.4,    90.0,  1.0,   60.0,      50,    16000, 10000 } },
+  {"Clear Plate",  { 80.0, 20.0,   100,  20.0,   0.6,    90.0,  1.0,   50.0,      50,    13000,  7000 } },
+  {"Dark Plate",   { 80.0, 20.0,   100,  20.0,   0.8,    90.0,  0.8,   40.0,      50,     7000,  4000 } },
+  {"Narrow Plate", { 80.0, 20.0,    60,   0.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
+  {"Phat Plate",   { 80.0, 20.0,   150,   0.0,   1.0,    90.0,  0.6,   60.0,      50,    10000,  4000 } }
 };
 
 const int DEFAULT_PRESET = 1;

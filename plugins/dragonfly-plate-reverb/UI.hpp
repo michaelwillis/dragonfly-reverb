@@ -61,8 +61,8 @@ private:
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob>
       knobWidth, knobPredelay, knobDecay,
-      knobSpin, knobWander,
-      knobHighCut, knobDamp;
+      knobDiffuse, knobSpin, knobWander,
+      knobLowCut, knobHighCut, knobDamp;
 
     int currentPreset;
     bool displayAbout;
