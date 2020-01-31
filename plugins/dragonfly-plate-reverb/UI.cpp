@@ -28,10 +28,10 @@
 
 START_NAMESPACE_DISTRHO
 
-namespace Art = DragonflyReverbArtwork;
+namespace Art = Artwork;
 using DGL::Color;
 
-static const int knobx[]  = {185, 260, 680, 755, 830};
+static const int knobx[]  = {435, 510, 585};
 static const int knoby[]  = {15,  130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -46,17 +46,17 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   displayAbout = false;
 
-  knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[2], knoby[0]);
-  knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[3], knoby[0]);
-  knobDecay       = createLabelledKnob(&params[paramDecay],      "%2.1f s", knobx[4], knoby[0]);
+  knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[0], knoby[0]);
+  knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[1], knoby[0]);
+  knobDecay       = createLabelledKnob(&params[paramDecay],      "%2.1f s", knobx[2], knoby[0]);
 
-  knobDiffuse     = createLabelledKnob(&params[paramDiffuse],   "%2.0f%%",  knobx[2], knoby[1]);
-  knobSpin        = createLabelledKnob(&params[paramSpin],      "%2.2f Hz", knobx[3], knoby[1]);
-  knobWander      = createLabelledKnob(&params[paramWander],     "%2.0f%%", knobx[4], knoby[1]);
+  knobDiffuse     = createLabelledKnob(&params[paramDiffuse],   "%2.0f%%",  knobx[0], knoby[1]);
+  knobSpin        = createLabelledKnob(&params[paramSpin],      "%2.2f Hz", knobx[1], knoby[1]);
+  knobWander      = createLabelledKnob(&params[paramWander],     "%2.0f%%", knobx[2], knoby[1]);
 
-  knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[2], knoby[2]);
-  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[3], knoby[2]);
-  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[4], knoby[2]);
+  knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[0], knoby[2]);
+  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[1], knoby[2]);
+  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[2], knoby[2]);
 
   sliderDry = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   sliderDry->setId ( paramDry );
@@ -78,26 +78,22 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectSliders[0].setSize ( 26,  160 );
   rectSliders[1].setPos  ( 57,  157 );
   rectSliders[1].setSize ( 26,  160 );
-  rectSliders[2].setPos  ( 97,  157 );
-  rectSliders[2].setSize ( 26,  160 );
-  rectSliders[3].setPos  ( 137, 157 );
-  rectSliders[3].setSize ( 26,  160 );
 
-  rectDisplay.setPos  ( 355, 126 );
+  rectDisplay.setPos  ( 110, 126 );
   rectDisplay.setSize ( 305, 207 );
 
   for ( int i = 0; i < NUM_PRESETS; ++i)
   {
-    rectPresets[i].setPos( 460, 5 + (i * 21) );
+    rectPresets[i].setPos( 300, 5 + (i * 21) );
     rectPresets[i].setSize( 150, 21 );
   }
 
-  rectAbout.setPos  ( 635, 130 );
+  rectAbout.setPos  ( 390, 130 );
   rectAbout.setSize ( 20,  20  );
 
   AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
   spectrogram = new Spectrogram(this, &nanoText, &rectDisplay, dsp);
-  spectrogram->setAbsolutePos (355, 126);
+  spectrogram->setAbsolutePos (110, 126);
 }
 
 /**
@@ -282,9 +278,9 @@ void DragonflyReverbUI::onDisplay()
   nanoText.endFrame();
 
   //draw faders
-  r =  98.0f/255.f;
-  g = 130.0f/255.f;
-  b = 161.0f/255.f;
+  r = 178.0f/255.f;
+  g = 148.0f/255.f;
+  b =  59.0f/255.f;
   glColor4f ( r, g, b, 1.0f );
   uint dry = ( float ( sliderDry->getValue() ) / 100.0 ) * 160.0 + 1.0f;
   uint wet = ( float ( sliderWet->getValue() ) / 100.0 ) * 160.0 + 1.0f;
