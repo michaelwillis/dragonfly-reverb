@@ -43,6 +43,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
 {
   currentPreset = DEFAULT_PRESET;
+  currentAlg = presets[currentPreset].params[paramAlgorithm];
 
   displayAbout = false;
 
@@ -82,10 +83,16 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos  ( 110, 126 );
   rectDisplay.setSize ( 305, 207 );
 
+  for ( int i = 0; i < ALGORITHM_COUNT; ++i)
+  {
+    rectAlgorithms[i].setPos( 275, 5 + (i * 21) );
+    rectAlgorithms[i].setSize( 125, 21 );
+  }
+
   for ( int i = 0; i < NUM_PRESETS; ++i)
   {
-    rectPresets[i].setPos( 300, 5 + (i * 21) );
-    rectPresets[i].setSize( 150, 21 );
+    rectPresets[i].setPos( 350, 5 + (i * 21) );
+    rectPresets[i].setSize( 125, 21 );
   }
 
   rectAbout.setPos  ( 390, 130 );
@@ -193,6 +200,16 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
     }
     else
     {
+      for (int row = 0; row < ALGORITHM_COUNT; row++)
+      {
+        if (rectAlgorithms[row].contains ( ev.pos ))
+        {
+	  currentAlg = row;
+	  setParameterValue ( paramAlgorithm, row );
+	  spectrogram->setParameterValue( paramAlgorithm, row);
+        }
+      }
+
       bool presetClicked = false;
 
       for (int row = 0; row < NUM_PRESETS; row++)
@@ -314,6 +331,13 @@ void DragonflyReverbUI::onDisplay()
     nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), presets[row].name, nullptr );
   }
 
+  for (int row = 0; row < ALGORITHM_COUNT; row ++)
+  {
+    DGL::Rectangle<int> rect = rectAlgorithms[row];
+    nanoText.fillColor( row == ((int)currentAlg) ? bright : dim );
+    nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), algorithmNames[row], nullptr );
+  }
+
   nanoText.endFrame();
 
   if (displayAbout) {
@@ -361,6 +385,8 @@ void DragonflyReverbUI::uiIdle() {
 
 void DragonflyReverbUI::updatePresetDefaults() {
   const float *preset = presets[currentPreset].params;
+
+  currentAlg = preset[paramAlgorithm];
 
   knobWidth->setDefault ( preset[paramWidth] );
   knobPredelay->setDefault ( preset[paramPredelay] );

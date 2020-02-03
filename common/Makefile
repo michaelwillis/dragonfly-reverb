@@ -13,6 +13,8 @@ OBJS += \
 	freeverb/delayline.cpp.o \
 	freeverb/earlyref.cpp.o \
 	freeverb/efilter.cpp.o \
+	freeverb/nrev.cpp.o \
+	freeverb/nrevb.cpp.o \
 	freeverb/progenitor.cpp.o \
 	freeverb/progenitor2.cpp.o \
 	freeverb/revbase.cpp.o \

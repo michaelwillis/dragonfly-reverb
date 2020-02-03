@@ -18,7 +18,10 @@
 #define DRAGONFLY_REVERB_DSP_HPP_INCLUDED
 
 #include "AbstractDSP.hpp"
+#include "freeverb/nrev.hpp"
+#include "freeverb/nrevb.hpp"
 #include "freeverb/strev.hpp"
+
 
 class DragonflyReverbDSP : public AbstractDSP {
 public:
@@ -40,12 +43,17 @@ private:
 
   static const uint32_t BUFFER_SIZE = 256;
 
-  fv3::iir_1st_f input_hpf_0, input_hpf_1;
-  fv3::strev_f model;
+  fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
+
+  fv3::revbase_f *model; // points to one of the following:
+  fv3::nrev_f nrev;
+  fv3::nrevb_f nrevb;
+  fv3::strev_f strev;
 
   float filtered_input_buffer[2][BUFFER_SIZE];
   float output_buffer[2][BUFFER_SIZE];
 
+  void setInputLPF(float freq);
   void setInputHPF(float freq);
 };
 

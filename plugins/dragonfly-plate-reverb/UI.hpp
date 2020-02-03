@@ -64,11 +64,13 @@ private:
       knobDiffuse, knobSpin, knobWander,
       knobLowCut, knobHighCut, knobDamp;
 
+    int currentAlg;
     int currentPreset;
     bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[2];
 
+    DGL::Rectangle<int> rectAlgorithms[NUM_PRESETS];
     DGL::Rectangle<int> rectPresets[NUM_PRESETS];
 
     DGL::Rectangle<int> rectDisplay;

@@ -32,10 +32,26 @@
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 
+
+enum Algorithms {
+  ALGORITHM_NREV = 0,
+  ALGORITHM_NREV_B,
+  ALGORITHM_STREV,
+  ALGORITHM_COUNT
+};
+
+static char *algorithmNames[ALGORITHM_COUNT] = {
+  "Simple",
+  "Nested",
+  "Tank"
+};
+
 enum Parameters
 {
     paramDry = 0,
     paramWet,
+
+    paramAlgorithm,
 
     paramWidth,
     paramPredelay,
@@ -55,6 +71,7 @@ enum Parameters
 static Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramWet,        "Wet Level",    "early_level",    0.0f,   100.0f,   "%"},
+  {paramAlgorithm,  "Algorithm",    "algorithm",      0.0f,     2.0f,    ""},  
   {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
   {paramPredelay,   "Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
   {paramDecay,      "Decay",        "decay",          0.1f,    10.0f,   "s"},
@@ -74,14 +91,15 @@ typedef struct {
 } Preset;
 
 static Preset presets[NUM_PRESETS] = {
-                  //  dry,  wet, width, delay, decay, diffuse, spin, wander, low cut, high cut,  damp
-  {"Bright Plate", { 80.0, 20.0,   100,  20.0,   0.4,    90.0,  1.0,   60.0,      50,    16000, 10000 } },
-  {"Clear Plate",  { 80.0, 20.0,   100,  20.0,   0.6,    90.0,  1.0,   50.0,      50,    13000,  7000 } },
-  {"Dark Plate",   { 80.0, 20.0,   100,  20.0,   0.8,    90.0,  0.8,   40.0,      50,     7000,  4000 } },
-  {"Narrow Plate", { 80.0, 20.0,    60,   0.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
-  {"Phat Plate",   { 80.0, 20.0,   150,   0.0,   1.0,    90.0,  0.6,   60.0,      50,    10000,  4000 } }
+            //  dry,  wet,        algorithm, width, delay, decay, diffuse, spin, wander, low cut, high cut,  damp
+  {"Bright", { 80.0, 20.0,   ALGORITHM_NREV,   100,  20.0,   0.4,    90.0,  1.0,   60.0,      50,    16000, 10000 } },
+  {"Clear",  { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.6,    90.0,  1.0,   50.0,      50,    13000,  7000 } },
+  {"Dark",   { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.8,    90.0,  0.8,   40.0,      50,     7000,  4000 } },
+  {"Narrow", { 80.0, 20.0, ALGORITHM_NREV_B,    60,   0.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
+  {"Phat",   { 80.0, 20.0,  ALGORITHM_STREV,   150,   0.0,   1.0,    90.0,  0.6,   60.0,      50,    10000,  4000 } }
 };
 
 const int DEFAULT_PRESET = 1;
+
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED
