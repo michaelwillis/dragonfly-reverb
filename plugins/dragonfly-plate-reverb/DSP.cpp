@@ -50,17 +50,15 @@ void NRev::processloop2(long count, float *inputL, float *inputR, float *outputL
       
       for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outL += combL[i]._process(hpf);
       for(long i = 0;i < 3;i ++) outL = allpassL[i]._process_ov(outL);
-      lpfL = damp2*lpfL + damp2_1*outL; UNDENORMAL(lpfL);
+      lpfL = dampLpfL(damp2*lpfL + damp2_1*outL); UNDENORMAL(lpfL);
       outL = allpassL[3]._process_ov(lpfL);
-      outL = dampLpfL(outL);
       outL = allpassL[5]._process_ov(outL);
       outL = delayWL(lLDCC(outL));
       
       for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outR += combR[i]._process(hpf);
       for(long i = 0;i < 3;i ++) outR = allpassR[i]._process_ov(outR);
-      lpfR = damp2*lpfR + damp2_1*outR; UNDENORMAL(lpfR);
+      lpfR = dampLpfR(damp2*lpfR + damp2_1*outR); UNDENORMAL(lpfR);
       outR = allpassR[3]._process_ov(lpfR);
-      outR = dampLpfR(outR);
       outR = allpassR[6]._process_ov(outR);
       outR = delayWR(lRDCC(outR));
       
@@ -106,9 +104,8 @@ void NRevB::processloop2(long count,
       for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outL += combL[i]._process(tmpL);
       for(long i = 0;i < FV3_NREVB_NUM_COMB_2;i ++) outL += comb2L[i]._process(tmpL);
       for(long i = 0;i < 3;i ++) outL = allpassL[i]._process(outL);
-      outL = dampLpfL(outL);
       for(long i = 0;i < FV3_NREVB_NUM_ALLPASS_2;i ++) outL = allpass2L[i]._process(outL);
-      lpfL = damp2*lpfL + damp2_1*outL; UNDENORMAL(lpfL);
+      lpfL = dampLpfL(damp2*lpfL + damp2_1*outL); UNDENORMAL(lpfL);
       outL = allpassL[3]._process(lpfL); outL = allpassL[5]._process(outL);
       outL = lLDCC(outL);
 
@@ -117,9 +114,8 @@ void NRevB::processloop2(long count,
       for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outR += combR[i]._process(tmpR);
       for(long i = 0;i < FV3_NREVB_NUM_COMB_2;i ++) outR += comb2R[i]._process(tmpR);
       for(long i = 0;i < 3;i ++) outR = allpassR[i]._process(outR);
-      outR = dampLpfR(outR);
       for(long i = 0;i < FV3_NREVB_NUM_ALLPASS_2;i ++) outR = allpass2R[i]._process(outR);
-      lpfR = damp2*lpfR + damp2_1*outR; UNDENORMAL(lpfR);
+      lpfR = dampLpfR(damp2*lpfR + damp2_1*outR); UNDENORMAL(lpfR);
       outR = allpassR[3]._process(lpfR); outR = allpassL[6]._process(outR);
       outR = lRDCC(outR);
       
@@ -178,7 +174,6 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 
       // TODO:
       // * Remove spin/wander?
-      // * Try move damper lpf to later in the processing for nrev, nrevb
       // * Try exaggerating diffuse for nrevb, tank
       switch(index) {
         case           paramDry: nrev.setdryr        (value / 100.0);
