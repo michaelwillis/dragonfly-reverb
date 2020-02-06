@@ -92,10 +92,10 @@ typedef struct {
 
 static Preset presets[NUM_PRESETS] = {
             //  dry,  wet,        algorithm, width, delay, decay, diffuse, spin, wander, low cut, high cut,  damp
-  {"Bright", { 80.0, 20.0,   ALGORITHM_NREV,   100,  20.0,   0.4,    90.0,  1.0,   60.0,      50,    16000, 10000 } },
+  {"Bright", { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.4,    90.0,  1.0,   60.0,      50,    16000, 10000 } },
   {"Clear",  { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.6,    90.0,  1.0,   50.0,      50,    13000,  7000 } },
   {"Dark",   { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.8,    90.0,  0.8,   40.0,      50,     7000,  4000 } },
-  {"Narrow", { 80.0, 20.0, ALGORITHM_NREV_B,    60,   0.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
+  {"Narrow", { 80.0, 20.0,  ALGORITHM_STREV,    60,   0.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
   {"Phat",   { 80.0, 20.0,  ALGORITHM_STREV,   150,   0.0,   1.0,    90.0,  0.6,   60.0,      50,    10000,  4000 } }
 };
 

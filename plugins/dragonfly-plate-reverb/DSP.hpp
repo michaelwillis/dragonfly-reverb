@@ -23,6 +23,32 @@
 #include "freeverb/strev.hpp"
 
 
+class NRev : public fv3::nrev_f {
+public:
+  NRev();
+  void setDampLpf(float value);
+  virtual void mute();
+  virtual void setFsFactors();
+  virtual void processloop2(long count, float *inputL,  float *inputR, float *outputL, float *outputR);
+private:
+  float dampLpf;
+  fv3::iir_1st_f dampLpfL, dampLpfR;
+};
+
+
+class NRevB : public fv3::nrevb_f {
+public:
+  NRevB();
+  void setDampLpf(float value);
+  virtual void mute();
+  virtual void setFsFactors();
+  virtual void processloop2(long count, float *inputL,  float *inputR, float *outputL, float *outputR);
+private:
+  float dampLpf;
+  fv3::iir_1st_f dampLpfL, dampLpfR;
+};
+
+
 class DragonflyReverbDSP : public AbstractDSP {
 public:
   DragonflyReverbDSP(double sampleRate);
@@ -38,16 +64,13 @@ private:
 
   double sampleRate;
 
-  float dry_level;
-  float wet_level;
-
   static const uint32_t BUFFER_SIZE = 256;
 
   fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
 
   fv3::revbase_f *model; // points to one of the following:
-  fv3::nrev_f nrev;
-  fv3::nrevb_f nrevb;
+  NRev nrev;
+  NRevB nrevb;
   fv3::strev_f strev;
 
   float filtered_input_buffer[2][BUFFER_SIZE];

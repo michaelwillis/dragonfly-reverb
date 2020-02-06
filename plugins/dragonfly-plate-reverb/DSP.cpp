@@ -19,6 +19,120 @@
 #include "DSP.hpp"
 #include "math.h"
 
+NRev::NRev() : fv3::nrev_f() { }
+
+void NRev::setDampLpf(float value) {
+  dampLpf = limFs2(value);
+  dampLpfL.setLPF_BW(dampLpf, getTotalSampleRate());
+  dampLpfR.setLPF_BW(dampLpf, getTotalSampleRate());
+}
+
+void NRev::mute() {
+  fv3::nrev_f::mute();
+  dampLpfL.mute();
+  dampLpfR.mute();
+}
+
+void NRev::setFsFactors() {
+  fv3::nrev_f::setFsFactors();
+  setDampLpf(dampLpf);
+}
+
+void NRev::processloop2(long count, float *inputL, float *inputR, float *outputL, float *outputR) {
+  float outL, outR;
+  while(count-- > 0)
+    {
+      outL = outR = 0;
+      hpf = damp3_1*inDCC(*inputL + *inputR) - damp3*hpf;
+      UNDENORMAL(hpf);
+
+      hpf *= FV3_NREV_SCALE_WET;
+      
+      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outL += combL[i]._process(hpf);
+      for(long i = 0;i < 3;i ++) outL = allpassL[i]._process_ov(outL);
+      lpfL = damp2*lpfL + damp2_1*outL; UNDENORMAL(lpfL);
+      outL = allpassL[3]._process_ov(lpfL);
+      outL = dampLpfL(outL);
+      outL = allpassL[5]._process_ov(outL);
+      outL = delayWL(lLDCC(outL));
+      
+      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outR += combR[i]._process(hpf);
+      for(long i = 0;i < 3;i ++) outR = allpassR[i]._process_ov(outR);
+      lpfR = damp2*lpfR + damp2_1*outR; UNDENORMAL(lpfR);
+      outR = allpassR[3]._process_ov(lpfR);
+      outR = dampLpfR(outR);
+      outR = allpassR[6]._process_ov(outR);
+      outR = delayWR(lRDCC(outR));
+      
+      *outputL = outL*wet1 + outR*wet2 + delayL(*inputL)*dry;
+      *outputR = outR*wet1 + outL*wet2 + delayR(*inputR)*dry;
+      inputL ++; inputR ++; outputL ++; outputR ++;
+    }
+}
+
+
+NRevB::NRevB() : fv3::nrevb_f() { }
+
+void NRevB::setDampLpf(float value)
+{
+  dampLpf = limFs2(value);
+  dampLpfL.setLPF_BW(dampLpf, getTotalSampleRate());
+  dampLpfR.setLPF_BW(dampLpf, getTotalSampleRate());
+}
+
+void NRevB::mute() {
+  fv3::nrevb_f::mute();
+  dampLpfL.mute();
+  dampLpfR.mute();
+}
+
+void NRevB::setFsFactors() {
+  fv3::nrevb_f::setFsFactors();
+  setDampLpf(dampLpf);
+}
+
+void NRevB::processloop2(long count,
+			  float *inputL, float *inputR,
+			  float *outputL, float *outputR) {
+  float outL, outR, tmpL, tmpR;
+  while(count-- > 0)
+    {
+      hpf = damp3_1*inDCC.process(*inputL + *inputR) - damp3*hpf; UNDENORMAL(hpf);
+      outL = outR = tmpL = tmpR = hpf;
+
+      outL += apfeedback*lastL;
+      lastL += -1*apfeedback*outL;
+
+      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outL += combL[i]._process(tmpL);
+      for(long i = 0;i < FV3_NREVB_NUM_COMB_2;i ++) outL += comb2L[i]._process(tmpL);
+      for(long i = 0;i < 3;i ++) outL = allpassL[i]._process(outL);
+      outL = dampLpfL(outL);
+      for(long i = 0;i < FV3_NREVB_NUM_ALLPASS_2;i ++) outL = allpass2L[i]._process(outL);
+      lpfL = damp2*lpfL + damp2_1*outL; UNDENORMAL(lpfL);
+      outL = allpassL[3]._process(lpfL); outL = allpassL[5]._process(outL);
+      outL = lLDCC(outL);
+
+      outR += apfeedback*lastR;
+      lastR += -1*apfeedback*outR;
+      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outR += combR[i]._process(tmpR);
+      for(long i = 0;i < FV3_NREVB_NUM_COMB_2;i ++) outR += comb2R[i]._process(tmpR);
+      for(long i = 0;i < 3;i ++) outR = allpassR[i]._process(outR);
+      outR = dampLpfR(outR);
+      for(long i = 0;i < FV3_NREVB_NUM_ALLPASS_2;i ++) outR = allpass2R[i]._process(outR);
+      lpfR = damp2*lpfR + damp2_1*outR; UNDENORMAL(lpfR);
+      outR = allpassR[3]._process(lpfR); outR = allpassL[6]._process(outR);
+      outR = lRDCC(outR);
+      
+      lastL = FV3_NREVB_SCALE_WET*delayWL(lastL);
+      lastR = FV3_NREVB_SCALE_WET*delayWR(lastR);
+      *outputL = lastL*wet1 + lastR*wet2 + delayL(*inputL)*dry;
+      *outputR = lastR*wet1 + lastL*wet2 + delayR(*inputR)*dry;
+      lastL = outL; lastR = outR;
+      inputL ++; inputR ++; outputL ++; outputR ++;
+    }
+}
+
+
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   nrev.setMuteOnChange(false);
   nrev.setSampleRate(sampleRate);
@@ -62,13 +176,17 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
-      // FIXME!
+      // TODO:
       // * Remove spin/wander?
-      // * Fix diffuse for nrev and nrevb or remove.
-      // * Fix damp for nrev and nrevb.
+      // * Try move damper lpf to later in the processing for nrev, nrevb
+      // * Try exaggerating diffuse for nrevb, tank
       switch(index) {
-        case           paramDry: strev.setdryr       (value / 100.0);             break;
-        case           paramWet: strev.setwetr       (value / 100.0);             break;
+        case           paramDry: nrev.setdryr        (value / 100.0);
+                                 nrevb.setdryr       (value / 100.0);
+                                 strev.setdryr       (value / 100.0);             break;
+        case           paramWet: nrev.setdryr        (value / 100.0);
+				 nrevb.setdryr       (value / 100.0);
+                                 strev.setwetr       (value / 100.0);             break;
         case         paramWidth: strev.setwidth      (value / 120.0);             
 	                         nrev.setwidth       (value / 120.0);
 				 nrevb.setwidth      (value / 120.0);             break;
@@ -78,14 +196,18 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case         paramDecay: strev.setrt60       (value);
                                  nrev.setrt60        (value);
                                  nrevb.setrt60       (value);                     break;
-        case       paramDiffuse: strev.setidiffusion1(value / 120.0);
+        case       paramDiffuse: nrev.setfeedback    (value / 200.0 + 0.25);
+                                 nrevb.setfeedback   (value / 180.0);
+                                 strev.setidiffusion1(value / 120.0);
                                  strev.setidiffusion2(value / 144.0);             break;
         case          paramSpin: strev.setspin       (value);                     break;
         case        paramWander: strev.setwander     (value / 100.0);             break;
         case        paramLowCut: setInputHPF         (value);                     break;
         case       paramHighCut: setInputLPF         (value);
                                  strev.setinputdamp  (value);                     break;
-        case          paramDamp: strev.setdamp       (value);
+        case          paramDamp: nrev.setDampLpf     (value);
+                                 nrevb.setDampLpf    (value);
+				 strev.setdamp       (value);
                                  strev.setoutputdamp (fmax(value * 2.0, 16000));  break;
       }
 
@@ -106,8 +228,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
     long int buffer_frames = frames - offset < BUFFER_SIZE ? frames - offset : BUFFER_SIZE;
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
-      filtered_input_buffer[0][i] = input_hpf_0.process(inputs[0][offset + i]);
-      filtered_input_buffer[1][i] = input_hpf_1.process(inputs[1][offset + i]);
+      filtered_input_buffer[0][i] = input_lpf_0.process(input_hpf_0.process(inputs[0][offset + i]));
+      filtered_input_buffer[1][i] = input_lpf_1.process(input_hpf_1.process(inputs[1][offset + i]));
     }
 
     model->processreplace(
@@ -130,7 +252,7 @@ void DragonflyReverbDSP::sampleRateChanged(double newSampleRate) {
   nrev.setSampleRate(newSampleRate);
   nrevb.setSampleRate(newSampleRate);
   strev.setSampleRate(newSampleRate);
-//  setInputLPF(newParams[paramLowCut]); FIXME!
+  setInputLPF(newParams[paramLowCut]);
   setInputHPF(newParams[paramLowCut]);  
 }
 
