@@ -89,9 +89,7 @@ void NRevB::setFsFactors() {
   setDampLpf(dampLpf);
 }
 
-void NRevB::processloop2(long count,
-			  float *inputL, float *inputR,
-			  float *outputL, float *outputR) {
+void NRevB::processloop2(long count, float *inputL, float *inputR, float *outputL, float *outputR) {
   float outL, outR, tmpL, tmpR;
   while(count-- > 0)
     {
@@ -179,8 +177,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case           paramDry: nrev.setdryr        (value / 100.0);
                                  nrevb.setdryr       (value / 100.0);
                                  strev.setdryr       (value / 100.0);             break;
-        case           paramWet: nrev.setdryr        (value / 100.0);
-				 nrevb.setdryr       (value / 100.0);
+        case           paramWet: nrev.setwetr        (value / 100.0);
+				 nrevb.setwetr       (value / 100.0);
                                  strev.setwetr       (value / 100.0);             break;
         case         paramWidth: strev.setwidth      (value / 120.0);             
 	                         nrev.setwidth       (value / 120.0);
@@ -207,6 +205,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       }
 
       if (index == paramAlgorithm) {
+	fv3::revbase_f *previous = model;
 	int algorithm = value;
 	if (algorithm == ALGORITHM_NREV) {
 	  model = &nrev;
@@ -214,6 +213,9 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 	  model = &nrevb;
 	} else if (algorithm == ALGORITHM_STREV) {
 	  model = &strev;
+	}
+	if (model != previous) {
+	  previous->mute();
 	}
       }
     }

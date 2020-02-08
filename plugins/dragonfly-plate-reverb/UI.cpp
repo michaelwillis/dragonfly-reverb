@@ -32,7 +32,7 @@ namespace Art = Artwork;
 using DGL::Color;
 
 static const int knobx[]  = {435, 510, 585};
-static const int knoby[]  = {15,  130, 245};
+static const int knoby[]  = {130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
@@ -51,13 +51,9 @@ DragonflyReverbUI::DragonflyReverbUI()
   knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[1], knoby[0]);
   knobDecay       = createLabelledKnob(&params[paramDecay],      "%2.1f s", knobx[2], knoby[0]);
 
-  knobDiffuse     = createLabelledKnob(&params[paramDiffuse],   "%2.0f%%",  knobx[0], knoby[1]);
-  knobSpin        = createLabelledKnob(&params[paramSpin],      "%2.2f Hz", knobx[1], knoby[1]);
-  knobWander      = createLabelledKnob(&params[paramWander],     "%2.0f%%", knobx[2], knoby[1]);
-
-  knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[0], knoby[2]);
-  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[1], knoby[2]);
-  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[2], knoby[2]);
+  knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[0], knoby[1]);
+  knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[1], knoby[1]);
+  knobDamp        = createLabelledKnob(&params[paramDamp],      "%5.0f Hz", knobx[2], knoby[1]);
 
   sliderDry = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
   sliderDry->setId ( paramDry );
@@ -85,13 +81,14 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < ALGORITHM_COUNT; ++i)
   {
-    rectAlgorithms[i].setPos( 275, 5 + (i * 21) );
+    rectAlgorithms[i].setPos( 560, 30 + (i * 24) );
     rectAlgorithms[i].setSize( 125, 21 );
   }
 
   for ( int i = 0; i < NUM_PRESETS; ++i)
   {
-    rectPresets[i].setPos( 350, 5 + (i * 21) );
+    int x = i < 4 ? 275 : 400;
+    rectPresets[i].setPos( x, 25 + ((i % 4) * 21) );
     rectPresets[i].setSize( 125, 21 );
   }
 
@@ -119,10 +116,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramWidth:          knobWidth->setValue ( value ); break;
     case paramPredelay:    knobPredelay->setValue ( value ); break;
     case paramDecay:          knobDecay->setValue ( value ); break;
-
-    case paramDiffuse:      knobDiffuse->setValue ( value ); break;
-    case paramSpin:            knobSpin->setValue ( value ); break;
-    case paramWander:        knobWander->setValue ( value ); break;
 
     case paramLowCut:        knobLowCut->setValue ( value ); break;
     case paramHighCut:      knobHighCut->setValue ( value ); break;
@@ -232,10 +225,6 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
         knobPredelay->setValue ( preset[paramPredelay] );
         knobDecay->setValue ( preset[paramDecay] );
 
-	knobDiffuse->setValue ( preset[paramDiffuse] );
-        knobSpin->setValue ( preset[paramSpin] );
-        knobWander->setValue ( preset[paramWander] );
-
 	knobLowCut->setValue ( preset[paramLowCut] );
 	knobHighCut->setValue ( preset[paramHighCut] );
 	knobDamp->setValue ( preset[paramDamp] );
@@ -322,8 +311,13 @@ void DragonflyReverbUI::onDisplay()
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
   Color dim    = Color ( 0.65f, 0.65f, 0.65f );
 
-  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
 
+  nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
+  nanoText.fillColor(bright);
+  nanoText.textBox ( 280, 7, 200, "Presets", nullptr );
+  
+  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
+  
   for (int row = 0; row < NUM_PRESETS; row ++)
   {
     DGL::Rectangle<int> presetRect = rectPresets[row];
@@ -331,6 +325,11 @@ void DragonflyReverbUI::onDisplay()
     nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), presets[row].name, nullptr );
   }
 
+  nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
+  nanoText.fillColor(bright);
+  nanoText.textBox ( 487, 7, 200, "Reverb Type", nullptr );
+
+  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   for (int row = 0; row < ALGORITHM_COUNT; row ++)
   {
     DGL::Rectangle<int> rect = rectAlgorithms[row];
@@ -391,10 +390,6 @@ void DragonflyReverbUI::updatePresetDefaults() {
   knobWidth->setDefault ( preset[paramWidth] );
   knobPredelay->setDefault ( preset[paramPredelay] );
   knobDecay->setDefault ( preset[paramDecay] );
-
-  knobDiffuse->setDefault ( preset[paramDiffuse] );
-  knobSpin->setDefault ( preset[paramSpin] );
-  knobWander->setDefault ( preset[paramWander] );
 
   knobLowCut->setDefault ( preset[paramLowCut] );
   knobHighCut->setDefault ( preset[paramHighCut] );
