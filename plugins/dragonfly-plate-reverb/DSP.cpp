@@ -128,6 +128,11 @@ void NRevB::processloop2(long count, float *inputL, float *inputR, float *output
 
 
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
+  input_lpf_0.mute();
+  input_lpf_1.mute();
+  input_hpf_0.mute();
+  input_hpf_1.mute();
+
   nrev.setMuteOnChange(false);
   nrev.setSampleRate(sampleRate);
 
