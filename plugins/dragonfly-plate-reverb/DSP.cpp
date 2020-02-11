@@ -133,12 +133,18 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   input_hpf_0.mute();
   input_hpf_1.mute();
 
+  nrev.setdryr(0);
+  nrev.setwetr(1);
   nrev.setMuteOnChange(false);
   nrev.setSampleRate(sampleRate);
 
+  nrevb.setdryr(0);
+  nrevb.setwetr(1);
   nrevb.setMuteOnChange(false);
   nrevb.setSampleRate(sampleRate);
 
+  strev.setdryr(0);
+  strev.setwetr(1);
   strev.setMuteOnChange(false);
   strev.setdccutfreq(6);
   strev.setspinlimit(12);
@@ -179,12 +185,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       // * Remove spin/wander?
       // * Try exaggerating diffuse for nrevb, tank
       switch(index) {
-        case           paramDry: nrev.setdryr        (value / 100.0);
-                                 nrevb.setdryr       (value / 100.0);
-                                 strev.setdryr       (value / 100.0);             break;
-        case           paramWet: nrev.setwetr        (value / 100.0);
-				 nrevb.setwetr       (value / 100.0);
-                                 strev.setwetr       (value / 100.0);             break;
+        case           paramDry: dry_level         = (value / 100.0);             break;
+        case           paramWet: wet_level         = (value / 100.0);             break;
         case         paramWidth: strev.setwidth      (value / 120.0);             
 	                         nrev.setwidth       (value / 120.0);
 				 nrevb.setwidth      (value / 120.0);             break;
@@ -243,9 +245,15 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
     );
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
-      outputs[0][offset + i] = output_buffer[0][i];
-      outputs[1][offset + i] = output_buffer[1][i];
+      outputs[0][offset + i] =
+	dry_level   * inputs[0][offset + i]  +
+	wet_level   * output_buffer[0][i];
+
+      outputs[1][offset + i] =
+	dry_level   * inputs[1][offset + i]  +
+	wet_level   * output_buffer[1][i];
     }
+
   }
 }
 

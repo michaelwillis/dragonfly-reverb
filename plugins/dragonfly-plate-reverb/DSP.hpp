@@ -64,6 +64,9 @@ private:
 
   double sampleRate;
 
+  float dry_level;
+  float wet_level;
+
   static const uint32_t BUFFER_SIZE = 256;
 
   fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
