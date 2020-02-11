@@ -57,10 +57,6 @@ enum Parameters
     paramPredelay,
     paramDecay,
 
-    paramDiffuse,
-    paramSpin,
-    paramWander,
-
     paramLowCut,
     paramHighCut,
     paramDamp,
@@ -75,9 +71,6 @@ static Param PARAMS[paramCount] = {
   {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
   {paramPredelay,   "Predelay",     "predelay",       0.0f,   100.0f,  "ms"},
   {paramDecay,      "Decay",        "decay",          0.1f,    10.0f,   "s"},
-  {paramDiffuse,    "Diffuse",      "diffuse",        0.0f,   100.0f,   "%"},
-  {paramSpin,       "Spin",         "spin",           0.0f,     5.0f,  "Hz"},
-  {paramWander,     "Wander",       "wander",         0.0f,   100.0f,   "%"},
   {paramLowCut,     "Low Cut",      "low_cut",        0.0f,   200.0f,  "Hz"},
   {paramHighCut,    "High Cut",     "high_cut",    1000.0f, 16000.0f,  "Hz"},
   {paramDamp,       "Dampen",       "early_damp",  1000.0f, 16000.0f,  "Hz"}
@@ -91,15 +84,15 @@ typedef struct {
 } Preset;
 
 static Preset presets[NUM_PRESETS] = {
-                  //  dry,  wet,        algorithm, width, delay, decay, diffuse, spin, wander, low cut, high cut,  damp
-  {"Abrupt Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.2,    90.0,  1.0,   60.0,      50,    10000,  7000 } },
-  {"Bright Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.4,    90.0,  1.0,   60.0,     200,    16000, 13000 } },
-  {"Clear Plate",  { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.6,    90.0,  1.0,   50.0,     100,    13000,  7000 } },
-  {"Dark Plate",   { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.8,    90.0,  0.8,   40.0,      50,     7000,  4000 } },
-  {"Foil Tray",    { 80.0, 20.0,   ALGORITHM_NREV,    50,   0.0,   0.3,    90.0,  1.0,   60.0,     200,    16000, 13000 } },
-  {"Metal Roof",   { 80.0, 20.0,   ALGORITHM_NREV,   120,  20.0,   0.5,    90.0,  1.0,   60.0,     100,    13000, 10000 } },
-  {"Narrow Tank",  { 80.0, 20.0,  ALGORITHM_STREV,    60,  10.0,   0.6,    90.0,  2.0,   30.0,      50,    10000,  7000 } },
-  {"Phat Tank",    { 80.0, 20.0,  ALGORITHM_STREV,   150,  10.0,   1.0,    90.0,  0.6,   60.0,      50,    10000,  4000 } }
+                  //  dry,  wet,        algorithm, width, delay, decay, low cut, high cut,  damp
+  {"Abrupt Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.2,      50,    10000,  7000 } },
+  {"Bright Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.4,     200,    16000, 13000 } },
+  {"Clear Plate",  { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.6,     100,    13000,  7000 } },
+  {"Dark Plate",   { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.8,      50,     7000,  4000 } },
+  {"Foil Tray",    { 80.0, 20.0,   ALGORITHM_NREV,    50,   0.0,   0.3,     200,    16000, 13000 } },
+  {"Metal Roof",   { 80.0, 20.0,   ALGORITHM_NREV,   120,  20.0,   0.5,     100,    13000, 10000 } },
+  {"Narrow Tank",  { 80.0, 20.0,  ALGORITHM_STREV,    60,  10.0,   0.6,      50,    10000,  7000 } },
+  {"Phat Tank",    { 80.0, 20.0,  ALGORITHM_STREV,   150,  10.0,   1.0,      50,    10000,  4000 } }
 };
 
 const int DEFAULT_PRESET = 1;

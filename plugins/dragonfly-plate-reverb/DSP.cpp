@@ -181,9 +181,6 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
-      // TODO:
-      // * Remove spin/wander?
-      // * Try exaggerating diffuse for nrevb, tank
       switch(index) {
         case           paramDry: dry_level         = (value / 100.0);             break;
         case           paramWet: wet_level         = (value / 100.0);             break;
@@ -196,12 +193,6 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case         paramDecay: strev.setrt60       (value);
                                  nrev.setrt60        (value);
                                  nrevb.setrt60       (value);                     break;
-        case       paramDiffuse: nrev.setfeedback    (value / 200.0 + 0.25);
-                                 nrevb.setfeedback   (value / 180.0);
-                                 strev.setidiffusion1(value / 120.0);
-                                 strev.setidiffusion2(value / 144.0);             break;
-        case          paramSpin: strev.setspin       (value);                     break;
-        case        paramWander: strev.setwander     (value / 100.0);             break;
         case        paramLowCut: setInputHPF         (value);                     break;
         case       paramHighCut: setInputLPF         (value);
                                  strev.setinputdamp  (value);                     break;
