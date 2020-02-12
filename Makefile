@@ -22,6 +22,7 @@ plugins: libs dgl
 	$(MAKE) all -C plugins/dragonfly-hall-reverb
 	$(MAKE) all -C plugins/dragonfly-room-reverb
 	$(MAKE) all -C plugins/dragonfly-plate-reverb
+	$(MAKE) all -C plugins/dragonfly-early-reflections
 
 ifneq ($(CROSS_COMPILING),true)
 gen: plugins dpf/utils/lv2_ttl_generator
@@ -44,6 +45,7 @@ clean:
 	$(MAKE) clean -C plugins/dragonfly-hall-reverb
 	$(MAKE) clean -C plugins/dragonfly-room-reverb
 	$(MAKE) clean -C plugins/dragonfly-plate-reverb
+	$(MAKE) clean -C plugins/dragonfly-early-reflections
 	$(MAKE) clean -C common
 	rm -rf bin build
 
