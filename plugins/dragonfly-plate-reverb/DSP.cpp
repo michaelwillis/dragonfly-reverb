@@ -194,8 +194,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
                                  nrev.setrt60        (value);
                                  nrevb.setrt60       (value);                     break;
         case        paramLowCut: setInputHPF         (value);                     break;
-        case       paramHighCut: setInputLPF         (value);
-                                 strev.setinputdamp  (value);                     break;
+        case       paramHighCut: setInputLPF         (value);                     break;
         case          paramDamp: nrev.setDampLpf     (value);
                                  nrevb.setDampLpf    (value);
 				 strev.setdamp       (value);
@@ -253,7 +252,7 @@ void DragonflyReverbDSP::sampleRateChanged(double newSampleRate) {
   nrev.setSampleRate(newSampleRate);
   nrevb.setSampleRate(newSampleRate);
   strev.setSampleRate(newSampleRate);
-  setInputLPF(newParams[paramLowCut]);
+  setInputLPF(newParams[paramHighCut]);
   setInputHPF(newParams[paramLowCut]);  
 }
 
