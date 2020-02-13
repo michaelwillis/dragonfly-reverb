@@ -21,7 +21,6 @@
 #include "ImageWidgets.hpp"
 #include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
-#include "Spectrogram.hpp"
 #include "LabelledKnob.hpp"
 
 START_NAMESPACE_DISTRHO
@@ -56,7 +55,6 @@ private:
     Image fImgBackground,fImgTabOff,fImgTabOn,fImgQuestion;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
-    ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobLowCut, knobHighCut;
 
     int currentProgram;

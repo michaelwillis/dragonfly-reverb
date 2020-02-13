@@ -6,8 +6,8 @@
 namespace Artwork
 {
     extern const char* backgroundData;
-    const unsigned int backgroundDataSize = 931500;
-    const unsigned int backgroundWidth    = 675;
+    const unsigned int backgroundDataSize = 621000;
+    const unsigned int backgroundWidth    = 450;
     const unsigned int backgroundHeight   = 345;
 
     extern const char* knobData;

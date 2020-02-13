@@ -32,7 +32,7 @@ START_NAMESPACE_DISTRHO
 namespace Art = Artwork;
 using DGL::Color;
 
-static const int knobx[]  = {435, 510, 585};
+static const int knobx[]  = {285, 360};
 static const int knoby[]  = {130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
@@ -78,17 +78,12 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < PROGRAM_COUNT; ++i)
   {
-    int x = i < 4 ? 275 : 400;
-    rectPrograms[i].setPos( x, 25 + ((i % 4) * 21) );
+    rectPrograms[i].setPos( 120, 160 + (i * 21) );
     rectPrograms[i].setSize( 125, 21 );
   }
 
-  rectAbout.setPos  ( 390, 130 );
+  rectAbout.setPos  ( 240, 130 );
   rectAbout.setSize ( 20,  20  );
-
-  AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
-  spectrogram = new Spectrogram(this, &nanoText, &rectDisplay, dsp);
-  spectrogram->setAbsolutePos (110, 126);
 }
 
 /**
@@ -107,10 +102,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramWidth:          knobWidth->setValue ( value ); break;
     case paramLowCut:        knobLowCut->setValue ( value ); break;
     case paramHighCut:      knobHighCut->setValue ( value ); break;
-  }
-
-  if (index != paramDry) {
-    spectrogram->setParameterValue(index, value);
   }
 }
 
@@ -132,7 +123,6 @@ void DragonflyReverbUI::imageKnobDragFinished ( ImageKnob* knob )
 void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
 {
   setParameterValue ( knob->getId(),value );
-  spectrogram->setParameterValue ( knob->getId(), value );
 }
 
 void  DragonflyReverbUI::imageSliderDragStarted ( ImageSlider* slider )
@@ -149,7 +139,6 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 {
   int SliderID = slider->getId();
   setParameterValue ( SliderID,value );
-  spectrogram->setParameterValue ( SliderID, value );
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
@@ -246,24 +235,7 @@ void DragonflyReverbUI::onDisplay()
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
   Color dim    = Color ( 0.65f, 0.65f, 0.65f );
 
-
-  nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
-  nanoText.fillColor(bright);
-  nanoText.textBox ( 280, 7, 200, "Reverb Type", nullptr );
-  
-  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-  
-  for (int row = 0; row < PROGRAM_COUNT; row ++)
-  {
-    DGL::Rectangle<int> rect = rectPrograms[row];
-    nanoText.fillColor( row == currentProgram ? bright : dim );
-    nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), programs[row].name, nullptr );
-  }
-
-  nanoText.endFrame();
-
   if (displayAbout) {
-    spectrogram->hide();
     nanoText.beginFrame ( this );
     nanoText.fontSize ( 18 );
     nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
@@ -280,13 +252,13 @@ void DragonflyReverbUI::onDisplay()
     char textBuffer[400];
 
     std::snprintf(textBuffer, 400,
-      "Dragonfly Early Reflections is a free\n"
-      "reverb effect based on Freeverb3.\n\n"
-      "Version: %d.%d.%d%s  License: GPL 3+\n\n"
-      "• Michael Willis - Plugin Development\n"
-      "• James Peters - Quality Assurance\n"
-      "• Teru Kamogashira - Freeverb3\n"
-      "• \"falkTX\" Coelho - Distrho Plugin Framework",
+      "This is a free audio effect\n"
+      "based on Freeverb3.\n\n"
+      "Version: %d.%d.%d%s\nLicense: GPL 3+\n\n"
+      "• Michael Willis - Dev\n"
+      "• James Peters - QA\n"
+      "• Teru Kamogashira - FV3\n"
+      "• \"falkTX\" Coelho - DPF",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );
 
@@ -295,16 +267,25 @@ void DragonflyReverbUI::onDisplay()
   }
   else
   {
-      spectrogram->show();
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );
       fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
+
+      nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
+      nanoText.fillColor(bright);
+      nanoText.textBox ( 123, 130, 200, "Reflection Type", nullptr );
+  
+      for (int row = 0; row < PROGRAM_COUNT; row ++) {
+	DGL::Rectangle<int> rect = rectPrograms[row];
+	nanoText.fillColor( row == currentProgram ? bright : dim );
+	nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), programs[row].name, nullptr );
+      }
+      
+      nanoText.endFrame();
   }
 
 }
 
-void DragonflyReverbUI::uiIdle() {
-  spectrogram->uiIdle();
-}
+void DragonflyReverbUI::uiIdle() { }
 
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */

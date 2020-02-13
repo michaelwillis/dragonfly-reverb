@@ -67,13 +67,13 @@ typedef struct {
 } Program;
 
 static Program programs[PROGRAM_COUNT] = {
-  {"Abrupt",     2},
-  {"Backstage", 18}, 
-  {"Concert",    0},
-  {"Damage",    19},
-  {"Elevator",   1},
-  {"Floor 13",  13},
-  {"Garage",    14}
+  {"Abrupt Echo",     2},
+  {"Backstage Pass", 18}, 
+  {"Concert Venue",   0},
+  {"Damaged Goods",  19},
+  {"Elevator Pitch",  1},
+  {"Floor Thirteen", 13},
+  {"Garage Band",    14}
 };
 
 const int DEFAULT_PROGRAM = 2;
