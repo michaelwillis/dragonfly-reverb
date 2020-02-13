@@ -30,7 +30,7 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
   model.setDiffusionApFreq(150, 4);
 
   for (uint32_t param = 0; param < paramCount; param++) {
-    newParams[param] = presets[DEFAULT_PRESET].params[param];
+    newParams[param] = DEFAULTS[param];
     oldParams[param] = FP_NAN;
   }
 
@@ -57,7 +57,6 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
-      // Additional params to consider:
       switch(index) {
         case           paramDry: dry_level         = (value / 100.0); break;
         case           paramWet: wet_level         = (value / 100.0); break;
@@ -68,8 +67,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       }
 
       if (index == paramProgram) {
-	int program = value;
-	model.loadPresetReflection(program);
+	model.loadPresetReflection(programs[(int)value].number);
       }
     }
   }

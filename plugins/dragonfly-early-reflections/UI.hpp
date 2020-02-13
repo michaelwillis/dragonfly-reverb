@@ -37,8 +37,6 @@ protected:
     // DSP Callbacks
 
     void parameterChanged ( uint32_t index, float value ) override;
-    void stateChanged(const char* key, const char* value) override;
-
     void programLoaded (uint32_t index);
 
     // -------------------------------------------------------------------
@@ -61,14 +59,12 @@ private:
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobLowCut, knobHighCut;
 
-    int currentAlg;
-    int currentPreset;
+    int currentProgram;
     bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[2];
 
-    DGL::Rectangle<int> rectAlgorithms[NUM_PRESETS];
-    DGL::Rectangle<int> rectPresets[NUM_PRESETS];
+    DGL::Rectangle<int> rectPrograms[PROGRAM_COUNT];
 
     DGL::Rectangle<int> rectDisplay;
     DGL::Rectangle<int> rectAbout;

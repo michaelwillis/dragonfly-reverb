@@ -26,6 +26,7 @@
 #include <math.h>
 #include <string>
 
+
 START_NAMESPACE_DISTRHO
 
 namespace Art = Artwork;
@@ -42,8 +43,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
     fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
 {
-  currentPreset = DEFAULT_PRESET;
-  currentAlg = presets[currentPreset].params[paramProgram];
+  currentProgram = DEFAULT_PROGRAM;
 
   displayAbout = false;
 
@@ -78,15 +78,9 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < PROGRAM_COUNT; ++i)
   {
-    rectAlgorithms[i].setPos( 560, 30 + (i * 24) );
-    rectAlgorithms[i].setSize( 125, 21 );
-  }
-
-  for ( int i = 0; i < NUM_PRESETS; ++i)
-  {
     int x = i < 4 ? 275 : 400;
-    rectPresets[i].setPos( x, 25 + ((i % 4) * 21) );
-    rectPresets[i].setSize( 125, 21 );
+    rectPrograms[i].setPos( x, 25 + ((i % 4) * 21) );
+    rectPrograms[i].setSize( 125, 21 );
   }
 
   rectAbout.setPos  ( 390, 130 );
@@ -120,20 +114,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
   }
 }
 
-void DragonflyReverbUI::stateChanged(const char* key, const char* value)
-{
-  if (std::strcmp(key, "preset") == 0) {
-    for (int p = 0; p < NUM_PRESETS; p++) {
-      if (std::strcmp(value, presets[p].name) == 0) {
-	currentPreset = p;
-      }
-    }
-
-    updatePresetDefaults();
-  }
-
-  repaint();
-}
 
 /* ----------------------------------------------------------------------------------------------------------
  * Widget Callbacks
@@ -188,47 +168,12 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
     {
       for (int row = 0; row < PROGRAM_COUNT; row++)
       {
-        if (rectAlgorithms[row].contains ( ev.pos ))
+        if (rectPrograms[row].contains ( ev.pos ))
         {
-	  currentAlg = row;
 	  setParameterValue ( paramProgram, row );
-	  spectrogram->setParameterValue( paramProgram, row);
+          currentProgram = row;
+	  repaint();
         }
-      }
-
-      bool presetClicked = false;
-
-      for (int row = 0; row < NUM_PRESETS; row++)
-      {
-        if (rectPresets[row].contains ( ev.pos ))
-        {
-          currentPreset = row;
-          presetClicked = true;
-        }
-      }
-
-      if (presetClicked)
-      {
-        setState("preset", presets[currentPreset].name);
-        updatePresetDefaults();
-
-        const float *preset = presets[currentPreset].params;
-
-        knobSize->setValue ( preset[paramSize] );
-        knobWidth->setValue ( preset[paramWidth] );
-	knobLowCut->setValue ( preset[paramLowCut] );
-	knobHighCut->setValue ( preset[paramHighCut] );
-
-        for ( uint32_t i = 0; i < paramCount; i++ ) {
-	  // Don't set sliders
-	  if (i != paramDry && i != paramWet) {
-            setParameterValue ( i, preset[i] );
-            spectrogram->setParameterValue(i, preset[i]);
-	  }
-        }
-
-        repaint();
-        return true;
       }
 
       if ( rectAbout.contains ( ev.pos ) )
@@ -304,27 +249,15 @@ void DragonflyReverbUI::onDisplay()
 
   nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
   nanoText.fillColor(bright);
-  nanoText.textBox ( 280, 7, 200, "Presets", nullptr );
+  nanoText.textBox ( 280, 7, 200, "Reverb Type", nullptr );
   
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   
-  for (int row = 0; row < NUM_PRESETS; row ++)
-  {
-    DGL::Rectangle<int> presetRect = rectPresets[row];
-    nanoText.fillColor( row == currentPreset ? bright : dim );
-    nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), presets[row].name, nullptr );
-  }
-
-  nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
-  nanoText.fillColor(bright);
-  nanoText.textBox ( 487, 7, 200, "Reverb Type", nullptr );
-
-  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   for (int row = 0; row < PROGRAM_COUNT; row ++)
   {
-    DGL::Rectangle<int> rect = rectAlgorithms[row];
-    nanoText.fillColor( row == ((int)currentAlg) ? bright : dim );
-    nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), programNames[row], nullptr );
+    DGL::Rectangle<int> rect = rectPrograms[row];
+    nanoText.fillColor( row == currentProgram ? bright : dim );
+    nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), programs[row].name, nullptr );
   }
 
   nanoText.endFrame();
@@ -371,17 +304,6 @@ void DragonflyReverbUI::onDisplay()
 
 void DragonflyReverbUI::uiIdle() {
   spectrogram->uiIdle();
-}
-
-void DragonflyReverbUI::updatePresetDefaults() {
-  const float *preset = presets[currentPreset].params;
-
-  currentAlg = preset[paramProgram];
-
-  knobSize->setDefault ( preset[paramSize] );
-  knobWidth->setDefault ( preset[paramWidth] );
-  knobLowCut->setDefault ( preset[paramLowCut] );
-  knobHighCut->setDefault ( preset[paramHighCut] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

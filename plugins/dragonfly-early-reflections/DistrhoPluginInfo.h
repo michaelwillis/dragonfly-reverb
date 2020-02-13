@@ -28,23 +28,9 @@
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
 #define DISTRHO_PLUGIN_NUM_INPUTS    2
 #define DISTRHO_PLUGIN_NUM_OUTPUTS   2
-#define DISTRHO_PLUGIN_WANT_STATE    1
+#define DISTRHO_PLUGIN_WANT_STATE    0
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
-
-
-enum Algorithms {
-  PROGRAM_DEFAULT = 0,
-  PROGRAM_SHORT,
-  PROGRAM_ABRUPT,
-  PROGRAM_COUNT
-};
-
-static char *programNames[PROGRAM_COUNT] = {
-  "Default",
-  "Short",
-  "Abrupt"
-};
 
 enum Parameters
 {
@@ -61,27 +47,36 @@ enum Parameters
 static Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramWet,        "Wet Level",    "early_level",    0.0f,   100.0f,   "%"},
-  {paramProgram,    "Program",      "program",        0.0f,    22.0f,    ""},
+  {paramProgram,    "Program",      "program",        0.0f,     6.0f,    ""},
   {paramSize,       "Size",         "size",          10.0f,    60.0f,   "m"},
   {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
   {paramLowCut,     "Low Cut",      "low_cut",        0.0f,   200.0f,  "Hz"},
   {paramHighCut,    "High Cut",     "high_cut",    1000.0f, 16000.0f,  "Hz"}
 };
 
-const int NUM_PRESETS = 2;
+const float DEFAULTS[paramCount] = {
+  // dry,  wet, program, size, width, lowcut, highcut
+    80.0, 20.0,       2, 20.0, 100.0,     50, 10000
+};
+
+const int PROGRAM_COUNT = 7;
 
 typedef struct {
   const char *name;
-  const float params[paramCount];
-} Preset;
+  const int number; // freeverb's earlyref has numeric programs
+} Program;
 
-static Preset presets[NUM_PRESETS] = {
-                  //  dry,  wet, program, size, width, low cut, high cut
-  {"Default",      { 80.0, 20.0,       0,   20,   100,      50,    10000 } },
-  {"Experiment",   { 80.0, 20.0,       1,   20,   100,      50,    10000 } },
+static Program programs[PROGRAM_COUNT] = {
+  {"Abrupt",     2},
+  {"Backstage", 18}, 
+  {"Concert",    0},
+  {"Damage",    19},
+  {"Elevator",   1},
+  {"Floor 13",  13},
+  {"Garage",    14}
 };
 
-const int DEFAULT_PRESET = 0;
+const int DEFAULT_PROGRAM = 2;
 
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

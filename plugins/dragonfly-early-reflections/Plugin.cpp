@@ -20,9 +20,7 @@
 
 START_NAMESPACE_DISTRHO
 
-DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 1), dsp(getSampleRate()) {
-  preset = DEFAULT_PRESET;
-}
+DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 0), dsp(getSampleRate()) { }
 
 // -----------------------------------------------------------------------
 // Init
@@ -33,16 +31,9 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
     parameter.name       = PARAMS[index].name;
     parameter.symbol     = PARAMS[index].symbol;
     parameter.ranges.min = PARAMS[index].range_min;
-    parameter.ranges.def = presets[DEFAULT_PRESET].params[index];
+    parameter.ranges.def = DEFAULTS[index];
     parameter.ranges.max = PARAMS[index].range_max;
     parameter.unit       = PARAMS[index].unit;
-  }
-}
-
-void DragonflyReverbPlugin::initState(uint32_t index, String& stateKey, String& defaultStateValue) {
-  if (index == 0) {
-    stateKey = "preset";
-    defaultStateValue = "Clear Plate";
   }
 }
 
@@ -55,16 +46,6 @@ float DragonflyReverbPlugin::getParameterValue(uint32_t index) const {
 
 void DragonflyReverbPlugin::setParameterValue(uint32_t index, float value) {
   dsp.setParameterValue(index, value);
-}
-
-void DragonflyReverbPlugin::setState(const char* key, const char* value) {
-  if (std::strcmp(key, "preset") == 0) {
-    for (int p = 0; p < NUM_PRESETS; p++) {
-      if (std::strcmp(value, presets[p].name) == 0) {
-	preset = p;
-      }
-    }
-  }
 }
 
 // -----------------------------------------------------------------------
