@@ -28,7 +28,7 @@
 
 START_NAMESPACE_DISTRHO
 
-namespace Art = DragonflyReverbArtwork;
+namespace Art = Artwork;
 using DGL::Color;
 
 static const int knobx[]  = {185, 260, 680, 755, 830};

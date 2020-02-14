@@ -81,13 +81,13 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < ALGORITHM_COUNT; ++i)
   {
-    rectAlgorithms[i].setPos( 560, 30 + (i * 24) );
-    rectAlgorithms[i].setSize( 125, 21 );
+    rectAlgorithms[i].setPos( 577, 35 + (i * 21) );
+    rectAlgorithms[i].setSize( 100, 21 );
   }
 
   for ( int i = 0; i < NUM_PRESETS; ++i)
   {
-    int x = i < 4 ? 275 : 400;
+    int x = i < 4 ? 340 : 455;
     rectPresets[i].setPos( x, 25 + ((i % 4) * 21) );
     rectPresets[i].setSize( 125, 21 );
   }
@@ -314,7 +314,7 @@ void DragonflyReverbUI::onDisplay()
 
   nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
   nanoText.fillColor(bright);
-  nanoText.textBox ( 280, 7, 200, "Presets", nullptr );
+  nanoText.textBox ( 340, 7, 200, "Presets", nullptr );
   
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   
@@ -325,11 +325,11 @@ void DragonflyReverbUI::onDisplay()
     nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), presets[row].name, nullptr );
   }
 
-  nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
-  nanoText.fillColor(bright);
-  nanoText.textBox ( 487, 7, 200, "Reverb Type", nullptr );
-
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
+  
+  nanoText.fillColor(bright);
+  nanoText.textBox ( 580, 7, 100, "Reverb Type", nullptr );
+
   for (int row = 0; row < ALGORITHM_COUNT; row ++)
   {
     DGL::Rectangle<int> rect = rectAlgorithms[row];
@@ -361,6 +361,7 @@ void DragonflyReverbUI::onDisplay()
       "based on Freeverb3 STRev.\n\n"
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
+      "• James Peters - Quality Assurance\n"
       "• Teru Kamogashira - Freeverb3\n"
       "• \"falkTX\" Coelho - Distrho Plugin Framework",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX

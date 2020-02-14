@@ -1,9 +1,9 @@
 /* (Auto-generated binary data file). */
 
-#ifndef BINARY_DRAGONFLYREVERBARTWORK_HPP
-#define BINARY_DRAGONFLYREVERBARTWORK_HPP
+#ifndef BINARY_ARTWORK_HPP
+#define BINARY_ARTWORK_HPP
 
-namespace DragonflyReverbArtwork
+namespace Artwork
 {
     extern const char* backgroundData;
     const unsigned int backgroundDataSize = 1269600;
@@ -36,5 +36,5 @@ namespace DragonflyReverbArtwork
     const unsigned int tab_onHeight   = 22;
 }
 
-#endif // BINARY_DRAGONFLYREVERBARTWORK_HPP
+#endif // BINARY_ARTWORK_HPP
 

@@ -29,7 +29,7 @@
 
 START_NAMESPACE_DISTRHO
 
-namespace Art = DragonflyReverbArtwork;
+namespace Art = Artwork;
 using DGL::Color;
 
 static const int knobx[]  = {185, 260, 605, 680, 755, 830};
@@ -116,13 +116,13 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < NUM_BANKS; ++i)
   {
-    rectBanks[i].setPos ( 310, 5 + (i * 21) );
+    rectBanks[i].setPos ( 315, 5 + (i * 21) );
     rectBanks[i].setSize ( 95, 24 );
   }
 
   for ( int i = 0; i < PRESETS_PER_BANK; ++i)
   {
-    rectPresets[i].setPos( 420, 5 + (i * 21) );
+    rectPresets[i].setPos( 425, 5 + (i * 21) );
     rectPresets[i].setSize( 150, 21 );
   }
 
