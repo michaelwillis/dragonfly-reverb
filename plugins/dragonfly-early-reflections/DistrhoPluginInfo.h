@@ -59,7 +59,7 @@ const float DEFAULTS[paramCount] = {
     80.0, 20.0,       2, 20.0, 100.0,     50, 10000
 };
 
-const int PROGRAM_COUNT = 7;
+const int PROGRAM_COUNT = 8;
 
 typedef struct {
   const char *name;
@@ -73,7 +73,8 @@ static Program programs[PROGRAM_COUNT] = {
   {"Damaged Goods",  19},
   {"Elevator Pitch",  1},
   {"Floor Thirteen", 13},
-  {"Garage Band",    14}
+  {"Garage Band",    14},
+  {"Home Studio",    21}
 };
 
 const int DEFAULT_PROGRAM = 2;
