@@ -208,9 +208,9 @@ void DragonflyReverbUI::onDisplay()
   nanoText.endFrame();
 
   //draw faders
-  r = 195.0f/255.f;
-  g =  97.0f/255.f;
-  b =  48.0f/255.f;
+  r = 203.0f/255.f;
+  g = 128.0f/255.f;
+  b =  22.0f/255.f;
   glColor4f ( r, g, b, 1.0f );
   uint dry = ( float ( sliderDry->getValue() ) / 100.0 ) * 160.0 + 1.0f;
   uint wet = ( float ( sliderWet->getValue() ) / 100.0 ) * 160.0 + 1.0f;
