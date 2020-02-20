@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/normalize.css">  
+  <link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/manual.css">
+  <body>
+    <div class="logos">
+      <img src="images/dragonfly-plate-reverb/dragonfly-plate-logo.png" />
+    </div>
+    <h1>Introduction</h1>
+    <p>
+      Dragonfly Plate is a free mono-to-stereo reverb plugin based on
+      <a href="http://freeverb3vst.osdn.jp/tutorial/tutorial_vst_nrev.shtml">NVerb</a> and
+      <a href="http://freeverb3vst.osdn.jp/tutorial/tutorial_vst_strev.shtml">STRev</a>
+      from Freeverb3 VST.
+    </p>
+    <h1>User Interface</h1>
+    <img src="images/dragonfly-plate-reverb/interface.png" />
+    <h2>Sliders</h2>
+    <img src="images/dragonfly-plate-reverb/sliders.png" />
+    <dl>
+      <dt>Dry Level</dt>
+      <dd>
+	<p>Level of the input signal sent to the output</p>
+      </dd>
+      <dt>Wet Level</dt>
+      <dd>
+	<p>Level of the reverb signal sent to the output</p>
+      </dd>
+    </dl>
+    <p>
+      The output of the Dry and Wet controls are combined to
+      form the reverb’s output signal. Note that sliders are not
+      controlled by the presets. This allows you to set the levels in
+      a way that works for your project, and then explore different
+      presets without the sliders changing.
+    </p>
+    <h2>Preset Browser</h2>
+    <img src="images/dragonfly-plate-reverb/presets.png" />
+    <p>
+      The Preset Browser section presents a variety of plate
+      and tank presets that set the reverb type and the dials.
+    </p>
+    <h2>Reverb Type</h2>
+    <img src="images/dragonfly-plate-reverb/reverb-type.png" />
+    <p>
+      The Reverb Type section presents three different plate
+      reverb algorithms:
+      <ul>
+	<li>Simple Allpass</li>
+	<li>Nested Allpass</li>
+	<li>Allpass Tank</li>
+      </ul>
+      Although a preset will automatically select a Reverb Type,
+      another algorithm can be selected after picking a preset to hear
+      how that preset's dial settings sound with the alternate
+      algorithm.
+    </p>
+    <h2>Spectrogram</h2>
+    <img src="images/dragonfly-plate-reverb/spectrogram.png" />
+    <p>
+      The spectrogram has been included to give a better idea of how
+      the various reverb parameters affect the plugin’s output. The
+      spectrogram is rendered by simulating a burst of white noise
+      through the reverb algorithm with the current settings, and then
+      processing the output with a fast fourier transform algorithm.
+    </p>
+    <p>
+      Clicking on the “?” displays the plugin name, version, license,
+      and credits.
+    </p>
+    <h2>Dials</h2>
+    <p>
+      Note that holding the Shift key and clicking a dial will reset
+      the dial to the default for the current preset.
+    </p>
+    <img src="images/dragonfly-plate-reverb/primary-dials.png" />
+    <dl>
+      <dt>Width</dt>
+      <dd>
+	<p>
+	  Output stereo width.
+	</p>
+      </dd>
+      <dt>Predelay</dt>
+      <dd>
+	<p>
+	  Delay before the onset of the reverberation.
+	</p>
+      </dd>
+      <dt>Decay</dt>
+      <dd>
+	Length of time for the late reverberation to decrease by 60dB.
+      </dd>
+    </dl>
+    <img src="images/dragonfly-plate-reverb/frequency-dials.png" />
+    <dl>
+      <dt>Low Cut</dt>
+      <dd>
+	<p>
+	  A high pass filter applied to the input signal before
+	  processing the reverb algorithm.
+	</p>
+      </dd>
+      <dt>High Cut</dt>
+      <dd>
+	<p>
+	  A low pass filter applied to the input signal before
+	  processing the reverb algorithm.
+	</p>
+      </dd>
+      <dt>Dampen</dt>
+      <dd>
+	<p>
+	  A low pass filter applied to the reverb algorithm's
+	  feedback loop.
+	</p>
+      </dd>
+    </dl>
+  </body>
+</html>

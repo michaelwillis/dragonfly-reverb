@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/normalize.css">  
+  <link rel="stylesheet" href="styles/common.css">
+  <link rel="stylesheet" href="styles/manual.css">
+  <body>
+    <div class="logos">
+      <img src="images/dragonfly-early-reflections/dragonfly-early-logo.png" />
+    </div>
+    <h1>Introduction</h1>
+    <p>
+      Dragonfly Early Reflections is a free stereo-to-stereo reverb
+      effect based on Moorer's early reflection model as implemented
+      in <a href="http://freeverb3vst.osdn.jp">Freeverb3 VST</a>. This
+      is the same algorithm used in Dragonfly Hall and Dragonfly Room,
+      but without any late reverberation algorithm.
+    </p>
+    <h1>User Interface</h1>
+    <img src="images/dragonfly-early-reflections/interface.png" />
+    <h2>Sliders</h2>
+    <img src="images/dragonfly-early-reflections/sliders.png" />
+    <dl>
+      <dt>Dry Level</dt>
+      <dd>
+	<p>Level of the input signal sent to the output</p>
+      </dd>
+      <dt>Wet Level</dt>
+      <dd>
+	<p>Level of the reverb signal sent to the output</p>
+      </dd>
+    </dl>
+    <p>
+      The output of the Dry and Wet controls are combined to
+      form the reverb’s output signal. 
+    </p>
+    <h2>Reflection Type</h2>
+    <img src="images/dragonfly-early-reflections/reflection-type.png" />
+    <p>
+      This menu presets a selection of different reflection patterns.
+      These are not presets, in that they do not control the
+      dials. Each reflection pattern is a different specification of
+      echo delays and gain levels for the left and right channels. The
+      names are primary meant to be memorable, and are only vaguely
+      related to how each reflection pattern sounds.
+    </p>
+    <p>
+      "Concert Venue" is the reflection pattern used in Dragonfly Hall
+      and Dragonfly Room, which do not currently present a way to
+      select the reflection type.
+    </p>
+    <h2>Dials</h2>
+    <img src="images/dragonfly-early-reflections/size-width-dials.png" />
+    <dl>
+      <dt>Size</dt>
+      <dd>
+	<p>
+	  Size of the simulated space in meters.
+	</p>
+      </dd>
+      <dt>Width</dt>
+      <dd>
+	<p>
+	  Output stereo width.
+	</p>
+      </dd>
+    </dl>
+    <img src="images/dragonfly-early-reflections/frequency-dials.png" />
+    <dl>
+      <dt>Low Cut</dt>
+      <dd>
+	<p>
+	  A low pass filter applied to the output signal after
+	  processing the reverb algorithm.
+	</p>
+      </dd>
+      <dt>High Cut</dt>
+      <dd>
+	<p>
+	  A low pass filter applied to the output signal after
+	  processing the reverb algorithm.
+	</p>
+      </dd>
+    </dl>
+  </body>
+</html>
