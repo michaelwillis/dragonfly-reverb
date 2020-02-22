@@ -47,15 +47,38 @@
     <p>
       The Reverb Type section presents three different plate
       reverb algorithms:
-      <ul>
-	<li>Simple Allpass</li>
-	<li>Nested Allpass</li>
-	<li>Allpass Tank</li>
-      </ul>
+    </p>
+    <dl>
+      <dt>Simple</dt>
+      <dd>
+	<p>
+	  This thin plate algorithm is a derivative of
+	  <a href="https://ccrma.stanford.edu">CCRMA</a>
+	  <a href="https://ccrma.stanford.edu/software/stk/classstk_1_1NRev.html">Nrev</a>.
+	  It has a sparse tail and some slight early reflections.</p>
+      </dd>
+      <dt>Nested</dt>
+      <dd>
+	<p>
+	  This thick plate algorithm is a modification of the Simple
+	  Allpass algorithm with a dense tail and no early
+	  reflections.
+	</p>
+      </dd>
+      <dt>Tank</dt>
+      <dd>
+	<p>
+	  This algorithm is based on the reverb effect described in
+	  <a href="https://ccrma.stanford.edu/~dattorro/EffectDesignPart1.pdf">
+	    Jon Dattorro's AES article
+	  </a>
+	</p>
+      </dd>
+    </dl>
+    <p>
       Although a preset will automatically select a Reverb Type,
       another algorithm can be selected after picking a preset to hear
-      how that preset's dial settings sound with the alternate
-      algorithm.
+      how the alternative algorithm sounds with the given dial settings.
     </p>
     <h2>Spectrogram</h2>
     <img src="images/dragonfly-plate-reverb/spectrogram.png" />
