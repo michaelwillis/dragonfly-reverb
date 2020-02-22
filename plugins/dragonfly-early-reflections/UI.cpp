@@ -98,6 +98,7 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
   {
     case paramDry:            sliderDry->setValue ( value ); break;
     case paramWet:            sliderWet->setValue ( value ); break;
+    case paramProgram:      currentProgram = (int)( value ); break;
     case paramSize:            knobSize->setValue ( value ); break;
     case paramWidth:          knobWidth->setValue ( value ); break;
     case paramLowCut:        knobLowCut->setValue ( value ); break;
