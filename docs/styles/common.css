@@ -8,23 +8,64 @@
   src: url(../fonts/NotoSans-Regular.ttf);
 }
 
-body {
+html {
+    margin: 0 20px;
     background-color: #3d3d3d;
-    margin: 20px 5%;
-    max-width: 50em;
+}
+body {
+    margin: 0 auto;
+    max-width: 960px;
     font-family: noto-sans;
     color: #f4ffff;
+}
+
+div.header {
+    margin-bottom: 1em;
+    text-align: center;
 }
 
 h1, h2 {
     font-family: averia;
 }
 
-a {
+a, svg {
+    color: #e1ce69;
+}
+
+a:hover, a:hover * {
+    color: #ffe977;    
+}
+
+svg {
+    fill: currentColor;
+}
+
+.navigation {
+    margin: 1em 0 1em 3em;
+}
+.navigation a {
+    font-size: 40px;
+    font-family: averia;
+    display: inline-block;
+    width: 300px;
+    text-align: left;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.links {
+    margin: 1em 0 1em 3em;
+    text-align: center;
+}
+
+.links a {
+    color: #b7cccc;
+    font-size: 32px;
+    font-family: averia;
+    display: block;
+    text-decoration: none;
+}
+
+.links a:hover {
     color: #f4ffff;
 }
-
-a:hover {
-    color: #ffffff;
-}
-
