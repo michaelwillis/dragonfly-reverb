@@ -1,14 +1,14 @@
 # [Dragonfly Reverb](https://michaelwillis.github.io/dragonfly-reverb/)
-Dragonfly Reverb is a bundle of two free audio effects: a concert hall reverb and a room reverb. Both are available as VST and LV2 plugins for Linux, Mac, and Windows. 
+Dragonfly Reverb is a bundle of free audio effects for Linux, MacOS, and Windows. 
 
 ![Dragonfly Reverb](collage.png)
 
 ## Download
 
-* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Linux-64bit-v2.0.0.tgz)**
-* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-MacOS-64bit-v2.0.0.zip)**
-* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Windows-32bit-v2.0.0.zip)**
-* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/2.0.0/DragonflyReverb-Windows-64bit-v2.0.0.zip)**
+* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.0.0/DragonflyReverb-Linux-64bit-v3.0.0.tgz)**
+* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.0.0/DragonflyReverb-MacOS-64bit-v3.0.0.zip)**
+* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.0.0/DragonflyReverb-Windows-32bit-v3.0.0.zip)**
+* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.0.0/DragonflyReverb-Windows-64bit-v3.0.0.zip)**
 
 ## Dependencies
 
