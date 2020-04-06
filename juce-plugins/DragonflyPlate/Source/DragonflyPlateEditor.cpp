@@ -18,7 +18,7 @@ DragonflyPlateEditor::DragonflyPlateEditor (DragonflyPlateProcessor& p)
     : AudioProcessorEditor (&p)
     , processor (p)
     , infoButton(BinaryData::helpcircle_svg, Colour(61, 61, 61),
-                 Colour(225, 206, 105), Colour(225, 206, 105).brighter(1.0f), Colour(220, 227, 233))
+                 Colour(183, 204, 204), Colour(183, 204, 204).brighter(1.0f), Colour(220, 228, 238))
     , dryLevelKnob(DragonflyPlateParameters::dryLevelMin, DragonflyPlateParameters::dryLevelMax, DragonflyPlateParameters::dryLevelLabel)
     , labeledDryLevelKnob(DragonflyPlateParameters::dryLevelName, dryLevelKnob)
     , wetLevelKnob(DragonflyPlateParameters::wetLevelMin, DragonflyPlateParameters::wetLevelMax, DragonflyPlateParameters::wetLevelLabel)
@@ -38,9 +38,9 @@ DragonflyPlateEditor::DragonflyPlateEditor (DragonflyPlateProcessor& p)
 {
     setLookAndFeel(lookAndFeel);
     lookAndFeel->setColour(ResizableWindow::backgroundColourId, Colour(61, 61, 61));
-    lookAndFeel->setColour(GroupComponent::outlineColourId, Colour(225, 206, 105));
-    lookAndFeel->setColour(Slider::rotarySliderFillColourId, Colour(203, 128, 22));
-    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, Colour(220, 227, 233));
+    lookAndFeel->setColour(GroupComponent::outlineColourId, Colour(183, 204, 204));
+    lookAndFeel->setColour(Slider::rotarySliderFillColourId, Colour(179, 149, 50));
+    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, Colour(220, 228, 238));
 
     headerImage = ImageCache::getFromMemory(BinaryData::plateheader_png, BinaryData::plateheader_pngSize);
 
