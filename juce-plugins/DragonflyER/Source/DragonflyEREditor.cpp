@@ -67,7 +67,6 @@ DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     addAndMakeVisible(labeledHighCutKnob);
 
     // Add infoImage last so when it's displayed, it will cover the other controls
-
     infoImage.setImage(ImageCache::getFromMemory(BinaryData::erinfo_png, BinaryData::erinfo_pngSize));
     infoImage.onMouseDown = [this]() { infoImage.setVisible(false); };
     addChildComponent(infoImage);
@@ -99,7 +98,7 @@ void DragonflyEREditor::resized()
     auto groupArea = bounds.reduced(INSET);
     mainGroup.setBounds(groupArea);
     auto cbArea = groupArea;
-    cbArea.removeFromLeft(128);
+    cbArea.removeFromLeft(126);
     cbArea = cbArea.removeFromTop(CBHEIGHT);
     cbArea.removeFromRight(16);
     infoButton.setBounds(cbArea.removeFromRight(cbArea.getHeight()).withSizeKeepingCentre(24, 24));
