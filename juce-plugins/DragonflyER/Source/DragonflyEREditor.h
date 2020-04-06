@@ -2,6 +2,8 @@
 #include "JuceHeader.h"
 #include "DragonflyERProcessor.h"
 #include "BasicLookAndFeel.h"
+#include "InfoImage.h"
+#include "IconButton.h"
 #include "LabeledKnob.h"
 
 class DragonflyEREditor  : public AudioProcessorEditor
@@ -18,7 +20,11 @@ private:
     SharedResourcePointer<BasicLookAndFeel> lookAndFeel;
     DragonflyERProcessor& processor;
 
+    Image headerImage;
+    InfoImage infoImage;
+
     GroupComponent mainGroup;
+    IconButton infoButton;
 
     BasicKnob dryLevelKnob; LabeledKnob labeledDryLevelKnob;
     BasicKnob wetLevelKnob; LabeledKnob labeledWetLevelKnob;

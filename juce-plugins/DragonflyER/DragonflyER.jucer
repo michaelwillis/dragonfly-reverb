@@ -2,12 +2,17 @@
 
 <JUCERPROJECT id="ao1tS7" name="DragonflyER" projectType="audioplug" jucerVersion="5.4.7"
               projectLineFeed="&#10;" reportAppUsage="0" displaySplashScreen="0"
-              companyName="Michael Willis" companyCopyright="(c) 2019-2020 Michael Willis, Rob van den Berg, Shane Dunne"
+              companyName="Michael Willis and Shane Dunne" companyCopyright="(c) 2019-2020 Michael Willis, Shane Dunne"
               companyWebsite="https://michaelwillis.github.io/dragonfly-reverb/"
               pluginFormats="buildAU,buildVST,buildVST3" pluginManufacturerCode="MiWi"
               pluginCode="DfER" pluginChannelConfigs="{2,2}" headerPath="../../../Common&#10;../../../../common"
               defines="LIBFV3_FLOAT&#10;LIBSRATE2_FLOAT">
   <MAINGROUP id="C6MhE0" name="DragonflyER">
+    <GROUP id="{B116A980-D099-A6D3-0103-1D2EDE121DA0}" name="Assets">
+      <FILE id="kgFyVF" name="er-header.png" compile="0" resource="1" file="../Assets/er-header.png"/>
+      <FILE id="Mk4Hra" name="er-info.png" compile="0" resource="1" file="../Assets/er-info.png"/>
+      <FILE id="ZusgIn" name="help-circle.svg" compile="0" resource="1" file="../Assets/help-circle.svg"/>
+    </GROUP>
     <GROUP id="{F577A656-4BDF-CE50-BEA2-DB879D464EDC}" name="libsamplerate2">
       <FILE id="T7wOE5" name="samplerate.c" compile="1" resource="0" file="../../common/libsamplerate2/samplerate.c"/>
       <FILE id="UnW5xP" name="samplerate_common.c" compile="1" resource="0"
@@ -24,6 +29,9 @@
             file="../Common/BasicLookAndFeel.cpp"/>
       <FILE id="w8uHLK" name="BasicLookAndFeel.h" compile="0" resource="0"
             file="../Common/BasicLookAndFeel.h"/>
+      <FILE id="HpqjRA" name="IconButton.cpp" compile="1" resource="0" file="../Common/IconButton.cpp"/>
+      <FILE id="ZX1nnK" name="IconButton.h" compile="0" resource="0" file="../Common/IconButton.h"/>
+      <FILE id="rS3HIZ" name="InfoImage.h" compile="0" resource="0" file="../Common/InfoImage.h"/>
       <FILE id="SuNb7N" name="LabeledKnob.cpp" compile="1" resource="0" file="../Common/LabeledKnob.cpp"/>
       <FILE id="tyCDMB" name="LabeledKnob.h" compile="0" resource="0" file="../Common/LabeledKnob.h"/>
       <FILE id="l9wQuR" name="ParameterListeners.h" compile="0" resource="0"
