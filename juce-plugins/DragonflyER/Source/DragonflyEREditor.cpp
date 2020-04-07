@@ -14,11 +14,15 @@
 #define TOPOFFSET 12
 #define NUDGE 3
 
+#define BACKGROUND_COLOUR Colour(61, 61, 61)
+#define ICON_COLOUR       Colour(225, 206, 105)
+#define KNOB_COLOUR       Colour(203, 128, 22)
+#define RING_COLOUR       Colour(220, 227, 233)
+
 DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     : AudioProcessorEditor(&p)
     , processor(p)
-    , infoButton(BinaryData::helpcircle_svg, Colour(61, 61, 61),
-                 Colour(225, 206, 105), Colour(225, 206, 105).brighter(1.0f), Colour(220, 227, 233))
+    , infoButton(BinaryData::helpcircle_svg, BACKGROUND_COLOUR, ICON_COLOUR, ICON_COLOUR.brighter(1.0f), RING_COLOUR)
     , dryLevelKnob(DragonflyERParameters::dryLevelMin, DragonflyERParameters::dryLevelMax, DragonflyERParameters::dryLevelLabel)
     , labeledDryLevelKnob(DragonflyERParameters::dryLevelName, dryLevelKnob)
     , wetLevelKnob(DragonflyERParameters::wetLevelMin, DragonflyERParameters::wetLevelMax, DragonflyERParameters::wetLevelLabel)
@@ -33,10 +37,10 @@ DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     , labeledHighCutKnob(DragonflyERParameters::highCutName, highCutKnob)
 {
     setLookAndFeel(lookAndFeel);
-    lookAndFeel->setColour(ResizableWindow::backgroundColourId, Colour(61, 61, 61));
-    lookAndFeel->setColour(GroupComponent::outlineColourId, Colour(225, 206, 105));
-    lookAndFeel->setColour(Slider::rotarySliderFillColourId, Colour(203, 128, 22));
-    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, Colour(220, 227, 233));
+    lookAndFeel->setColour(ResizableWindow::backgroundColourId, BACKGROUND_COLOUR);
+    lookAndFeel->setColour(GroupComponent::outlineColourId, ICON_COLOUR);
+    lookAndFeel->setColour(Slider::rotarySliderFillColourId, KNOB_COLOUR);
+    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, RING_COLOUR);
 
     headerImage = ImageCache::getFromMemory(BinaryData::erheader_png, BinaryData::erheader_pngSize);
 

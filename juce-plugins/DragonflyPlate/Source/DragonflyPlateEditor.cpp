@@ -14,11 +14,15 @@
 #define TOPOFFSET 12
 #define NUDGE 3
 
+#define BACKGROUND_COLOUR Colour(61, 61, 61)
+#define ICON_COLOUR       Colour(183, 204, 204)
+#define KNOB_COLOUR       Colour(179, 149, 50)
+#define RING_COLOUR       Colour(220, 228, 238)
+
 DragonflyPlateEditor::DragonflyPlateEditor (DragonflyPlateProcessor& p)
     : AudioProcessorEditor (&p)
     , processor (p)
-    , infoButton(BinaryData::helpcircle_svg, Colour(61, 61, 61),
-                 Colour(183, 204, 204), Colour(183, 204, 204).brighter(1.0f), Colour(220, 228, 238))
+    , infoButton(BinaryData::helpcircle_svg, BACKGROUND_COLOUR, ICON_COLOUR, ICON_COLOUR.brighter(1.0f), RING_COLOUR)
     , dryLevelKnob(DragonflyPlateParameters::dryLevelMin, DragonflyPlateParameters::dryLevelMax, DragonflyPlateParameters::dryLevelLabel)
     , labeledDryLevelKnob(DragonflyPlateParameters::dryLevelName, dryLevelKnob)
     , wetLevelKnob(DragonflyPlateParameters::wetLevelMin, DragonflyPlateParameters::wetLevelMax, DragonflyPlateParameters::wetLevelLabel)
@@ -37,10 +41,10 @@ DragonflyPlateEditor::DragonflyPlateEditor (DragonflyPlateProcessor& p)
     , labeledDampenKnob(DragonflyPlateParameters::dampenName, dampenKnob)
 {
     setLookAndFeel(lookAndFeel);
-    lookAndFeel->setColour(ResizableWindow::backgroundColourId, Colour(61, 61, 61));
-    lookAndFeel->setColour(GroupComponent::outlineColourId, Colour(183, 204, 204));
-    lookAndFeel->setColour(Slider::rotarySliderFillColourId, Colour(179, 149, 50));
-    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, Colour(220, 228, 238));
+    lookAndFeel->setColour(ResizableWindow::backgroundColourId, BACKGROUND_COLOUR);
+    lookAndFeel->setColour(GroupComponent::outlineColourId, ICON_COLOUR);
+    lookAndFeel->setColour(Slider::rotarySliderFillColourId, KNOB_COLOUR);
+    lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, RING_COLOUR);
 
     headerImage = ImageCache::getFromMemory(BinaryData::plateheader_png, BinaryData::plateheader_pngSize);
 
