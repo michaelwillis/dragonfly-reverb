@@ -23,11 +23,18 @@ DragonflyERProcessor::DragonflyERProcessor()
     , parameters(valueTreeState, this)
 {
     model.setMuteOnChange(false);
-    model.setwet(0); // 0dB
-    model.setwidth(0.8);
-    model.setLRDelay(0.3);
-    model.setLRCrossApFreq(750, 4);
-    model.setDiffusionApFreq(150, 4);
+    model.setdryr(0.0f);    // mute dry signal
+    model.setwet(0.0f);     // 0dB
+    model.setwidth(0.8f);
+    model.setLRDelay(0.3f);
+    model.setLRCrossApFreq(750.0f, 4.0f);
+    model.setDiffusionApFreq(150.0f, 4.0f);
+
+    model.loadPresetReflection(0);
+    model.setRSFactor(0.1f * parameters.size);
+    model.setoutputhpf(parameters.lowCut);
+    model.setoutputlpf(parameters.highCut);
+    model.setSampleRate(44100.0f);
 }
 
 // Respond to parameter changes
@@ -40,11 +47,6 @@ void DragonflyERProcessor::parameterChanged(const String& paramID, float value)
     {
         const ScopedLock processBlockLock(getCallbackLock());   // lock out processBlock calls while making changes
         model.loadPresetReflection(programs[int(value)]);
-    }
-    else if (paramID == DragonflyERParameters::wetLevelID)
-    {
-        const ScopedLock processBlockLock(getCallbackLock());
-        model.setwetr(0.01f * value);
     }
     else if (paramID == DragonflyERParameters::sizeID)
     {
@@ -92,14 +94,14 @@ void DragonflyERProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&
     int numSamples = buffer.getNumSamples();
     dryBuffer.makeCopyOf(buffer, true);
 
-    float* pInLeft = (float*)buffer.getReadPointer(0);
-    float* pInRight = (float*)buffer.getReadPointer(1);
+    float* pInLeft = (float*)dryBuffer.getReadPointer(0);
+    float* pInRight = (float*)dryBuffer.getReadPointer(1);
     float* pOutLeft = buffer.getWritePointer(0);
     float* pOutRight = buffer.getWritePointer(1);
 
     model.processreplace(pInLeft, pInRight, pOutLeft, pOutRight, numSamples);
 
-    // compute dry mix here, because model.setdryr() doesn't work as expected
+    buffer.applyGain(parameters.wetLevel);
     buffer.addFrom(0, 0, dryBuffer, 0, 0, numSamples, parameters.dryLevel);
     buffer.addFrom(1, 0, dryBuffer, 1, 0, numSamples, parameters.dryLevel);
 }
