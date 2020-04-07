@@ -9,6 +9,7 @@
 
 class DragonflyRoomProcessor    : public AudioProcessor
                                 , public AudioProcessorValueTreeState::Listener
+                                , public ChangeBroadcaster
 {
 public:
     DragonflyRoomProcessor();

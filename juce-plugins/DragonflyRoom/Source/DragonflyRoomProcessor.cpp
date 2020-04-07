@@ -149,15 +149,11 @@ const String DragonflyRoomProcessor::getProgramName(int progIndex)
 {
     int bankIndex = progIndex / 5;
     progIndex = progIndex % 5;
-    //return String(banks[bankIndex].name) + ": " + String(banks[bankIndex].presets[progIndex].name);
     return String(banks[bankIndex].presets[progIndex].name);
 }
 
 void DragonflyRoomProcessor::populateProgramsComboBox(ComboBox& cb)
 {
-    //for (int progIndex = 0; progIndex < getNumPrograms(); progIndex++)
-    //    cb.addItem(getProgramName(progIndex), 1 + progIndex);
-
     int itemID = 0;
     for (int bankIndex = 0; bankIndex < NUM_BANKS; bankIndex++)
     {
@@ -169,6 +165,7 @@ void DragonflyRoomProcessor::populateProgramsComboBox(ComboBox& cb)
 
 void DragonflyRoomProcessor::setCurrentProgram(int progIndex)
 {
+    currentProgramIndex = progIndex = jlimit<int>(0, NUM_BANKS * PRESETS_PER_BANK - 1, progIndex);
     int bankIndex = progIndex / 5;
     progIndex = progIndex % 5;
     auto& preset = banks[bankIndex].presets[progIndex].params;
@@ -191,6 +188,8 @@ void DragonflyRoomProcessor::setCurrentProgram(int progIndex)
     valueTreeState.getParameter(DragonflyRoomParameters::lowBoostID)->setValueNotifyingHost(0.01f * preset.lowBoost);
     valueTreeState.getParameter(DragonflyRoomParameters::boostFreqID)->setValueNotifyingHost((preset.boostFreq - 50.0f) / 1000.0f);
     valueTreeState.getParameter(DragonflyRoomParameters::lowCutID)->setValueNotifyingHost(preset.lowCut / 200.0f);
+
+    sendChangeMessage();
 }
 
 // Respond to parameter changes

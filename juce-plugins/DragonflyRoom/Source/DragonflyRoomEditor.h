@@ -6,7 +6,8 @@
 #include "IconButton.h"
 #include "LabeledKnob.h"
 
-class DragonflyRoomEditor  : public AudioProcessorEditor
+class DragonflyRoomEditor   : public AudioProcessorEditor
+                            , public ChangeListener
 {
 public:
     DragonflyRoomEditor (DragonflyRoomProcessor&);
@@ -16,6 +17,9 @@ public:
     void paint (Graphics&) override;
     void resized() override;
 
+    // ChangeListener
+    void changeListenerCallback(ChangeBroadcaster*) override;
+
 private:
     SharedResourcePointer<BasicLookAndFeel> lookAndFeel;
     DragonflyRoomProcessor& processor;
@@ -23,7 +27,7 @@ private:
     Image headerImage;
     InfoImage infoImage;
 
-    GroupComponent mainGroup;
+    GroupComponent topGroup, bottomGroup;
     IconButton infoButton;
     ComboBox presetsCombo;
 

@@ -1,10 +1,10 @@
 #include "DragonflyRoomProcessor.h"
 #include "DragonflyRoomEditor.h"
 
-#define HEADER_IMAGE_HEIGHT 118
+#define HEADER_IMAGE_HEIGHT (118 + 4)
 #define HEADER_IMAGE_WIDTH 350
-#define HEADER_IMAGE_X 10
-#define HEADER_IMAGE_Y 0
+#define HEADER_IMAGE_X 6
+#define HEADER_IMAGE_Y 8
 #define INFO_IMAGE_HEIGHT 140
 
 #define KNOB_WIDTH 70
@@ -69,8 +69,9 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
 
     headerImage = ImageCache::getFromMemory(BinaryData::roomheader_png, BinaryData::roomheader_pngSize);
 
-    mainGroup.setText("Preset");
-    addAndMakeVisible(&mainGroup);
+    topGroup.setText("Preset");
+    addAndMakeVisible(topGroup);
+    addAndMakeVisible(bottomGroup);
 
     infoButton.onClick = [this]() { infoImage.setVisible(true); };
     addAndMakeVisible(infoButton);
@@ -144,46 +145,33 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
         boostFreqKnob,
         lowCutKnob );
 
-    setSize(2 * INSET + 2 * GUTTER + 17 * KNOB_WIDTH + 16 * GAP, HEADER_IMAGE_HEIGHT + INFO_IMAGE_HEIGHT);
+    processor.addChangeListener(this);
+
+    setSize(2 * INSET + 2 * GUTTER + 11 * KNOB_WIDTH + 10 * GAP, HEADER_IMAGE_HEIGHT + INFO_IMAGE_HEIGHT);
 }
 
 DragonflyRoomEditor::~DragonflyRoomEditor()
 {
+    processor.removeChangeListener(this);
     processor.parameters.detachControls();
     setLookAndFeel(nullptr);
+}
+
+void DragonflyRoomEditor::changeListenerCallback(ChangeBroadcaster*)
+{
+    presetsCombo.setSelectedItemIndex(processor.getCurrentProgram(), dontSendNotification);
 }
 
 void DragonflyRoomEditor::resized()
 {
     auto bounds = getLocalBounds();
     bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
-    infoImage.setBounds(bounds);
 
     auto groupArea = bounds.reduced(INSET);
-    mainGroup.setBounds(groupArea);
-    auto cbArea = groupArea;
-    cbArea.removeFromLeft(70);
-    cbArea = cbArea.removeFromTop(CBHEIGHT);
-    cbArea.removeFromRight(16);
-    infoButton.setBounds(cbArea.removeFromRight(cbArea.getHeight()).withSizeKeepingCentre(24, 24));
-    cbArea.setY(cbArea.getY() - NUDGE);
-    presetsCombo.setBounds(cbArea.removeFromLeft(180));
-
+    bottomGroup.setBounds(groupArea);
     groupArea.reduce(2 * GUTTER, GUTTER);
     groupArea.removeFromTop(TOPOFFSET);
-    int width = (groupArea.getWidth() - 16 * GAP) / 17;
-    labeledDryLevelKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledEarlyLevelKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledEarlySendKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledLateLevelKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledSizeKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledWidthKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
+    int width = (groupArea.getWidth() - 10 * GAP) / 11;
     labeledPredelayKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledDecayKnob.setBounds(groupArea.removeFromLeft(width));
@@ -205,6 +193,34 @@ void DragonflyRoomEditor::resized()
     labeledBoostFreqKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledLowCutKnob.setBounds(groupArea);
+
+    bounds = getLocalBounds().removeFromTop(INFO_IMAGE_HEIGHT);
+    bounds.removeFromLeft(HEADER_IMAGE_WIDTH);
+    infoImage.setBounds(bounds.withY(3));
+    groupArea = bounds.reduced(INSET);
+    topGroup.setBounds(groupArea);
+    auto cbArea = groupArea;
+    cbArea.removeFromLeft(70);
+    cbArea = cbArea.removeFromTop(CBHEIGHT);
+    cbArea.removeFromRight(16);
+    infoButton.setBounds(cbArea.removeFromRight(cbArea.getHeight()).withSizeKeepingCentre(24, 24));
+    cbArea.setY(cbArea.getY() - NUDGE);
+    presetsCombo.setBounds(cbArea.removeFromLeft(180));
+
+    groupArea.reduce(2 * GUTTER, GUTTER);
+    groupArea.removeFromTop(TOPOFFSET);
+    width = (groupArea.getWidth() - 5 * GAP) / 6;
+    labeledDryLevelKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledEarlyLevelKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledEarlySendKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledLateLevelKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledSizeKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledWidthKnob.setBounds(groupArea);
 }
 
 void DragonflyRoomEditor::paint (Graphics& g)
