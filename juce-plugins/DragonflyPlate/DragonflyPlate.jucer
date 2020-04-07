@@ -5,7 +5,7 @@
               companyName="Michael Willis and Shane Dunne" companyCopyright="(c) 2019-2020 Michael Willis, Shane Dunne"
               companyWebsite="https://michaelwillis.github.io/dragonfly-reverb/"
               pluginFormats="buildAU,buildVST,buildVST3" pluginManufacturerCode="MiWi"
-              pluginCode="DfER" pluginChannelConfigs="{2,2}" headerPath="../../../Common&#10;../../../../common"
+              pluginCode="DfPl" pluginChannelConfigs="{2,2}" headerPath="../../../Common&#10;../../../../common"
               defines="LIBFV3_FLOAT&#10;LIBSRATE2_FLOAT" version="3.0.0">
   <MAINGROUP id="C6MhE0" name="DragonflyPlate">
     <GROUP id="{B116A980-D099-A6D3-0103-1D2EDE121DA0}" name="Assets">
