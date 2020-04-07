@@ -102,7 +102,6 @@ DragonflyPlateEditor::~DragonflyPlateEditor()
 
 void DragonflyPlateEditor::resized()
 {
-    DBG(getWidth());
     auto bounds = getLocalBounds();
     bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
     infoImage.setBounds(bounds);
