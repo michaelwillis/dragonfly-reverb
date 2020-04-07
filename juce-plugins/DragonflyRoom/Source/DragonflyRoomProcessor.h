@@ -1,8 +1,13 @@
 #pragma once
 #include "JuceHeader.h"
 #include "DragonflyRoomParameters.h"
+#include "freeverb/earlyref.hpp"
+#include "freeverb/progenitor2.hpp"
 
-class DragonflyRoomProcessor : public AudioProcessor
+#define NUM_BANKS 5
+#define PRESETS_PER_BANK 5
+
+class DragonflyRoomProcessor    : public AudioProcessor
                                 , public AudioProcessorValueTreeState::Listener
 {
 public:
@@ -18,12 +23,13 @@ public:
     bool hasEditor() const override { return true; }
     AudioProcessorEditor* createEditor() override;
 
-    // Multiple simultaneously-loaded presets aka "programs" (not used)
-    int getNumPrograms() override { return 1; }
-    int getCurrentProgram() override { return 0; }
-    void setCurrentProgram(int) override {}
-    const String getProgramName(int) override { return {}; }
+    // Multiple simultaneously-loaded presets aka "programs"
+    int getNumPrograms() override { return NUM_BANKS * PRESETS_PER_BANK; }
+    int getCurrentProgram() override { return currentProgramIndex; }
+    void setCurrentProgram(int) override;
+    const String getProgramName(int) override;
     void changeProgramName(int, const String&) override {}
+    void populateProgramsComboBox(ComboBox&);
 
     // Actual audio processing
     void prepareToPlay (double sampleRate, int maxSamplesPerBlock) override;
@@ -45,5 +51,20 @@ public:
     void parameterChanged(const String&, float) override;
 
 private:
+    fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
+
+    fv3::earlyref_f early;
+    fv3::progenitor2_f late;
+
+    void setInputLPF(float freq);
+    void setInputHPF(float freq);
+
+    AudioSampleBuffer dryBuffer;
+    AudioSampleBuffer filteredInputBuffer;
+    AudioSampleBuffer earlyOutputBuffer;
+
+    float sampleRateHz;
+    int currentProgramIndex;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (DragonflyRoomProcessor)
 };

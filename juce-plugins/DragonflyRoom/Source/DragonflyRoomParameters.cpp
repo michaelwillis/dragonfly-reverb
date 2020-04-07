@@ -83,7 +83,7 @@ const float DragonflyRoomParameters::spinStep = 0.0f;
 // Wander
 const String DragonflyRoomParameters::wanderID = "wander";
 const String DragonflyRoomParameters::wanderName = TRANS("Wander");
-const String DragonflyRoomParameters::wanderLabel = "ms";
+const String DragonflyRoomParameters::wanderLabel = "%";
 const float DragonflyRoomParameters::wanderMin = 0.0f;
 const float DragonflyRoomParameters::wanderMax = 100.0f;
 const float DragonflyRoomParameters::wanderDefault = 40.0f;
@@ -276,7 +276,7 @@ DragonflyRoomParameters::DragonflyRoomParameters(AudioProcessorValueTreeState& v
     , decay(decayDefault)
     , diffuse(0.01f * diffuseDefault)
     , spin(spinDefault)
-    , wander(wanderDefault)
+    , wander(0.01f * wanderDefault)
     , highCut(highCutDefault)
     , earlyDamp(earlyDampDefault)
     , lateDamp(lateDampDefault)
@@ -295,7 +295,7 @@ DragonflyRoomParameters::DragonflyRoomParameters(AudioProcessorValueTreeState& v
     , decayListener(decay)
     , diffuseListener(diffuse, 0.01f)
     , spinListener(spin)
-    , wanderListener(wander)
+    , wanderListener(wander, 0.01f)
     , highCutListener(highCut)
     , earlyDampListener(earlyDamp)
     , lateDampListener(lateDamp)

@@ -56,7 +56,7 @@ public:
     int getCurrentProgram() override { return currentProgramIndex; }
     void setCurrentProgram(int) override;
     const String getProgramName(int) override;
-    void changeProgramName(int, const String&);
+    void changeProgramName(int, const String&) override {}
 
     // Actual audio processing
     void prepareToPlay (double sampleRate, int maxSamplesPerBlock) override;

@@ -69,11 +69,21 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
 
     headerImage = ImageCache::getFromMemory(BinaryData::roomheader_png, BinaryData::roomheader_pngSize);
 
-    mainGroup.setText("DragonflyRoom");
+    mainGroup.setText("Preset");
     addAndMakeVisible(&mainGroup);
 
     infoButton.onClick = [this]() { infoImage.setVisible(true); };
     addAndMakeVisible(infoButton);
+
+    processor.populateProgramsComboBox(presetsCombo);
+    presetsCombo.setSelectedItemIndex(processor.getCurrentProgram(), dontSendNotification);
+    presetsCombo.onChange = [this]()
+    {
+        int progIndex = presetsCombo.getSelectedItemIndex();
+        if (progIndex != processor.getCurrentProgram())
+            processor.setCurrentProgram(progIndex);
+    };
+    addAndMakeVisible(presetsCombo);
 
     dryLevelKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::dryLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDryLevelKnob);
@@ -152,12 +162,12 @@ void DragonflyRoomEditor::resized()
     auto groupArea = bounds.reduced(INSET);
     mainGroup.setBounds(groupArea);
     auto cbArea = groupArea;
-    cbArea.removeFromLeft(108);
+    cbArea.removeFromLeft(70);
     cbArea = cbArea.removeFromTop(CBHEIGHT);
     cbArea.removeFromRight(16);
     infoButton.setBounds(cbArea.removeFromRight(cbArea.getHeight()).withSizeKeepingCentre(24, 24));
     cbArea.setY(cbArea.getY() - NUDGE);
-    //algIndexCombo.setBounds(cbArea.removeFromLeft(90));
+    presetsCombo.setBounds(cbArea.removeFromLeft(180));
 
     groupArea.reduce(2 * GUTTER, GUTTER);
     groupArea.removeFromTop(TOPOFFSET);

@@ -221,13 +221,6 @@ const String DragonflyPlateProcessor::getProgramName(int programIndex)
     return presets[programIndex].name;
 }
 
-void DragonflyPlateProcessor::changeProgramName(int programIndex, const String& newName)
-{
-    programIndex = jlimit<int>(0, NUM_PRESETS - 1, programIndex);
-    presets[programIndex].name = newName;
-}
-
-
 
 // Respond to parameter changes
 void DragonflyPlateProcessor::parameterChanged(const String& paramID, float value)

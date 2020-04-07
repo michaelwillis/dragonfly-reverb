@@ -25,6 +25,7 @@ private:
 
     GroupComponent mainGroup;
     IconButton infoButton;
+    ComboBox presetsCombo;
 
     BasicKnob dryLevelKnob; LabeledKnob labeledDryLevelKnob;
     BasicKnob earlyLevelKnob; LabeledKnob labeledEarlyLevelKnob;
