@@ -1,6 +1,6 @@
-# Dragonfly Reverb adapted for JUCE
+# [Dragonfly Reverb](https://michaelwillis.github.io/dragonfly-reverb/) adapted for JUCE
 
-## The original [Dragonfly Reverb](https://michaelwillis.github.io/dragonfly-reverb/) project
+## The original Dragonfly Reverb project
 [Dragonfly Reverb](https://michaelwillis.github.io/dragonfly-reverb/) is a bundle of free audio effects for Linux, MacOS, and Windows, based on [Freeverb3 by Teru Kamogashira](http://www.nongnu.org/freeverb3/) and developed by Michael Willis and others. See https://michaelwillis.github.io/dragonfly-reverb.
 
 ## This repository adds JUCE versions
