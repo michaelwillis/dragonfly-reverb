@@ -86,6 +86,12 @@ void DragonflyERProcessor::releaseResources()
 {
 }
 
+// Silence everything
+void DragonflyERProcessor::reset()
+{
+    model.mute();
+}
+
 // Process one buffer ("block") of data
 void DragonflyERProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&)
 {

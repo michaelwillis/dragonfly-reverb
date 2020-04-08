@@ -284,6 +284,13 @@ void DragonflyHallProcessor::releaseResources()
 {
 }
 
+// Silence everything
+void DragonflyHallProcessor::reset()
+{
+    early.mute();
+    late.mute();
+}
+
 // Process one buffer ("block") of data
 void DragonflyHallProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&)
 {

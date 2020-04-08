@@ -61,6 +61,7 @@ public:
     // Actual audio processing
     void prepareToPlay (double sampleRate, int maxSamplesPerBlock) override;
     void releaseResources() override;
+    void reset() override;
     void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
     // Enabling the host to save and restore state

@@ -281,6 +281,12 @@ DragonflyPlateProcessor::~DragonflyPlateProcessor()
 {
 }
 
+// Silence everything
+void DragonflyPlateProcessor::reset()
+{
+
+}
+
 // Prepare to process audio (always called at least once before processBlock)
 void DragonflyPlateProcessor::prepareToPlay (double sampleRate, int /*maxSamplesPerBlock*/)
 {
@@ -295,6 +301,13 @@ void DragonflyPlateProcessor::prepareToPlay (double sampleRate, int /*maxSamples
 // Audio processing finished; release any allocated memory
 void DragonflyPlateProcessor::releaseResources()
 {
+    input_lpf_0.mute();
+    input_lpf_1.mute();
+    input_hpf_0.mute();
+    input_hpf_1.mute();
+    nrev.mute();
+    nrevb.mute();
+    strev.mute();
 }
 
 // Process one buffer ("block") of data

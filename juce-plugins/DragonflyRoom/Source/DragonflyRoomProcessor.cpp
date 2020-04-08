@@ -290,6 +290,17 @@ void DragonflyRoomProcessor::releaseResources()
 {
 }
 
+// Silence everything
+void DragonflyRoomProcessor::reset()
+{
+    input_lpf_0.mute();
+    input_lpf_1.mute();
+    input_hpf_0.mute();
+    input_hpf_1.mute();
+    early.mute();
+    late.mute();
+}
+
 // Process one buffer ("block") of data
 void DragonflyRoomProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer&)
 {
