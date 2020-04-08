@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ao1tS7" name="DragonflyHall" projectType="audioplug" jucerVersion="5.4.7"
+              projectLineFeed="&#10;" reportAppUsage="0" displaySplashScreen="0"
+              companyName="Michael Willis and Shane Dunne" companyCopyright="(c) 2019-2020 Michael Willis, Shane Dunne"
+              companyWebsite="https://michaelwillis.github.io/dragonfly-reverb/"
+              pluginFormats="buildAU,buildVST,buildVST3" pluginManufacturerCode="MiWi"
+              pluginCode="DfHa" pluginChannelConfigs="{2,2}" headerPath="../../../Common&#10;../../../../common"
+              defines="LIBFV3_FLOAT&#10;LIBSRATE2_FLOAT" version="3.0.0">
+  <MAINGROUP id="C6MhE0" name="DragonflyHall">
+    <GROUP id="{B116A980-D099-A6D3-0103-1D2EDE121DA0}" name="Assets">
+      <FILE id="ZusgIn" name="help-circle.svg" compile="0" resource="1" file="../Assets/help-circle.svg"/>
+      <FILE id="VEZLte" name="hall-header.png" compile="0" resource="1" file="../Assets/hall-header.png"/>
+      <FILE id="MQpRIZ" name="hall-info.png" compile="0" resource="1" file="../Assets/hall-info.png"/>
+    </GROUP>
+    <GROUP id="{F577A656-4BDF-CE50-BEA2-DB879D464EDC}" name="libsamplerate2">
+      <FILE id="T7wOE5" name="samplerate.c" compile="1" resource="0" file="../../common/libsamplerate2/samplerate.c"/>
+      <FILE id="UnW5xP" name="samplerate_common.c" compile="1" resource="0"
+            file="../../common/libsamplerate2/samplerate_common.c"/>
+      <FILE id="VTyXhZ" name="src_common.c" compile="1" resource="0" file="../../common/libsamplerate2/src_common.c"/>
+      <FILE id="ymmkHA" name="src_linear.c" compile="1" resource="0" file="../../common/libsamplerate2/src_linear.c"/>
+      <FILE id="MDAUfE" name="src_sinc.c" compile="1" resource="0" file="../../common/libsamplerate2/src_sinc.c"/>
+      <FILE id="Chundf" name="src_zoh.c" compile="1" resource="0" file="../../common/libsamplerate2/src_zoh.c"/>
+    </GROUP>
+    <GROUP id="{28A96DEF-088C-4404-04D2-F12492D3A0E7}" name="Common">
+      <FILE id="fKdKBs" name="BasicKnob.cpp" compile="1" resource="0" file="../Common/BasicKnob.cpp"/>
+      <FILE id="hY24nC" name="BasicKnob.h" compile="0" resource="0" file="../Common/BasicKnob.h"/>
+      <FILE id="ZlIQnQ" name="BasicLookAndFeel.cpp" compile="1" resource="0"
+            file="../Common/BasicLookAndFeel.cpp"/>
+      <FILE id="w8uHLK" name="BasicLookAndFeel.h" compile="0" resource="0"
+            file="../Common/BasicLookAndFeel.h"/>
+      <FILE id="HpqjRA" name="IconButton.cpp" compile="1" resource="0" file="../Common/IconButton.cpp"/>
+      <FILE id="ZX1nnK" name="IconButton.h" compile="0" resource="0" file="../Common/IconButton.h"/>
+      <FILE id="rS3HIZ" name="InfoImage.h" compile="0" resource="0" file="../Common/InfoImage.h"/>
+      <FILE id="SuNb7N" name="LabeledKnob.cpp" compile="1" resource="0" file="../Common/LabeledKnob.cpp"/>
+      <FILE id="tyCDMB" name="LabeledKnob.h" compile="0" resource="0" file="../Common/LabeledKnob.h"/>
+      <FILE id="l9wQuR" name="ParameterListeners.h" compile="0" resource="0"
+            file="../Common/ParameterListeners.h"/>
+    </GROUP>
+    <GROUP id="{7FB2DEAE-03B3-6BD7-6EE2-52A652F4B82F}" name="Freeverb">
+      <FILE id="PM2roH" name="allpass.cpp" compile="1" resource="0" file="../../common/freeverb/allpass.cpp"/>
+      <FILE id="WgGPbT" name="biquad.cpp" compile="1" resource="0" file="../../common/freeverb/biquad.cpp"/>
+      <FILE id="Fn0Zlj" name="comb.cpp" compile="1" resource="0" file="../../common/freeverb/comb.cpp"/>
+      <FILE id="dEGggr" name="compmodel.cpp" compile="1" resource="0" file="../../common/freeverb/compmodel.cpp"/>
+      <FILE id="fkj3dg" name="delay.cpp" compile="1" resource="0" file="../../common/freeverb/delay.cpp"/>
+      <FILE id="CCDoNH" name="delayline.cpp" compile="1" resource="0" file="../../common/freeverb/delayline.cpp"/>
+      <FILE id="INPuHj" name="dl_gardner.cpp" compile="1" resource="0" file="../../common/freeverb/dl_gardner.cpp"/>
+      <FILE id="OV0uI8" name="earlyref.cpp" compile="1" resource="0" file="../../common/freeverb/earlyref.cpp"/>
+      <FILE id="EXtgbw" name="efilter.cpp" compile="1" resource="0" file="../../common/freeverb/efilter.cpp"/>
+      <FILE id="KyGwrd" name="firfilter.cpp" compile="1" resource="0" file="../../common/freeverb/firfilter.cpp"/>
+      <FILE id="fhIgXk" name="firwindow.cpp" compile="1" resource="0" file="../../common/freeverb/firwindow.cpp"/>
+      <FILE id="WHg53T" name="limitmodel.cpp" compile="1" resource="0" file="../../common/freeverb/limitmodel.cpp"/>
+      <FILE id="RYGB1j" name="mls.cpp" compile="1" resource="0" file="../../common/freeverb/mls.cpp"/>
+      <FILE id="f79ncR" name="nrev.cpp" compile="1" resource="0" file="../../common/freeverb/nrev.cpp"/>
+      <FILE id="MKuzgN" name="nrevb.cpp" compile="1" resource="0" file="../../common/freeverb/nrevb.cpp"/>
+      <FILE id="bR8w0E" name="progenitor.cpp" compile="1" resource="0" file="../../common/freeverb/progenitor.cpp"/>
+      <FILE id="ylECjb" name="progenitor2.cpp" compile="1" resource="0" file="../../common/freeverb/progenitor2.cpp"/>
+      <FILE id="umqAkL" name="revbase.cpp" compile="1" resource="0" file="../../common/freeverb/revbase.cpp"/>
+      <FILE id="jM41V7" name="revmodel.cpp" compile="1" resource="0" file="../../common/freeverb/revmodel.cpp"/>
+      <FILE id="ASTRwj" name="rms.cpp" compile="1" resource="0" file="../../common/freeverb/rms.cpp"/>
+      <FILE id="r72kpR" name="scomp.cpp" compile="1" resource="0" file="../../common/freeverb/scomp.cpp"/>
+      <FILE id="ebqUp4" name="slimit.cpp" compile="1" resource="0" file="../../common/freeverb/slimit.cpp"/>
+      <FILE id="ZlMpLG" name="slot.cpp" compile="1" resource="0" file="../../common/freeverb/slot.cpp"/>
+      <FILE id="nqajdD" name="src.cpp" compile="1" resource="0" file="../../common/freeverb/src.cpp"/>
+      <FILE id="FoXE9T" name="stenh.cpp" compile="1" resource="0" file="../../common/freeverb/stenh.cpp"/>
+      <FILE id="rtemnt" name="strev.cpp" compile="1" resource="0" file="../../common/freeverb/strev.cpp"/>
+      <FILE id="t2K2ah" name="sweep.cpp" compile="1" resource="0" file="../../common/freeverb/sweep.cpp"/>
+      <FILE id="OYpRJi" name="utils.cpp" compile="1" resource="0" file="../../common/freeverb/utils.cpp"/>
+      <FILE id="HSwGjd" name="zrev.cpp" compile="1" resource="0" file="../../common/freeverb/zrev.cpp"/>
+      <FILE id="kNjmOW" name="zrev2.cpp" compile="1" resource="0" file="../../common/freeverb/zrev2.cpp"/>
+    </GROUP>
+    <GROUP id="{34E65021-E4FC-25CE-9B5E-F5165A761A4D}" name="DragonflyHall">
+      <FILE id="DaEp7o" name="DragonflyHallEditor.cpp" compile="1" resource="0"
+            file="Source/DragonflyHallEditor.cpp"/>
+      <FILE id="r0Xx9k" name="DragonflyHallEditor.h" compile="0" resource="0"
+            file="Source/DragonflyHallEditor.h"/>
+      <FILE id="HSNyxs" name="DragonflyHallParameters.cpp" compile="1" resource="0"
+            file="Source/DragonflyHallParameters.cpp"/>
+      <FILE id="OY5edC" name="DragonflyHallParameters.h" compile="0" resource="0"
+            file="Source/DragonflyHallParameters.h"/>
+      <FILE id="nojF5Q" name="DragonflyHallProcessor.cpp" compile="1" resource="0"
+            file="Source/DragonflyHallProcessor.cpp"/>
+      <FILE id="DkbvuK" name="DragonflyHallProcessor.h" compile="0" resource="0"
+            file="Source/DragonflyHallProcessor.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="C:/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="C:/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="C:/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2019>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+</JUCERPROJECT>

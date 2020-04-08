@@ -60,8 +60,6 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
     , labeledLowCutKnob(DragonflyRoomParameters::lowCutName, lowCutKnob)
 {
     setLookAndFeel(lookAndFeel);
-
-    setLookAndFeel(lookAndFeel);
     lookAndFeel->setColour(ResizableWindow::backgroundColourId, BACKGROUND_COLOUR);
     lookAndFeel->setColour(GroupComponent::outlineColourId, ICON_COLOUR);
     lookAndFeel->setColour(Slider::rotarySliderFillColourId, KNOB_COLOUR);
