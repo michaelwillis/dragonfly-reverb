@@ -129,9 +129,6 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectAbout.setPos  ( 635, 130 );
   rectAbout.setSize ( 20,  20  );
 
-  AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
-  spectrogram = new Spectrogram(this, &nanoText, &rectDisplay, dsp);
-  spectrogram->setAbsolutePos (355, 126);
 }
 
 /**
@@ -163,10 +160,6 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramSpin:                 fKnobSpin->setValue ( value ); break;
     case paramWander:             fKnobWander->setValue ( value ); break;
     case paramModulation:           fKnobModulation->setValue ( value ); break;
-  }
-
-  if (index != paramDry) {
-    spectrogram->setParameterValue(index, value);
   }
 
 }
@@ -206,7 +199,6 @@ void DragonflyReverbUI::imageKnobDragFinished ( ImageKnob* knob )
 void DragonflyReverbUI::imageKnobValueChanged ( ImageKnob* knob, float value )
 {
   setParameterValue ( knob->getId(),value );
-  spectrogram->setParameterValue ( knob->getId(), value );
 }
 
 void  DragonflyReverbUI::imageSliderDragStarted ( ImageSlider* slider )
@@ -223,7 +215,6 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 {
   int SliderID = slider->getId();
   setParameterValue ( SliderID,value );
-  spectrogram->setParameterValue ( SliderID, value );
 }
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
@@ -289,7 +280,6 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 	      i != paramEarlySend   &&
 	      i != paramLate) {
             setParameterValue ( i, preset[i] );
-            spectrogram->setParameterValue(i, preset[i]);
 	  }
         }
 
@@ -411,51 +401,40 @@ void DragonflyReverbUI::onDisplay()
 
   nanoText.endFrame();
 
-  if (displayAbout) {
-    spectrogram->hide();
-    nanoText.beginFrame ( this );
-    nanoText.fontSize ( 18 );
-    nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
+  nanoText.beginFrame ( this );
+  nanoText.fontSize ( 18 );
+  nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
-    r = 230.0f / 256;
-    g = 230.0f / 256;
-    b = 230.0f / 256;
-    nanoText.fillColor ( Color ( r, g, b ) );
+  r = 230.0f / 256;
+  g = 230.0f / 256;
+  b = 230.0f / 256;
+  nanoText.fillColor ( Color ( r, g, b ) );
 
-    int x = rectDisplay.getX() + 5;
-    int y = rectDisplay.getY() + 5;
-    int w = rectDisplay.getWidth() - 10;
+  int x = rectDisplay.getX() + 5;
+  int y = rectDisplay.getY() + 5;
+  int w = rectDisplay.getWidth() - 10;
 
-    char textBuffer[400];
+  char textBuffer[400];
 
-    std::snprintf(textBuffer, 400,
-      "Dragonfly Hall Reverb is a free audio effect\n"
-      "based on Freeverb3 Hibiki.\n\n"
-      "Version: %d.%d.%d%s  License: GPL 3+\n\n"
-      "• Michael Willis - Plugin Development\n"
-      "• Rob van den Berg - Plugin Development\n"
-      "• James Peters - Quality Assurance\n"
-      "• Chris Share - Technical Writer\n"
-      "• Teru Kamogashira - Freeverb3\n"
-      "• \"falkTX\" Coelho - Distrho Plugin Framework",
-      MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
+  std::snprintf(textBuffer, 400,
+		"Dragonfly Hall Reverb is a free audio effect\n"
+		"based on Freeverb3 Hibiki.\n\n"
+		"Version: %d.%d.%d%s  License: GPL 3+\n\n"
+		"• Michael Willis - Plugin Development\n"
+		"• Rob van den Berg - Plugin Development\n"
+		"• James Peters - Quality Assurance\n"
+		"• Chris Share - Technical Writer\n"
+		"• Teru Kamogashira - Freeverb3\n"
+		"• \"falkTX\" Coelho - Distrho Plugin Framework",
+		MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );
 
-    nanoText.textBox ( x, y, w, textBuffer, nullptr );
-    nanoText.endFrame();
-  }
-  else
-  {
-      spectrogram->show();
-      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
-  }
+  nanoText.textBox ( x, y, w, textBuffer, nullptr );
+  nanoText.endFrame();
 
 }
 
-void DragonflyReverbUI::uiIdle() {
-  spectrogram->uiIdle();
-}
+void DragonflyReverbUI::uiIdle() { }
 
 void DragonflyReverbUI::updatePresetDefaults() {
   const float *preset = banks[currentBank].presets[currentProgram[currentBank]].params;

@@ -22,7 +22,6 @@
 #include "ImageWidgets.hpp"
 #include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
-#include "Spectrogram.hpp"
 #include "LabelledKnob.hpp"
 #include "AbstractUI.hpp"
 
@@ -63,8 +62,6 @@ private:
     ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobModulation, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
     ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
-    ScopedPointer<Spectrogram> spectrogram;
-    ScopedPointer<Image> spectrogramImage;
 
     int currentBank;
     int currentProgram[NUM_BANKS];
