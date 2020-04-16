@@ -6,19 +6,15 @@
 
 include dpf/Makefile.base.mk
 
-all: libs dgl plugins gen
+all: libs plugins gen
 
 # --------------------------------------------------------------
 
 libs:
 	$(MAKE) -C common
+	$(MAKE) -C dpf/dgl ../build/libdgl-opengl.a
 
-dgl:
-ifeq ($(HAVE_DGL),true)
-	$(MAKE) -C dpf/dgl
-endif
-
-plugins: libs dgl
+plugins: libs
 	$(MAKE) all -C plugins/dragonfly-hall-reverb
 	$(MAKE) all -C plugins/dragonfly-room-reverb
 	$(MAKE) all -C plugins/dragonfly-plate-reverb
