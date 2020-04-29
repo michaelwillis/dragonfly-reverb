@@ -73,6 +73,8 @@ DragonflyHallProcessor::DragonflyHallProcessor()
     late.setrt60(parameters.decay);
     late.setspinfactor(parameters.modulation / 100.0f);
     late.setlfofactor(parameters.modulation / 100.0f);
+
+    setCurrentProgram(0);
 }
 
 // built-in presets aka "programs"

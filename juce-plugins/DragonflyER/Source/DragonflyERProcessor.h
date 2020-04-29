@@ -40,11 +40,11 @@ public:
     bool hasEditor() const override { return true; }
     AudioProcessorEditor* createEditor() override;
 
-    // Multiple simultaneously-loaded presets aka "programs" (not used)
-    int getNumPrograms() override { return 1; }
-    int getCurrentProgram() override { return 0; }
-    void setCurrentProgram(int) override {}
-    const String getProgramName(int) override { return {}; }
+    // Multiple simultaneously-loaded presets aka "programs"
+    int getNumPrograms() override { return 8; }
+    int getCurrentProgram() override { return currentProgramIndex; }
+    void setCurrentProgram(int) override;
+    const String getProgramName(int) override;
     void changeProgramName(int, const String&) override {}
 
     // Actual audio processing
@@ -69,6 +69,7 @@ public:
 
 private:
     fv3::earlyref_f model;
+    int currentProgramIndex;
 
     AudioSampleBuffer dryBuffer;
 

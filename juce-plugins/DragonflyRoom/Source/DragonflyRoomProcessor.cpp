@@ -42,7 +42,6 @@ DragonflyRoomProcessor::DragonflyRoomProcessor()
     , valueTreeState(*this, nullptr, Identifier("DragonflyRoom"), DragonflyRoomParameters::createParameterLayout())
     , parameters(valueTreeState, this)
     , sampleRateHz(44100.0f)
-    , currentProgramIndex(6)
 {
     input_lpf_0.mute();
     input_lpf_1.mute();
@@ -82,6 +81,8 @@ DragonflyRoomProcessor::DragonflyRoomProcessor()
     late.setdamp(parameters.lateDamp);
     late.setoutputdamp(parameters.lateDamp);
     late.setdamp2(parameters.boostFreq);
+
+    setCurrentProgram(0);
 }
 
 // built-in presets aka "programs"

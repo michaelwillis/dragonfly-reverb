@@ -146,13 +146,16 @@ DragonflyPlateProcessor::DragonflyPlateProcessor()
                      )
     , valueTreeState(*this, nullptr, Identifier("DragonflyPlate"), DragonflyPlateParameters::createParameterLayout())
     , parameters(valueTreeState, this)
-    , currentProgramIndex(1)
     , sampleRateHz(44100.0f)
 {
     input_lpf_0.mute();
     input_lpf_1.mute();
     input_hpf_0.mute();
     input_hpf_1.mute();
+
+    nrev.setSampleRate(sampleRateHz);
+    nrevb.setSampleRate(sampleRateHz);
+    strev.setSampleRate(sampleRateHz);
 
     nrev.setdryr(0.0f);
     nrev.setwetr(1.0f);
@@ -187,6 +190,8 @@ DragonflyPlateProcessor::DragonflyPlateProcessor()
     nrevb.setDampLpf(parameters.dampen);
     strev.setdamp(parameters.dampen);
     strev.setoutputdamp(fmaxf(parameters.dampen * 2.0f, 16000.0f));
+
+    setCurrentProgram(0);
 }
 
 // built-in presets aka "programs"

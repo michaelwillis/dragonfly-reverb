@@ -38,7 +38,7 @@ const String DragonflyERParameters::progIndexID = "progIndex";
 const String DragonflyERParameters::progIndexName = TRANS("Program");
 const String DragonflyERParameters::progIndexLabel = "";
 const int DragonflyERParameters::progIndexEnumCount = 8;
-const int DragonflyERParameters::progIndexDefault = 2;
+const int DragonflyERParameters::progIndexDefault = 0;
 // Size
 const String DragonflyERParameters::sizeID = "size";
 const String DragonflyERParameters::sizeName = TRANS("Size");

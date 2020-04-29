@@ -42,24 +42,49 @@ DragonflyERProcessor::DragonflyERProcessor()
     model.setMuteOnChange(false);
     model.setdryr(0.0f);    // mute dry signal
     model.setwet(0.0f);     // 0dB
-    model.setwidth(0.8f);
     model.setLRDelay(0.3f);
     model.setLRCrossApFreq(750.0f, 4.0f);
     model.setDiffusionApFreq(150.0f, 4.0f);
 
-    model.loadPresetReflection(0);
     model.setRSFactor(0.1f * parameters.size);
+    model.setwidth(0.01f * parameters.width);
     model.setoutputhpf(parameters.lowCut);
     model.setoutputlpf(parameters.highCut);
     model.setSampleRate(44100.0f);
+
+    setCurrentProgram(0);
+}
+
+// List of preferred preset reflection program indices
+static long programs[] = { 2, 18, 0, 19, 1, 13, 14, 21 };
+
+// program names
+static const char* progNames[] = {
+    "Abrupt Echo",
+    "Backstage Pass",
+    "Concert Venue",
+    "Damaged Goods",
+    "Elevator Pitch",
+    "Floor Thirteen",
+    "Garage Band",
+    "Home Studio"
+};
+
+void DragonflyERProcessor::setCurrentProgram(int progIndex)
+{
+    currentProgramIndex = jlimit<int>(0, 7, progIndex);
+    valueTreeState.getParameter(DragonflyERParameters::progIndexID)->setValueNotifyingHost(progIndex / 7.0f);
+}
+
+const String DragonflyERProcessor::getProgramName(int progIndex)
+{
+    progIndex = jlimit<int>(0, 7, progIndex);
+    return progNames[progIndex];
 }
 
 // Respond to parameter changes
 void DragonflyERProcessor::parameterChanged(const String& paramID, float value)
 {
-    // List of preferred preset reflection program indices
-    static long programs[] = { 2, 18, 0, 19, 1, 13, 14, 21 };
-
     if (paramID == DragonflyERParameters::progIndexID)
     {
         const ScopedLock processBlockLock(getCallbackLock());   // lock out processBlock calls while making changes
