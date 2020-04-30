@@ -276,8 +276,16 @@ long FV3_(src)::filloutSRC()
   if(overSamplingFactor == 1) return 0;
   if(src_converter == SRC_ZERO_ORDER_HOLD) return 0;
     
+#ifdef _MSC_VER
+  // Microsoft Visual C++ 2019 can't handle the array declarations at line 284 below, because overSamplingFactor
+  // is not a constant; it's a member variable of this class. However, the initialization at line 30 above means
+  // overSamplingFactor will always be 1, hence line 276 means the following code won't get executed anyway, so
+  // there's no point even compiling it.
+  return 0;
+#else
   fv3_float_t L = 0.0, R = 0.0;
   fv3_float_t L2[overSamplingFactor], R2[overSamplingFactor];
+
   long ref1 = 0, ref2 = 0, uDelay = 0, dDelay = 0;
   long count = 0;
   while(1)
@@ -302,6 +310,7 @@ long FV3_(src)::filloutSRC()
   std::fprintf(stderr, "latency: %ld/%ld,%ld\n", uDelay, dDelay, count);
 #endif
   return count;
+#endif
 }
 
 #include "freeverb/fv3_ns_end.h"
