@@ -68,7 +68,7 @@ const String DragonflyPlateParameters::lowCutID = "lowCut";
 const String DragonflyPlateParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyPlateParameters::lowCutLabel = "Hz";
 const float DragonflyPlateParameters::lowCutMin = 0.0f;
-const float DragonflyPlateParameters::lowCutMax = 200.0f;
+const float DragonflyPlateParameters::lowCutMax = 3000.0f;
 const float DragonflyPlateParameters::lowCutDefault = 200.0f;
 const float DragonflyPlateParameters::lowCutStep = 0.0f;
 // High Cut

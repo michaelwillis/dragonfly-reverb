@@ -60,7 +60,7 @@ const String DragonflyERParameters::lowCutID = "lowCut";
 const String DragonflyERParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyERParameters::lowCutLabel = "Hz";
 const float DragonflyERParameters::lowCutMin = 0.0f;
-const float DragonflyERParameters::lowCutMax = 200.0f;
+const float DragonflyERParameters::lowCutMax = 3000.0f;
 const float DragonflyERParameters::lowCutDefault = 50.0f;
 const float DragonflyERParameters::lowCutStep = 0.0f;
 // High Cut

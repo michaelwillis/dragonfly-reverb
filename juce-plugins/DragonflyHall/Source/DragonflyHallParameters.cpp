@@ -78,8 +78,8 @@ const String DragonflyHallParameters::lowCutID = "lowCut";
 const String DragonflyHallParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyHallParameters::lowCutLabel = "Hz";
 const float DragonflyHallParameters::lowCutMin = 0.0f;
-const float DragonflyHallParameters::lowCutMax = 200.0f;
-const float DragonflyHallParameters::lowCutDefault = 4.0f;
+const float DragonflyHallParameters::lowCutMax = 3000.0f;
+const float DragonflyHallParameters::lowCutDefault = 40.0f;
 const float DragonflyHallParameters::lowCutStep = 0.0f;
 // Low Cross
 const String DragonflyHallParameters::lowCrossID = "lowCross";

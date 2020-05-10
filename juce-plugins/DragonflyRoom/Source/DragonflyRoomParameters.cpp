@@ -150,8 +150,8 @@ const String DragonflyRoomParameters::lowCutID = "lowCut";
 const String DragonflyRoomParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyRoomParameters::lowCutLabel = "Hz";
 const float DragonflyRoomParameters::lowCutMin = 0.0f;
-const float DragonflyRoomParameters::lowCutMax = 200.0f;
-const float DragonflyRoomParameters::lowCutDefault = 4.0f;
+const float DragonflyRoomParameters::lowCutMax = 3000.0f;
+const float DragonflyRoomParameters::lowCutDefault = 40.0f;
 const float DragonflyRoomParameters::lowCutStep = 0.0f;
 
 AudioProcessorValueTreeState::ParameterLayout DragonflyRoomParameters::createParameterLayout()
