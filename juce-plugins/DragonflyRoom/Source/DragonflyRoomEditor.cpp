@@ -187,27 +187,27 @@ void DragonflyRoomEditor::resized()
     groupArea.reduce(2 * GUTTER, GUTTER);
     groupArea.removeFromTop(TOPOFFSET);
     int width = (groupArea.getWidth() - 10 * GAP) / 11;
+    labeledWidthKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
     labeledPredelayKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledSizeKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledDecayKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledDiffuseKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledSpinKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledWanderKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledHighCutKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledEarlyDampKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledLateDampKnob.setBounds(groupArea.removeFromLeft(width));
+    labeledLowCutKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledLowBoostKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledBoostFreqKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledLowCutKnob.setBounds(groupArea);
+    labeledHighCutKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledSpinKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledWanderKnob.setBounds(groupArea);
 
     bounds = getLocalBounds().removeFromTop(INFO_IMAGE_HEIGHT);
     bounds.removeFromLeft(HEADER_IMAGE_WIDTH);
@@ -231,11 +231,11 @@ void DragonflyRoomEditor::resized()
     groupArea.removeFromLeft(GAP);
     labeledEarlySendKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
+    labeledEarlyDampKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
     labeledLateLevelKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledSizeKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
-    labeledWidthKnob.setBounds(groupArea);
+    labeledLateDampKnob.setBounds(groupArea);
 }
 
 void DragonflyRoomEditor::paint (Graphics& g)

@@ -222,7 +222,7 @@ void DragonflyHallEditor::resized()
     width = (groupArea.getWidth() - 6 * GAP) / 7;
     labeledSizeKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledWidthKnob.setBounds(groupArea.removeFromLeft(width));
+    labeledDecayKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledPredelayKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
@@ -246,7 +246,7 @@ void DragonflyHallEditor::resized()
     groupArea.reduce(2 * GUTTER, GUTTER);
     groupArea.removeFromTop(TOPOFFSET);
     width = (groupArea.getWidth() - 6 * GAP) / 7;
-    labeledDecayKnob.setBounds(groupArea.removeFromLeft(width));
+    labeledWidthKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledLowCutKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
@@ -256,9 +256,9 @@ void DragonflyHallEditor::resized()
     groupArea.removeFromLeft(GAP);
     labeledHighCutKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledHighCrossKnob.setBounds(groupArea.removeFromLeft(width));
-    groupArea.removeFromLeft(GAP);
     labeledHighMultKnob.setBounds(groupArea.removeFromLeft(width));
+    groupArea.removeFromLeft(GAP);
+    labeledHighCrossKnob.setBounds(groupArea.removeFromLeft(width));
 }
 
 void DragonflyHallEditor::paint (Graphics& g)
