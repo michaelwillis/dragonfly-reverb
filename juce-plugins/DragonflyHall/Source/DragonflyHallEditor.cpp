@@ -254,11 +254,11 @@ void DragonflyHallEditor::resized()
     groupArea.removeFromLeft(GAP);
     labeledLowMultKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledHighCutKnob.setBounds(groupArea.removeFromLeft(width));
+    labeledHighCrossKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
     labeledHighMultKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledHighCrossKnob.setBounds(groupArea.removeFromLeft(width));
+    labeledHighCutKnob.setBounds(groupArea.removeFromLeft(width));
 }
 
 void DragonflyHallEditor::paint (Graphics& g)

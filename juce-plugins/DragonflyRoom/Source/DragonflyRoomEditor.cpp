@@ -207,7 +207,7 @@ void DragonflyRoomEditor::resized()
     groupArea.removeFromLeft(GAP);
     labeledSpinKnob.setBounds(groupArea.removeFromLeft(width));
     groupArea.removeFromLeft(GAP);
-    labeledWanderKnob.setBounds(groupArea);
+    labeledWanderKnob.setBounds(groupArea.removeFromLeft(width));
 
     bounds = getLocalBounds().removeFromTop(INFO_IMAGE_HEIGHT);
     bounds.removeFromLeft(HEADER_IMAGE_WIDTH);
