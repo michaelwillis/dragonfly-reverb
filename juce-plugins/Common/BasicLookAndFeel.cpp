@@ -37,7 +37,8 @@ void BasicLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, in
     // fill
     Colour fillColour = findColour(Slider::rotarySliderFillColourId);
     auto bkp = dynamic_cast<BasicKnob*>(&slider);
-    if (bkp) g.setColour(bkp->bodyColour);
+    if (bkp) fillColour = bkp->bodyColour;
+    g.setColour(fillColour);
     g.fillEllipse(rx, ry, rw, rw);
 
     // outline
