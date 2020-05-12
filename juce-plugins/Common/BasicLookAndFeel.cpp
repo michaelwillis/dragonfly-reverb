@@ -16,6 +16,7 @@
  */
 
 #include "BasicLookAndFeel.h"
+#include "BasicKnob.h"
 
 // Change the look of JUCE's "rotary sliders" so they're more like traditional knobs. This code is adapted
 // from the example at https://www.juce.com/doc/tutorial_look_and_feel_customisation.
@@ -34,7 +35,9 @@ void BasicLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, in
     const float angle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
 
     // fill
-    g.setColour(findColour(Slider::rotarySliderFillColourId));
+    Colour fillColour = findColour(Slider::rotarySliderFillColourId);
+    auto bkp = dynamic_cast<BasicKnob*>(&slider);
+    if (bkp) g.setColour(bkp->bodyColour);
     g.fillEllipse(rx, ry, rw, rw);
 
     // outline
@@ -50,3 +53,9 @@ void BasicLookAndFeel::drawRotarySlider(Graphics& g, int x, int y, int width, in
     g.setColour(findColour(Slider::rotarySliderOutlineColourId));
     g.fillPath(p);
 }
+
+Colour BasicLookAndFeel::darkBlue = Colour(52, 87, 155);
+Colour BasicLookAndFeel::orange = Colour(201, 83, 47);
+Colour BasicLookAndFeel::green = Colour(41, 151, 85);
+Colour BasicLookAndFeel::lightBlue = Colour(63, 176, 201);//Colour(41, 187, 161);
+Colour BasicLookAndFeel::purple = Colour(117, 73, 178);

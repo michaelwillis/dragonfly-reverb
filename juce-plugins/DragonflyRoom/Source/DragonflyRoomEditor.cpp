@@ -34,7 +34,7 @@
 
 #define BACKGROUND_COLOUR Colour(61, 61, 61)
 #define ICON_COLOUR       Colour(172, 202, 231)
-#define KNOB_COLOUR       Colour(79, 129, 162)
+//#define KNOB_COLOUR       Colour(79, 129, 162)
 #define RING_COLOUR       Colour(223, 230, 225)
 
 DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
@@ -79,7 +79,6 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
     setLookAndFeel(lookAndFeel);
     lookAndFeel->setColour(ResizableWindow::backgroundColourId, BACKGROUND_COLOUR);
     lookAndFeel->setColour(GroupComponent::outlineColourId, ICON_COLOUR);
-    lookAndFeel->setColour(Slider::rotarySliderFillColourId, KNOB_COLOUR);
     lookAndFeel->setColour(Slider::rotarySliderOutlineColourId, RING_COLOUR);
 
     headerImage = ImageCache::getFromMemory(BinaryData::roomheader_png, BinaryData::roomheader_pngSize);
@@ -101,43 +100,60 @@ DragonflyRoomEditor::DragonflyRoomEditor (DragonflyRoomProcessor& p)
     };
     addAndMakeVisible(presetsCombo);
 
+    dryLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     dryLevelKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::dryLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDryLevelKnob);
+    earlyLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     earlyLevelKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::earlyLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledEarlyLevelKnob);
+    earlySendKnob.bodyColour = BasicLookAndFeel::darkBlue;
     earlySendKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::earlySendDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledEarlySendKnob);
+    lateLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     lateLevelKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::lateLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLateLevelKnob);
+    sizeKnob.bodyColour = BasicLookAndFeel::lightBlue;
     sizeKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::sizeDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledSizeKnob);
+    widthKnob.bodyColour = BasicLookAndFeel::green;
     widthKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::widthDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWidthKnob);
+    predelayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     predelayKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::predelayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledPredelayKnob);
+    decayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     decayKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::decayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDecayKnob);
+    diffuseKnob.bodyColour = BasicLookAndFeel::lightBlue;
     diffuseKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::diffuseDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDiffuseKnob);
+    spinKnob.bodyColour = BasicLookAndFeel::purple;
     spinKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::spinDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledSpinKnob);
+    wanderKnob.bodyColour = BasicLookAndFeel::purple;
     wanderKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::wanderDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWanderKnob);
+    highCutKnob.bodyColour = BasicLookAndFeel::orange;
     highCutKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::highCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighCutKnob);
+    earlyDampKnob.bodyColour = BasicLookAndFeel::orange;
     earlyDampKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::earlyDampDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledEarlyDampKnob);
+    lateDampKnob.bodyColour = BasicLookAndFeel::orange;
     lateDampKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::lateDampDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLateDampKnob);
+    lowBoostKnob.bodyColour = BasicLookAndFeel::orange;
     lowBoostKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::lowBoostDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowBoostKnob);
+    boostFreqKnob.bodyColour = BasicLookAndFeel::orange;
     boostFreqKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::boostFreqDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledBoostFreqKnob);
+    lowCutKnob.bodyColour = BasicLookAndFeel::orange;
     lowCutKnob.setDoubleClickReturnValue(true, double(DragonflyRoomParameters::lowCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowCutKnob);
 
     // Add infoImage last so when it's displayed, it will cover the other controls
-    infoImage.setImage(ImageCache::getFromMemory(BinaryData::roominfo_png, BinaryData::roominfo_pngSize));
+    infoImage.setImage(ImageCache::getFromMemory(BinaryData::DF_Room_JL_png, BinaryData::DF_Room_JL_pngSize));
     infoImage.onMouseDown = [this]() { infoImage.setVisible(false); };
     addChildComponent(infoImage);
 
@@ -180,6 +196,7 @@ void DragonflyRoomEditor::changeListenerCallback(ChangeBroadcaster*)
 void DragonflyRoomEditor::resized()
 {
     auto bounds = getLocalBounds();
+    infoImage.setBounds(bounds);
     bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
 
     auto groupArea = bounds.reduced(INSET);
@@ -211,7 +228,6 @@ void DragonflyRoomEditor::resized()
 
     bounds = getLocalBounds().removeFromTop(INFO_IMAGE_HEIGHT);
     bounds.removeFromLeft(HEADER_IMAGE_WIDTH);
-    infoImage.setBounds(bounds.withY(3));
     groupArea = bounds.reduced(INSET);
     topGroup.setBounds(groupArea);
     auto cbArea = groupArea;

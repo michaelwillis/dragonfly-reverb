@@ -67,8 +67,10 @@ DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     infoButton.onClick = [this]() { infoImage.setVisible(true); };
     addAndMakeVisible(infoButton);
 
+    dryLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     dryLevelKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::dryLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDryLevelKnob);
+    wetLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     wetLevelKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::wetLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWetLevelKnob);
     progIndexLabel.setText("Program", dontSendNotification);
@@ -78,17 +80,21 @@ DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     progIndexCombo.setJustificationType(Justification::centredLeft);
     DragonflyERParameters::populateProgramsComboBox(progIndexCombo);
     addAndMakeVisible(progIndexCombo);
+    sizeKnob.bodyColour = BasicLookAndFeel::lightBlue;
     sizeKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::sizeDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledSizeKnob);
+    widthKnob.bodyColour = BasicLookAndFeel::green;
     widthKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::widthDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWidthKnob);
+    lowCutKnob.bodyColour = BasicLookAndFeel::orange;
     lowCutKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::lowCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowCutKnob);
+    highCutKnob.bodyColour = BasicLookAndFeel::orange;
     highCutKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::highCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighCutKnob);
 
     // Add infoImage last so when it's displayed, it will cover the other controls
-    infoImage.setImage(ImageCache::getFromMemory(BinaryData::erinfo_png, BinaryData::erinfo_pngSize));
+    infoImage.setImage(ImageCache::getFromMemory(BinaryData::DF_ER_JL_png, BinaryData::DF_ER_JL_pngSize));
     infoImage.onMouseDown = [this]() { infoImage.setVisible(false); };
     addChildComponent(infoImage);
 
@@ -113,8 +119,8 @@ DragonflyEREditor::~DragonflyEREditor()
 void DragonflyEREditor::resized()
 {
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
     infoImage.setBounds(bounds);
+    bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
 
     auto groupArea = bounds.reduced(INSET);
     mainGroup.setBounds(groupArea);

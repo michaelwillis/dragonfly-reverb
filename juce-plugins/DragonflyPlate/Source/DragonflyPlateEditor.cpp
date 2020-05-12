@@ -71,29 +71,37 @@ DragonflyPlateEditor::DragonflyPlateEditor (DragonflyPlateProcessor& p)
     infoButton.onClick = [this]() { infoImage.setVisible(true); };
     addAndMakeVisible(infoButton);
 
+    dryLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     dryLevelKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::dryLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDryLevelKnob);
+    wetLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     wetLevelKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::wetLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWetLevelKnob);
     algIndexCombo.setEditableText(false);
     algIndexCombo.setJustificationType(Justification::centredLeft);
     DragonflyPlateParameters::populateAlgorithmsComboBox(algIndexCombo);
     addAndMakeVisible(algIndexCombo);
+    widthKnob.bodyColour = BasicLookAndFeel::green;
     widthKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::widthDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWidthKnob);
+    predelayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     predelayKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::predelayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledPredelayKnob);
+    decayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     decayKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::decayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDecayKnob);
+    lowCutKnob.bodyColour = BasicLookAndFeel::orange;
     lowCutKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::lowCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowCutKnob);
+    highCutKnob.bodyColour = BasicLookAndFeel::orange;
     highCutKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::highCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighCutKnob);
+    dampenKnob.bodyColour = BasicLookAndFeel::orange;
     dampenKnob.setDoubleClickReturnValue(true, double(DragonflyPlateParameters::dampenDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDampenKnob);
 
     // Add infoImage last so when it's displayed, it will cover the other controls
-    infoImage.setImage(ImageCache::getFromMemory(BinaryData::plateinfo_png, BinaryData::plateinfo_pngSize));
+    infoImage.setImage(ImageCache::getFromMemory(BinaryData::DF_Plate_JL_png, BinaryData::DF_Plate_JL_pngSize));
     infoImage.onMouseDown = [this]() { infoImage.setVisible(false); };
     addChildComponent(infoImage);
 
@@ -120,8 +128,8 @@ DragonflyPlateEditor::~DragonflyPlateEditor()
 void DragonflyPlateEditor::resized()
 {
     auto bounds = getLocalBounds();
-    bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
     infoImage.setBounds(bounds);
+    bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
 
     auto groupArea = bounds.reduced(INSET);
     mainGroup.setBounds(groupArea);

@@ -6,12 +6,12 @@
               companyWebsite="https://www.pluginguru.com" pluginFormats="buildVST"
               pluginManufacturerCode="Kuhl" pluginCode="DfHa" pluginChannelConfigs="{2,2}"
               headerPath="../../../Common&#10;../../../../common" defines="LIBFV3_FLOAT&#10;LIBSRATE2_FLOAT"
-              version="3.1.1" companyEmail="support@pluginguru.com">
+              version="3.2.0" companyEmail="support@pluginguru.com">
   <MAINGROUP id="C6MhE0" name="Dragonfly Hall">
     <GROUP id="{B116A980-D099-A6D3-0103-1D2EDE121DA0}" name="Assets">
+      <FILE id="ZcASPF" name="DF Hall_JL.png" compile="0" resource="1" file="../Assets/DF Hall_JL.png"/>
       <FILE id="ZusgIn" name="help-circle.svg" compile="0" resource="1" file="../Assets/help-circle.svg"/>
       <FILE id="VEZLte" name="hall-header.png" compile="0" resource="1" file="../Assets/hall-header.png"/>
-      <FILE id="MQpRIZ" name="hall-info.png" compile="0" resource="1" file="../Assets/hall-info.png"/>
     </GROUP>
     <GROUP id="{F577A656-4BDF-CE50-BEA2-DB879D464EDC}" name="libsamplerate2">
       <FILE id="T7wOE5" name="samplerate.c" compile="1" resource="0" file="../../common/libsamplerate2/samplerate.c"/>

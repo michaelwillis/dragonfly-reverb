@@ -106,45 +106,63 @@ DragonflyHallEditor::DragonflyHallEditor (DragonflyHallProcessor& p)
     };
     addAndMakeVisible(presetsCombo);
 
+    dryLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     dryLevelKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::dryLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDryLevelKnob);
+    earlyLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     earlyLevelKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::earlyLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledEarlyLevelKnob);
+    lateLevelKnob.bodyColour = BasicLookAndFeel::darkBlue;
     lateLevelKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::lateLevelDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLateLevelKnob);
+    sizeKnob.bodyColour = BasicLookAndFeel::lightBlue;
     sizeKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::sizeDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledSizeKnob);
+    widthKnob.bodyColour = BasicLookAndFeel::green;
     widthKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::widthDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWidthKnob);
+    predelayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     predelayKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::predelayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledPredelayKnob);
+    diffuseKnob.bodyColour = BasicLookAndFeel::lightBlue;
     diffuseKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::diffuseDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDiffuseKnob);
+    lowCutKnob.bodyColour = BasicLookAndFeel::orange;
     lowCutKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::lowCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowCutKnob);
+    lowCrossKnob.bodyColour = BasicLookAndFeel::orange;
     lowCrossKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::lowCrossDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowCrossKnob);
+    lowMultKnob.bodyColour = BasicLookAndFeel::orange;
     lowMultKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::lowMultDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledLowMultKnob);
+    highCutKnob.bodyColour = BasicLookAndFeel::orange;
     highCutKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::highCutDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighCutKnob);
+    highCrossKnob.bodyColour = BasicLookAndFeel::orange;
     highCrossKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::highCrossDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighCrossKnob);
+    highMultKnob.bodyColour = BasicLookAndFeel::orange;
     highMultKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::highMultDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledHighMultKnob);
+    spinKnob.bodyColour = BasicLookAndFeel::purple;
     spinKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::spinDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledSpinKnob);
+    wanderKnob.bodyColour = BasicLookAndFeel::purple;
     wanderKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::wanderDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledWanderKnob);
+    decayKnob.bodyColour = BasicLookAndFeel::lightBlue;
     decayKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::decayDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledDecayKnob);
+    earlySendKnob.bodyColour = BasicLookAndFeel::darkBlue;
     earlySendKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::earlySendDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledEarlySendKnob);
+    modulationKnob.bodyColour = BasicLookAndFeel::purple;
     modulationKnob.setDoubleClickReturnValue(true, double(DragonflyHallParameters::modulationDefault), ModifierKeys::noModifiers);
     addAndMakeVisible(labeledModulationKnob);
 
     // Add infoImage last so when it's displayed, it will cover the other controls
-    infoImage.setImage(ImageCache::getFromMemory(BinaryData::hallinfo_png, BinaryData::hallinfo_pngSize));
+    infoImage.setImage(ImageCache::getFromMemory(BinaryData::DF_Hall_JL_png, BinaryData::DF_Hall_JL_pngSize));
     infoImage.onMouseDown = [this]() { infoImage.setVisible(false); };
     addChildComponent(infoImage);
 
@@ -188,6 +206,7 @@ void DragonflyHallEditor::changeListenerCallback(ChangeBroadcaster*)
 void DragonflyHallEditor::resized()
 {
     auto bounds = getLocalBounds();
+    infoImage.setBounds(bounds);
     bounds.removeFromTop(HEADER_IMAGE_HEIGHT);
 
     bounds = getLocalBounds().removeFromTop(GROUP_HEIGHT);
@@ -234,7 +253,6 @@ void DragonflyHallEditor::resized()
     groupArea.removeFromLeft(GAP);
     labeledWanderKnob.setBounds(groupArea.removeFromLeft(width));
 
-    infoImage.setBounds(getLocalBounds().removeFromBottom(INFO_IMAGE_HEIGHT));
     bounds = getLocalBounds();
     bounds.removeFromTop(2 * (GROUP_HEIGHT - 16));
     groupArea = bounds.removeFromTop(GROUP_HEIGHT).reduced(INSET);

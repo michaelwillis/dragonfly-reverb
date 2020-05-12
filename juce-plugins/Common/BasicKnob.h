@@ -36,6 +36,9 @@ public:
     double getValueFromText(const String& text) override;
     String getTextFromValue(double value) override;
 
+    // BasicKnob
+    Colour bodyColour;
+
 protected:
     String unitOfMeasure;
 
