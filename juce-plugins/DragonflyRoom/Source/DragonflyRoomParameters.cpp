@@ -209,7 +209,7 @@ AudioProcessorValueTreeState::ParameterLayout DragonflyRoomParameters::createPar
         [](const String& text) { return text.getFloatValue(); }));
     params.push_back(std::make_unique<AudioParameterFloat>(
         decayID, decayName,
-        NormalisableRange<float>(decayMin, decayMax, decayStep), decayDefault,
+        NormalisableRange<float>(decayMin, decayMax, decayStep, 0.5f), decayDefault,
         decayLabel,
         AudioProcessorParameter::genericParameter,
         [](float value, int maxLength) { return String(value).substring(0, maxLength); },
