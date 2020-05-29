@@ -62,7 +62,7 @@ const String DragonflyHallParameters::predelayID = "predelay";
 const String DragonflyHallParameters::predelayName = TRANS("Predelay");
 const String DragonflyHallParameters::predelayLabel = "ms";
 const float DragonflyHallParameters::predelayMin = 0.0f;
-const float DragonflyHallParameters::predelayMax = 100.0f;
+const float DragonflyHallParameters::predelayMax = 500.0f;
 const float DragonflyHallParameters::predelayDefault = 4.0f;
 const float DragonflyHallParameters::predelayStep = 0.0f;
 // Diffuse

@@ -70,7 +70,7 @@ const String DragonflyRoomParameters::predelayID = "predelay";
 const String DragonflyRoomParameters::predelayName = TRANS("Predelay");
 const String DragonflyRoomParameters::predelayLabel = "ms";
 const float DragonflyRoomParameters::predelayMin = 0.0f;
-const float DragonflyRoomParameters::predelayMax = 100.0f;
+const float DragonflyRoomParameters::predelayMax = 500.0f;
 const float DragonflyRoomParameters::predelayDefault = 8.0f;
 const float DragonflyRoomParameters::predelayStep = 0.0f;
 // Decay

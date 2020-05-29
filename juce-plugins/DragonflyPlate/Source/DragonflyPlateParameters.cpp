@@ -52,7 +52,7 @@ const String DragonflyPlateParameters::predelayID = "predelay";
 const String DragonflyPlateParameters::predelayName = TRANS("Predelay");
 const String DragonflyPlateParameters::predelayLabel = "ms";
 const float DragonflyPlateParameters::predelayMin = 0.0f;
-const float DragonflyPlateParameters::predelayMax = 100.0f;
+const float DragonflyPlateParameters::predelayMax = 500.0f;
 const float DragonflyPlateParameters::predelayDefault = 0.0f;
 const float DragonflyPlateParameters::predelayStep = 0.0f;
 // Decay
