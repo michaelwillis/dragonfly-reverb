@@ -23,7 +23,7 @@ const String DragonflyRoomParameters::dryLevelName = TRANS("Dry Level");
 const String DragonflyRoomParameters::dryLevelLabel = "%";
 const float DragonflyRoomParameters::dryLevelMin = 0.0f;
 const float DragonflyRoomParameters::dryLevelMax = 100.0f;
-const float DragonflyRoomParameters::dryLevelDefault = 80.0f;
+const float DragonflyRoomParameters::dryLevelDefault = 85.0f;
 const float DragonflyRoomParameters::dryLevelStep = 0.0f;
 // Early Level
 const String DragonflyRoomParameters::earlyLevelID = "earlyLevel";
@@ -31,7 +31,7 @@ const String DragonflyRoomParameters::earlyLevelName = TRANS("Early Level");
 const String DragonflyRoomParameters::earlyLevelLabel = "%";
 const float DragonflyRoomParameters::earlyLevelMin = 0.0f;
 const float DragonflyRoomParameters::earlyLevelMax = 100.0f;
-const float DragonflyRoomParameters::earlyLevelDefault = 10.0f;
+const float DragonflyRoomParameters::earlyLevelDefault = 5.0f;
 const float DragonflyRoomParameters::earlyLevelStep = 0.0f;
 // Early Send
 const String DragonflyRoomParameters::earlySendID = "earlySend";
@@ -47,7 +47,7 @@ const String DragonflyRoomParameters::lateLevelName = TRANS("Late Level");
 const String DragonflyRoomParameters::lateLevelLabel = "%";
 const float DragonflyRoomParameters::lateLevelMin = 0.0f;
 const float DragonflyRoomParameters::lateLevelMax = 100.0f;
-const float DragonflyRoomParameters::lateLevelDefault = 20.0f;
+const float DragonflyRoomParameters::lateLevelDefault = 13.0f;
 const float DragonflyRoomParameters::lateLevelStep = 0.0f;
 // Size
 const String DragonflyRoomParameters::sizeID = "size";
@@ -55,7 +55,7 @@ const String DragonflyRoomParameters::sizeName = TRANS("Size");
 const String DragonflyRoomParameters::sizeLabel = "m";
 const float DragonflyRoomParameters::sizeMin = 8.0f;
 const float DragonflyRoomParameters::sizeMax = 32.0f;
-const float DragonflyRoomParameters::sizeDefault = 12.0f;
+const float DragonflyRoomParameters::sizeDefault = 10.0f;
 const float DragonflyRoomParameters::sizeStep = 0.0f;
 // Width
 const String DragonflyRoomParameters::widthID = "width";
@@ -63,7 +63,7 @@ const String DragonflyRoomParameters::widthName = TRANS("Width");
 const String DragonflyRoomParameters::widthLabel = "%";
 const float DragonflyRoomParameters::widthMin = 50.0f;
 const float DragonflyRoomParameters::widthMax = 150.0f;
-const float DragonflyRoomParameters::widthDefault = 100.0f;
+const float DragonflyRoomParameters::widthDefault = 90.0f;
 const float DragonflyRoomParameters::widthStep = 0.0f;
 // Predelay
 const String DragonflyRoomParameters::predelayID = "predelay";
@@ -79,7 +79,7 @@ const String DragonflyRoomParameters::decayName = TRANS("Decay");
 const String DragonflyRoomParameters::decayLabel = "sec";
 const float DragonflyRoomParameters::decayMin = 0.1f;
 const float DragonflyRoomParameters::decayMax = 10.0f;
-const float DragonflyRoomParameters::decayDefault = 0.4f;
+const float DragonflyRoomParameters::decayDefault = 1.2f;
 const float DragonflyRoomParameters::decayStep = 0.0f;
 // Diffuse
 const String DragonflyRoomParameters::diffuseID = "diffuse";
@@ -95,7 +95,7 @@ const String DragonflyRoomParameters::spinName = TRANS("Spin");
 const String DragonflyRoomParameters::spinLabel = "Hz";
 const float DragonflyRoomParameters::spinMin = 0.0f;
 const float DragonflyRoomParameters::spinMax = 5.0f;
-const float DragonflyRoomParameters::spinDefault = 0.8f;
+const float DragonflyRoomParameters::spinDefault = 0.4f;
 const float DragonflyRoomParameters::spinStep = 0.0f;
 // Wander
 const String DragonflyRoomParameters::wanderID = "wander";
@@ -119,7 +119,7 @@ const String DragonflyRoomParameters::earlyDampName = TRANS("Early Damp");
 const String DragonflyRoomParameters::earlyDampLabel = "Hz";
 const float DragonflyRoomParameters::earlyDampMin = 1000.0f;
 const float DragonflyRoomParameters::earlyDampMax = 16000.0f;
-const float DragonflyRoomParameters::earlyDampDefault = 10000.0f;
+const float DragonflyRoomParameters::earlyDampDefault = 16000.0f;
 const float DragonflyRoomParameters::earlyDampStep = 0.0f;
 // Late Damp
 const String DragonflyRoomParameters::lateDampID = "lateDamp";
@@ -127,7 +127,7 @@ const String DragonflyRoomParameters::lateDampName = TRANS("Late Damp");
 const String DragonflyRoomParameters::lateDampLabel = "Hz";
 const float DragonflyRoomParameters::lateDampMin = 1000.0f;
 const float DragonflyRoomParameters::lateDampMax = 16000.0f;
-const float DragonflyRoomParameters::lateDampDefault = 9400.0f;
+const float DragonflyRoomParameters::lateDampDefault = 10434.5f;
 const float DragonflyRoomParameters::lateDampStep = 0.0f;
 // Low Boost
 const String DragonflyRoomParameters::lowBoostID = "lowBoost";
@@ -151,7 +151,7 @@ const String DragonflyRoomParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyRoomParameters::lowCutLabel = "Hz";
 const float DragonflyRoomParameters::lowCutMin = 0.0f;
 const float DragonflyRoomParameters::lowCutMax = 3000.0f;
-const float DragonflyRoomParameters::lowCutDefault = 40.0f;
+const float DragonflyRoomParameters::lowCutDefault = 1100.0f;
 const float DragonflyRoomParameters::lowCutStep = 0.0f;
 
 AudioProcessorValueTreeState::ParameterLayout DragonflyRoomParameters::createParameterLayout()

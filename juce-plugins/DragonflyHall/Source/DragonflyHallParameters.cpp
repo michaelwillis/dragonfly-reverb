@@ -23,7 +23,7 @@ const String DragonflyHallParameters::dryLevelName = TRANS("Dry Level");
 const String DragonflyHallParameters::dryLevelLabel = "%";
 const float DragonflyHallParameters::dryLevelMin = 0.0f;
 const float DragonflyHallParameters::dryLevelMax = 100.0f;
-const float DragonflyHallParameters::dryLevelDefault = 80.0f;
+const float DragonflyHallParameters::dryLevelDefault = 88.0f;
 const float DragonflyHallParameters::dryLevelStep = 0.0f;
 // Early Level
 const String DragonflyHallParameters::earlyLevelID = "earlyLevel";
@@ -31,7 +31,7 @@ const String DragonflyHallParameters::earlyLevelName = TRANS("Early Level");
 const String DragonflyHallParameters::earlyLevelLabel = "%";
 const float DragonflyHallParameters::earlyLevelMin = 0.0f;
 const float DragonflyHallParameters::earlyLevelMax = 100.0f;
-const float DragonflyHallParameters::earlyLevelDefault = 10.0f;
+const float DragonflyHallParameters::earlyLevelDefault = 12.0f;
 const float DragonflyHallParameters::earlyLevelStep = 0.0f;
 // Late Level
 const String DragonflyHallParameters::lateLevelID = "lateLevel";
@@ -39,7 +39,7 @@ const String DragonflyHallParameters::lateLevelName = TRANS("Late Level");
 const String DragonflyHallParameters::lateLevelLabel = "%";
 const float DragonflyHallParameters::lateLevelMin = 0.0f;
 const float DragonflyHallParameters::lateLevelMax = 100.0f;
-const float DragonflyHallParameters::lateLevelDefault = 20.0f;
+const float DragonflyHallParameters::lateLevelDefault = 12.0f;
 const float DragonflyHallParameters::lateLevelStep = 0.0f;
 // Size
 const String DragonflyHallParameters::sizeID = "size";
@@ -47,7 +47,7 @@ const String DragonflyHallParameters::sizeName = TRANS("Size");
 const String DragonflyHallParameters::sizeLabel = "m";
 const float DragonflyHallParameters::sizeMin = 10.0f;
 const float DragonflyHallParameters::sizeMax = 60.0f;
-const float DragonflyHallParameters::sizeDefault = 24.0f;
+const float DragonflyHallParameters::sizeDefault = 19.2813f;
 const float DragonflyHallParameters::sizeStep = 0.0f;
 // Width
 const String DragonflyHallParameters::widthID = "width";
@@ -63,7 +63,7 @@ const String DragonflyHallParameters::predelayName = TRANS("Predelay");
 const String DragonflyHallParameters::predelayLabel = "ms";
 const float DragonflyHallParameters::predelayMin = 0.0f;
 const float DragonflyHallParameters::predelayMax = 500.0f;
-const float DragonflyHallParameters::predelayDefault = 4.0f;
+const float DragonflyHallParameters::predelayDefault = 7.5f;
 const float DragonflyHallParameters::predelayStep = 0.0f;
 // Diffuse
 const String DragonflyHallParameters::diffuseID = "diffuse";
@@ -71,7 +71,7 @@ const String DragonflyHallParameters::diffuseName = TRANS("Diffuse");
 const String DragonflyHallParameters::diffuseLabel = "%";
 const float DragonflyHallParameters::diffuseMin = 0.0f;
 const float DragonflyHallParameters::diffuseMax = 100.0f;
-const float DragonflyHallParameters::diffuseDefault = 90.0f;
+const float DragonflyHallParameters::diffuseDefault = 60.0f;
 const float DragonflyHallParameters::diffuseStep = 0.0f;
 // Low Cut
 const String DragonflyHallParameters::lowCutID = "lowCut";
@@ -79,7 +79,7 @@ const String DragonflyHallParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyHallParameters::lowCutLabel = "Hz";
 const float DragonflyHallParameters::lowCutMin = 0.0f;
 const float DragonflyHallParameters::lowCutMax = 3000.0f;
-const float DragonflyHallParameters::lowCutDefault = 40.0f;
+const float DragonflyHallParameters::lowCutDefault = 106.1f;
 const float DragonflyHallParameters::lowCutStep = 0.0f;
 // Low Cross
 const String DragonflyHallParameters::lowCrossID = "lowCross";
@@ -87,7 +87,7 @@ const String DragonflyHallParameters::lowCrossName = TRANS("Low Cross");
 const String DragonflyHallParameters::lowCrossLabel = "Hz";
 const float DragonflyHallParameters::lowCrossMin = 200.0f;
 const float DragonflyHallParameters::lowCrossMax = 1200.0f;
-const float DragonflyHallParameters::lowCrossDefault = 500.0f;
+const float DragonflyHallParameters::lowCrossDefault = 879.89f;
 const float DragonflyHallParameters::lowCrossStep = 0.0f;
 // Low Mult
 const String DragonflyHallParameters::lowMultID = "lowMult";
@@ -95,7 +95,7 @@ const String DragonflyHallParameters::lowMultName = TRANS("Low Mult");
 const String DragonflyHallParameters::lowMultLabel = "";
 const float DragonflyHallParameters::lowMultMin = 0.5f;
 const float DragonflyHallParameters::lowMultMax = 2.5f;
-const float DragonflyHallParameters::lowMultDefault = 1.3f;
+const float DragonflyHallParameters::lowMultDefault = 0.847375f;
 const float DragonflyHallParameters::lowMultStep = 0.0f;
 // High Cut
 const String DragonflyHallParameters::highCutID = "highCut";
@@ -103,7 +103,7 @@ const String DragonflyHallParameters::highCutName = TRANS("High Cut");
 const String DragonflyHallParameters::highCutLabel = "Hz";
 const float DragonflyHallParameters::highCutMin = 1000.0f;
 const float DragonflyHallParameters::highCutMax = 16000.0f;
-const float DragonflyHallParameters::highCutDefault = 7600.0f;
+const float DragonflyHallParameters::highCutDefault = 5853.2f;
 const float DragonflyHallParameters::highCutStep = 0.0f;
 // High Cross
 const String DragonflyHallParameters::highCrossID = "highCross";
@@ -111,7 +111,7 @@ const String DragonflyHallParameters::highCrossName = TRANS("High Cross");
 const String DragonflyHallParameters::highCrossLabel = "Hz";
 const float DragonflyHallParameters::highCrossMin = 1000.0f;
 const float DragonflyHallParameters::highCrossMax = 16000.0f;
-const float DragonflyHallParameters::highCrossDefault = 5500.0f;
+const float DragonflyHallParameters::highCrossDefault = 1000.0f;
 const float DragonflyHallParameters::highCrossStep = 0.0f;
 // High Mult
 const String DragonflyHallParameters::highMultID = "highMult";
@@ -119,7 +119,7 @@ const String DragonflyHallParameters::highMultName = TRANS("High Mult");
 const String DragonflyHallParameters::highMultLabel = "";
 const float DragonflyHallParameters::highMultMin = 0.2f;
 const float DragonflyHallParameters::highMultMax = 1.2f;
-const float DragonflyHallParameters::highMultDefault = 0.5f;
+const float DragonflyHallParameters::highMultDefault = 0.6206f;
 const float DragonflyHallParameters::highMultStep = 0.0f;
 // Spin
 const String DragonflyHallParameters::spinID = "spin";
@@ -127,7 +127,7 @@ const String DragonflyHallParameters::spinName = TRANS("Spin");
 const String DragonflyHallParameters::spinLabel = "Hz";
 const float DragonflyHallParameters::spinMin = 0.0f;
 const float DragonflyHallParameters::spinMax = 10.0f;
-const float DragonflyHallParameters::spinDefault = 3.3f;
+const float DragonflyHallParameters::spinDefault = 0.0f;
 const float DragonflyHallParameters::spinStep = 0.0f;
 // Wander
 const String DragonflyHallParameters::wanderID = "wander";
@@ -135,7 +135,7 @@ const String DragonflyHallParameters::wanderName = TRANS("Wander");
 const String DragonflyHallParameters::wanderLabel = "ms";
 const float DragonflyHallParameters::wanderMin = 0.0f;
 const float DragonflyHallParameters::wanderMax = 40.0f;
-const float DragonflyHallParameters::wanderDefault = 15.0f;
+const float DragonflyHallParameters::wanderDefault = 40.0f;
 const float DragonflyHallParameters::wanderStep = 0.0f;
 // Decay
 const String DragonflyHallParameters::decayID = "decay";
@@ -143,7 +143,7 @@ const String DragonflyHallParameters::decayName = TRANS("Decay");
 const String DragonflyHallParameters::decayLabel = "sec";
 const float DragonflyHallParameters::decayMin = 0.1f;
 const float DragonflyHallParameters::decayMax = 10.0f;
-const float DragonflyHallParameters::decayDefault = 1.3f;
+const float DragonflyHallParameters::decayDefault = 2.776f;
 const float DragonflyHallParameters::decayStep = 0.0f;
 // Early Send
 const String DragonflyHallParameters::earlySendID = "earlySend";
@@ -159,7 +159,7 @@ const String DragonflyHallParameters::modulationName = TRANS("Modulation");
 const String DragonflyHallParameters::modulationLabel = "%";
 const float DragonflyHallParameters::modulationMin = 0.0f;
 const float DragonflyHallParameters::modulationMax = 100.0f;
-const float DragonflyHallParameters::modulationDefault = 15.0f;
+const float DragonflyHallParameters::modulationDefault = 10.0f;
 const float DragonflyHallParameters::modulationStep = 0.0f;
 
 AudioProcessorValueTreeState::ParameterLayout DragonflyHallParameters::createParameterLayout()

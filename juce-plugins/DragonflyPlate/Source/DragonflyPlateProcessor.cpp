@@ -195,7 +195,7 @@ DragonflyPlateProcessor::DragonflyPlateProcessor()
 }
 
 // built-in presets aka "programs"
-#define NUM_PRESETS 8
+#define NUM_PRESETS 9
 enum AlgorithmIndex { ALGORITHM_NREV, ALGORITHM_NREV_B, ALGORITHM_STREV };
 
 struct Preset
@@ -211,6 +211,7 @@ struct Preset
 
 static Preset presets[NUM_PRESETS] = {
     //                 dry,   wet,       algorithm,   width, delay, decay, low cut, high cut,     damp
+    {"Unify Custom", 85.0f, 15.0f, ALGORITHM_NREV_B, 130.0f, 125.0f,  3.0f, 750.0f, 16000.0f, 16000.0f },
     {"Abrupt Plate", 80.0f, 20.0f, ALGORITHM_NREV_B, 100.0f, 20.0f,   0.2f,  50.0f, 10000.0f,  7000.0f },
     {"Bright Plate", 80.0f, 20.0f, ALGORITHM_NREV_B, 100.0f,  0.0f,   0.4f, 200.0f, 16000.0f, 13000.0f },
     {"Clear Plate",  80.0f, 20.0f, ALGORITHM_NREV_B, 100.0f,  0.0f,   0.6f, 100.0f, 13000.0f,  7000.0f },
@@ -225,16 +226,25 @@ void DragonflyPlateProcessor::setCurrentProgram(int newProgramIndex)
 {
     currentProgramIndex = jlimit<int>(0, NUM_PRESETS - 1, newProgramIndex);
     Preset& preset = presets[currentProgramIndex];
-    // unfortunately, setValueNotifyingHost() requires NORMALIZED parameter values
-    valueTreeState.getParameter(DragonflyPlateParameters::dryLevelID)->setValueNotifyingHost(0.01f * preset.dryLevel);
-    valueTreeState.getParameter(DragonflyPlateParameters::wetLevelID)->setValueNotifyingHost(0.01f * preset.wetLevel);
-    valueTreeState.getParameter(DragonflyPlateParameters::algIndexID)->setValueNotifyingHost(preset.algIndex / 2.0f);
-    valueTreeState.getParameter(DragonflyPlateParameters::widthID)->setValueNotifyingHost(0.01f * (preset.width - 50.0f));
-    valueTreeState.getParameter(DragonflyPlateParameters::predelayID)->setValueNotifyingHost(0.01f * preset.delay);
-    valueTreeState.getParameter(DragonflyPlateParameters::decayID)->setValueNotifyingHost(0.1f * preset.decay);
-    valueTreeState.getParameter(DragonflyPlateParameters::lowCutID)->setValueNotifyingHost(preset.lowCut / 200.0f);
-    valueTreeState.getParameter(DragonflyPlateParameters::highCutID)->setValueNotifyingHost((preset.highCut - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyPlateParameters::dampenID)->setValueNotifyingHost((preset.dampFreq - 1000.0f) / 15000.0f);
+
+    // setValueNotifyingHost() requires NORMALIZED parameter values
+    RangedAudioParameter* param;
+#define SET_NORMALIZED(name) \
+    param = valueTreeState.getParameter(DragonflyPlateParameters:: ## name ## ID); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+#define SET_NORMALIZED2(name, id) \
+    param = valueTreeState.getParameter(DragonflyPlateParameters:: id); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+
+    SET_NORMALIZED(dryLevel);
+    SET_NORMALIZED(wetLevel);
+    SET_NORMALIZED(algIndex);
+    SET_NORMALIZED(width);
+    SET_NORMALIZED2(delay, predelayID);
+    SET_NORMALIZED(decay);
+    SET_NORMALIZED(lowCut);
+    SET_NORMALIZED(highCut);
+    SET_NORMALIZED2(dampFreq, dampenID);
 }
 
 const String DragonflyPlateProcessor::getProgramName(int programIndex)

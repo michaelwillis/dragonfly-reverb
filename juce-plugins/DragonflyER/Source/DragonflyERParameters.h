@@ -45,8 +45,6 @@ public:
                           AudioProcessorValueTreeState::Listener* processor);
     ~DragonflyERParameters();
 
-    static void populateProgramsComboBox(ComboBox&);
-
     void detachControls();
     void attachControls(
         Slider& dryLevelKnob,

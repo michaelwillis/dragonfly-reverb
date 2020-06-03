@@ -78,7 +78,7 @@ DragonflyEREditor::DragonflyEREditor (DragonflyERProcessor& p)
     addAndMakeVisible(&progIndexLabel);
     progIndexCombo.setEditableText(false);
     progIndexCombo.setJustificationType(Justification::centredLeft);
-    DragonflyERParameters::populateProgramsComboBox(progIndexCombo);
+    DragonflyERProcessor::populateProgramsComboBox(progIndexCombo);
     addAndMakeVisible(progIndexCombo);
     sizeKnob.bodyColour = BasicLookAndFeel::lightBlue;
     sizeKnob.setDoubleClickReturnValue(true, double(DragonflyERParameters::sizeDefault), ModifierKeys::noModifiers);

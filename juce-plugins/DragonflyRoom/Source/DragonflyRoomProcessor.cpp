@@ -116,40 +116,49 @@ typedef struct {
 } Bank;
 
 static Bank banks[NUM_BANKS] = {
-  {
-    "Small", {               // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
-      {"Small Bright Room",  { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.2,    60.0,  0.4,   40.0,    16000,      16000,     16000,       20.0,       600,    4.0}},
-      {"Small Clear Room",   { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.2,    60.0,  0.8,   40.0,    16000,      11200,     10000,       40.0,       600,    4.0}},
-      {"Small Dark Room",    { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.3,    70.0,  1.6,   20.0,    16000,       6400,      5500,       60.0,      1000,    4.0}},
-      {"Small Drum Room",    { 80.0,  10.0,    20.0, 20.0,  9.0,  90.0,   8.0,   0.2,    24.0,  2.1,   10.0,    16000,       8200,      7000,       40.0,       400,    4.0}},
-      {"Small Vocal Room",   { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   0.0,   0.3,    86.0,  2.4,   12.0,    16000,       7600,      6400,       20.0,       400,    4.0}}
-    }
+   {
+     "Unify Custom", {       // dry, early, e. send, late, size,  width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
+      {"Natural Wood",       { 85.0,  10.0,    20.0, 20.0, 15.0,  100.0,  15.0,  0.15,    80.0,  0.0,   20.0,    16000,       5200,    4000.0,       70.0,       850,  167.0 }},
+      {"Perc Room",          { 85.0,  15.0,    20.0, 13.0, 13.0,   90.0,  25.0,   0.3,    70.0,  0.4,   40.0,    16000,      16000,   10434.5,       20.0,       600,  110.0 }},
+      {"Glass Walls",        { 85.0,  10.0,    20.0, 20.0, 24.0,   90.0,  25.0, 0.327,    84.0,  0.4,   40.0,    15000,      14000,   12000.0,       60.0,       600,   60.0 }},
+      {"SuperLive",          { 80.0,  25.0,    60.0,  9.0,  8.3,   90.0,  25.0,  1.28,    25.0,  2.5,   80.0,    16000,      12000,    9000.0,       20.0,       500,   60.0 }},
+      {"Long Room",          { 85.0,   5.0,    20.0, 12.0, 11.94, 130.0, 100.0,   4.3,   100.0,  2.0,   40.0,     9755,      16000,   10000.0,       90.0,       479,   60.0 }}
+     }
+   },
+   {
+     "Small", {              // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
+      {"Small Bright Room",  { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.2,    60.0,  0.4,   40.0,    16000,      16000,     16000,       20.0,       600,    4.0 }},
+      {"Small Clear Room",   { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.2,    60.0,  0.8,   40.0,    16000,      11200,     10000,       40.0,       600,    4.0 }},
+      {"Small Dark Room",    { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.3,    70.0,  1.6,   20.0,    16000,       6400,      5500,       60.0,      1000,    4.0 }},
+      {"Small Drum Room",    { 80.0,  10.0,    20.0, 20.0,  9.0,  90.0,   8.0,   0.2,    24.0,  2.1,   10.0,    16000,       8200,      7000,       40.0,       400,    4.0 }},
+      {"Small Vocal Room",   { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   0.0,   0.3,    86.0,  2.4,   12.0,    16000,       7600,      6400,       20.0,       400,    4.0 }}
+     }
   },
   {
     "Medium", {              // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
-      {"Medium Bright Room", { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.4,    60.0,  0.4,   40.0,    16000,      16000,     14000,       25.0,       600,    4.0}},
-      {"Medium Clear Room",  { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.4,    70.0,  0.8,   40.0,    16000,      10000,      9400,       50.0,       600,    4.0}},
-      {"Medium Dark Room",   { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.5,    70.0,  1.6,   20.0,    16000,       5800,      4600,       70.0,      1000,    4.0}},
-      {"Medium Drum Room",   { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,  12.0,   0.4,    32.0,  2.4,   10.0,    16000,       8000,      6000,       50.0,       300,    4.0}},
-      {"Medium Vocal Room",  { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   2.0,   0.6,    92.0,  2.7,   12.0,    16000,       8000,      6000,       25.0,       400,    4.0}}
+      {"Medium Bright Room", { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.4,    60.0,  0.4,   40.0,    16000,      16000,     14000,       25.0,       600,    4.0 }},
+      {"Medium Clear Room",  { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.4,    70.0,  0.8,   40.0,    16000,      10000,      9400,       50.0,       600,    4.0 }},
+      {"Medium Dark Room",   { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   8.0,   0.5,    70.0,  1.6,   20.0,    16000,       5800,      4600,       70.0,      1000,    4.0 }},
+      {"Medium Drum Room",   { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,  12.0,   0.4,    32.0,  2.4,   10.0,    16000,       8000,      6000,       50.0,       300,    4.0 }},
+      {"Medium Vocal Room",  { 80.0,  10.0,    20.0, 20.0, 12.0, 100.0,   2.0,   0.6,    92.0,  2.7,   12.0,    16000,       8000,      6000,       25.0,       400,    4.0 }}
     }
   },
   {
     "Large", {               // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
-      {"Large Bright Room",  { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.7,    70.0,  0.4,   40.0,    16000,      16000,     14000,       30.0,       600,    4.0}},
-      {"Large Clear Room",   { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.7,    80.0,  0.4,   40.0,    16000,       9400,      8500,       60.0,       600,    4.0}},
-      {"Large Dark Room",    { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.8,    80.0,  1.6,   20.0,    16000,       5200,      4000,       80.0,      1000,    4.0}},
-      {"Large Drum Room",    { 80.0,  10.0,    20.0, 20.0, 14.0, 100.0,  16.0,   0.7,    40.0,  2.7,   10.0,    16000,       8000,      5000,       60.0,       300,    4.0}},
-      {"Large Vocal Room",   { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,   4.0,   1.0,    98.0,  3.1,   12.0,    16000,       7000,      5000,       30.0,       400,    4.0}}
+      {"Large Bright Room",  { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.7,    70.0,  0.4,   40.0,    16000,      16000,     14000,       30.0,       600,    4.0 }},
+      {"Large Clear Room",   { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.7,    80.0,  0.4,   40.0,    16000,       9400,      8500,       60.0,       600,    4.0 }},
+      {"Large Dark Room",    { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,  12.0,   0.8,    80.0,  1.6,   20.0,    16000,       5200,      4000,       80.0,      1000,    4.0 }},
+      {"Large Drum Room",    { 80.0,  10.0,    20.0, 20.0, 14.0, 100.0,  16.0,   0.7,    40.0,  2.7,   10.0,    16000,       8000,      5000,       60.0,       300,    4.0 }},
+      {"Large Vocal Room",   { 80.0,  10.0,    20.0, 20.0, 15.0, 100.0,   4.0,   1.0,    98.0,  3.1,   12.0,    16000,       7000,      5000,       30.0,       400,    4.0 }}
     }
   },
   {
     "Halls", {               // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
-      {"Bright Hall",        { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.6,    78.0,  0.4,   40.0,    16000,      16000,     14000,       30.0,       600,    4.0}},
-      {"Clear Hall",         { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.6,    84.0,  0.4,   40.0,    16000,      14000,     12000,       60.0,       600,    4.0}},
-      {"Dark Hall",          { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.9,    80.0,  1.6,   20.0,    16000,       8000,      6000,       80.0,      1000,    4.0}},
-      {"Percussion Hall",    { 80.0,  10.0,    20.0, 20.0, 20.0, 100.0,  16.0,   1.5,    40.0,  2.7,   10.0,    16000,       7000,      5000,       60.0,       300,    4.0}},
-      {"Vocal Hall",         { 80.0,  10.0,    20.0, 20.0, 25.0, 100.0,   4.0,   2.0,    98.0,  3.1,   12.0,    16000,       6000,      5000,       30.0,       400,    4.0}}
+      {"Bright Hall",        { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.6,    78.0,  0.4,   40.0,    16000,      16000,     14000,       30.0,       600,    4.0 }},
+      {"Clear Hall",         { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.6,    84.0,  0.4,   40.0,    16000,      14000,     12000,       60.0,       600,    4.0 }},
+      {"Dark Hall",          { 80.0,  10.0,    20.0, 20.0, 24.0, 100.0,  12.0,   1.9,    80.0,  1.6,   20.0,    16000,       8000,      6000,       80.0,      1000,    4.0 }},
+      {"Percussion Hall",    { 80.0,  10.0,    20.0, 20.0, 20.0, 100.0,  16.0,   1.5,    40.0,  2.7,   10.0,    16000,       7000,      5000,       60.0,       300,    4.0 }},
+      {"Vocal Hall",         { 80.0,  10.0,    20.0, 20.0, 25.0, 100.0,   4.0,   2.0,    98.0,  3.1,   12.0,    16000,       6000,      5000,       30.0,       400,    4.0 }}
     }
   },
   {
@@ -184,28 +193,31 @@ void DragonflyRoomProcessor::populateProgramsComboBox(ComboBox& cb)
 void DragonflyRoomProcessor::setCurrentProgram(int progIndex)
 {
     currentProgramIndex = progIndex = jlimit<int>(0, NUM_BANKS * PRESETS_PER_BANK - 1, progIndex);
-    int bankIndex = progIndex / 5;
-    progIndex = progIndex % 5;
+    int bankIndex = progIndex / PRESETS_PER_BANK;
+    progIndex = progIndex % PRESETS_PER_BANK;
     auto& preset = banks[bankIndex].presets[progIndex].params;
 
-    // unfortunately, setValueNotifyingHost() requires NORMALIZED parameter values
-    valueTreeState.getParameter(DragonflyRoomParameters::dryLevelID)->setValueNotifyingHost(0.01f * preset.dryLevel);
-    valueTreeState.getParameter(DragonflyRoomParameters::earlyLevelID)->setValueNotifyingHost(0.01f * preset.earlyLevel);
-    valueTreeState.getParameter(DragonflyRoomParameters::earlySendID)->setValueNotifyingHost(0.01f * preset.earlySend);
-    valueTreeState.getParameter(DragonflyRoomParameters::lateLevelID)->setValueNotifyingHost(0.01f * preset.lateLevel);
-    valueTreeState.getParameter(DragonflyRoomParameters::sizeID)->setValueNotifyingHost((preset.size - 8.0f) / 24.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::widthID)->setValueNotifyingHost(0.01f * (preset.width - 50.0f));
-    valueTreeState.getParameter(DragonflyRoomParameters::predelayID)->setValueNotifyingHost(0.01f * preset.predelay);
-    valueTreeState.getParameter(DragonflyRoomParameters::decayID)->setValueNotifyingHost((preset.decay - 0.1f) / 9.9f);
-    valueTreeState.getParameter(DragonflyRoomParameters::diffuseID)->setValueNotifyingHost(0.01f * preset.diffuse);
-    valueTreeState.getParameter(DragonflyRoomParameters::spinID)->setValueNotifyingHost(preset.spin / 5.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::wanderID)->setValueNotifyingHost(0.01f * preset.wander);
-    valueTreeState.getParameter(DragonflyRoomParameters::highCutID)->setValueNotifyingHost((preset.highCut - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::earlyDampID)->setValueNotifyingHost((preset.earlyDamp - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::lateDampID)->setValueNotifyingHost((preset.lateDamp - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::lowBoostID)->setValueNotifyingHost(0.01f * preset.lowBoost);
-    valueTreeState.getParameter(DragonflyRoomParameters::boostFreqID)->setValueNotifyingHost((preset.boostFreq - 50.0f) / 1000.0f);
-    valueTreeState.getParameter(DragonflyRoomParameters::lowCutID)->setValueNotifyingHost(preset.lowCut / 200.0f);
+    // setValueNotifyingHost() requires NORMALIZED parameter values
+    RangedAudioParameter* param;
+#define SET_NORMALIZED(name) \
+    param = valueTreeState.getParameter(DragonflyRoomParameters:: ## name ## ID); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+
+    SET_NORMALIZED(dryLevel);
+    SET_NORMALIZED(earlyLevel);
+    SET_NORMALIZED(earlySend);
+    SET_NORMALIZED(size);
+    SET_NORMALIZED(predelay);
+    SET_NORMALIZED(decay);
+    SET_NORMALIZED(diffuse);
+    SET_NORMALIZED(spin);
+    SET_NORMALIZED(wander);
+    SET_NORMALIZED(highCut);
+    SET_NORMALIZED(earlyDamp);
+    SET_NORMALIZED(lateDamp);
+    SET_NORMALIZED(lowBoost);
+    SET_NORMALIZED(boostFreq);
+    SET_NORMALIZED(lowCut);
 
     sendChangeMessage();
 }

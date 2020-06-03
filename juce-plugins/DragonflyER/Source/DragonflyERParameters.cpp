@@ -23,7 +23,7 @@ const String DragonflyERParameters::dryLevelName = TRANS("Dry Level");
 const String DragonflyERParameters::dryLevelLabel = "%";
 const float DragonflyERParameters::dryLevelMin = 0.0f;
 const float DragonflyERParameters::dryLevelMax = 100.0f;
-const float DragonflyERParameters::dryLevelDefault = 80.0f;
+const float DragonflyERParameters::dryLevelDefault = 90.0f;
 const float DragonflyERParameters::dryLevelStep = 0.0f;
 // Wet Level
 const String DragonflyERParameters::wetLevelID = "wetLevel";
@@ -31,21 +31,21 @@ const String DragonflyERParameters::wetLevelName = TRANS("Wet Level");
 const String DragonflyERParameters::wetLevelLabel = "%";
 const float DragonflyERParameters::wetLevelMin = 0.0f;
 const float DragonflyERParameters::wetLevelMax = 100.0f;
-const float DragonflyERParameters::wetLevelDefault = 20.0f;
+const float DragonflyERParameters::wetLevelDefault = 13.0f;
 const float DragonflyERParameters::wetLevelStep = 0.0f;
 // Program
 const String DragonflyERParameters::progIndexID = "progIndex";
 const String DragonflyERParameters::progIndexName = TRANS("Program");
 const String DragonflyERParameters::progIndexLabel = "";
 const int DragonflyERParameters::progIndexEnumCount = 8;
-const int DragonflyERParameters::progIndexDefault = 0;
+const int DragonflyERParameters::progIndexDefault = 6;
 // Size
 const String DragonflyERParameters::sizeID = "size";
 const String DragonflyERParameters::sizeName = TRANS("Size");
 const String DragonflyERParameters::sizeLabel = "m";
 const float DragonflyERParameters::sizeMin = 10.0f;
 const float DragonflyERParameters::sizeMax = 60.0f;
-const float DragonflyERParameters::sizeDefault = 20.0f;
+const float DragonflyERParameters::sizeDefault = 24.0f;
 const float DragonflyERParameters::sizeStep = 0.0f;
 // Width
 const String DragonflyERParameters::widthID = "width";
@@ -53,7 +53,7 @@ const String DragonflyERParameters::widthName = TRANS("Width");
 const String DragonflyERParameters::widthLabel = "%";
 const float DragonflyERParameters::widthMin = 50.0f;
 const float DragonflyERParameters::widthMax = 150.0f;
-const float DragonflyERParameters::widthDefault = 100.0f;
+const float DragonflyERParameters::widthDefault = 150.0f;
 const float DragonflyERParameters::widthStep = 0.0f;
 // Low Cut
 const String DragonflyERParameters::lowCutID = "lowCut";
@@ -69,7 +69,7 @@ const String DragonflyERParameters::highCutName = TRANS("High Cut");
 const String DragonflyERParameters::highCutLabel = "Hz";
 const float DragonflyERParameters::highCutMin = 1000.0f;
 const float DragonflyERParameters::highCutMax = 16000.0f;
-const float DragonflyERParameters::highCutDefault = 10000.0f;
+const float DragonflyERParameters::highCutDefault = 9500.0f;
 const float DragonflyERParameters::highCutStep = 0.0f;
 
 AudioProcessorValueTreeState::ParameterLayout DragonflyERParameters::createParameterLayout()
@@ -126,19 +126,6 @@ AudioProcessorValueTreeState::ParameterLayout DragonflyERParameters::createParam
         [](const String& text) { return text.getFloatValue(); }));
 
     return { params.begin(), params.end() };
-}
-
-void DragonflyERParameters::populateProgramsComboBox(ComboBox& cb)
-{
-    int itemID = 0;
-    cb.addItem("Abrupt Echo", ++itemID);
-    cb.addItem("Backstage Pass", ++itemID);
-    cb.addItem("Concert Venue", ++itemID);
-    cb.addItem("Damaged Goods", ++itemID);
-    cb.addItem("Elevator Pitch", ++itemID);
-    cb.addItem("Floor Thirteen", ++itemID);
-    cb.addItem("Garage Band", ++itemID);
-    cb.addItem("Home Studio", ++itemID);
 }
 
 DragonflyERParameters::DragonflyERParameters(AudioProcessorValueTreeState& vts,

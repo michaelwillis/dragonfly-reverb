@@ -30,6 +30,28 @@ AudioProcessorEditor* DragonflyERProcessor::createEditor()
     return new DragonflyEREditor(*this);
 }
 
+// List of preferred preset reflection program indices
+static long programs[] = { 2, 18, 0, 19, 1, 13, 14, 21 };
+
+// program names
+static const char* progNames[] = {
+    "Abrupt Echo",
+    "Backstage Pass",
+    "Concert Venue",
+    "Damaged Goods",
+    "Elevator Pitch",
+    "Floor Thirteen",
+    "Garage Band",
+    "Home Studio"
+};
+
+void DragonflyERProcessor::populateProgramsComboBox(ComboBox& cb)
+{
+    cb.clear();
+    for (int i = 0; i < 8; i++)
+        cb.addItem(progNames[i], i + 1);
+}
+
 // Constructor: start off assuming stereo input, stereo output
 DragonflyERProcessor::DragonflyERProcessor()
     : AudioProcessor(BusesProperties()
@@ -52,34 +74,9 @@ DragonflyERProcessor::DragonflyERProcessor()
     model.setoutputlpf(parameters.highCut);
     model.setSampleRate(44100.0f);
 
-    setCurrentProgram(0);
-}
-
-// List of preferred preset reflection program indices
-static long programs[] = { 2, 18, 0, 19, 1, 13, 14, 21 };
-
-// program names
-static const char* progNames[] = {
-    "Abrupt Echo",
-    "Backstage Pass",
-    "Concert Venue",
-    "Damaged Goods",
-    "Elevator Pitch",
-    "Floor Thirteen",
-    "Garage Band",
-    "Home Studio"
-};
-
-void DragonflyERProcessor::setCurrentProgram(int progIndex)
-{
-    currentProgramIndex = jlimit<int>(0, 7, progIndex);
-    valueTreeState.getParameter(DragonflyERParameters::progIndexID)->setValueNotifyingHost(progIndex / 7.0f);
-}
-
-const String DragonflyERProcessor::getProgramName(int progIndex)
-{
-    progIndex = jlimit<int>(0, 7, progIndex);
-    return progNames[progIndex];
+    // set initial
+    RangedAudioParameter* param = valueTreeState.getParameter(DragonflyERParameters::progIndexID);
+    param->setValueNotifyingHost(param->convertTo0to1(float(DragonflyERParameters::progIndexDefault)));
 }
 
 // Respond to parameter changes

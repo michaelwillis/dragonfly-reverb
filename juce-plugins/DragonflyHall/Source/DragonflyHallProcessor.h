@@ -21,7 +21,7 @@
 #include "freeverb/earlyref.hpp"
 #include "freeverb/zrev2.hpp"
 
-#define NUM_BANKS 5
+#define NUM_BANKS 6
 #define PRESETS_PER_BANK 5
 
 class DragonflyHallProcessor    : public AudioProcessor

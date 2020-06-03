@@ -6,7 +6,7 @@
               companyWebsite="https://www.pluginguru.com" pluginFormats="buildVST"
               pluginManufacturerCode="Kuhl" pluginCode="DfPl" pluginChannelConfigs="{2,2}"
               headerPath="../../../Common&#10;../../../../common" defines="LIBFV3_FLOAT&#10;LIBSRATE2_FLOAT"
-              version="3.2.1" companyEmail="support@pluginguru.com">
+              version="3.2.2" companyEmail="support@pluginguru.com">
   <MAINGROUP id="C6MhE0" name="Dragonfly Plate">
     <GROUP id="{B116A980-D099-A6D3-0103-1D2EDE121DA0}" name="Assets">
       <FILE id="YGCfzr" name="DF Plate_JL.png" compile="0" resource="1" file="../Assets/DF Plate_JL.png"/>

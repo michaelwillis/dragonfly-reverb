@@ -110,6 +110,15 @@ typedef struct {
 
 static Bank banks[NUM_BANKS] = {
   {
+    "Unify Custom", {           // dry,  early, late,    size, width, delay, diffuse, low cut, low xo,  low mult, high cut, high xo, high mult, spin, wander, decay, e. send, modulation
+      {"Natural Hall",          { 80.0,  10.0,  16.4,    22.0, 130.0,   0.0,   100.0,       0, 1200.0,       1.5,   7300.0,  1000.0,  0.620609,  0.0,   40.0, 2.77599,  20.0, 10.0  }},
+      {"Drum Hall",             { 80.0,  12.0,  13.0, 19.2813, 100.0,   7.5,    60.0, 106.103, 879.891, 0.847375,   5853.2,  1000.0,  0.620609,  0.0,   40.0, 2.77599,  20.0, 10.0  }},
+      {"String Hall",           {  0.0, 22.42, 100.0,    42.0, 100.0, 15.44,   100.0,     0.0, 1200.0,   1.52622,  8690.08,  7158.91,      1.2, 4.23,  17.52,     1.4,  20.0, 45.0  }},
+      {"Mysterious Hall",       {  0.0, 65.28, 100.0,    40.0, 150.0,  20.0,    60.0,   26.76,  600.0,       2.5,  8848.75,  5052.81,      0.2,  3.0,   35.0,    5.09, 100.0, 30.0  }},
+      {"Fantasy Hall",          {  0.0, 22.42, 100.0,    42.1, 150.0, 15.44,   100.0,   253.4, 1200.0,   1.52622,  3033.91,  9080.55, 0.620609, 1.25,  25.08,  5.6777,  20.0, 75.86 }},
+    }
+  },
+  {
     "Rooms", {                   // dry, early, late, size, width, delay, diffuse, low cut, low xo, low mult, high cut, high xo, high mult, spin, wander, decay, e. send, modulation
       {"Bright Room",            { 80.0,  10.0, 20.0, 10.0,  90.0,   4.0,    90.0,     4.0,    500,     0.80,    16000,    7900,      0.75,  1.0, 25.0,     0.6,    20.0,    30.0 }},
       {"Clear Room",             { 80.0,  10.0, 20.0, 10.0,  90.0,   4.0,    90.0,     4.0,    500,     0.90,    13000,    5800,      0.50,  1.0, 25.0,     0.6,    20.0,    30.0 }},
@@ -181,25 +190,30 @@ void DragonflyHallProcessor::setCurrentProgram(int progIndex)
     progIndex = progIndex % 5;
     auto& preset = banks[bankIndex].presets[progIndex].params;
 
-    // unfortunately, setValueNotifyingHost() requires NORMALIZED parameter values
-    valueTreeState.getParameter(DragonflyHallParameters::dryLevelID)->setValueNotifyingHost(0.01f * preset.dryLevel);
-    valueTreeState.getParameter(DragonflyHallParameters::earlyLevelID)->setValueNotifyingHost(0.01f * preset.earlyLevel);
-    valueTreeState.getParameter(DragonflyHallParameters::earlySendID)->setValueNotifyingHost(0.01f * preset.earlySend);
-    valueTreeState.getParameter(DragonflyHallParameters::lateLevelID)->setValueNotifyingHost(0.01f * preset.lateLevel);
-    valueTreeState.getParameter(DragonflyHallParameters::sizeID)->setValueNotifyingHost((preset.size - 10.0f) / 50.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::widthID)->setValueNotifyingHost(0.01f * (preset.width - 50.0f));
-    valueTreeState.getParameter(DragonflyHallParameters::predelayID)->setValueNotifyingHost(0.01f * preset.predelay);
-    valueTreeState.getParameter(DragonflyHallParameters::diffuseID)->setValueNotifyingHost(0.01f * preset.diffuse);
-    valueTreeState.getParameter(DragonflyHallParameters::lowCutID)->setValueNotifyingHost(preset.lowCut / 200.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::lowCrossID)->setValueNotifyingHost((preset.lowCross - 200.0f) / 1000.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::lowMultID)->setValueNotifyingHost((preset.lowMult - 0.5f) / 2.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::highCutID)->setValueNotifyingHost((preset.highCut - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::highCrossID)->setValueNotifyingHost((preset.highCross - 1000.0f) / 15000.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::highMultID)->setValueNotifyingHost((preset.highMult - 0.2f) / 1.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::spinID)->setValueNotifyingHost(preset.spin / 10.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::wanderID)->setValueNotifyingHost(preset.wander / 40.0f);
-    valueTreeState.getParameter(DragonflyHallParameters::decayID)->setValueNotifyingHost((preset.decay - 0.1f) / 9.9f);
-    valueTreeState.getParameter(DragonflyHallParameters::modulationID)->setValueNotifyingHost(0.01f * preset.modulation);
+    // setValueNotifyingHost() requires NORMALIZED parameter values
+    RangedAudioParameter* param;
+#define SET_NORMALIZED(name) \
+    param = valueTreeState.getParameter(DragonflyHallParameters:: ## name ## ID); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+
+    SET_NORMALIZED(dryLevel);
+    SET_NORMALIZED(earlyLevel);
+    SET_NORMALIZED(earlySend);
+    SET_NORMALIZED(lateLevel);
+    SET_NORMALIZED(size);
+    SET_NORMALIZED(width);
+    SET_NORMALIZED(predelay);
+    SET_NORMALIZED(diffuse);
+    SET_NORMALIZED(lowCut);
+    SET_NORMALIZED(lowCross);
+    SET_NORMALIZED(lowMult);
+    SET_NORMALIZED(highCut);
+    SET_NORMALIZED(highCross);
+    SET_NORMALIZED(highMult);
+    SET_NORMALIZED(spin);
+    SET_NORMALIZED(wander);
+    SET_NORMALIZED(decay);
+    SET_NORMALIZED(modulation);
 
     sendChangeMessage();
 }

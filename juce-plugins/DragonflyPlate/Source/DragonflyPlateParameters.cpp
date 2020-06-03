@@ -23,7 +23,7 @@ const String DragonflyPlateParameters::dryLevelName = TRANS("Dry Level");
 const String DragonflyPlateParameters::dryLevelLabel = "%";
 const float DragonflyPlateParameters::dryLevelMin = 0.0f;
 const float DragonflyPlateParameters::dryLevelMax = 100.0f;
-const float DragonflyPlateParameters::dryLevelDefault = 80.0f;
+const float DragonflyPlateParameters::dryLevelDefault = 85.0f;
 const float DragonflyPlateParameters::dryLevelStep = 0.0f;
 // Wet Level
 const String DragonflyPlateParameters::wetLevelID = "wetLevel";
@@ -31,7 +31,7 @@ const String DragonflyPlateParameters::wetLevelName = TRANS("Wet Level");
 const String DragonflyPlateParameters::wetLevelLabel = "%";
 const float DragonflyPlateParameters::wetLevelMin = 0.0f;
 const float DragonflyPlateParameters::wetLevelMax = 100.0f;
-const float DragonflyPlateParameters::wetLevelDefault = 20.0f;
+const float DragonflyPlateParameters::wetLevelDefault = 15.0f;
 const float DragonflyPlateParameters::wetLevelStep = 0.0f;
 // Algorithm
 const String DragonflyPlateParameters::algIndexID = "algIndex";
@@ -45,7 +45,7 @@ const String DragonflyPlateParameters::widthName = TRANS("Width");
 const String DragonflyPlateParameters::widthLabel = "%";
 const float DragonflyPlateParameters::widthMin = 50.0f;
 const float DragonflyPlateParameters::widthMax = 150.0f;
-const float DragonflyPlateParameters::widthDefault = 100.0f;
+const float DragonflyPlateParameters::widthDefault = 130.0f;
 const float DragonflyPlateParameters::widthStep = 0.0f;
 // Predelay
 const String DragonflyPlateParameters::predelayID = "predelay";
@@ -53,7 +53,7 @@ const String DragonflyPlateParameters::predelayName = TRANS("Predelay");
 const String DragonflyPlateParameters::predelayLabel = "ms";
 const float DragonflyPlateParameters::predelayMin = 0.0f;
 const float DragonflyPlateParameters::predelayMax = 500.0f;
-const float DragonflyPlateParameters::predelayDefault = 0.0f;
+const float DragonflyPlateParameters::predelayDefault = 125.0f;
 const float DragonflyPlateParameters::predelayStep = 0.0f;
 // Decay
 const String DragonflyPlateParameters::decayID = "decay";
@@ -61,7 +61,7 @@ const String DragonflyPlateParameters::decayName = TRANS("Decay");
 const String DragonflyPlateParameters::decayLabel = "sec";
 const float DragonflyPlateParameters::decayMin = 0.1f;
 const float DragonflyPlateParameters::decayMax = 10.0f;
-const float DragonflyPlateParameters::decayDefault = 0.4f;
+const float DragonflyPlateParameters::decayDefault = 3.0f;
 const float DragonflyPlateParameters::decayStep = 0.0f;
 // Low Cut
 const String DragonflyPlateParameters::lowCutID = "lowCut";
@@ -69,7 +69,7 @@ const String DragonflyPlateParameters::lowCutName = TRANS("Low Cut");
 const String DragonflyPlateParameters::lowCutLabel = "Hz";
 const float DragonflyPlateParameters::lowCutMin = 0.0f;
 const float DragonflyPlateParameters::lowCutMax = 3000.0f;
-const float DragonflyPlateParameters::lowCutDefault = 200.0f;
+const float DragonflyPlateParameters::lowCutDefault = 750.0f;
 const float DragonflyPlateParameters::lowCutStep = 0.0f;
 // High Cut
 const String DragonflyPlateParameters::highCutID = "highCut";
@@ -85,7 +85,7 @@ const String DragonflyPlateParameters::dampenName = TRANS("Dampen");
 const String DragonflyPlateParameters::dampenLabel = "Hz";
 const float DragonflyPlateParameters::dampenMin = 1000.0f;
 const float DragonflyPlateParameters::dampenMax = 16000.0f;
-const float DragonflyPlateParameters::dampenDefault = 13000.0f;
+const float DragonflyPlateParameters::dampenDefault = 16000.0f;
 const float DragonflyPlateParameters::dampenStep = 0.0f;
 
 AudioProcessorValueTreeState::ParameterLayout DragonflyPlateParameters::createParameterLayout()
