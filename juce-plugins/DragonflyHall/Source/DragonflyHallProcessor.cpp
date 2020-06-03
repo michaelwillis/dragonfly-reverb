@@ -192,28 +192,28 @@ void DragonflyHallProcessor::setCurrentProgram(int progIndex)
 
     // setValueNotifyingHost() requires NORMALIZED parameter values
     RangedAudioParameter* param;
-#define SET_NORMALIZED(name) \
-    param = valueTreeState.getParameter(DragonflyHallParameters:: ## name ## ID); \
-    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+#define SET_NORMALIZED(name, id) \
+    param = valueTreeState.getParameter(DragonflyHallParameters:: id); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. name))
 
-    SET_NORMALIZED(dryLevel);
-    SET_NORMALIZED(earlyLevel);
-    SET_NORMALIZED(earlySend);
-    SET_NORMALIZED(lateLevel);
-    SET_NORMALIZED(size);
-    SET_NORMALIZED(width);
-    SET_NORMALIZED(predelay);
-    SET_NORMALIZED(diffuse);
-    SET_NORMALIZED(lowCut);
-    SET_NORMALIZED(lowCross);
-    SET_NORMALIZED(lowMult);
-    SET_NORMALIZED(highCut);
-    SET_NORMALIZED(highCross);
-    SET_NORMALIZED(highMult);
-    SET_NORMALIZED(spin);
-    SET_NORMALIZED(wander);
-    SET_NORMALIZED(decay);
-    SET_NORMALIZED(modulation);
+    SET_NORMALIZED(dryLevel, dryLevelID);
+    SET_NORMALIZED(earlyLevel, earlyLevelID);
+    SET_NORMALIZED(earlySend, earlySendID);
+    SET_NORMALIZED(lateLevel, lateLevelID);
+    SET_NORMALIZED(size, sizeID);
+    SET_NORMALIZED(width, widthID);
+    SET_NORMALIZED(predelay, predelayID);
+    SET_NORMALIZED(diffuse, diffuseID);
+    SET_NORMALIZED(lowCut, lowCutID);
+    SET_NORMALIZED(lowCross, lowCrossID);
+    SET_NORMALIZED(lowMult, lowMultID);
+    SET_NORMALIZED(highCut, highCutID);
+    SET_NORMALIZED(highCross, highCrossID);
+    SET_NORMALIZED(highMult, highMultID);
+    SET_NORMALIZED(spin, spinID);
+    SET_NORMALIZED(wander, wanderID);
+    SET_NORMALIZED(decay, decayID);
+    SET_NORMALIZED(modulation, modulationID);
 
     sendChangeMessage();
 }

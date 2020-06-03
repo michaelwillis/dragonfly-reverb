@@ -199,25 +199,25 @@ void DragonflyRoomProcessor::setCurrentProgram(int progIndex)
 
     // setValueNotifyingHost() requires NORMALIZED parameter values
     RangedAudioParameter* param;
-#define SET_NORMALIZED(name) \
-    param = valueTreeState.getParameter(DragonflyRoomParameters:: ## name ## ID); \
-    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+#define SET_NORMALIZED(name, id) \
+    param = valueTreeState.getParameter(DragonflyRoomParameters:: id); \
+    param->setValueNotifyingHost(param->convertTo0to1(preset. name))
 
-    SET_NORMALIZED(dryLevel);
-    SET_NORMALIZED(earlyLevel);
-    SET_NORMALIZED(earlySend);
-    SET_NORMALIZED(size);
-    SET_NORMALIZED(predelay);
-    SET_NORMALIZED(decay);
-    SET_NORMALIZED(diffuse);
-    SET_NORMALIZED(spin);
-    SET_NORMALIZED(wander);
-    SET_NORMALIZED(highCut);
-    SET_NORMALIZED(earlyDamp);
-    SET_NORMALIZED(lateDamp);
-    SET_NORMALIZED(lowBoost);
-    SET_NORMALIZED(boostFreq);
-    SET_NORMALIZED(lowCut);
+    SET_NORMALIZED(dryLevel, dryLevelID);
+    SET_NORMALIZED(earlyLevel, earlyLevelID);
+    SET_NORMALIZED(earlySend, earlySendID);
+    SET_NORMALIZED(size, sizeID);
+    SET_NORMALIZED(predelay, predelayID);
+    SET_NORMALIZED(decay, decayID);
+    SET_NORMALIZED(diffuse, diffuseID);
+    SET_NORMALIZED(spin, spinID);
+    SET_NORMALIZED(wander, wanderID);
+    SET_NORMALIZED(highCut, highCutID);
+    SET_NORMALIZED(earlyDamp, earlyDampID);
+    SET_NORMALIZED(lateDamp, lateDampID);
+    SET_NORMALIZED(lowBoost, lowBoostID);
+    SET_NORMALIZED(boostFreq, boostFreqID);
+    SET_NORMALIZED(lowCut, lowCutID);
 
     sendChangeMessage();
 }

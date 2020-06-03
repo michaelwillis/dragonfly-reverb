@@ -229,22 +229,19 @@ void DragonflyPlateProcessor::setCurrentProgram(int newProgramIndex)
 
     // setValueNotifyingHost() requires NORMALIZED parameter values
     RangedAudioParameter* param;
-#define SET_NORMALIZED(name) \
-    param = valueTreeState.getParameter(DragonflyPlateParameters:: ## name ## ID); \
-    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
-#define SET_NORMALIZED2(name, id) \
+#define SET_NORMALIZED(name, id) \
     param = valueTreeState.getParameter(DragonflyPlateParameters:: id); \
-    param->setValueNotifyingHost(param->convertTo0to1(preset. ## name))
+    param->setValueNotifyingHost(param->convertTo0to1(preset. name))
 
-    SET_NORMALIZED(dryLevel);
-    SET_NORMALIZED(wetLevel);
-    SET_NORMALIZED(algIndex);
-    SET_NORMALIZED(width);
-    SET_NORMALIZED2(delay, predelayID);
-    SET_NORMALIZED(decay);
-    SET_NORMALIZED(lowCut);
-    SET_NORMALIZED(highCut);
-    SET_NORMALIZED2(dampFreq, dampenID);
+    SET_NORMALIZED(dryLevel, dryLevelID);
+    SET_NORMALIZED(wetLevel, wetLevelID);
+    SET_NORMALIZED(algIndex, algIndexID);
+    SET_NORMALIZED(width, widthID);
+    SET_NORMALIZED(delay, predelayID);
+    SET_NORMALIZED(decay, decayID);
+    SET_NORMALIZED(lowCut, lowCutID);
+    SET_NORMALIZED(highCut, highCutID);
+    SET_NORMALIZED(dampFreq, dampenID);
 }
 
 const String DragonflyPlateProcessor::getProgramName(int programIndex)
