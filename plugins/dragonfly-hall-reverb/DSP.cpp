@@ -139,27 +139,31 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       }
       
       for (uint32_t i = 0; i < buffer_frames; i++) {
+	outputs[0][offset + i] = dry_level   * inputs[0][offset + i];
+	outputs[1][offset + i] = dry_level   * inputs[1][offset + i];
+      }
 
-        outputs[0][offset + i] = 0.0;
-        outputs[1][offset + i] = 0.0;
-	
-        if( dry_level > 0.0 ){
-            outputs[0][offset + i] += dry_level   * inputs[0][offset + i]  ;
-            outputs[1][offset + i] += dry_level   * inputs[1][offset + i]  ;
-        }
-        if( early_level > 0.0 ){
-            outputs[0][offset + i] += early_level * early_out_buffer[0][i]  ;
-            outputs[1][offset + i] += early_level * early_out_buffer[1][i]  ;
-        }
-        if( late_level > 0.0 ){
-            outputs[0][offset + i] += late_level  * late_out_buffer[0][i]  ;
-            outputs[1][offset + i] += late_level  * late_out_buffer[1][i]  ;
-        }
-
-	if (outputs[0][offset + i] != 0 || outputs[1][offset + i] != 0) {
-	  outputIdle = false;
+      if( early_level > 0.0 ){
+	for (uint32_t i = 0; i < buffer_frames; i++) {
+	  outputs[0][offset + i] += early_level * early_out_buffer[0][i];
+	  outputs[1][offset + i] += early_level * early_out_buffer[1][i];
 	}
       }
+
+      if( late_level > 0.0 ){
+	for (uint32_t i = 0; i < buffer_frames; i++) {
+            outputs[0][offset + i] += late_level  * late_out_buffer[0][i];
+            outputs[1][offset + i] += late_level  * late_out_buffer[1][i];
+        }
+      }
+
+      for (uint32_t i = 0; i < buffer_frames; i++) {
+	if (outputs[0][offset + i] != 0 || outputs[1][offset + i] != 0) {
+	  outputIdle = false;
+	  break;
+	}
+      }
+
     }
   }
   
