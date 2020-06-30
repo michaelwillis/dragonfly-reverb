@@ -31,31 +31,12 @@ FV3_(nrev)::FV3_(nrev)()
 	   throw(std::bad_alloc)
 {
   hpf = lpfL = lpfR = 0;
-  setRearDelay(0);
   setrt60(1);
   setfeedback(0.7);
   setdamp(0.5);
   setdamp2(0.5);
   setdamp3(0.5);
-  setwetrear(-10);
   setdccutfreq(8);
-}
-
-void FV3_(nrev)::setRearDelay(long numsamples)
-{
-  if(initialDelay >= 0)
-    {
-      rearDelay = numsamples;
-      delayRearL.setsize(0);
-      delayRearR.setsize(0);
-    }
-  delayRearL.mute();
-  delayRearR.mute();
-}
-
-long FV3_(nrev)::getRearDelay()
-{
-  return rearDelay;
 }
 
 void FV3_(nrev)::printconfig()
@@ -75,66 +56,16 @@ void FV3_(nrev)::mute()
     {
       allpassL[i].mute(); allpassR[i].mute();
     }
-  overORear.mute();
   hpf = lpfL = lpfR = 0;
   inDCC.mute(); lLDCC.mute(); lRDCC.mute();
-}
-
-void FV3_(nrev)::growWave(long size)
-		throw(std::bad_alloc)
-{
-  if(size > over.getsize())
-    {
-      freeWave();
-      try
-	{
-	  FV3_(revbase)::growWave(size);
-	  overORear.alloc(size,2);
-	}
-      catch(std::bad_alloc)
-	{
-	  std::fprintf(stderr, "nrev::growWave(%ld): bad_alloc", size);
-	  freeWave();
-	  throw;
-	}
-    }
-}
-
-void FV3_(nrev)::freeWave()
-{
-  FV3_(revbase)::freeWave();
-  overORear.free();
 }
 
 void FV3_(nrev)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR, long numsamples)
 		throw(std::bad_alloc)
 {
-  processreplace(inputL,inputR,outputL,outputR,NULL,NULL,numsamples);
-}
-
-void FV3_(nrev)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR,
-				fv3_float_t *outputRearL, fv3_float_t *outputRearR, long numsamples)
-		throw(std::bad_alloc)
-{
   if(numsamples <= 0) return;
-  long count = numsamples*SRC.getSRCFactor();
-  try{ growWave(count); }catch(std::bad_alloc){ throw; }
-  SRC.usrc(inputL, inputR, over.L, over.R, numsamples);
-  if(outputRearL == NULL||outputRearR == NULL)
-    {
-      processloop2(count, over.L, over.R, overO.L, overO.R);
-      SRC.dsrc(overO.L, overO.R, outputL, outputR, numsamples);
-    }
-  else
-    {
-      processloop4(count, over.L, over.R, overO.L, overO.R, overORear.L, overORear.R);
-      SRC.dsrc(overO.L, overO.R, outputL, outputR, numsamples);
-      SRCRear.dsrc(overORear.L, overORear.R, outputRearL, outputRearR, numsamples);
-    }
-}
+  long count = numsamples;
 
-void FV3_(nrev)::processloop2(long count, fv3_float_t *inputL, fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR)
-{
   fv3_float_t outL, outR;
   while(count-- > 0)
     {
@@ -156,48 +87,6 @@ void FV3_(nrev)::processloop2(long count, fv3_float_t *inputL, fv3_float_t *inpu
       outR = allpassR[3]._process_ov(lpfR); outR = allpassL[6]._process_ov(outR);
       outR = delayWR(lRDCC(outR));
       
-      *outputL = outL*wet1 + outR*wet2 + delayL(*inputL)*dry;
-      *outputR = outR*wet1 + outL*wet2 + delayR(*inputR)*dry;
-      inputL ++; inputR ++; outputL ++; outputR ++;
-    }
-}
-
-void FV3_(nrev)::processloop4(long count, fv3_float_t *inputL, fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR,
-			      fv3_float_t *outRearL, fv3_float_t *outRearR)
-{
-  fv3_float_t outL, outR;
-  while(count-- > 0)
-    {
-      outL = outR = 0;
-      hpf = damp3_1*inDCC(*inputL + *inputR) - damp3*hpf;
-      UNDENORMAL(hpf);
-
-      hpf *= FV3_NREV_SCALE_WET;
-      
-      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outL += combL[i]._process(hpf);
-      for(long i = 0;i < 3;i ++) outL = allpassL[i]._process_ov(outL);
-      lpfL = damp2*lpfL + damp2_1*outL; UNDENORMAL(lpfL);
-      outL = allpassL[3]._process_ov(lpfL);
-      *outRearL = allpassL[4]._process_ov(outL);
-      outL = allpassL[5]._process_ov(outL);
-      outL = delayWL(lLDCC(outL));
-      
-      *outRearL = allpassL[7]._process_ov(*outRearL)*wetRear;
-      *outRearL = delayRearL(*outRearL);
-      outRearL ++;
-
-      for(long i = 0;i < FV3_NREV_NUM_COMB;i ++) outR += combR[i]._process(hpf);
-      for(long i = 0;i < 3;i ++) outR = allpassR[i]._process_ov(outR);
-      lpfR = damp2*lpfR + damp2_1*outR; UNDENORMAL(lpfR);
-      outR = allpassR[3]._process_ov(lpfR);
-      *outRearR = allpassR[4]._process_ov(outR);
-      outR = allpassL[6]._process_ov(outR);
-      outR = delayWR(lRDCC(outR));
-      
-      *outRearR = allpassL[8]._process_ov(*outRearR)*wetRear;
-      *outRearR = delayRearR(*outRearR);
-      outRearR ++;
-            
       *outputL = outL*wet1 + outR*wet2 + delayL(*inputL)*dry;
       *outputR = outR*wet1 + outL*wet2 + delayR(*inputR)*dry;
       inputL ++; inputR ++; outputL ++; outputR ++;
@@ -278,25 +167,6 @@ void FV3_(nrev)::setdamp3(fv3_float_t value)
 fv3_float_t FV3_(nrev)::getdamp3()
 {
   return damp3;
-}
-
-void FV3_(nrev)::setwetrear(fv3_float_t value)
-{
-  wetRearReal = value;
-  wetRear = FV3_(utils)::dB2R(value)*FV3_NREV_SCALE_WET;
-}
-
-fv3_float_t FV3_(nrev)::getwetrear()
-{
-  return wetRearReal;
-}
-
-void FV3_(nrev)::setOSFactor(long factor, long converter_type)
-		    throw(std::bad_alloc)
-{
-  FV3_(revbase)::setOSFactor(factor, converter_type);
-  SRCRear.setSRCFactor(factor, converter_type);
-  setFsFactors();
 }
 
 void FV3_(nrev)::setdccutfreq(fv3_float_t value)

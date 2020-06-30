@@ -23,6 +23,7 @@
 #define _FV3_ZREV2_HPP
 
 #include "freeverb/zrev.hpp"
+#include "freeverb/biquad.hpp"
 #include "freeverb/fv3_defs.h"
 
 #define FV3_ZREV2_ALLPASS_FS 34125

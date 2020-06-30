@@ -32,7 +32,7 @@ FV3_(revbase)::FV3_(revbase)()
 
 FV3_(revbase)::FV3_(~revbase)()
 {
-  freeWave();
+
 }
 
 void FV3_(revbase)::setReverbType(unsigned type)
@@ -48,7 +48,7 @@ unsigned FV3_(revbase)::getReverbType()
 void FV3_(revbase)::setInitialDelay(long numsamples)
 {
   initialDelay = numsamples;
-  preDelay = (fv3_float_t)initialDelay*1000.0f/(currentfs*(fv3_float_t)getOSFactor());
+  preDelay = (fv3_float_t)initialDelay*1000.0f/currentfs;
   if(initialDelay >= 0)
     {
 #ifdef DEBUG
@@ -79,7 +79,7 @@ long FV3_(revbase)::getInitialDelay()
 
 void FV3_(revbase)::setPreDelay(fv3_float_t value_ms)
 {
-  setInitialDelay((long)(currentfs*(fv3_float_t)getOSFactor()*(preDelay = value_ms)/1000.));
+  setInitialDelay((long)(currentfs*(preDelay = value_ms)/1000.));
 }
 
 fv3_float_t FV3_(revbase)::getPreDelay() const
@@ -89,48 +89,20 @@ fv3_float_t FV3_(revbase)::getPreDelay() const
 
 long FV3_(revbase)::getLatency()
 {
-  return SRC.getLatency();
+  return 0;
 }
 
 void FV3_(revbase)::printconfig()
 {
   std::fprintf(stderr, "*** revbase config ***\n");
-  std::fprintf(stderr, "Fs = %f[Hz] X %ld\n",currentfs,SRC.getSRCFactor());
+  std::fprintf(stderr, "Fs = %f[Hz]\n",currentfs);
   std::fprintf(stderr, "Wet %f Dry %f Width %f\n", (double)wet, (double)dry, (double)width);
 }
 
 void FV3_(revbase)::mute()
 {
-  over.mute(); overO.mute();
   delayL.mute(); delayR.mute();
   delayWL.mute(); delayWR.mute();
-  SRC.mute();
-}
-
-void FV3_(revbase)::growWave(long size)
-		throw(std::bad_alloc)
-{
-  if(size > over.getsize())
-    {
-      FV3_(revbase)::freeWave();
-      try
-	{
-	  over.alloc(size, 2);
-	  overO.alloc(size,2);
-	}
-      catch(std::bad_alloc)
-	{
-	  std::fprintf(stderr, "revbase::growWave(%ld): bad_alloc", size);
-	  FV3_(revbase)::freeWave();
-	  throw;
-	}
-    }
-}
-
-void FV3_(revbase)::freeWave()
-{
-  over.free();
-  overO.free();
 }
 
 void FV3_(revbase)::setwet(fv3_float_t value)
@@ -225,32 +197,6 @@ void FV3_(revbase)::setSampleRate(fv3_float_t fs)
   if(muteOnChange) mute();
 }
 
-long FV3_(revbase)::getOSFactor()
-{
-  return SRC.getSRCFactor();
-}
-
-fv3_float_t FV3_(revbase)::getOSFactorf()
-{
-  return (fv3_float_t)SRC.getSRCFactor();
-}
-
-void FV3_(revbase)::setOSFactor(long factor)
-		    throw(std::bad_alloc)
-{
-  if(factor <= 0) return;
-  setOSFactor(factor, FV3_SRC_LPF_IIR_2);
-}
-
-void FV3_(revbase)::setOSFactor(long factor, long converter_type)
-		    throw(std::bad_alloc)
-{
-  if(factor <= 0) return;
-  SRC.setSRCFactor(factor, converter_type);
-  setFsFactors();
-  if(muteOnChange) mute();
-}
-
 void FV3_(revbase)::setRSFactor(fv3_float_t value)
 {
   if(value <= 0) return;
@@ -267,7 +213,7 @@ fv3_float_t FV3_(revbase)::getRSFactor() const
 void FV3_(revbase)::setFsFactors()
 {
 #ifdef DEBUG
-  std::fprintf(stderr, "revbase::setFsFactors(%f,%f,%f)\n", getSampleRate(), getOSFactorf(), getRSFactor());
+  std::fprintf(stderr, "revbase::setFsFactors(%f,%f)\n", getSampleRate(), getRSFactor());
 #endif
   setPreDelay(getPreDelay());
 }

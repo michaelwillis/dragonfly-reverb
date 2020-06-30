@@ -26,7 +26,7 @@
 #include <new>
 
 #include "freeverb/slot.hpp"
-#include "freeverb/src.hpp"
+#include "freeverb/efilter.hpp"
 #include "freeverb/delay.hpp"
 #include "freeverb/fv3_defs.h"
 

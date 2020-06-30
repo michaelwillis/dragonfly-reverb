@@ -25,11 +25,7 @@ public:
   virtual _FV3_(~revbase)();
   virtual void         setSampleRate(_fv3_float_t fs) throw(std::bad_alloc);
   virtual _fv3_float_t getSampleRate();
-  virtual void setOSFactor(long factor, long converter_type) throw(std::bad_alloc);
-  virtual void setOSFactor(long factor) throw(std::bad_alloc);
-  virtual long getOSFactor();
-  virtual _fv3_float_t getOSFactorf();
-  virtual _fv3_float_t getTotalSampleRate(){ return getSampleRate()*getOSFactorf(); }
+  virtual _fv3_float_t getTotalSampleRate(){ return getSampleRate(); }
 
   /**
    * set the factor of delay loops.
@@ -37,7 +33,7 @@ public:
    */
   virtual void setRSFactor(_fv3_float_t value);
   virtual _fv3_float_t getRSFactor() const;
-  virtual _fv3_float_t getTotalFactorFs(){ return getSampleRate()*getOSFactorf()*getRSFactor(); }
+  virtual _fv3_float_t getTotalFactorFs(){ return getSampleRate()*getRSFactor(); }
 
   virtual void setFsFactors();
 
@@ -119,10 +115,6 @@ public:
   long initialDelay;
   _FV3_(delay) delayL, delayR, delayWL, delayWR;
   _fv3_float_t currentfs, rsfactor, preDelay, wetDB, wet, wet1, wet2, dryDB, dry, width;
-  _FV3_(src) SRC;
-  _FV3_(slot) over, overO;
-  virtual void growWave(long size) throw(std::bad_alloc);
-  virtual void freeWave();
   virtual void update_wet();
   virtual _fv3_float_t limFs2(_fv3_float_t fq);
 

@@ -67,12 +67,9 @@ void FV3_(zrev2)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR, fv3_f
     }
 
   if(numsamples <= 0) return;
-  long count = numsamples*getOSFactor();
-  try{growWave(count);}catch(std::bad_alloc){throw;}
+  long count = numsamples;
 
-  fv3_float_t outL, outR, *origOutL = outputL, *origOutR = outputR;
-  SRC.usrc(inputL, inputR, over.L, over.R, numsamples);
-  inputL = over.L; inputR = over.R; outputL = overO.L; outputR = overO.R;
+  fv3_float_t outL, outR;
 
   while(count-- > 0)
     {
@@ -142,7 +139,6 @@ void FV3_(zrev2)::processreplace(fv3_float_t *inputL, fv3_float_t *inputR, fv3_f
       UNDENORMAL(*outputL); UNDENORMAL(*outputR);
       inputL ++; inputR ++; outputL ++; outputR ++;
     }
-  SRC.dsrc(overO.L, overO.R, origOutL, origOutR, numsamples);
 }
 
 void FV3_(zrev2)::setrt60(fv3_float_t value)

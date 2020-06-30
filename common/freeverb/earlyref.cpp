@@ -354,12 +354,11 @@ fv3_float_t FV3_(earlyref)::getDiffusionApFreq()
 
 void FV3_(earlyref)::setoutputlpf(fv3_float_t value)
 {
-  long factor = getOSFactor();
   if(value < 0) value = 0;
-  if(value > factor*currentfs/2) value = factor*currentfs/2;
+  if(value > currentfs/2) value = currentfs/2;
   outputlpf = value;
-  out1_lpf.setLPF_BW(outputlpf, factor*currentfs);
-  out2_lpf.setLPF_BW(outputlpf, factor*currentfs);
+  out1_lpf.setLPF_BW(outputlpf, currentfs);
+  out2_lpf.setLPF_BW(outputlpf, currentfs);
 }
 
 fv3_float_t FV3_(earlyref)::getoutputlpf() const
@@ -369,12 +368,11 @@ fv3_float_t FV3_(earlyref)::getoutputlpf() const
 
 void FV3_(earlyref)::setoutputhpf(fv3_float_t value)
 {
-  long factor = getOSFactor();
   if(value < 0) value = 0;
-  if(value > factor*currentfs/2) value = factor*currentfs/2;
+  if(value > currentfs/2) value = currentfs/2;
   outputhpf = value;
-  out1_hpf.setHPF_BW(outputhpf, factor*currentfs);
-  out2_hpf.setHPF_BW(outputhpf, factor*currentfs);
+  out1_hpf.setHPF_BW(outputhpf, currentfs);
+  out2_hpf.setHPF_BW(outputhpf, currentfs);
 }
 
 fv3_float_t FV3_(earlyref)::getoutputhpf() const
