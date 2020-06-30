@@ -358,7 +358,7 @@ void DragonflyReverbUI::onDisplay()
 
     std::snprintf(textBuffer, 400,
       "Dragonfly Plate is a free reverb effect\n"
-      "based on Freeverb3 STRev.\n\n"
+      "based on Freeverb3 NReverb and STRev.\n\n"
       "Version: %d.%d.%d%s  License: GPL 3+\n\n"
       "• Michael Willis - Plugin Development\n"
       "• James Peters - Quality Assurance\n"
