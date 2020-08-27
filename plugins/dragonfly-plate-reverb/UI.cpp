@@ -20,7 +20,6 @@
 #include "UI.hpp"
 #include "Artwork.hpp"
 #include "DistrhoPluginInfo.h"
-#include "NotoSans_Regular.ttf.hpp"
 #include <array>
 #include <vector>
 #include <math.h>
@@ -81,7 +80,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 
   for ( int i = 0; i < ALGORITHM_COUNT; ++i)
   {
-    rectAlgorithms[i].setPos( 577, 35 + (i * 21) );
+    rectAlgorithms[i].setPos( 575, 35 + (i * 21) );
     rectAlgorithms[i].setSize( 100, 21 );
   }
 
@@ -263,7 +262,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print parameters
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
   nanoText.fillColor ( Color ( r, g, b ) );
@@ -278,7 +277,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print labels;
   nanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 14 );
   nanoText.textBox (  10, 130, 40, "Dry\nLevel",   nullptr );
   nanoText.textBox (  50, 130, 40, "Wet\nLevel",   nullptr );
   nanoText.endFrame();
@@ -305,7 +304,7 @@ void DragonflyReverbUI::onDisplay()
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 18 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
 
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
@@ -314,7 +313,7 @@ void DragonflyReverbUI::onDisplay()
 
   nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
   nanoText.fillColor(bright);
-  nanoText.textBox ( 340, 7, 200, "Presets", nullptr );
+  nanoText.textBox ( 340, 10, 200, "Presets", nullptr );
   
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   
@@ -328,13 +327,13 @@ void DragonflyReverbUI::onDisplay()
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
   
   nanoText.fillColor(bright);
-  nanoText.textBox ( 580, 7, 100, "Reverb Type", nullptr );
+  nanoText.textBox ( 575, 10, 100, "Reverb Type", nullptr );
 
   for (int row = 0; row < ALGORITHM_COUNT; row ++)
   {
     DGL::Rectangle<int> rect = rectAlgorithms[row];
     nanoText.fillColor( row == ((int)currentAlg) ? bright : dim );
-    nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), algorithmNames[row], nullptr );
+    nanoText.textBox ( rect.getX(), rect.getY() + 2, rect.getWidth(), algorithmNames[row], nullptr );
   }
 
   nanoText.endFrame();
@@ -342,7 +341,7 @@ void DragonflyReverbUI::onDisplay()
   if (displayAbout) {
     spectrogram->hide();
     nanoText.beginFrame ( this );
-    nanoText.fontSize ( 18 );
+    nanoText.fontSize ( 15 );
     nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
     r = 230.0f / 256;

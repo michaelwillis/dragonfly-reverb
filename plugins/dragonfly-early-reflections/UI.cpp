@@ -20,7 +20,6 @@
 #include "UI.hpp"
 #include "Artwork.hpp"
 #include "DistrhoPluginInfo.h"
-#include "NotoSans_Regular.ttf.hpp"
 #include <array>
 #include <vector>
 #include <math.h>
@@ -188,7 +187,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print parameters
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
   nanoText.fillColor ( Color ( r, g, b ) );
@@ -203,7 +202,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print labels;
   nanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 14 );
   nanoText.textBox (  10, 130, 40, "Dry\nLevel",   nullptr );
   nanoText.textBox (  50, 130, 40, "Wet\nLevel",   nullptr );
   nanoText.endFrame();
@@ -230,7 +229,7 @@ void DragonflyReverbUI::onDisplay()
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 18 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
 
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
@@ -238,7 +237,7 @@ void DragonflyReverbUI::onDisplay()
 
   if (displayAbout) {
     nanoText.beginFrame ( this );
-    nanoText.fontSize ( 18 );
+    nanoText.fontSize ( 12 );
     nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
     r = 230.0f / 256;
@@ -256,9 +255,9 @@ void DragonflyReverbUI::onDisplay()
       "This is a free audio effect\n"
       "based on Freeverb3.\n\n"
       "Version: %d.%d.%d%s\nLicense: GPL 3+\n\n"
-      "• Michael Willis - Dev\n"
-      "• James Peters - QA\n"
-      "• Teru Kamogashira - FV3\n"
+      "• Michael Willis - Dev\n\n"
+      "• James Peters - QA\n\n"
+      "• Teru Kamogashira - FV3\n\n"
       "• \"falkTX\" Coelho - DPF",
       MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION, VERSION_SUFFIX
     );

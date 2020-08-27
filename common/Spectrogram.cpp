@@ -169,7 +169,7 @@ void Spectrogram::onDisplay() {
   std::string decayTimeString [] = { "½s", "1s", "2s", "4s", "8s" };
 
   fNanoText->beginFrame ( this );
-  fNanoText->fontSize ( 16 );
+  fNanoText->fontSize ( 13 );
   fNanoText->textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_MIDDLE );
 
   for ( int i = 0 ; i < 5 ; i++ ) {

@@ -23,7 +23,7 @@ FILES_UI  = \
 	../../common/AbstractUI.cpp \
 	../../common/LabelledKnob.cpp \
 	../../common/Spectrogram.cpp \
-	../../common/NotoSans_Regular.ttf.cpp
+	../../common/Bitstream_Vera_Sans_Regular.cpp
 
 # --------------------------------------------------------------
 # Do some magic

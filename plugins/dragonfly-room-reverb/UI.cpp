@@ -20,7 +20,6 @@
 #include "UI.hpp"
 #include "Artwork.hpp"
 #include "DistrhoPluginInfo.h"
-#include "NotoSans_Regular.ttf.hpp"
 #include <array>
 #include <vector>
 #include <math.h>
@@ -316,7 +315,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print parameters
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
   nanoText.fillColor ( Color ( r, g, b ) );
@@ -335,7 +334,7 @@ void DragonflyReverbUI::onDisplay()
 
   // print labels;
   nanoText.fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
-  nanoText.fontSize ( 16 );
+  nanoText.fontSize ( 14 );
   nanoText.textBox (  10, 130, 40, "Dry\nLevel",   nullptr );
   nanoText.textBox (  50, 130, 40, "Early\nLevel", nullptr );
   nanoText.textBox (  90, 130, 40, "Early\nSend",  nullptr );
@@ -377,7 +376,7 @@ void DragonflyReverbUI::onDisplay()
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
   nanoText.beginFrame ( this );
-  nanoText.fontSize ( 18 );
+  nanoText.fontSize ( 15 );
   nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
 
   Color bright = Color ( 0.90f, 0.95f, 1.00f );
@@ -394,7 +393,7 @@ void DragonflyReverbUI::onDisplay()
       nanoText.fillColor ( dim );
     }
 
-    nanoText.textBox ( bank.getX() - 3, bank.getY() + 2, bank.getWidth(), banks[row].name, nullptr );
+    nanoText.textBox ( bank.getX(), bank.getY() + 4, bank.getWidth(), banks[row].name, nullptr );
   }
 
 
@@ -404,7 +403,7 @@ void DragonflyReverbUI::onDisplay()
   {
     DGL::Rectangle<int> presetRect = rectPresets[row];
     nanoText.fillColor( row == currentPreset[currentBank] ? bright : dim );
-    nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), banks[currentBank].presets[row].name, nullptr );
+    nanoText.textBox ( presetRect.getX(), presetRect.getY() + 4, presetRect.getWidth(), banks[currentBank].presets[row].name, nullptr );
   }
 
   nanoText.endFrame();
@@ -412,7 +411,7 @@ void DragonflyReverbUI::onDisplay()
   if (displayAbout) {
     spectrogram->hide();
     nanoText.beginFrame ( this );
-    nanoText.fontSize ( 18 );
+    nanoText.fontSize ( 15 );
     nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
 
     r = 230.0f / 256;

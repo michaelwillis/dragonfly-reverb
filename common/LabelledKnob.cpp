@@ -56,7 +56,7 @@ void LabelledKnob::onDisplay()
   fNanoText->beginFrame ( this );
   fNanoText->textAlign ( NanoVG::ALIGN_CENTER|NanoVG::ALIGN_MIDDLE );
 
-  fNanoText->fontSize ( 18 );
+  fNanoText->fontSize ( 15 );
   fNanoText->fillColor ( Color ( 0.90f, 0.95f, 1.00f ) );
   fNanoText->textBox ( 0, 7, getWidth(), fName, nullptr );
 
@@ -64,7 +64,7 @@ void LabelledKnob::onDisplay()
   strBuf[32] = '\0';
   std::snprintf ( strBuf, 32, fNumberFormat, fKnob->getValue() );
 
-  fNanoText->fontSize ( 16 );
+  fNanoText->fontSize ( 14 );
   fNanoText->fillColor ( Color ( 0.9f, 0.9f, 0.9f ) );
   fNanoText->textBox ( 0, getHeight() - 7, getWidth(), strBuf, nullptr );
 
