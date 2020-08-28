@@ -113,33 +113,24 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       filtered_input_buffer[1][i] = input_lpf_1.process(input_hpf_1.process(inputs[1][offset + i]));
     }
 
-    if( early_level > 0.0 || early_send > 0.0){
-      early.processreplace(
-	const_cast<float *>(filtered_input_buffer[0]),
-	const_cast<float *>(filtered_input_buffer[1]),
-	early_out_buffer[0],
-	early_out_buffer[1],
-	buffer_frames);
-      
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-	late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + filtered_input_buffer[0][i];
-	late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + filtered_input_buffer[1][i];
-      }
-    } else if (late_level > 0.0) {
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-	late_in_buffer[0][i] = filtered_input_buffer[0][i];
-	late_in_buffer[1][i] = filtered_input_buffer[1][i];
-      }
+    early.processreplace(
+      const_cast<float *>(filtered_input_buffer[0]),
+      const_cast<float *>(filtered_input_buffer[1]),
+      early_out_buffer[0],
+      early_out_buffer[1],
+      buffer_frames);
+    
+    for (uint32_t i = 0; i < buffer_frames; i++) {
+      late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + filtered_input_buffer[0][i];
+      late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + filtered_input_buffer[1][i];
     }
     
-    if (late_level > 0.0) {
-      late.processreplace(
-	const_cast<float *>(late_in_buffer[0]),
-	const_cast<float *>(late_in_buffer[1]),
-	late_out_buffer[0],
-	late_out_buffer[1],
-	buffer_frames);
-    }
+    late.processreplace(
+      const_cast<float *>(late_in_buffer[0]),
+      const_cast<float *>(late_in_buffer[1]),
+      late_out_buffer[0],
+      late_out_buffer[1],
+      buffer_frames);
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
       outputs[0][offset + i] = dry_level   * inputs[0][offset + i];

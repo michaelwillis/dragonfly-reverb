@@ -92,83 +92,46 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
     }
   }
 
-  bool inputIdle = true;
-  bool outputIdle = true;
+  for (uint32_t offset = 0; offset < frames; offset += BUFFER_SIZE) {
+    long int buffer_frames = frames - offset < BUFFER_SIZE ? frames - offset : BUFFER_SIZE;
 
-  for (uint32_t frame = 0; frame < frames; frame++) {
-    if (inputs[0][frame] != 0 || inputs[1][frame] != 0) {
-      inputIdle = false;
-    }
-  }
-
-  if (!inputIdle) {
-    idle = false;
-  }
-
-  if (!idle) {
-    for (uint32_t offset = 0; offset < frames; offset += BUFFER_SIZE) {
-      long int buffer_frames = frames - offset < BUFFER_SIZE ? frames - offset : BUFFER_SIZE;
-
-      if (early_level > 0.0 || early_send > 0.0){
-	early.processreplace(
-	  const_cast<float *>(inputs[0] + offset),
-	  const_cast<float *>(inputs[1] + offset),
-	  early_out_buffer[0],
-	  early_out_buffer[1],
-	  buffer_frames);
-
-        for (uint32_t i = 0; i < buffer_frames; i++) {
-	  late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + inputs[0][offset + i];
-	  late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + inputs[1][offset + i];
-        }
-      } else if (late_level > 0.0) {
-        for (uint32_t i = 0; i < buffer_frames; i++) {
-	  late_in_buffer[0][i] = inputs[0][offset + i];
-	  late_in_buffer[1][i] = inputs[1][offset + i];
-        }
-      }
-
-      if( late_level > 0.0 ) {
-        late.processreplace(
-            const_cast<float *>(late_in_buffer[0]),
-            const_cast<float *>(late_in_buffer[1]),
-            late_out_buffer[0],
-            late_out_buffer[1],
-            buffer_frames
-        );
-      }
+    early.processreplace(
+      const_cast<float *>(inputs[0] + offset),
+      const_cast<float *>(inputs[1] + offset),
+      early_out_buffer[0],
+      early_out_buffer[1],
+      buffer_frames);
       
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-	outputs[0][offset + i] = dry_level   * inputs[0][offset + i];
-	outputs[1][offset + i] = dry_level   * inputs[1][offset + i];
-      }
-
-      if( early_level > 0.0 ){
-	for (uint32_t i = 0; i < buffer_frames; i++) {
-	  outputs[0][offset + i] += early_level * early_out_buffer[0][i];
-	  outputs[1][offset + i] += early_level * early_out_buffer[1][i];
-	}
-      }
-
-      if( late_level > 0.0 ){
-	for (uint32_t i = 0; i < buffer_frames; i++) {
-            outputs[0][offset + i] += late_level  * late_out_buffer[0][i];
-            outputs[1][offset + i] += late_level  * late_out_buffer[1][i];
-        }
-      }
-
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-	if (outputs[0][offset + i] != 0 || outputs[1][offset + i] != 0) {
-	  outputIdle = false;
-	  break;
-	}
-      }
-
+    for (uint32_t i = 0; i < buffer_frames; i++) {
+      late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + inputs[0][offset + i];
+      late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + inputs[1][offset + i];
     }
-  }
-  
-  if (inputIdle && outputIdle) {
-    idle = true;
+    
+    late.processreplace(
+      const_cast<float *>(late_in_buffer[0]),
+      const_cast<float *>(late_in_buffer[1]),
+      late_out_buffer[0],
+      late_out_buffer[1],
+      buffer_frames);
+      
+    for (uint32_t i = 0; i < buffer_frames; i++) {
+      outputs[0][offset + i] = dry_level   * inputs[0][offset + i];
+      outputs[1][offset + i] = dry_level   * inputs[1][offset + i];
+    }
+
+    if( early_level > 0.0 ){
+      for (uint32_t i = 0; i < buffer_frames; i++) {
+        outputs[0][offset + i] += early_level * early_out_buffer[0][i];
+        outputs[1][offset + i] += early_level * early_out_buffer[1][i];
+      }
+    }
+    
+    if( late_level > 0.0 ){
+      for (uint32_t i = 0; i < buffer_frames; i++) {
+        outputs[0][offset + i] += late_level  * late_out_buffer[0][i];
+        outputs[1][offset + i] += late_level  * late_out_buffer[1][i];
+      }
+    }
   }
 }
 
