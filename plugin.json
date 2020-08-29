@@ -1,0 +1,14 @@
+{
+    "$schema": "https://raw.githubusercontent.com/AuburnSounds/dplug/master/plugin-schema.json",
+    "vendorName": "Dragonfly DSP",
+    "vendorUniqueID": "DDSP",
+    "pluginName": "Dragonfly Reverb 4",
+    "pluginHomepage": "https://michaelwillis.github.io/dragonfly-reverb/",
+    "pluginUniqueID": "dfr4",
+    "publicVersion": "4.0.0",
+    "CFBundleIdentifierPrefix": "dragonfly-dsp",
+    "hasGUI": true,
+    "isSynth": false,
+    "receivesMIDI": false,
+    "category": "effectReverb"
+}

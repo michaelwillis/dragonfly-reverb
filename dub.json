@@ -1,0 +1,49 @@
+{
+    "$schema": "https://raw.githubusercontent.com/Pure-D/code-d/master/json-validation/dub.schema.json",
+
+    "name": "dragonfly-reverb",
+
+    "license": "GPL 3",
+    "importPaths": [ "." ],
+    "sourcePaths": [ "." ],
+    "stringImportPaths": ["gfx", "."],
+
+    "copyright": "none",
+
+    "dflags-linux-dmd": ["-defaultlib=libphobos2.a"],
+    "dflags-osx-ldc": ["-static"],
+    "dflags-linux-ldc": ["-link-defaultlib-shared=false", "-fvisibility=hidden"],
+    "dflags-windows-ldc": ["-mscrtlib=libcmt"],
+
+    "dependencies":
+    {
+        "dplug:dsp": "9.2.11",
+        "dplug:lv2": "9.2.11",
+        "dplug:au": "9.2.11",
+        "dplug:vst3": "9.2.11",
+        "dplug:gui": "9.2.11",
+        "dplug:canvas": "9.2.11",
+        "dplug:flat-widgets": "9.2.11"
+    },
+
+    "configurations": [
+        {
+            "name": "VST3",
+            "versions": ["VST3"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-vst3.lst", "-dead_strip" ]
+        },
+        {
+            "name": "AU",
+            "versions": ["AU"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-au.lst", "-dead_strip" ]
+        },       
+        {
+            "name": "LV2",
+            "versions": ["LV2"],
+            "targetType": "dynamicLibrary",
+            "lflags-osx-ldc": [ "-exported_symbols_list", "module-lv2.lst", "-dead_strip" ]
+        }
+    ]
+}

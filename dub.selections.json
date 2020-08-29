@@ -1,0 +1,9 @@
+{
+	"fileVersion": 1,
+	"versions": {
+		"dplug": "9.2.11",
+		"gfm": "8.0.3",
+		"intel-intrinsics": "1.2.6",
+		"pfft": "1.0.7"
+	}
+}

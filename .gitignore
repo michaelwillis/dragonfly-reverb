@@ -1,6 +1,4 @@
 .DS_Store
 *~
-bin
-build
-*.o
-*.d
+builds
+.dub
