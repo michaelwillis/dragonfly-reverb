@@ -21,8 +21,8 @@ enum : int
     paramOutputGain,
     paramMix,
     paramMode,
+    paramEffect1Gain
 }
-
 
 final class DragonflyReverbClient : dplug.client.Client
 {
@@ -70,6 +70,7 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramOutputGain, "output gain", "db", -12.0f, 12.0f, 0.0f) ;
         params ~= mallocNew!LinearFloatParameter(paramMix, "mix", "%", 0.0f, 100.0f, 100.0f) ;
         params ~= mallocNew!BoolParameter(paramMode, "mode", false);
+        params ~= mallocNew!GainParameter(paramEffect1Gain, "Effect 1 Gain", 10.0f, 0.0f);
         return params.releaseData();
     }
 
