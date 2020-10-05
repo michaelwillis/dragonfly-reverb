@@ -13,12 +13,12 @@ private import core.stdc.stdlib : malloc, free;
 private import core.stdc.stdio : snprintf, printf;
 private import core.stdc.string : strcmp, strlen;
 
-class UISelectBox : UIElement {
+class UISelectBox : UIElement, IParameterListener {
 public:
 nothrow:
 @nogc:
 
-  this(UIContext context, Font font, int textSize, EnumParameter param) {
+  this(UIContext context, EnumParameter param, Font font, int textSize) {
     super(context, flagRaw);
     _font = font;
     _textSize = textSize;
@@ -26,11 +26,12 @@ nothrow:
     _textColor = RGBA(200, 200, 200, 255);
     _highlightColor = RGBA(255, 255, 255, 255);
     _backgroundColor = RGBA(0, 0, 0, 255);
-    _selectedIndex = 0;
+
+    _param.addListener(this);
   }
 
   ~this() {
-
+    _param.removeListener(this);
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
@@ -48,7 +49,7 @@ nothrow:
         
         cropped.fillText(
           _font, _param.getValueString(i),
-          _textSize, 0.5, i == _selectedIndex ? _highlightColor : _textColor,
+          _textSize, 0.5, i == _param.value() ? _highlightColor : _textColor,
           positionInDirty.x, positionInDirty.y,
           HorizontalAlignment.left,
           VerticalAlignment.baseline);
@@ -57,20 +58,31 @@ nothrow:
   }
 
   override bool onMouseClick(int x, int y, int button, bool isDoubleClick, MouseState mstate) {
-    // TODO: is x, y absolute or relative?
+    // TODO: Get rid of magic number 1.2, make row height explicit    
+    int value = cast(int) ((cast(float)y) / (_textSize * 1.2));
 
-    _selectedIndex = cast(int) ((cast(float)y) / (_textSize * 1.2));
+    _param.beginParamEdit();
+    _param.setFromGUI(value);
+    _param.endParamEdit();
+
     setDirtyWhole();
     return true;
   }
-    
+
+  override void onParameterChanged(Parameter sender) {
+    setDirtyWhole(); // TODO: Only dirty old and new selection?
+  }
+
+  override void onBeginParameterEdit(Parameter sender) { }
+
+  override void onEndParameterEdit(Parameter sender) { }
+
 private:
+  EnumParameter _param;
+
   Font _font;
   int _textSize;
   RGBA _textColor;
   RGBA _highlightColor;  
   RGBA _backgroundColor;
-
-  EnumParameter _param;
-  int _selectedIndex;
 }

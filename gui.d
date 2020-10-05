@@ -51,12 +51,7 @@ nothrow:
         UIImageSwitch modeSwitch = mallocNew!UIImageSwitch(
           context(), cast(BoolParameter) _client.param(paramMode), switchOnImage, switchOffImage);
 
-        reflectionPatterns = makeVec!string();
-        reflectionPatterns.pushBack("Abrupt Echo");
-        reflectionPatterns.pushBack("Backstage Pass");
-        reflectionPatterns.pushBack("Concert Venue");
-
-        UISelectBox earlySelect = mallocNew!UISelectBox(context(), _font, 14, cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern));
+        UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern), _font, 14);
 
         addChild(inputGainKnob);
         addChild(clipKnob);

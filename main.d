@@ -33,25 +33,22 @@ nothrow:
 
     this()
     {
-        // These must have the same order as the enum
-        effects1 =
-        [
-            mallocNew!NoEffect(),
-            mallocNew!EarlyEffect(),
-            mallocNew!HallEffect(),
-            mallocNew!PlateEffect(),
-            mallocNew!TankEffect(),
-            mallocNew!RoomEffect()
-        ];
-            
-        effects2 = [
-            mallocNew!NoEffect(),
-            mallocNew!EarlyEffect(),
-            mallocNew!HallEffect(),
-            mallocNew!PlateEffect(),
-            mallocNew!TankEffect(),
-            mallocNew!RoomEffect()
-        ];
+
+      noEffect = mallocNew!NoEffect();
+      earlyEffect1 = mallocNew!EarlyEffect();
+      earlyEffect2 = mallocNew!EarlyEffect();
+      hallEffect1 = mallocNew!HallEffect();
+      hallEffect2 = mallocNew!HallEffect();
+      plateEffect1 = mallocNew!PlateEffect();
+      plateEffect2 = mallocNew!PlateEffect();
+      tankEffect1 = mallocNew!TankEffect();
+      tankEffect2 = mallocNew!TankEffect();
+      roomEffect1 = mallocNew!RoomEffect();
+      roomEffect2 = mallocNew!RoomEffect();
+
+      // These must have the same order as the enum
+      effects1 = [noEffect, earlyEffect1, hallEffect1, plateEffect1, tankEffect1, roomEffect1];
+      effects2 = [noEffect, earlyEffect2, hallEffect2, plateEffect2, tankEffect2, roomEffect2];
     }
 
     override PluginInfo buildPluginInfo()
@@ -116,6 +113,11 @@ nothrow:
 
         immutable float mix = readParam!float(paramMix) / 100.0f;
 
+        immutable int effect1EarlyReflectionPattern = readParam!int(paramEffect1EarlyReflectionPattern);
+        if (effect1EarlyReflectionPattern != earlyEffect1.getReflectionPattern()) {
+          earlyEffect1.setReflectionPattern(effect1EarlyReflectionPattern);
+        }
+
         // immutable bool hardClip = readParam!bool(paramMode);
 
         for (int f = 0; f < frames; ++f)
@@ -160,7 +162,7 @@ private:
 
     // TODO - Maybe NoEffect shouldn't apply send
     float effect1dBSend = -12.0;
-    
+
     NoEffect noEffect;
     EarlyEffect earlyEffect1, earlyEffect2;
     HallEffect hallEffect1, hallEffect2;

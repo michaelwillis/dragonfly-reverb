@@ -9,7 +9,6 @@ enum : int {DELAY, GAIN};
 
 struct ReflectionPattern
 {
-  immutable string name;
   immutable float[2][] left, right;
 };
 
@@ -26,7 +25,6 @@ immutable string[] earlyReflectionPatternNames = [
 
 immutable ReflectionPattern[] patterns = [
   ReflectionPattern(
-    "Abrupt Echo",
     [[0.0094,  1.35],
      [0.0126, -1.15],
      [0.0205,  1.15],
@@ -36,7 +34,6 @@ immutable ReflectionPattern[] patterns = [
      [0.0203, -1.0],
      [0.0230,  1.14]]),
   ReflectionPattern(
-    "Backstage Pass",
     [[0.004350,  0.84],
      [0.009656,  0.833333],
      [0.012036, -0.733333],
@@ -62,7 +59,6 @@ immutable ReflectionPattern[] patterns = [
      [0.045693,  0.14],
      [0.050609,  0.79]]),
   ReflectionPattern(
-    "Concert Venue",
     [[0.0048, 0.841],
      [0.0218, 0.504],
      [0.0227, 0.491],
@@ -100,7 +96,6 @@ immutable ReflectionPattern[] patterns = [
      [0.0763, 0.168],
      [0.0817, 0.133]]),
   ReflectionPattern(
-    "Damaged Goods",
     [[0.006531, 0.833333],
      [0.016114, 0.843333],
      [0.032687, 0.793333],
@@ -123,7 +118,6 @@ immutable ReflectionPattern[] patterns = [
      [0.071807, -0.89],
      [0.078354, -0.836667]]),
   ReflectionPattern(
-    "Elevator Pitch",
     [[0.0204, 1.02],
      [0.0354, 0.818],
      [0.0399, 0.635],
@@ -137,7 +131,6 @@ immutable ReflectionPattern[] patterns = [
      [0.0709, 0.187],
      [0.0806, 0.243]]),
   ReflectionPattern(
-    "Floor Thirteen",
     [[0.003268, 0.963333],
      [0.010603, -0.813333],
      [0.018526, 0.7],
@@ -161,7 +154,6 @@ immutable ReflectionPattern[] patterns = [
      [0.06799, -0.466667],
      [0.076458, 0.46]]),
   ReflectionPattern(
-    "Garage Band",
     [[0.001762, 0.993333],
      [0.008531, -0.873333],
      [0.02301, 0.663333],
@@ -187,7 +179,6 @@ immutable ReflectionPattern[] patterns = [
      [0.07363, -0.463333],
      [0.07649, 0.473333]]),
   ReflectionPattern(
-    "Home Studio",
     [[0.005974, 0.95],
      [0.014313, 0.756667],
      [0.02313, 0.68],
@@ -240,8 +231,8 @@ nothrow:
                              float[] leftOut, float[] rightOut,
                              int frames)
   {
-    debugLog("Dragonfly Reverb 4 - Process Audio!");
     // TODO:
+    // * Size?
     // * Predelay?
     // * Cross-channel delay/allpass
     // * Width
@@ -280,13 +271,17 @@ nothrow:
     diffuseAllpassCoefficient = biquadRBJAllPass(150, sampleRate);
 
     // Recalculate current reflection pattern due to new sample rate
-    selectReflectionPattern(this.selectedReflectionPattern); 
+    setReflectionPattern(this.reflectionPattern); 
   }
 
-  void selectReflectionPattern(int selectReflectionPattern)
+  int getReflectionPattern() {
+    return this.reflectionPattern;
+  }
+
+  void setReflectionPattern(int reflectionPattern)
   {
-    this.selectedReflectionPattern = selectedReflectionPattern;
-    ReflectionPattern pattern = patterns[selectedReflectionPattern];
+    this.reflectionPattern = reflectionPattern;
+    ReflectionPattern pattern = patterns[reflectionPattern];
 
     tapLengthL = pattern.left.length;
     tapLengthR = pattern.right.length;
@@ -307,7 +302,7 @@ nothrow:
 private:
   immutable float maxDelaySeconds;
 
-  int selectedReflectionPattern = 2;
+  int reflectionPattern = 0;
   double sampleRate;
 
   long tapLengthL = 0;
