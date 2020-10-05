@@ -4,6 +4,7 @@ Select Box UI Element
 module widgets.select;
 
 import dplug.gui.element;
+import dplug.client.params;
 import dplug.core.nogc;
 import dplug.core.vec;
 import dplug.window.window : getCharFromKey;
@@ -17,11 +18,11 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, Font font, int textSize, string[] options) {
+  this(UIContext context, Font font, int textSize, EnumParameter param) {
     super(context, flagRaw);
     _font = font;
     _textSize = textSize;
-    _options = options;
+    _param = param;
     _textColor = RGBA(200, 200, 200, 255);
     _highlightColor = RGBA(255, 255, 255, 255);
     _backgroundColor = RGBA(0, 0, 0, 255);
@@ -29,7 +30,7 @@ nothrow:
   }
 
   ~this() {
-    // TODO: Free _options?
+
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
@@ -39,13 +40,14 @@ nothrow:
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
       // cropped.fillAll(_backgroundColor);
-      
-      foreach(i, option; _options) {
+
+      for (int i = 0; i <= _param.maxValue(); i++) {
+        // TODO: Get rid of magic number 1.2, make row height explicit
         float textPosY = ((cast(float)i) * 1.2 + 1) * _textSize;
         vec2f positionInDirty = vec2f(textPosX, textPosY) - dirtyRect.min;
         
         cropped.fillText(
-          _font, option,
+          _font, _param.getValueString(i),
           _textSize, 0.5, i == _selectedIndex ? _highlightColor : _textColor,
           positionInDirty.x, positionInDirty.y,
           HorizontalAlignment.left,
@@ -68,7 +70,7 @@ private:
   RGBA _textColor;
   RGBA _highlightColor;  
   RGBA _backgroundColor;
-  
-  string[] _options;
+
+  EnumParameter _param;
   int _selectedIndex;
 }

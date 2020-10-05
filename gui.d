@@ -56,7 +56,7 @@ nothrow:
         reflectionPatterns.pushBack("Backstage Pass");
         reflectionPatterns.pushBack("Concert Venue");
 
-        UISelectBox earlySelect = mallocNew!UISelectBox(context(), _font, 14, reflectionPatterns[]);
+        UISelectBox earlySelect = mallocNew!UISelectBox(context(), _font, 14, cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern));
 
         addChild(inputGainKnob);
         addChild(clipKnob);

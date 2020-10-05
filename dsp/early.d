@@ -13,6 +13,17 @@ struct ReflectionPattern
   immutable float[2][] left, right;
 };
 
+immutable string[] earlyReflectionPatternNames = [
+  "Abrupt Echo",
+  "Backstage Pass",
+  "Concert Venue",
+  "Damaged Goods",
+  "Elevator Pitch",
+  "Floor Thirteen",
+  "Garage Band",
+  "Home Studio"
+];
+
 immutable ReflectionPattern[] patterns = [
   ReflectionPattern(
     "Abrupt Echo",
