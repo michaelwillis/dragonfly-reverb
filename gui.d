@@ -9,6 +9,7 @@ import dplug.canvas;
 
 import widgets.gainslider;
 import widgets.select;
+import widgets.label;
 
 import main;
 
@@ -31,6 +32,7 @@ nothrow:
         setUpdateMargin(0);
 
         OwnedImage!RGBA knobImage = loadOwnedImage(cast(ubyte[])(import("knob.png")));
+        OwnedImage!RGBA knob52Image = loadOwnedImage(cast(ubyte[])(import("knob-52.png")));
         OwnedImage!RGBA switchOnImage = loadOwnedImage(cast(ubyte[])(import("switchOn.png")));
         OwnedImage!RGBA switchOffImage = loadOwnedImage(cast(ubyte[])(import("switchOff.png")));
         OwnedImage!RGBA sliderImage = loadOwnedImage(cast(ubyte[])(import("slider.png")));
@@ -46,19 +48,24 @@ nothrow:
           context(), cast(FloatParameter) _client.param(paramOutputGain), knobImage, knobFrames);
 
         UIFilmstripKnob mixKnob = mallocNew!UIFilmstripKnob(
-          context(), cast(FloatParameter) _client.param(paramMix), knobImage, knobFrames);
+          context(), cast(FloatParameter) _client.param(paramMix), knob52Image, knobFrames);
 
         UIImageSwitch modeSwitch = mallocNew!UIImageSwitch(
           context(), cast(BoolParameter) _client.param(paramMode), switchOnImage, switchOffImage);
 
         UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern), _font, 14);
 
+        UILabel mixNameLabel = mallocNew!UILabel(context(), "Mix", _font, 16, highlight);
+        UINumericLabel mixValueLabel = mallocNew!UINumericLabel(context(), cast(FloatParameter) _client.param(paramMix), "%3.0f%%", _font, 15, highlight);
+        
         addChild(inputGainKnob);
         addChild(clipKnob);
         addChild(outputGainKnob);
         addChild(mixKnob);
         addChild(modeSwitch);
         addChild(earlySelect);
+        addChild(mixNameLabel);
+        addChild(mixValueLabel);        
 
         int sliderFrames = 143;
         int sliderMargin = 2;
@@ -80,7 +87,9 @@ nothrow:
         inputGainKnob.position = box2i(knobX1, knobY1, knobX1 + knobWidth, knobY1 + knobHeight);
         clipKnob.position = box2i(knobX2, knobY1, knobX2 + knobWidth, knobY1 + knobHeight);
         outputGainKnob.position = box2i(knobX1 + 24, knobY2, knobX1 + knobWidth + 24, knobY2 + knobHeight);
-        mixKnob.position = box2i(knobX2, knobY2, knobX2 + knobWidth, knobY2 + knobHeight);
+        mixNameLabel.position = box2i(294, 4, 294 + 52, 20);
+        mixValueLabel.position = box2i(294, 76, 294 + 52, 92);        
+        mixKnob.position = box2i(294, 22, 294 + 52, 22 + 52);
         earlySelect.position = box2i(0, 16, 100, 116);
 
         immutable int sliderWidth = 146;
@@ -101,5 +110,6 @@ nothrow:
     // this struct object should not be since it contains everything rasterizer-related
     Canvas canvas;
 
-    Vec!string reflectionPatterns;
+private:
+    RGBA highlight = RGBA(230, 240, 255, 255);
 }
