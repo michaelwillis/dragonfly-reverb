@@ -23,6 +23,7 @@ nothrow:
     _font = font;
     _textSize = textSize;
     _param = param;
+    // TODO: Unify textColor and highlightColor for all widgets
     _textColor = RGBA(200, 200, 200, 255);
     _highlightColor = RGBA(255, 255, 255, 255);
     _backgroundColor = RGBA(0, 0, 0, 255);
@@ -40,7 +41,6 @@ nothrow:
     
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
-      // cropped.fillAll(_backgroundColor);
 
       for (int i = 0; i <= _param.maxValue(); i++) {
         // TODO: Get rid of magic number 1.2, make row height explicit

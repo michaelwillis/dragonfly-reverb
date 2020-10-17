@@ -26,7 +26,6 @@ nothrow:
     _font = font;
     _textSize = textSize;
     _textColor = textColor;
-
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
@@ -40,6 +39,10 @@ nothrow:
 
       cropped.fillText(_font, _text, _textSize, 0.5, _textColor, positionInDirty.x, positionInDirty.y);
     }
+  }
+
+  void setTextColor(RGBA textColor) {
+    this._textColor = textColor;
   }
 
 private:
