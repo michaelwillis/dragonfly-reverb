@@ -42,9 +42,12 @@ nothrow:
 
         _client = client;
         super(640, 480); // size
-
         _font = mallocNew!Font(cast(ubyte[])( import("Vera.ttf") ));
         setUpdateMargin(0);
+
+        this.modalContainer = mallocNew!UIElement(context(), flagRaw);
+        this.modalContainer.position = box2i(16, 136, 624, 464);
+        addChild(this.modalContainer);
 
         OwnedImage!RGBA knobImage = loadOwnedImage(cast(ubyte[])(import("knob.png")));
         OwnedImage!RGBA knob52Image = loadOwnedImage(cast(ubyte[])(import("knob-52.png")));
@@ -58,41 +61,43 @@ nothrow:
         int knobFrames = 101;
         UIFilmstripKnob inputGainKnob = mallocNew!UIFilmstripKnob(
           context(), cast(FloatParameter) _client.param(paramInputGain), knobImage, knobFrames);
+        addChild(inputGainKnob);
 
         UIFilmstripKnob clipKnob = mallocNew!UIFilmstripKnob(
           context(), cast(FloatParameter) _client.param(paramClip), knobImage, knobFrames);
+        addChild(clipKnob);
 
         UIFilmstripKnob outputGainKnob = mallocNew!UIFilmstripKnob(
           context(), cast(FloatParameter) _client.param(paramOutputGain), knobImage, knobFrames);
+        addChild(outputGainKnob);
 
         UIFilmstripKnob mixKnob = mallocNew!UIFilmstripKnob(
           context(), cast(FloatParameter) _client.param(paramMix), knob52Image, knobFrames);
+        addChild(mixKnob);
 
         UIImageSwitch modeSwitch = mallocNew!UIImageSwitch(
           context(), cast(BoolParameter) _client.param(paramMode), switchOnImage, switchOffImage);
+        addChild(modeSwitch);
 
         UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern), _font, 14);
-
+        earlySelect.position = box2i(16, 216, 116, 316);
+        this.modalContainer.addChild(earlySelect);
+        
         UILabel mixNameLabel = mallocNew!UILabel(context(), "Mix", _font, 16, highlight);
+        addChild(mixNameLabel);
+        
         UINumericLabel mixValueLabel = mallocNew!UINumericLabel(context(), cast(FloatParameter) _client.param(paramMix), "%3.0f%%", _font, 14, highlight);
+        addChild(mixValueLabel);
 
         presetsTab = mallocNew!UITab(context(), "Presets", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
-        controlsTab = mallocNew!UITab(context(), "Controls", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
-        creditsTab = mallocNew!UITab(context(), "Credits", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
-
         presetsTab.setSelected(true);
-
-        addChild(inputGainKnob);
-        addChild(clipKnob);
-        addChild(outputGainKnob);
-        addChild(mixKnob);
-        addChild(modeSwitch);
-        addChild(earlySelect);
-        addChild(mixNameLabel);
-        addChild(mixValueLabel);
         addChild(presetsTab);
+                
+        controlsTab = mallocNew!UITab(context(), "Controls", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
         addChild(controlsTab);
-        addChild(creditsTab);
+        
+        creditsTab = mallocNew!UITab(context(), "Credits", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
+        addChild(creditsTab);        
 
         int sliderFrames = 143;
         int sliderMargin = 2;
@@ -117,7 +122,6 @@ nothrow:
         mixNameLabel.position = box2i(294, 2, 294 + 52, 20);
         mixValueLabel.position = box2i(294, 76, 294 + 52, 90);
         mixKnob.position = box2i(294, 20, 294 + 52, 20 + 52);
-        earlySelect.position = box2i(16, 216, 116, 316);
 
         presetsTab.position = presetsTabPosition;
         controlsTab.position = controlsTabPosition;
@@ -135,7 +139,6 @@ nothrow:
         immutable int switchHeight = 21;
 
         modeSwitch.position = box2i(switchX, switchY, switchX + switchWidth, switchY  + switchHeight);
-
     }
 
     override bool onMouseClick(int x, int y, int button, bool isDoubleClick, MouseState mstate)
@@ -143,20 +146,11 @@ nothrow:
       // UIMode newMode = mode;
 
       if (presetsTab.position.contains(x, y)) {
-        // newMode = PRESETS;
-        presetsTab.setSelected(true);
-        controlsTab.setSelected(false);
-        creditsTab.setSelected(false);
+        selectMode(0);
       } else if (controlsTab.position.contains(x, y)) {
-        // newMode = CONTROLS;
-        presetsTab.setSelected(false);
-        controlsTab.setSelected(true);
-        creditsTab.setSelected(false);
+        selectMode(1);
       } else if (creditsTab.position.contains(x, y)) {
-        // newMode = CREDITS;
-        presetsTab.setSelected(false);
-        controlsTab.setSelected(false);
-        creditsTab.setSelected(true);
+        selectMode(2);
       } else {
         return true;
       }
@@ -165,12 +159,44 @@ nothrow:
       return false;
     }
 
+    void selectMode(int mode) {
+        presetsTab.setSelected(mode == 0);
+        controlsTab.setSelected(mode == 1);
+        creditsTab.setSelected(mode == 2);
+
+        removeChild(this.modalContainer);
+        this.modalContainer.destroyFree();
+        this.modalContainer = mallocNew!UIElement(context(), 1);
+        this.modalContainer.position = box2i(16, 136, 624, 464);
+        
+        if (mode == 0) {
+
+        } else if (mode == 1) {
+
+        } else {
+          auto lines = makeVec!string();
+          lines ~= "Dragonfly Reverb is a free multipurpose reverb plugin.";
+          lines ~= "";
+          lines ~= "Michael Willis - Primary developer and project lead";
+          lines ~= "Rob van den Berg - Initial graphic design. Lots of testing and feedback";
+
+          foreach(i, line; lines) {
+            UILabel label = mallocNew!UILabel(context(), line, _font, 16, textColor);
+            label.position = box2i(32, cast(int) (152 + (i * 20)), 608, cast(int) (172 + (i * 20)));
+            this.modalContainer.addChild(label);            
+          }
+
+          this.addChild(modalContainer);
+        }
+    }
+
     // this struct object should not be since it contains everything rasterizer-related
     Canvas canvas;
 
 private:
-    RGBA textColor = RGBA(120, 120, 120, 255);
+    RGBA textColor = RGBA(200, 200, 200, 255);
     RGBA highlight = RGBA(230, 240, 255, 255);
 
     OwnedImage!RGBA tabOnImage, tabOffImage;
+    UIElement modalContainer;
 }

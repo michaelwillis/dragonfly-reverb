@@ -77,7 +77,7 @@ nothrow:
     float textPosy = position.height * 0.5f;
 
     char[16] buffer;
-    snprintf(buffer.ptr, 16, "%3.0f%%", _param.value());
+    snprintf(buffer.ptr, 16, _text.ptr, _param.value());
 
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
