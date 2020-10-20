@@ -178,10 +178,10 @@ nothrow:
           lines ~= "Dragonfly Reverb is a free multipurpose reverb plugin.";
           lines ~= "";
           lines ~= "Michael Willis - Primary developer and project lead";
-          lines ~= "Rob van den Berg - Initial graphic design. Lots of testing and feedback";
+          lines ~= "Rob van den Berg - Initial graphic design";
 
           foreach(i, line; lines) {
-            UILabel label = mallocNew!UILabel(context(), line, _font, 16, textColor);
+            UILabel label = mallocNew!UILabel(context(), line, _font, 16, textColor, HorizontalAlignment.left);
             label.position = box2i(32, cast(int) (152 + (i * 20)), 608, cast(int) (172 + (i * 20)));
             this.modalContainer.addChild(label);            
           }

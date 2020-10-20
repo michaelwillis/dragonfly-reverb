@@ -20,16 +20,19 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, const char[] text, Font font, int textSize, RGBA textColor = RGBA(230, 230, 230, 255)) {
+  this(UIContext context, const char[] text,
+       Font font, int textSize, RGBA textColor = RGBA(230, 230, 230, 255),
+       HorizontalAlignment alignment = HorizontalAlignment.center) {
     super(context, flagRaw);
     _text = text;
     _font = font;
     _textSize = textSize;
     _textColor = textColor;
+    _alignment = alignment;
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
-    float textPosx = position.width * 0.5f;
+    float textPosx = _alignment == HorizontalAlignment.center ? position.width * 0.5f : 0.0f;
     float textPosy = position.height * 0.5f;
 
     foreach(dirtyRect; dirtyRects)
@@ -37,7 +40,7 @@ nothrow:
       auto cropped = rawMap.cropImageRef(dirtyRect);
       vec2f positionInDirty = vec2f(textPosx, textPosy) - dirtyRect.min;
 
-      cropped.fillText(_font, _text, _textSize, 0.5, _textColor, positionInDirty.x, positionInDirty.y);
+      cropped.fillText(_font, _text, _textSize, 0.5, _textColor, positionInDirty.x, positionInDirty.y, _alignment);
     }
   }
 
@@ -50,6 +53,7 @@ private:
   Font _font;
   int _textSize;
   RGBA _textColor;
+  HorizontalAlignment _alignment;
 }
 
 class UINumericLabel : UIElement, IParameterListener {
