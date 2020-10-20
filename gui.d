@@ -7,8 +7,8 @@ import dplug.flatwidgets;
 import dplug.client;
 import dplug.canvas;
 
+import widgets.effect;
 import widgets.gainslider;
-import widgets.select;
 import widgets.label;
 import widgets.tab;
 
@@ -79,10 +79,6 @@ nothrow:
           context(), cast(BoolParameter) _client.param(paramMode), switchOnImage, switchOffImage);
         addChild(modeSwitch);
 
-        UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) _client.param(paramEffect1EarlyReflectionPattern), _font, 14);
-        earlySelect.position = box2i(16, 216, 116, 316);
-        this.modalContainer.addChild(earlySelect);
-        
         UILabel mixNameLabel = mallocNew!UILabel(context(), "Mix", _font, 16, highlight);
         addChild(mixNameLabel);
         
@@ -155,7 +151,6 @@ nothrow:
         return true;
       }
 
-      setDirtyWhole();
       return false;
     }
 
@@ -172,7 +167,11 @@ nothrow:
         if (mode == 0) {
 
         } else if (mode == 1) {
+          UIEffect effect1 = mallocNew!UIEffect(context(), _client, _font);
+          effect1.position = box2i(16, 136, 304, 464);
+          this.modalContainer.addChild(effect1);
 
+          // TODO: Add second effect
         } else {
           auto lines = makeVec!string();
           lines ~= "Dragonfly Reverb is a free multipurpose reverb plugin.";
@@ -186,8 +185,10 @@ nothrow:
             this.modalContainer.addChild(label);            
           }
 
-          this.addChild(modalContainer);
         }
+
+        this.addChild(modalContainer);
+        setDirtyWhole();
     }
 
     // this struct object should not be since it contains everything rasterizer-related
