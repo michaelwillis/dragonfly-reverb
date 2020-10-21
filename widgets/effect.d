@@ -15,7 +15,7 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, Client client, Font font) {
+  this(UIContext context, Client client, Font font, OwnedImage!RGBA knobImage) {
     super(context, flagRaw);
     this.client = client;
     this.font = font;
@@ -38,11 +38,9 @@ nothrow:
       break;
       
     case earlyEffect:
-      
       UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), font, 14);
       earlySelect.position = box2i(16, 216, 116, 316);
       this.customControls.addChild(earlySelect);
-      
       break;
     default:
       break;
@@ -55,4 +53,5 @@ private:
   UIElement customControls;
   Client client;
   Font font;
+  OwnedImage!RGBA knobImage;  
 }
