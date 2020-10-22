@@ -22,6 +22,7 @@ enum : int
     paramMix,
     paramMode,
     paramEffect1Gain,
+    paramEffect1Send,
     paramEffect1EarlyReflectionPattern
 }
 
@@ -69,7 +70,10 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramMix, "mix", "%", 0.0f, 100.0f, 100.0f) ;
         params ~= mallocNew!BoolParameter(paramMode, "mode", false);
         params ~= mallocNew!GainParameter(paramEffect1Gain, "Effect 1 Gain", 10.0f, 0.0f);
-        params ~= mallocNew!EnumParameter(paramEffect1EarlyReflectionPattern, "Effect 1 Early Reflection Pattern", earlyReflectionPatternNames, 2);
+        params ~= mallocNew!GainParameter(paramEffect1Send, "Effect 1 Send", 10.0f, 0.0f);
+        params ~= mallocNew!EnumParameter(paramEffect1EarlyReflectionPattern,
+            "Effect 1 Early Reflection Pattern", earlyReflectionPatternNames, 2);
+
         return params.releaseData();
     }
 

@@ -1,13 +1,9 @@
 module gui;
 
-import std.stdio;
-
 import dplug.gui;
 import dplug.flatwidgets;
 import dplug.client;
 import dplug.canvas;
-
-import core.stdc.stdio;
 
 import widgets.effect;
 import widgets.gainslider;
@@ -35,7 +31,6 @@ nothrow:
 
     this(DragonflyReverbClient client)
     {
-      printf("Moohahahaha");
         _client = client;
         super(640, 480); // size
         _font = mallocNew!Font(cast(ubyte[])( import("Vera.ttf") ));
@@ -49,10 +44,10 @@ nothrow:
         OwnedImage!RGBA knob52Image = loadOwnedImage(cast(ubyte[])(import("knob-52.png")));
         OwnedImage!RGBA switchOnImage = loadOwnedImage(cast(ubyte[])(import("switchOn.png")));
         OwnedImage!RGBA switchOffImage = loadOwnedImage(cast(ubyte[])(import("switchOff.png")));
-        OwnedImage!RGBA sliderImage = loadOwnedImage(cast(ubyte[])(import("slider.png")));
+        sliderImage = loadOwnedImage(cast(ubyte[])(import("slider.png")));
 
         tabOnImage = loadOwnedImage(cast(ubyte[])(import("tab_on.png")));
-        tabOffImage = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));        
+        tabOffImage = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));
 
         int knobFrames = 101;
 
@@ -62,11 +57,12 @@ nothrow:
         addChild(mixKnob);
 
         UILabel mixNameLabel = mallocNew!UILabel(context(), "Mix", _font, 16, highlight);
-        mixNameLabel.position = box2i(294, 2, 294 + 52, 20);        
+        mixNameLabel.position = box2i(294, 2, 294 + 52, 20);
         addChild(mixNameLabel);
         
-        UINumericLabel mixValueLabel = mallocNew!UINumericLabel(context(), cast(FloatParameter) _client.param(paramMix), "%3.0f%%", _font, 14, highlight);
-        mixValueLabel.position = box2i(294, 76, 294 + 52, 90);        
+        UINumericLabel mixValueLabel = mallocNew!UINumericLabel(
+          context(), cast(FloatParameter) _client.param(paramMix), "%3.0f%%", _font, 14, highlight);
+        mixValueLabel.position = box2i(294, 76, 294 + 52, 90);
         addChild(mixValueLabel);
 
         presetsTab = mallocNew!UITab(context(), "Presets", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
@@ -80,15 +76,7 @@ nothrow:
         
         creditsTab = mallocNew!UITab(context(), "Credits", tabOffImage, tabOnImage, _font, 16, textColor, highlight);
         creditsTab.position = box2i(220, 104, 320, 126);
-        addChild(creditsTab);        
-
-        immutable int sliderWidth = 146;
-        immutable int sliderHeight = 16;
-        immutable int sliderFrames = 143;
-        immutable int sliderMargin = 2;
-        GainSlider effect1GainSlider = mallocNew!GainSlider(context(), cast(GainParameter) _client.param(paramEffect1Gain), sliderImage, sliderFrames, sliderMargin);
-        effect1GainSlider.position = box2i(50, 300, 50 + sliderWidth, 300 + sliderHeight);        
-        addChild(effect1GainSlider);
+        addChild(creditsTab);
     }
 
     override bool onMouseClick(int x, int y, int button, bool isDoubleClick, MouseState mstate) {
@@ -105,7 +93,6 @@ nothrow:
       return false;
     }
 
-    // Select which mode - presets, effects, or credits
     void selectMode(UIMode mode) {
       
       presetsTab.setSelected(mode == UIMode.PRESETS);
@@ -126,8 +113,41 @@ nothrow:
           effect1.position = box2i(16, 136, 304, 464);
           // effect1.selectEffect(); // TODO, set this based on effect enum param
           this.modalContainer.addChild(effect1);
-          
+
           // TODO: Add second effect
+          immutable int sliderWidth = 146;
+          immutable int sliderHeight = 16;
+          immutable int sliderFrames = 143;
+          immutable int sliderMargin = 2;
+
+          UILabel effect1SendLabel = mallocNew!UILabel(context(), "Send Effect 2", _font, 14, textColor, HorizontalAlignment.left);
+          effect1SendLabel.position = box2i(12, 424, 112, 424 + sliderHeight);
+          this.modalContainer.addChild(effect1SendLabel);
+
+          GainSlider effect1SendSlider = mallocNew!GainSlider(
+            context(), cast(GainParameter) _client.param(paramEffect1Send), sliderImage, sliderFrames, sliderMargin);
+          effect1SendSlider.position = box2i(108, 424, 108 + sliderWidth, 424 + sliderHeight);
+          this.modalContainer.addChild(effect1SendSlider);
+
+          UINumericLabel effect1SendValueLabel = mallocNew!UINumericLabel(
+            context(), cast(FloatParameter) _client.param(paramEffect1Send), "%3.1f dB", _font, 14, highlight);
+          effect1SendValueLabel.position = box2i(260, 424, 316, 424 + sliderHeight);
+          this.modalContainer.addChild(effect1SendValueLabel);
+
+          UILabel effect1GainLabel = mallocNew!UILabel(context(), "Effect 1 Gain", _font, 14, textColor, HorizontalAlignment.left);
+          effect1GainLabel.position = box2i(12, 448, 112, 448 + sliderHeight);
+          this.modalContainer.addChild(effect1GainLabel);
+
+          GainSlider effect1GainSlider = mallocNew!GainSlider(
+            context(), cast(GainParameter) _client.param(paramEffect1Gain), sliderImage, sliderFrames, sliderMargin);
+          effect1GainSlider.position = box2i(108, 448, 108 + sliderWidth, 448 + sliderHeight);
+          this.modalContainer.addChild(effect1GainSlider);
+
+          UINumericLabel effect1GainValueLabel = mallocNew!UINumericLabel(
+            context(), cast(FloatParameter) _client.param(paramEffect1Gain), "%3.1f dB", _font, 14, highlight);
+          effect1GainValueLabel.position = box2i(260, 448, 316, 448 + sliderHeight);
+          this.modalContainer.addChild(effect1GainValueLabel);
+
         } else if (mode == UIMode.CREDITS){
           auto lines = makeVec!string();
           lines ~= "Dragonfly Reverb is a free multipurpose reverb plugin.";
@@ -138,7 +158,7 @@ nothrow:
           foreach(i, line; lines) {
             UILabel label = mallocNew!UILabel(context(), line, _font, 16, textColor, HorizontalAlignment.left);
             label.position = box2i(32, cast(int) (152 + (i * 20)), 608, cast(int) (172 + (i * 20)));
-            this.modalContainer.addChild(label);            
+            this.modalContainer.addChild(label);    
           }
 
         }
@@ -154,7 +174,7 @@ private:
     RGBA textColor = RGBA(200, 200, 200, 255);
     RGBA highlight = RGBA(230, 240, 255, 255);
 
-    OwnedImage!RGBA tabOnImage, tabOffImage;
     UIElement modalContainer;
-    OwnedImage!RGBA smallKnobImage;
+
+    OwnedImage!RGBA tabOnImage, tabOffImage, smallKnobImage, sliderImage;
 }
