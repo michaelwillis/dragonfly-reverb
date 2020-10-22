@@ -15,6 +15,15 @@ enum : int
     effectCount
 }
 
+immutable string[] effectAlgorithmNames = [
+  "Off",
+  "Early",
+  "Hall",
+  "Plate",
+  "Tank",
+  "Room",
+];
+
 interface Effect
 {
 public:

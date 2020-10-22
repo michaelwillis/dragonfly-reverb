@@ -14,13 +14,9 @@ import dsp.early;
 
 mixin(pluginEntryPoints!DragonflyReverbClient);
 
-enum : int
-{
-    paramInputGain,
-    paramClip,
-    paramOutputGain,
+enum : int {
     paramMix,
-    paramMode,
+    paramEffect1Algorithm,
     paramEffect1Gain,
     paramEffect1Send,
     paramEffect1EarlyReflectionPattern
@@ -64,11 +60,8 @@ nothrow:
     override Parameter[] buildParameters()
     {
         auto params = makeVec!Parameter();
-        params ~= mallocNew!LinearFloatParameter(paramInputGain, "input gain", "dB", -12.0f, 12.0f, 0.0f) ;
-        params ~= mallocNew!LinearFloatParameter(paramClip, "clip", "%", 0.0f, 100.0f, 0.0f) ;
-        params ~= mallocNew!LinearFloatParameter(paramOutputGain, "output gain", "db", -12.0f, 12.0f, 0.0f) ;
-        params ~= mallocNew!LinearFloatParameter(paramMix, "mix", "%", 0.0f, 100.0f, 100.0f) ;
-        params ~= mallocNew!BoolParameter(paramMode, "mode", false);
+        params ~= mallocNew!LinearFloatParameter(paramMix, "Mix", "%", 0.0f, 100.0f, 100.0f) ;
+        params ~= mallocNew!EnumParameter(paramEffect1Algorithm, "Effect 1 Algorithm", effectAlgorithmNames, 2);
         params ~= mallocNew!GainParameter(paramEffect1Gain, "Effect 1 Gain", 10.0f, 0.0f);
         params ~= mallocNew!GainParameter(paramEffect1Send, "Effect 1 Send", 10.0f, 0.0f);
         params ~= mallocNew!EnumParameter(paramEffect1EarlyReflectionPattern,

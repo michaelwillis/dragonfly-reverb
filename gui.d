@@ -8,6 +8,7 @@ import dplug.canvas;
 import widgets.effect;
 import widgets.gainslider;
 import widgets.label;
+import widgets.select;
 import widgets.tab;
 
 import main;
@@ -109,6 +110,16 @@ nothrow:
         if (mode == UIMode.PRESETS) {
           
         } else if (mode == UIMode.EFFECTS) {
+
+          UILabel effect1Label = mallocNew!UILabel(context(), "Effect 1:", _font, 14, textColor, HorizontalAlignment.left);
+          effect1Label.position = box2i(16, 136, 72, 150);
+          this.modalContainer.addChild(effect1Label);
+
+          UISelectBox effect1AlgorithmSelect = mallocNew!UISelectBox(
+            context(), cast(EnumParameter) _client.param(paramEffect1Algorithm), _font, 14, true);
+          effect1AlgorithmSelect.position = box2i(72, 136, 320, 150);
+          this.modalContainer.addChild(effect1AlgorithmSelect);
+
           UIEffect effect1 = mallocNew!UIEffect(context(), _client, _font, smallKnobImage);
           effect1.position = box2i(16, 136, 304, 464);
           // effect1.selectEffect(); // TODO, set this based on effect enum param
@@ -121,12 +132,12 @@ nothrow:
           immutable int sliderMargin = 2;
 
           UILabel effect1SendLabel = mallocNew!UILabel(context(), "Send Effect 2", _font, 14, textColor, HorizontalAlignment.left);
-          effect1SendLabel.position = box2i(12, 424, 112, 424 + sliderHeight);
+          effect1SendLabel.position = box2i(16, 424, 112, 424 + sliderHeight);
           this.modalContainer.addChild(effect1SendLabel);
 
           GainSlider effect1SendSlider = mallocNew!GainSlider(
             context(), cast(GainParameter) _client.param(paramEffect1Send), sliderImage, sliderFrames, sliderMargin);
-          effect1SendSlider.position = box2i(108, 424, 108 + sliderWidth, 424 + sliderHeight);
+          effect1SendSlider.position = box2i(110, 424, 110 + sliderWidth, 424 + sliderHeight);
           this.modalContainer.addChild(effect1SendSlider);
 
           UINumericLabel effect1SendValueLabel = mallocNew!UINumericLabel(
@@ -135,12 +146,12 @@ nothrow:
           this.modalContainer.addChild(effect1SendValueLabel);
 
           UILabel effect1GainLabel = mallocNew!UILabel(context(), "Effect 1 Gain", _font, 14, textColor, HorizontalAlignment.left);
-          effect1GainLabel.position = box2i(12, 448, 112, 448 + sliderHeight);
+          effect1GainLabel.position = box2i(16, 448, 112, 448 + sliderHeight);
           this.modalContainer.addChild(effect1GainLabel);
 
           GainSlider effect1GainSlider = mallocNew!GainSlider(
             context(), cast(GainParameter) _client.param(paramEffect1Gain), sliderImage, sliderFrames, sliderMargin);
-          effect1GainSlider.position = box2i(108, 448, 108 + sliderWidth, 448 + sliderHeight);
+          effect1GainSlider.position = box2i(110, 448, 110 + sliderWidth, 448 + sliderHeight);
           this.modalContainer.addChild(effect1GainSlider);
 
           UINumericLabel effect1GainValueLabel = mallocNew!UINumericLabel(
