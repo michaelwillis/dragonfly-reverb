@@ -35,7 +35,7 @@ nothrow:
         super(640, 480);
         setUpdateMargin(0);
 
-        style = mallocNew!Style(_client);
+        style = mallocNew!Style(_client, context());
 
         tabOnImage = loadOwnedImage(cast(ubyte[])(import("tab_on.png")));
         tabOffImage = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));
@@ -46,16 +46,7 @@ nothrow:
 
         int knobFrames = 101;
 
-        addChild(style.largeKnob(context(), paramMix, 294, 20));
-
-        UILabel mixNameLabel = mallocNew!UILabel(context(), "Mix", style.font, 16, style.highlight);
-        mixNameLabel.position = box2i(294, 2, 294 + 52, 20);
-        addChild(mixNameLabel);
-        
-        UINumericLabel mixValueLabel = mallocNew!UINumericLabel(
-          context(), cast(FloatParameter) _client.param(paramMix), "%3.0f%%", style.font, 14, style.highlight);
-        mixValueLabel.position = box2i(294, 76, 294 + 52, 90);
-        addChild(mixValueLabel);
+        style.largeKnob(context(),this, paramMix, "Mix", "%3.0f%%", 294, 4);
 
         presetsTab = mallocNew!UITab(context(), "Presets", tabOffImage, tabOnImage, style.font, 16, style.textColor, style.highlight);
         presetsTab.position = box2i(20, 104, 120, 126);
@@ -185,6 +176,7 @@ public:
 nothrow:
 @nogc:
   DragonflyReverbClient client;
+  UIContext context;
 
   Font font;
   OwnedImage!RGBA smallKnobImage, largeKnobImage, sliderImage;
@@ -198,8 +190,9 @@ nothrow:
   immutable RGBA textColor = RGBA(200, 200, 200, 255);
   immutable RGBA highlight = RGBA(230, 240, 255, 255);
 
-  this(DragonflyReverbClient client) {
+  this(DragonflyReverbClient client, UIContext context) {
     this.client = client;
+    this.context = context;
 
     smallKnobImage = loadOwnedImage(cast(ubyte[])(import("knob.png")));
     largeKnobImage = loadOwnedImage(cast(ubyte[])(import("knob-52.png")));
@@ -207,10 +200,19 @@ nothrow:
     font = mallocNew!Font(cast(ubyte[])( import("Vera.ttf") ));
   }
 
-  UIFilmstripKnob largeKnob(UIContext context, int paramIndex, int x, int y) {
+  void largeKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
+    UILabel label = mallocNew!UILabel(context, name, font, 14, highlight);
+    label.position = box2i(x, y, x + largeKnobSize, y + 16);
+    parent.addChild(label);
+
     UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context,
       cast(FloatParameter) client.param(paramIndex), largeKnobImage, largeKnobFrames);
-    knob.position = box2i(x, y, x + largeKnobSize, y + largeKnobSize);
-    return knob;
+    knob.position = box2i(x, y + 18, x + largeKnobSize, y + 18 + largeKnobSize);
+    parent.addChild(knob);
+    
+    UINumericLabel value = mallocNew!UINumericLabel(
+      context, cast(FloatParameter) client.param(paramIndex), format, font, 14, highlight);
+    value.position = box2i(x, y + 72, x + largeKnobSize, y + 72 + 16);
+    parent.addChild(value);
   }
 }
