@@ -16,10 +16,49 @@ mixin(pluginEntryPoints!DragonflyReverbClient);
 
 enum : int {
     paramMix,
-    paramEffect1Algorithm,
+
     paramEffect1Gain,
     paramEffect1Send,
-    paramEffect1EarlyReflectionPattern
+    paramEffect1Algorithm,
+    paramEffect1EarlyReflectionPattern,
+    paramEffect1Size,
+    paramEffect1Width,
+    paramEffect1Predelay,
+    paramEffect1Decay,
+    paramEffect1Damp,
+    paramEffect1Diffuse,
+    paramEffect1Modulation,
+    paramEffect1Spin,
+    paramEffect1Wander,
+    paramEffect1HighCross,
+    paramEffect1HighMult,
+    paramEffect1HighCut,
+    paramEffect1HighCutHard,
+    paramEffect1LowCross,
+    paramEffect1LowMult,
+    paramEffect1LowCut,
+    paramEffect1LowCutHard,
+
+    paramEffect2Gain,
+    paramEffect2Algorithm,
+    paramEffect2EarlyReflectionPattern,
+    paramEffect2Size,
+    paramEffect2Width,
+    paramEffect2Predelay,
+    paramEffect2Decay,
+    paramEffect2Damp,
+    paramEffect2Diffuse,
+    paramEffect2Modulation,
+    paramEffect2Spin,
+    paramEffect2Wander,
+    paramEffect2HighCross,
+    paramEffect2HighMult,
+    paramEffect2HighCut,
+    paramEffect2HighCutHard,
+    paramEffect2LowCross,
+    paramEffect2LowMult,
+    paramEffect2LowCut,
+    paramEffect2LowCutHard,
 }
 
 final class DragonflyReverbClient : dplug.client.Client
@@ -60,12 +99,53 @@ nothrow:
     override Parameter[] buildParameters()
     {
         auto params = makeVec!Parameter();
+
         params ~= mallocNew!LinearFloatParameter(paramMix, "Mix", "%", 0.0f, 100.0f, 100.0f) ;
-        params ~= mallocNew!EnumParameter(paramEffect1Algorithm, "Effect 1 Algorithm", effectAlgorithmNames, 2);
+
         params ~= mallocNew!GainParameter(paramEffect1Gain, "Effect 1 Gain", 10.0f, 0.0f);
         params ~= mallocNew!GainParameter(paramEffect1Send, "Effect 1 Send", 10.0f, 0.0f);
+        params ~= mallocNew!EnumParameter(paramEffect1Algorithm, "Effect 1 Algorithm", effectAlgorithmNames, 1);
         params ~= mallocNew!EnumParameter(paramEffect1EarlyReflectionPattern,
             "Effect 1 Early Reflection Pattern", earlyReflectionPatternNames, 2);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Size, "Effect 1 Size", "m", 10.0f, 60.0f, 20.0);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Width, "Effect 1 Width", "%", 0.0f, 100.0f, 100.0f);
+        params ~= mallocNew!IntegerParameter(paramEffect1Predelay, "Effect 1 Predelay", "ms", 0, 100, 4);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Decay, "Effect 1 Decay Time", "s", 0.1f, 10.0f, 0.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect1Damp, "Effect 1 Damp", "Hz", 0, 20000, 10000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Diffuse, "Effect 1 Diffuse", "%", 0.0f, 100.0f, 80.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Modulation, "Effect 1 Mod", "%", 0.0f, 100.0f, 20.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Spin, "Effect 1 Spin", "Hz", 0.0f, 10.0f, 1.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1Wander, "Effect 1 Wander", "%", 0.0f, 100.0f, 20.0f);
+        params ~= mallocNew!IntegerParameter(paramEffect1HighCross, "Effect 1 High Cross", "Hz", 0, 20000, 6000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1HighMult, "Effect 1 High Mult", "x", 0.1f, 2.5f, 0.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect1HighCut, "Effect 1 High Cut", "Hz", 0, 20000, 12000);
+        params ~= mallocNew!BoolParameter(paramEffect1HighCutHard, "Effect 1 High Cut Hard", false);
+        params ~= mallocNew!IntegerParameter(paramEffect1LowCross, "Effect 1 Low Cross", "Hz", 0, 20000, 1000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect1LowMult, "Effect 1 Low Mult", "x", 0.1f, 2.5f, 1.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect1LowCut, "Effect 1 Low Cut", "Hz", 0, 20000, 400);
+        params ~= mallocNew!BoolParameter(paramEffect1LowCutHard, "Effect 1 Low Cut Hard", false);
+
+        params ~= mallocNew!GainParameter(paramEffect2Gain, "Effect 2 Gain", 10.0f, 0.0f);
+        params ~= mallocNew!EnumParameter(paramEffect2Algorithm, "Effect 2 Algorithm", effectAlgorithmNames, 2);
+        params ~= mallocNew!EnumParameter(paramEffect2EarlyReflectionPattern,
+            "Effect 2 Early Reflection Pattern", earlyReflectionPatternNames, 2);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Size, "Effect 2 Size", "m", 10.0f, 60.0f, 20.0);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Width, "Effect 2 Width", "%", 0.0f, 100.0f, 100.0f);
+        params ~= mallocNew!IntegerParameter(paramEffect2Predelay, "Effect 2 Predelay", "ms", 0, 100, 4);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Decay, "Effect 2 Decay Time", "s", 0.1f, 10.0f, 0.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect2Damp, "Effect 2 Damp", "Hz", 0, 20000, 10000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Diffuse, "Effect 2 Diffuse", "%", 0.0f, 100.0f, 80.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Modulation, "Effect 2 Mod", "%", 0.0f, 100.0f, 20.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Spin, "Effect 2 Spin", "Hz", 0.0f, 10.0f, 1.0f);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2Wander, "Effect 2 Wander", "%", 0.0f, 100.0f, 20.0f);
+        params ~= mallocNew!IntegerParameter(paramEffect2HighCross, "Effect 2 High Cross", "Hz", 0, 20000, 6000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2HighMult, "Effect 2 High Mult", "x", 0.1f, 2.5f, 0.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect2HighCut, "Effect 2 High Cut", "Hz", 0, 20000, 12000);
+        params ~= mallocNew!BoolParameter(paramEffect2HighCutHard, "Effect 2 High Cut Hard", false);
+        params ~= mallocNew!IntegerParameter(paramEffect2LowCross, "Effect 2 Low Cross", "Hz", 0, 20000, 1000);
+        params ~= mallocNew!LinearFloatParameter(paramEffect2LowMult, "Effect 2 Low Mult", "x", 0.1f, 2.5f, 1.5f);
+        params ~= mallocNew!IntegerParameter(paramEffect2LowCut, "Effect 2 Low Cut", "Hz", 0, 20000, 400);
+        params ~= mallocNew!BoolParameter(paramEffect2LowCutHard, "Effect 2 Low Cut Hard", false);
 
         return params.releaseData();
     }
