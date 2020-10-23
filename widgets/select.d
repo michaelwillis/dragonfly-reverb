@@ -38,7 +38,7 @@ nothrow:
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
 
-    float textPosX = 4, textPosY = 0.5 * _textSize;
+    float textPosX = 0, textPosY = 0.5 * _textSize;
     
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
