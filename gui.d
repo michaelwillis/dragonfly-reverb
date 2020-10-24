@@ -37,29 +37,24 @@ nothrow:
 
         style = mallocNew!Style(_client, context());
 
-        tabOnImage = loadOwnedImage(cast(ubyte[])(import("tab_on.png")));
-        tabOffImage = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));
-
         this.modalContainer = mallocNew!UIElement(context(), flagRaw);
         this.modalContainer.position = box2i(16, 136, 624, 464);
         addChild(this.modalContainer);
 
-        int knobFrames = 101;
+        style.largeKnob(this, paramMix, "Mix", "%3.0f%%", 294, 4);
 
-        style.largeKnob(context(),this, paramMix, "Mix", "%3.0f%%", 294, 4);
-
-        presetsTab = mallocNew!UITab(context(), "Presets", tabOffImage, tabOnImage, style.font, 16, style.textColor, style.highlight);
+        presetsTab = mallocNew!UITab(style, "Presets", 16);
         presetsTab.position = box2i(20, 104, 120, 126);
         presetsTab.setSelected(true);
         addChild(presetsTab);
                 
-        effectsTab = mallocNew!UITab(context(), "Effects", tabOffImage, tabOnImage, style.font, 16, style.textColor, style.highlight);
+        effectsTab = mallocNew!UITab(style, "Effects", 16);
         effectsTab.position = box2i(120, 104, 220, 126);
         addChild(effectsTab);
         
-        creditsTab = mallocNew!UITab(context(), "Credits", tabOffImage, tabOnImage, style.font, 16, style.textColor, style.highlight);
+        creditsTab = mallocNew!UITab(style, "Credits", 16);
         creditsTab.position = box2i(220, 104, 320, 126);
-        addChild(creditsTab);
+        addChild(creditsTab); 
     }
 
     override bool onMouseClick(int x, int y, int button, bool isDoubleClick, MouseState mstate) {
@@ -77,7 +72,7 @@ nothrow:
     }
 
     void selectMode(UIMode mode) {
-      
+
       presetsTab.setSelected(mode == UIMode.PRESETS);
       effectsTab.setSelected(mode == UIMode.EFFECTS);
       creditsTab.setSelected(mode == UIMode.CREDITS);
@@ -93,7 +88,7 @@ nothrow:
           
         } else if (mode == UIMode.EFFECTS) {
 
-          UILabel effect1Label = mallocNew!UILabel(context(), "Effect 1:", style.font, 14, style.highlight, HorizontalAlignment.left);
+          UILabel effect1Label = mallocNew!UILabel(style, "Effect 1:", 14, HorizontalAlignment.left);
           effect1Label.position = box2i(16, 136, 72, 150);
           this.modalContainer.addChild(effect1Label);
 
@@ -102,7 +97,7 @@ nothrow:
           effect1AlgorithmSelect.position = box2i(76, 136, 320, 150);
           this.modalContainer.addChild(effect1AlgorithmSelect);
 
-          UIEffect effect1 = mallocNew!UIEffect(context(), _client, style.font, style.smallKnobImage, style.textColor, style.highlight);
+          UIEffect effect1 = mallocNew!UIEffect(style, _client);
           effect1.position = box2i(16, 136, 304, 464);
           // effect1.selectEffect(); // TODO, set this based on effect enum param
           this.modalContainer.addChild(effect1);
@@ -113,7 +108,7 @@ nothrow:
           immutable int sliderFrames = 143;
           immutable int sliderMargin = 2;
 
-          UILabel effect1SendLabel = mallocNew!UILabel(context(), "Send Effect 2", style.font, 14, style.textColor, HorizontalAlignment.left);
+          UILabel effect1SendLabel = mallocNew!UILabel(style, "Send Effect 2", 14, HorizontalAlignment.left);
           effect1SendLabel.position = box2i(16, 424, 112, 424 + sliderHeight);
           this.modalContainer.addChild(effect1SendLabel);
 
@@ -127,7 +122,7 @@ nothrow:
           effect1SendValueLabel.position = box2i(260, 424, 316, 424 + sliderHeight);
           this.modalContainer.addChild(effect1SendValueLabel);
 
-          UILabel effect1GainLabel = mallocNew!UILabel(context(), "Effect 1 Gain", style.font, 14, style.textColor, HorizontalAlignment.left);
+          UILabel effect1GainLabel = mallocNew!UILabel(style, "Effect 1 Gain", 14, HorizontalAlignment.left);
           effect1GainLabel.position = box2i(16, 448, 112, 448 + sliderHeight);
           this.modalContainer.addChild(effect1GainLabel);
 
@@ -149,7 +144,7 @@ nothrow:
           lines ~= "Rob van den Berg - Initial graphic design";
 
           foreach(i, line; lines) {
-            UILabel label = mallocNew!UILabel(context(), line, style.font, 16, style.textColor, HorizontalAlignment.left);
+            UILabel label = mallocNew!UILabel(style, line, 16, HorizontalAlignment.left);
             label.position = box2i(32, cast(int) (152 + (i * 20)), 608, cast(int) (172 + (i * 20)));
             this.modalContainer.addChild(label);    
           }
@@ -157,7 +152,7 @@ nothrow:
         }
 
         this.addChild(modalContainer);
-        setDirtyWhole();
+        setDirtyWhole(); 
     }
 
     // this struct object should not be since it contains everything rasterizer-related
@@ -165,8 +160,6 @@ nothrow:
 
 private:
     UIElement modalContainer;
-
-    OwnedImage!RGBA tabOnImage, tabOffImage;
 
     Style style;
 }
@@ -179,7 +172,7 @@ nothrow:
   UIContext context;
 
   Font font;
-  OwnedImage!RGBA smallKnobImage, largeKnobImage, sliderImage;
+  OwnedImage!RGBA smallKnobImage, largeKnobImage, sliderImage, tabOnImage, tabOffImage;
 
   immutable int largeKnobSize = 52; // Pixels
   immutable int largeKnobFrames = 101;
@@ -194,14 +187,18 @@ nothrow:
     this.client = client;
     this.context = context;
 
+    font = mallocNew!Font(cast(ubyte[])( import("Vera.ttf") ));
+
     smallKnobImage = loadOwnedImage(cast(ubyte[])(import("knob.png")));
     largeKnobImage = loadOwnedImage(cast(ubyte[])(import("knob-52.png")));
-    sliderImage = loadOwnedImage(cast(ubyte[])(import("slider.png")));
-    font = mallocNew!Font(cast(ubyte[])( import("Vera.ttf") ));
+    sliderImage    = loadOwnedImage(cast(ubyte[])(import("slider.png")));
+
+    tabOnImage     = loadOwnedImage(cast(ubyte[])(import("tab_on.png")));
+    tabOffImage    = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));
   }
 
   void largeKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
-    UILabel label = mallocNew!UILabel(context, name, font, 14, highlight);
+    UILabel label = mallocNew!UILabel(this, name, 14);
     label.position = box2i(x, y, x + largeKnobSize, y + 16);
     parent.addChild(label);
 
@@ -215,4 +212,21 @@ nothrow:
     value.position = box2i(x, y + 72, x + largeKnobSize, y + 72 + 16);
     parent.addChild(value);
   }
+  
+  void smallKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
+    UILabel label = mallocNew!UILabel(this, name, 14);
+    label.position = box2i(x, y, x + largeKnobSize, y + 16);
+    parent.addChild(label);
+
+    UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context,
+      cast(FloatParameter) client.param(paramIndex), smallKnobImage, smallKnobFrames);
+    knob.position = box2i(x, y + 18, x + smallKnobSize, y + 18 + smallKnobSize);
+    parent.addChild(knob);
+    
+    UINumericLabel value = mallocNew!UINumericLabel(
+      context, cast(FloatParameter) client.param(paramIndex), format, font, 14, highlight);
+    value.position = box2i(x, y + smallKnobSize + 20, x + smallKnobSize, y + smallKnobSize + 20 + 16);
+    parent.addChild(value);
+  }
+
 }

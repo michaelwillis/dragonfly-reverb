@@ -10,6 +10,8 @@ import dplug.core.vec;
 import dplug.window.window : getCharFromKey;
 import std.string;
 
+import gui;
+
 private import core.stdc.stdlib : malloc, free;
 private import core.stdc.stdio : snprintf, printf;
 private import core.stdc.string : strcmp, strlen;
@@ -20,19 +22,16 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, const char[] text,
-       Font font, int textSize, RGBA textColor = RGBA(230, 230, 230, 255),
-       HorizontalAlignment alignment = HorizontalAlignment.center) {
-    super(context, flagRaw);
-    _text = text;
-    _font = font;
-    _textSize = textSize;
-    _textColor = textColor;
-    _alignment = alignment;
+  this(Style style, const char[] text, int textSize, HorizontalAlignment alignment = HorizontalAlignment.center) {
+    super(style.context, flagRaw);
+    this.style = style;
+    this.text = text;
+    this.textSize = textSize;
+    this.alignment = alignment;
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
-    float textPosx = _alignment == HorizontalAlignment.center ? position.width * 0.5f : 0.0f;
+    float textPosx = alignment == HorizontalAlignment.center ? position.width * 0.5f : 0.0f;
     float textPosy = position.height * 0.5f;
 
     foreach(dirtyRect; dirtyRects)
@@ -40,20 +39,15 @@ nothrow:
       auto cropped = rawMap.cropImageRef(dirtyRect);
       vec2f positionInDirty = vec2f(textPosx, textPosy) - dirtyRect.min;
 
-      cropped.fillText(_font, _text, _textSize, 0.5, _textColor, positionInDirty.x, positionInDirty.y, _alignment);
+      cropped.fillText(style.font, text, textSize, 0.5, style.highlight, positionInDirty.x, positionInDirty.y, alignment);
     }
   }
 
-  void setTextColor(RGBA textColor) {
-    this._textColor = textColor;
-  }
-
 private:
-  const char[] _text;
-  Font _font;
-  int _textSize;
-  RGBA _textColor;
-  HorizontalAlignment _alignment;
+  Style style;
+  const char[] text;
+  int textSize;
+  HorizontalAlignment alignment;
 }
 
 class UINumericLabel : UIElement, IParameterListener {
@@ -100,6 +94,7 @@ nothrow:
   override void onEndParameterEdit(Parameter sender) { }
 
 private:
+
   FloatParameter _param;
   const char[] _text;
   Font _font;

@@ -7,6 +7,7 @@ import dplug.client;
 import dplug.gui.element;
 
 import main; // Maybe TODO - move params enum out of main?
+import gui; // Maybe TODO - move style out of gui?
 import widgets.label;
 import widgets.select;
 import dsp.effects;
@@ -16,13 +17,10 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, Client client, Font font, OwnedImage!RGBA knobImage, RGBA textColor, RGBA highlight) {
-    super(context, flagRaw);
+  this(Style style, Client client) {
+    super(style.context, flagRaw);
+    this.style = style;
     this.client = client;
-    this.font = font;
-
-    this.textColor = textColor;
-    this.highlight = highlight;
 
     this.customControls = mallocNew!UIElement(context, flagRaw);
     addChild(this.customControls);
@@ -42,11 +40,11 @@ nothrow:
       break;
       
     case earlyEffect:
-      UILabel effect1Label = mallocNew!UILabel(context(), "Reflection Pattern", font, 14, highlight, HorizontalAlignment.left);
+      UILabel effect1Label = mallocNew!UILabel(style, "Reflection Pattern", 14, HorizontalAlignment.left);
       effect1Label.position = box2i(16, 160, 148, 176);
       this.customControls.addChild(effect1Label);
 
-      UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), font, 14);
+      UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), style.font, 14);
       earlySelect.position = box2i(16, 184, 148, 316);
       this.customControls.addChild(earlySelect);
       break;
@@ -58,10 +56,7 @@ nothrow:
   }
 
 private:
-  UIElement customControls;
+  Style style;
   Client client;
-  Font font;
-  OwnedImage!RGBA knobImage;
-  RGBA textColor;
-  RGBA highlight;
+  UIElement customControls;
 }

@@ -7,29 +7,22 @@ Right now just an image + text that can be updated to select/unselect
 module widgets.tab;
 
 import dplug.gui.element;
+import gui;
 
 class UITab : UIElement {
 public:
 nothrow:
 @nogc:
 
-  this(
-    UIContext context, const char[] text,
-    OwnedImage!RGBA offImage, OwnedImage!RGBA onImage,
-    Font font, int textSize, RGBA offColor, RGBA onColor) {
-
-    super(context, flagRaw);
+  this(Style style, const char[] text, int textSize) {
+    super(style.context, flagRaw);
+    this.style = style;
     this.text = text;
-    this.onImage = onImage;
-    this.offImage = offImage;
-    this.font = font;
     this.textSize = textSize;
-    this.offColor = offColor;
-    this.onColor = onColor;
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
-    auto imageRef = selected ? onImage.toRef() : offImage.toRef;
+    auto imageRef = selected ? style.tabOnImage.toRef() : style.tabOffImage.toRef;
     foreach(dirtyRect; dirtyRects) {
       auto croppedRawIn = imageRef.cropImageRef(dirtyRect);
       auto croppedRawOut = rawMap.cropImageRef(dirtyRect);
@@ -49,7 +42,8 @@ nothrow:
       }
 
       vec2f positionInDirty = vec2f(position.width * 0.5f, position.height * 0.5f) - dirtyRect.min;
-      croppedRawOut.fillText(font, text, textSize, 0.5, selected ? onColor : offColor, positionInDirty.x, positionInDirty.y);
+      auto color = selected ? style.highlight : style.textColor;
+      croppedRawOut.fillText(style.font, text, textSize, 0.5, color, positionInDirty.x, positionInDirty.y);
     }
   }
 
@@ -59,11 +53,9 @@ nothrow:
   }
 
 private:
-  OwnedImage!RGBA onImage, offImage;  
+  Style style;
   const char[] text;
-  Font font;
   int textSize;
-  RGBA onColor, offColor;
 
   bool selected;
 }
