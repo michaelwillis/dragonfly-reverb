@@ -9,6 +9,8 @@ import dplug.core.nogc;
 import dplug.core.vec;
 import dplug.window.window : getCharFromKey;
 
+import gui;
+
 private import core.stdc.stdlib : malloc, free;
 private import core.stdc.stdio : snprintf, printf;
 private import core.stdc.string : strcmp, strlen;
@@ -18,45 +20,39 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, EnumParameter param, Font font, int textSize, bool horizontal = false) {
-    super(context, flagRaw);
-    _font = font;
-    _textSize = textSize;
-    _horizontal = horizontal;
-    _param = param;
-    // TODO: Unify textColor and highlightColor for all widgets
-    _textColor = RGBA(200, 200, 200, 255);
-    _highlightColor = RGBA(255, 255, 255, 255);
-    _backgroundColor = RGBA(0, 0, 0, 255);
-
-    _param.addListener(this);
+  this(Style style, EnumParameter param, int textSize, bool horizontal = false) {
+    super(style.context, flagRaw);
+    this.style = style;
+    this.textSize = textSize;
+    this.horizontal = horizontal;
+    this.param = param;
+    this.param.addListener(this);
   }
 
   ~this() {
-    _param.removeListener(this);
+    this.param.removeListener(this);
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
 
-    float textPosX = 0, textPosY = 0.5 * _textSize;
+    float textPosX = 0, textPosY = 0.5 * textSize;
     
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
 
-      for (int i = 0; i <= _param.maxValue(); i++) {
+      for (int i = 0; i <= param.maxValue(); i++) {
         vec2f positionInDirty = vec2f(textPosX, textPosY) - dirtyRect.min;
         
-        cropped.fillText(
-          _font, _param.getValueString(i),
-          _textSize, 0.5, i == _param.value() ? _highlightColor : _textColor,
+        cropped.fillText(style.font, param.getValueString(i),
+          textSize, 0.5, i == param.value() ? style.highlight : style.textColor,
           positionInDirty.x, positionInDirty.y, HorizontalAlignment.left);
 
-        if (_horizontal) {
-          auto box = _font.measureText(_param.getValueString(i), _textSize, 0.5);
+        if (horizontal) {
+          auto box = style.font.measureText(param.getValueString(i), textSize, 0.5);
           textPosX += box.width + 12;
         } else {
           // TODO: Get rid of magic number 1.2, make row height explicit
-          textPosY += 1.2 * _textSize;
+          textPosY += 1.2 * textSize;
         }
       }
     }
@@ -66,10 +62,10 @@ nothrow:
 
     int value = -1;
 
-    if (_horizontal) {
+    if (horizontal) {
       int left = 4;
-      for (int i = 0; i <= _param.maxValue(); i++) {
-          auto box = _font.measureText(_param.getValueString(i), _textSize, 0.5);
+      for (int i = 0; i <= param.maxValue(); i++) {
+          auto box = style.font.measureText(param.getValueString(i), textSize, 0.5);
           int right = left + box.width + 12;
           if (x >= left && x < right) {
             value = i;
@@ -79,16 +75,16 @@ nothrow:
       }
     } else {
       // TODO: Get rid of magic number 1.2, make row height explicit
-      value = cast(int) ((cast(float)y) / (_textSize * 1.2));
+      value = cast(int) ((cast(float)y) / (textSize * 1.2));
     }
 
-    if (value < 0 || value > _param.maxValue()) {
+    if (value < 0 || value > param.maxValue()) {
       return false;
     }
 
-    _param.beginParamEdit();
-    _param.setFromGUI(value);
-    _param.endParamEdit();
+    param.beginParamEdit();
+    param.setFromGUI(value);
+    param.endParamEdit();
 
     setDirtyWhole();
     return true;
@@ -103,12 +99,8 @@ nothrow:
   override void onEndParameterEdit(Parameter sender) { }
 
 private:
-  EnumParameter _param;
-
-  Font _font;
-  int _textSize;
-  bool _horizontal;
-  RGBA _textColor;
-  RGBA _highlightColor;  
-  RGBA _backgroundColor;
+  Style style;
+  EnumParameter param;
+  int textSize;
+  bool horizontal;
 }

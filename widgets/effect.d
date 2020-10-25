@@ -44,7 +44,8 @@ nothrow:
       effect1Label.position = box2i(16, 160, 148, 176);
       this.customControls.addChild(effect1Label);
 
-      UISelectBox earlySelect = mallocNew!UISelectBox(context(), cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), style.font, 14);
+      UISelectBox earlySelect = mallocNew!UISelectBox(
+        style, cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), 14);
       earlySelect.position = box2i(16, 184, 148, 316);
       this.customControls.addChild(earlySelect);
       break;

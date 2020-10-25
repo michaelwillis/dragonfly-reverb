@@ -55,19 +55,18 @@ public:
 nothrow:
 @nogc:
 
-  this(UIContext context, FloatParameter param, const char[] text, Font font, int textSize, RGBA textColor = RGBA(230, 230, 230, 255)) {
-    super(context, flagRaw);
-    _param = param;
-    _text = text;
-    _font = font;
-    _textSize = textSize;
-    _textColor = textColor;
+  this(Style style, FloatParameter param, const char[] text, int textSize) {
+    super(style.context, flagRaw);
+    this.style = style;
+    this.param = param;
+    this.text = text;
+    this.textSize = textSize;
 
-    _param.addListener(this);
+    param.addListener(this);
   }
 
   ~this() {
-    _param.removeListener(this);
+    param.removeListener(this);
   }
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
@@ -75,13 +74,13 @@ nothrow:
     float textPosy = position.height * 0.5f;
 
     char[16] buffer;
-    snprintf(buffer.ptr, 16, _text.ptr, _param.value());
+    snprintf(buffer.ptr, 16, text.ptr, param.value());
 
     foreach(dirtyRect; dirtyRects) {
       auto cropped = rawMap.cropImageRef(dirtyRect);
       vec2f positionInDirty = vec2f(textPosx, textPosy) - dirtyRect.min;
 
-      cropped.fillText(_font, fromStringz(buffer.ptr), _textSize, 0.5, _textColor, positionInDirty.x, positionInDirty.y);
+      cropped.fillText(style.font, fromStringz(buffer.ptr), textSize, 0.5, style.textColor, positionInDirty.x, positionInDirty.y);
     }
   }
 
@@ -94,10 +93,8 @@ nothrow:
   override void onEndParameterEdit(Parameter sender) { }
 
 private:
-
-  FloatParameter _param;
-  const char[] _text;
-  Font _font;
-  int _textSize;
-  RGBA _textColor;
+  Style style;
+  FloatParameter param;
+  const char[] text;
+  int textSize;
 }

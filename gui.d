@@ -93,7 +93,7 @@ nothrow:
           this.modalContainer.addChild(effect1Label);
 
           UISelectBox effect1AlgorithmSelect = mallocNew!UISelectBox(
-            context(), cast(EnumParameter) _client.param(paramEffect1Algorithm), style.font, 14, true);
+            style, cast(EnumParameter) _client.param(paramEffect1Algorithm), 14, true);
           effect1AlgorithmSelect.position = box2i(76, 136, 320, 150);
           this.modalContainer.addChild(effect1AlgorithmSelect);
 
@@ -118,7 +118,7 @@ nothrow:
           this.modalContainer.addChild(effect1SendSlider);
 
           UINumericLabel effect1SendValueLabel = mallocNew!UINumericLabel(
-            context(), cast(FloatParameter) _client.param(paramEffect1Send), "%3.1f dB", style.font, 14, style.highlight);
+            style, cast(FloatParameter) _client.param(paramEffect1Send), "%3.1f dB", 14);
           effect1SendValueLabel.position = box2i(260, 424, 316, 424 + sliderHeight);
           this.modalContainer.addChild(effect1SendValueLabel);
 
@@ -132,7 +132,7 @@ nothrow:
           this.modalContainer.addChild(effect1GainSlider);
 
           UINumericLabel effect1GainValueLabel = mallocNew!UINumericLabel(
-            context(), cast(FloatParameter) _client.param(paramEffect1Gain), "%3.1f dB", style.font, 14, style.highlight);
+            style, cast(FloatParameter) _client.param(paramEffect1Gain), "%3.1f dB", 14);
           effect1GainValueLabel.position = box2i(260, 448, 316, 448 + sliderHeight);
           this.modalContainer.addChild(effect1GainValueLabel);
 
@@ -208,7 +208,7 @@ nothrow:
     parent.addChild(knob);
     
     UINumericLabel value = mallocNew!UINumericLabel(
-      context, cast(FloatParameter) client.param(paramIndex), format, font, 14, highlight);
+      this, cast(FloatParameter) client.param(paramIndex), format, 14);
     value.position = box2i(x, y + 72, x + largeKnobSize, y + 72 + 16);
     parent.addChild(value);
   }
@@ -224,7 +224,7 @@ nothrow:
     parent.addChild(knob);
     
     UINumericLabel value = mallocNew!UINumericLabel(
-      context, cast(FloatParameter) client.param(paramIndex), format, font, 14, highlight);
+      this, cast(FloatParameter) client.param(paramIndex), format, 14);
     value.position = box2i(x, y + smallKnobSize + 20, x + smallKnobSize, y + smallKnobSize + 20 + 16);
     parent.addChild(value);
   }
