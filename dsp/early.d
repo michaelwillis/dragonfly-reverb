@@ -222,8 +222,10 @@ nothrow:
     }
 
     this.maxDelaySeconds = maxDelaySeconds;
-    this.lrDelaySeconds = 0.2;
+    this.lrDelaySeconds = 0.0003; // 0.3 ms
 
+    crossAllpassL.initialize();
+    crossAllpassR.initialize();
     diffuseAllpassL.initialize();
     diffuseAllpassR.initialize();
   }
@@ -235,8 +237,6 @@ nothrow:
     // TODO:
     // * Size?
     // * Predelay?
-    // * Cross-channel delay/allpass
-    // * Width
     // * LPF/HPF
 
     for (int f = 0; f < frames; f++)
@@ -255,8 +255,14 @@ nothrow:
         right += delayLineR.sampleFull(rightDelays[i]) * rightGains[i];        
       }
       
-      leftOut[f]  = diffuseAllpassL.nextSample(widthMult1 * left + widthMult2 * right, diffuseAllpassCoefficient);
-      rightOut[f] = diffuseAllpassR.nextSample(widthMult1 * right + widthMult2 * left, diffuseAllpassCoefficient);
+      float leftCrossMixed = widthMult1 * left +
+        widthMult2 * crossAllpassL.nextSample(delayRtoL.nextSample(right), crossAllpassCoefficient);
+
+      float rightCrossMixed = widthMult1 * right +
+        widthMult2 * crossAllpassR.nextSample(delayLtoR.nextSample(left), crossAllpassCoefficient);
+
+      leftOut[f]  = diffuseAllpassL.nextSample(leftCrossMixed, diffuseAllpassCoefficient);
+      rightOut[f] = diffuseAllpassR.nextSample(rightCrossMixed, diffuseAllpassCoefficient);
     }
   }
 
@@ -271,6 +277,7 @@ nothrow:
     delayRtoL.resize(lrDelaySamples);
     delayLtoR.resize(lrDelaySamples);
 
+    crossAllpassCoefficient = biquadRBJAllPass(750, sampleRate);
     diffuseAllpassCoefficient = biquadRBJAllPass(150, sampleRate);
 
     // Recalculate current reflection pattern due to new sample rate
@@ -307,8 +314,8 @@ nothrow:
   }
 
   void setWidth(float width) {
-    widthMult1 = (1 + width) / 2;  // 100% => 1.0, 80% => 0.9, 50% => 0.75, 20% => 0.6, 0% => 0.5
-    widthMult2 = (1 - width) / 2;  // 100% => 0.0, 80% => 0.1, 50% => 0.25, 20% => 0.4, 0% => 0.5
+    widthMult1 = (1 + width) / 2;
+    widthMult2 = (1 - width) / 2;
   }
 
 private:
@@ -316,7 +323,7 @@ private:
 
   int reflectionPattern = 0;
   float widthMult1 = 1.0, widthMult2 = 0.0; // Multipliers for width
-  float lrDelaySeconds; // Delay between stereo channels
+  float lrDelaySeconds = 0.0003; // Delay between stereo channels
 
   double sampleRate;
 
@@ -329,7 +336,7 @@ private:
   
   Delayline!float delayLineL, delayLineR, delayRtoL, delayLtoR;
 
-  BiquadCoeff diffuseAllpassCoefficient;
-  BiquadDelay diffuseAllpassL, diffuseAllpassR;
+  BiquadCoeff crossAllpassCoefficient, diffuseAllpassCoefficient;
+  BiquadDelay crossAllpassL, crossAllpassR, diffuseAllpassL, diffuseAllpassR;
 }
 
