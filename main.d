@@ -182,18 +182,26 @@ nothrow:
                                TimeInfo info) nothrow @nogc
     {
         assert(frames <= 512); // guaranteed by audio buffer splitting
-        
-        /// Read parameter values
-        /// Convert decibel values to floating point
-        immutable float input1Send = pow(10, effect1dBSend / 20);
-        // immutable float outputGain = pow(10, readParam!float(paramOutputGain) /20);
 
         immutable float mix = readParam!float(paramMix) / 100.0f;
+
+        immutable float effect1Gain = pow(10, readParam!float(paramEffect1Gain) / 20); // dB to mult
+        immutable float effect1SendToEffect2 = pow(10, readParam!float(paramEffect1Send) / 20); // dB to mult
+
+        // TODO: Effect 1 Algorithm Select
 
         immutable int effect1EarlyReflectionPattern = readParam!int(paramEffect1EarlyReflectionPattern);
         if (effect1EarlyReflectionPattern != earlyEffect1.getReflectionPattern()) {
           earlyEffect1.setReflectionPattern(effect1EarlyReflectionPattern);
         }
+
+        immutable float effect1Size = readParam!float(paramEffect1Size);
+        earlyEffect1.setSize(effect1Size);
+        // TODO: Room and Hall Size
+
+        immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
+        earlyEffect1.setWidth(effect1Width);
+        // TODO: Width for Plate, Room and Hall   
 
         // immutable bool hardClip = readParam!bool(paramMode);
 
@@ -207,15 +215,15 @@ nothrow:
 
         for (int f = 0; f < frames; ++f)
         {
-            effect2InL[f] = inputs[0][f] + effect1OutL[f] * input1Send;
-            effect2InR[f] = inputs[1][f] + effect1OutR[f] * input1Send;
+            effect2InL[f] = inputs[0][f] + effect1OutL[f] * effect1SendToEffect2;
+            effect2InR[f] = inputs[1][f] + effect1OutR[f] * effect1SendToEffect2;
         }
 
         effects2[effect2Selected].processAudio(effect2InL, effect2InR, effect2OutL, effect2OutR, frames);
 
         for (int f = 0; f < frames; ++f) {
-            outputs[0][f] = ((effect1OutL[f] + effect2OutL[f]) * mix) + (inputs[0][f] * (1.0 - mix));
-            outputs[1][f] = ((effect1OutR[f] + effect2OutR[f]) * mix) + (inputs[1][f] * (1.0 - mix));            
+            outputs[0][f] = ((effect1OutL[f] * effect1Gain + effect2OutL[f]) * mix) + (inputs[0][f] * (1.0 - mix));
+            outputs[1][f] = ((effect1OutR[f] * effect1Gain + effect2OutR[f]) * mix) + (inputs[1][f] * (1.0 - mix));            
         }
 
         /// Get access to the GUI
@@ -236,9 +244,6 @@ nothrow:
 private:
     int effect1Selected = earlyEffect;
     int effect2Selected = 0;
-
-    // TODO - Maybe NoEffect shouldn't apply send
-    float effect1dBSend = -12.0;
 
     NoEffect noEffect;
     EarlyEffect earlyEffect1, earlyEffect2;

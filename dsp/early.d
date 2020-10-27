@@ -222,6 +222,7 @@ nothrow:
     }
 
     this.maxDelaySeconds = maxDelaySeconds;
+    this.lrDelaySeconds = 0.2;
 
     diffuseAllpassL.initialize();
     diffuseAllpassR.initialize();
@@ -246,18 +247,16 @@ nothrow:
       float left = 0;
       float right = 0;
 
-      for(int i = 0; i < tapLengthL; i++)
-      {
+      for(int i = 0; i < tapLengthL; i++) {
         left += delayLineL.sampleFull(leftDelays[i]) * leftGains[i];
       }
       
-      for(int i = 0; i < tapLengthR; i++)
-      {
+      for(int i = 0; i < tapLengthR; i++) {
         right += delayLineR.sampleFull(rightDelays[i]) * rightGains[i];        
       }
       
-      leftOut[f]  = diffuseAllpassL.nextSample(left,  diffuseAllpassCoefficient);
-      rightOut[f] = diffuseAllpassR.nextSample(right, diffuseAllpassCoefficient);
+      leftOut[f]  = diffuseAllpassL.nextSample(widthMult1 * left + widthMult2 * right, diffuseAllpassCoefficient);
+      rightOut[f] = diffuseAllpassR.nextSample(widthMult1 * right + widthMult2 * left, diffuseAllpassCoefficient);
     }
   }
 
@@ -267,6 +266,10 @@ nothrow:
     int maxDelaySamples = cast(int) (maxDelaySeconds * sampleRate);
     delayLineL.resize(maxDelaySamples);
     delayLineR.resize(maxDelaySamples);
+
+    int lrDelaySamples = cast(int) (lrDelaySeconds * sampleRate);
+    delayRtoL.resize(lrDelaySamples);
+    delayLtoR.resize(lrDelaySamples);
 
     diffuseAllpassCoefficient = biquadRBJAllPass(150, sampleRate);
 
@@ -299,10 +302,22 @@ nothrow:
     }
   }
 
+  void setSize(float size) {
+    // TODO!
+  }
+
+  void setWidth(float width) {
+    widthMult1 = (1 + width) / 2;  // 100% => 1.0, 80% => 0.9, 50% => 0.75, 20% => 0.6, 0% => 0.5
+    widthMult2 = (1 - width) / 2;  // 100% => 0.0, 80% => 0.1, 50% => 0.25, 20% => 0.4, 0% => 0.5
+  }
+
 private:
   immutable float maxDelaySeconds;
 
   int reflectionPattern = 0;
+  float widthMult1 = 1.0, widthMult2 = 0.0; // Multipliers for width
+  float lrDelaySeconds; // Delay between stereo channels
+
   double sampleRate;
 
   long tapLengthL = 0;
@@ -312,7 +327,7 @@ private:
   float[20] leftGains;
   float[20] rightGains;
   
-  Delayline!float delayLineL, delayLineR;
+  Delayline!float delayLineL, delayLineR, delayRtoL, delayLtoR;
 
   BiquadCoeff diffuseAllpassCoefficient;
   BiquadDelay diffuseAllpassL, diffuseAllpassR;

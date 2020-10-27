@@ -42,12 +42,15 @@ nothrow:
     case earlyEffect:
       UILabel effect1Label = mallocNew!UILabel(style, "Reflection Pattern", 14, HorizontalAlignment.left);
       effect1Label.position = box2i(16, 160, 148, 176);
-      this.customControls.addChild(effect1Label);
+      customControls.addChild(effect1Label);
 
       UISelectBox earlySelect = mallocNew!UISelectBox(
         style, cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), 14);
       earlySelect.position = box2i(16, 184, 148, 316);
-      this.customControls.addChild(earlySelect);
+      customControls.addChild(earlySelect);
+
+      style.largeKnob(customControls, paramEffect1Size, "Size", "%2.0f m", 206, 160);
+      style.largeKnob(customControls, paramEffect1Width, "Width", "%3.0f%%", 206, 256);
       break;
     default:
       break;
