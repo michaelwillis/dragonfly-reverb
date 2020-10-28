@@ -211,19 +211,19 @@ nothrow:
 @nogc:
   this()
   {
-    float maxDelaySeconds = 0;
+    float maxDelay = 0;
 
     foreach (pattern; patterns)
     {
       foreach (delay; pattern.left[DELAY]) {
-        if (delay > maxDelaySeconds) maxDelaySeconds = delay;
+        if (delay > maxDelay) maxDelay = delay;
       }
       foreach (delay; pattern.right[DELAY]) {
-        if (delay > maxDelaySeconds) maxDelaySeconds = delay;
+        if (delay > maxDelay) maxDelay = delay;
       }
     }
 
-    this.maxDelaySeconds = maxDelaySeconds;
+    this.maxDelaySeconds = maxDelay * maxSize;
     this.lrDelaySeconds = 0.0003; // 0.3 ms
 
     crossAllpassL.initialize();
@@ -241,9 +241,7 @@ nothrow:
                              float[] leftOut, float[] rightOut,
                              int frames)
   {
-    // TODO:
-    // * Size?
-    // * Predelay?
+    // TODO: Predelay?
 
     for (int f = 0; f < frames; f++)
     {
@@ -254,11 +252,11 @@ nothrow:
       float right = 0;
 
       for(int i = 0; i < tapLengthL; i++) {
-        left += delayLineL.sampleFull(leftDelays[i]) * leftGains[i];
+        left += delayLineL.sampleFull(cast(int)(leftDelays[i] * size)) * leftGains[i];
       }
       
       for(int i = 0; i < tapLengthR; i++) {
-        right += delayLineR.sampleFull(rightDelays[i]) * rightGains[i];        
+        right += delayLineR.sampleFull(cast(int)(rightDelays[i] * size)) * rightGains[i];        
       }
       
       float leftCrossMixed = widthMult1 * left +
@@ -322,7 +320,9 @@ nothrow:
   }
 
   void setSize(float size) {
-    // TODO!
+    assert(size <= maxSize);
+    assert(size >= 1.0);
+    this.size = size;
   }
 
   void setWidth(float width) {
@@ -341,15 +341,18 @@ nothrow:
   }
 
 private:
+  immutable float maxSize = 10.0;
   immutable float maxDelaySeconds;
 
   int reflectionPattern = 0;
   float widthMult1 = 1.0, widthMult2 = 0.0; // Multipliers for width
   float lrDelaySeconds = 0.0003; // Delay between stereo channels
 
-  double sampleRate;
-  double lowCut = 1000.0;
-  double highCut = 16000.0;
+  float sampleRate;
+
+  float size = 1.0;
+  float lowCut = 1000.0;
+  float highCut = 16000.0;
 
   long tapLengthL = 0;
   long tapLengthR = 0;

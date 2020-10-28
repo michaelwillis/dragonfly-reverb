@@ -196,7 +196,7 @@ nothrow:
         }
 
         immutable float effect1Size = readParam!float(paramEffect1Size);
-        earlyEffect1.setSize(effect1Size);
+        earlyEffect1.setSize(effect1Size / 10.0);
         // TODO: Room and Hall Size
 
         immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
