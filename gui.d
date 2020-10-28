@@ -218,14 +218,14 @@ nothrow:
     label.position = box2i(x, y, x + largeKnobSize, y + 16);
     parent.addChild(label);
 
-    UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context,
-      cast(FloatParameter) client.param(paramIndex), smallKnobImage, smallKnobFrames);
+    FloatParameter param = cast(FloatParameter) client.param(paramIndex);
+    UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context, param, smallKnobImage, smallKnobFrames);
     knob.position = box2i(x, y + 18, x + smallKnobSize, y + 18 + smallKnobSize);
     parent.addChild(knob);
     
     UINumericLabel value = mallocNew!UINumericLabel(
       this, cast(FloatParameter) client.param(paramIndex), format, 14);
-    value.position = box2i(x, y + smallKnobSize + 20, x + smallKnobSize, y + smallKnobSize + 20 + 16);
+    value.position = box2i(x, y + smallKnobSize + 20, x + largeKnobSize, y + smallKnobSize + 20 + 16);
     parent.addChild(value);
   }
 

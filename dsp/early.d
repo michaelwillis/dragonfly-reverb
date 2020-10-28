@@ -5,6 +5,8 @@ import dplug.dsp.delayline;
 import dplug.dsp.iir;
 import dsp.effects;
 
+import std.math;
+
 enum : int {DELAY, GAIN};
 
 struct ReflectionPattern
@@ -228,6 +230,11 @@ nothrow:
     crossAllpassR.initialize();
     diffuseAllpassL.initialize();
     diffuseAllpassR.initialize();
+
+    lowCutL.initialize();
+    lowCutR.initialize();
+    highCutL.initialize();
+    highCutR.initialize();
   }
   
   override void processAudio(float[] leftIn, float[] rightIn,
@@ -237,7 +244,6 @@ nothrow:
     // TODO:
     // * Size?
     // * Predelay?
-    // * LPF/HPF
 
     for (int f = 0; f < frames; f++)
     {
@@ -261,8 +267,11 @@ nothrow:
       float rightCrossMixed = widthMult1 * right +
         widthMult2 * crossAllpassR.nextSample(delayLtoR.nextSample(left), crossAllpassCoefficient);
 
-      leftOut[f]  = diffuseAllpassL.nextSample(leftCrossMixed, diffuseAllpassCoefficient);
-      rightOut[f] = diffuseAllpassR.nextSample(rightCrossMixed, diffuseAllpassCoefficient);
+      float leftDiffused = diffuseAllpassL.nextSample(leftCrossMixed, diffuseAllpassCoefficient);
+      float rightDiffused = diffuseAllpassR.nextSample(rightCrossMixed, diffuseAllpassCoefficient);
+
+      leftOut[f]  = highCutL.nextSample(lowCutL.nextSample(leftDiffused, lowCutCoefficient), highCutCoefficient);
+      rightOut[f] = highCutR.nextSample(lowCutR.nextSample(rightDiffused, lowCutCoefficient), highCutCoefficient);
     }
   }
 
@@ -279,6 +288,9 @@ nothrow:
 
     crossAllpassCoefficient = biquadRBJAllPass(750, sampleRate);
     diffuseAllpassCoefficient = biquadRBJAllPass(150, sampleRate);
+
+    highCutCoefficient = biquadRBJLowPass(highCut, sampleRate);
+    lowCutCoefficient = biquadRBJHighPass(lowCut, sampleRate);
 
     // Recalculate current reflection pattern due to new sample rate
     setReflectionPattern(this.reflectionPattern); 
@@ -318,6 +330,16 @@ nothrow:
     widthMult2 = (1 - width) / 2;
   }
 
+  void setHighCut(float highCut) {
+    this.highCut = highCut;
+    highCutCoefficient = biquadRBJLowPass(highCut, sampleRate);
+  }
+
+  void setLowCut(float lowCut) {
+    this.lowCut = lowCut;
+    lowCutCoefficient = biquadRBJHighPass(lowCut, sampleRate);
+  }
+
 private:
   immutable float maxDelaySeconds;
 
@@ -326,6 +348,8 @@ private:
   float lrDelaySeconds = 0.0003; // Delay between stereo channels
 
   double sampleRate;
+  double lowCut = 1000.0;
+  double highCut = 16000.0;
 
   long tapLengthL = 0;
   long tapLengthR = 0;
@@ -336,7 +360,14 @@ private:
   
   Delayline!float delayLineL, delayLineR, delayRtoL, delayLtoR;
 
-  BiquadCoeff crossAllpassCoefficient, diffuseAllpassCoefficient;
-  BiquadDelay crossAllpassL, crossAllpassR, diffuseAllpassL, diffuseAllpassR;
+  BiquadCoeff 
+    crossAllpassCoefficient,
+    diffuseAllpassCoefficient,
+    lowCutCoefficient, highCutCoefficient;
+
+  BiquadDelay 
+    crossAllpassL, crossAllpassR,
+    diffuseAllpassL, diffuseAllpassR,
+    lowCutL, lowCutR, highCutL, highCutR;
 }
 
