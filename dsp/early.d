@@ -223,7 +223,7 @@ nothrow:
       }
     }
 
-    this.maxDelaySeconds = maxDelay * maxSize;
+    this.maxDelaySeconds = maxPredelaySeconds + maxDelay * maxSize;
     this.lrDelaySeconds = 0.0003; // 0.3 ms
 
     crossAllpassL.initialize();
@@ -251,12 +251,14 @@ nothrow:
       float left = 0;
       float right = 0;
 
+      float predelaySamples = predelaySeconds * sampleRate;
+
       for(int i = 0; i < tapLengthL; i++) {
-        left += delayLineL.sampleFull(cast(int)(leftDelays[i] * size)) * leftGains[i];
+        left += delayLineL.sampleFull(cast(int)(leftDelays[i] * size + predelaySamples)) * leftGains[i];
       }
       
       for(int i = 0; i < tapLengthR; i++) {
-        right += delayLineR.sampleFull(cast(int)(rightDelays[i] * size)) * rightGains[i];        
+        right += delayLineR.sampleFull(cast(int)(rightDelays[i] * size + predelaySamples)) * rightGains[i];        
       }
       
       float leftCrossMixed = widthMult1 * left +
@@ -319,6 +321,12 @@ nothrow:
     }
   }
 
+  void setPredelaySeconds(float predelaySeconds) {
+    assert(predelaySeconds <= maxPredelaySeconds);
+    assert(predelaySeconds >= 0.0);
+    this.predelaySeconds = predelaySeconds;
+  }
+
   void setSize(float size) {
     assert(size <= maxSize);
     assert(size >= 1.0);
@@ -342,6 +350,7 @@ nothrow:
 
 private:
   immutable float maxSize = 10.0;
+  immutable float maxPredelaySeconds = 0.100;
   immutable float maxDelaySeconds;
 
   int reflectionPattern = 0;
@@ -350,6 +359,7 @@ private:
 
   float sampleRate;
 
+  float predelaySeconds = 0.004;
   float size = 1.0;
   float lowCut = 1000.0;
   float highCut = 16000.0;

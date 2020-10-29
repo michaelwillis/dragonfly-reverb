@@ -52,8 +52,8 @@ nothrow:
       style.largeKnob(customControls, paramEffect1Size, "Size", "%2.0f m", 206, 160);
       style.largeKnob(customControls, paramEffect1Width, "Width", "%3.0f%%", 206, 256);
 
-      style.smallKnob(customControls, paramEffect1HighCut, "High Cut", "%5.0f dB", 64, 336);
-      style.smallKnob(customControls, paramEffect1LowCut, "Low Cut", "%5.0f dB", 192, 336);
+      style.smallKnob(customControls, paramEffect1HighCut, "High Cut", "%5.0f Hz", 64, 336);
+      style.smallKnob(customControls, paramEffect1LowCut, "Low Cut", "%5.0f Hz", 192, 336);
       break;
     default:
       break;

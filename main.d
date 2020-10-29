@@ -111,18 +111,18 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramEffect1Width, "Effect 1 Width", "%", 0.0f, 100.0f, 100.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Predelay, "Effect 1 Predelay", "ms", 0, 100, 4);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Decay, "Effect 1 Decay Time", "s", 0.1f, 10.0f, 0.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect1Damp, "Effect 1 Damp", "Hz", 0, 20000, 10000);
+        params ~= mallocNew!LogFloatParameter(paramEffect1Damp, "Effect 1 Damp", "Hz", 20, 20000, 10000);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Diffuse, "Effect 1 Diffuse", "%", 0.0f, 100.0f, 80.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Modulation, "Effect 1 Mod", "%", 0.0f, 100.0f, 20.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Spin, "Effect 1 Spin", "Hz", 0.0f, 10.0f, 1.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Wander, "Effect 1 Wander", "%", 0.0f, 100.0f, 20.0f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect1HighCross, "Effect 1 High Cross", "Hz", 0, 20000, 6000);
+        params ~= mallocNew!LogFloatParameter(paramEffect1HighCross, "Effect 1 High Cross", "Hz", 20, 20000, 6000);
         params ~= mallocNew!LinearFloatParameter(paramEffect1HighMult, "Effect 1 High Mult", "x", 0.1f, 2.5f, 0.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect1HighCut, "Effect 1 High Cut", "Hz", 0, 20000, 12000);
+        params ~= mallocNew!LogFloatParameter(paramEffect1HighCut, "Effect 1 High Cut", "Hz", 20, 20000, 12000);
         params ~= mallocNew!BoolParameter(paramEffect1HighCutHard, "Effect 1 High Cut Hard", false);
-        params ~= mallocNew!LinearFloatParameter(paramEffect1LowCross, "Effect 1 Low Cross", "Hz", 0, 20000, 1000);
+        params ~= mallocNew!LogFloatParameter(paramEffect1LowCross, "Effect 1 Low Cross", "Hz", 20, 20000, 1000);
         params ~= mallocNew!LinearFloatParameter(paramEffect1LowMult, "Effect 1 Low Mult", "x", 0.1f, 2.5f, 1.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect1LowCut, "Effect 1 Low Cut", "Hz", 0, 20000, 400);
+        params ~= mallocNew!LogFloatParameter(paramEffect1LowCut, "Effect 1 Low Cut", "Hz", 20, 20000, 400);
         params ~= mallocNew!BoolParameter(paramEffect1LowCutHard, "Effect 1 Low Cut Hard", false);
 
         params ~= mallocNew!GainParameter(paramEffect2Gain, "Effect 2 Gain", 10.0f, 0.0f);
@@ -133,18 +133,18 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramEffect2Width, "Effect 2 Width", "%", 0.0f, 100.0f, 100.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Predelay, "Effect 2 Predelay", "ms", 0, 100, 4);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Decay, "Effect 2 Decay Time", "s", 0.1f, 10.0f, 0.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect2Damp, "Effect 2 Damp", "Hz", 0, 20000, 10000);
+        params ~= mallocNew!LogFloatParameter(paramEffect2Damp, "Effect 2 Damp", "Hz", 20, 20000, 10000);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Diffuse, "Effect 2 Diffuse", "%", 0.0f, 100.0f, 80.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Modulation, "Effect 2 Mod", "%", 0.0f, 100.0f, 20.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Spin, "Effect 2 Spin", "Hz", 0.0f, 10.0f, 1.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Wander, "Effect 2 Wander", "%", 0.0f, 100.0f, 20.0f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect2HighCross, "Effect 2 High Cross", "Hz", 0, 20000, 6000);
+        params ~= mallocNew!LogFloatParameter(paramEffect2HighCross, "Effect 2 High Cross", "Hz", 20, 20000, 6000);
         params ~= mallocNew!LinearFloatParameter(paramEffect2HighMult, "Effect 2 High Mult", "x", 0.1f, 2.5f, 0.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect2HighCut, "Effect 2 High Cut", "Hz", 0, 20000, 12000);
+        params ~= mallocNew!LogFloatParameter(paramEffect2HighCut, "Effect 2 High Cut", "Hz", 20, 20000, 12000);
         params ~= mallocNew!BoolParameter(paramEffect2HighCutHard, "Effect 2 High Cut Hard", false);
-        params ~= mallocNew!LinearFloatParameter(paramEffect2LowCross, "Effect 2 Low Cross", "Hz", 0, 20000, 1000);
+        params ~= mallocNew!LogFloatParameter(paramEffect2LowCross, "Effect 2 Low Cross", "Hz", 20, 20000, 1000);
         params ~= mallocNew!LinearFloatParameter(paramEffect2LowMult, "Effect 2 Low Mult", "x", 0.1f, 2.5f, 1.5f);
-        params ~= mallocNew!LinearFloatParameter(paramEffect2LowCut, "Effect 2 Low Cut", "Hz", 0, 20000, 400);
+        params ~= mallocNew!LogFloatParameter(paramEffect2LowCut, "Effect 2 Low Cut", "Hz", 20, 20000, 400);
         params ~= mallocNew!BoolParameter(paramEffect2LowCutHard, "Effect 2 Low Cut Hard", false);
 
         return params.releaseData();
@@ -194,6 +194,10 @@ nothrow:
         if (effect1EarlyReflectionPattern != earlyEffect1.getReflectionPattern()) {
           earlyEffect1.setReflectionPattern(effect1EarlyReflectionPattern);
         }
+
+        immutable float effect1Predelay = readParam!float(paramEffect1Predelay);
+        earlyEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
+        // TODO: Room, Hall, Plate predelay
 
         immutable float effect1Size = readParam!float(paramEffect1Size);
         earlyEffect1.setSize(effect1Size / 10.0);
