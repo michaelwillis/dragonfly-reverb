@@ -35,6 +35,11 @@ nothrow:
 
   override void onDrawRaw(ImageRef!RGBA rawMap, box2i[] dirtyRects) {
 
+    // This is a hack to prevent a crash that sometimes happens
+    // when switching effect algorithms. It is probably a race
+    // condition and should be fixed elsewhere.
+    if (param is null) return; 
+
     float textPosX = 0, textPosY = 0.5 * textSize;
     
     foreach(dirtyRect; dirtyRects) {

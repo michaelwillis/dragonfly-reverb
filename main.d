@@ -67,28 +67,25 @@ public:
 nothrow:
 @nogc:
 
-    this()
-    {
-
+    this() {
       noEffect = mallocNew!NoEffect();
       earlyEffect1 = mallocNew!EarlyEffect();
       earlyEffect2 = mallocNew!EarlyEffect();
-      hallEffect1 = mallocNew!HallEffect();
-      hallEffect2 = mallocNew!HallEffect();
       plateEffect1 = mallocNew!PlateEffect();
       plateEffect2 = mallocNew!PlateEffect();
       tankEffect1 = mallocNew!TankEffect();
       tankEffect2 = mallocNew!TankEffect();
+      hallEffect1 = mallocNew!HallEffect();
+      hallEffect2 = mallocNew!HallEffect();
       roomEffect1 = mallocNew!RoomEffect();
       roomEffect2 = mallocNew!RoomEffect();
 
       // These must have the same order as the enum
-      effects1 = [noEffect, earlyEffect1, hallEffect1, plateEffect1, tankEffect1, roomEffect1];
-      effects2 = [noEffect, earlyEffect2, hallEffect2, plateEffect2, tankEffect2, roomEffect2];
+      effects1 = [noEffect, earlyEffect1, plateEffect1, tankEffect1, roomEffect1, hallEffect1];
+      effects2 = [noEffect, earlyEffect2, plateEffect2, tankEffect2, roomEffect2, hallEffect2];
     }
 
-    override PluginInfo buildPluginInfo()
-    {
+    override PluginInfo buildPluginInfo() {
         static immutable PluginInfo pluginInfo = parsePluginInfo(import("plugin.json"));
         return pluginInfo;
     }
@@ -96,11 +93,10 @@ nothrow:
     // This is an optional overload, default is zero parameter.
     // Caution when adding parameters: always add the indices
     // in the same order as the parameter enum.
-    override Parameter[] buildParameters()
-    {
+    override Parameter[] buildParameters() {
         auto params = makeVec!Parameter();
 
-        params ~= mallocNew!LinearFloatParameter(paramMix, "Mix", "%", 0.0f, 100.0f, 100.0f) ;
+        params ~= mallocNew!LinearFloatParameter(paramMix, "Wet/Dry Mix", "%", 0.0f, 100.0f, 100.0f) ;
 
         params ~= mallocNew!GainParameter(paramEffect1Gain, "Effect 1 Gain", 10.0f, 0.0f);
         params ~= mallocNew!GainParameter(paramEffect1Send, "Effect 1 Send", 10.0f, 0.0f);
@@ -166,8 +162,7 @@ nothrow:
         return 512;
     }
 
-    override void reset(double sampleRate, int maxFrames, int numInputs, int numOutputs) nothrow @nogc
-    {
+    override void reset(double sampleRate, int maxFrames, int numInputs, int numOutputs) nothrow @nogc {
         // Clear here any state and delay buffers you might have.
 
         assert(maxFrames <= 512); // guaranteed by audio buffer splitting
@@ -185,65 +180,100 @@ nothrow:
 
         immutable float mix = readParam!float(paramMix) / 100.0f;
 
-        immutable float effect1Gain = pow(10, readParam!float(paramEffect1Gain) / 20); // dB to mult
-        immutable float effect1SendToEffect2 = pow(10, readParam!float(paramEffect1Send) / 20); // dB to mult
+        immutable int effect1Algorithm = readParam!int(paramEffect1Algorithm);
+        if (this.effect1Algorithm != effect1Algorithm) {
+            // Mute previous algorithm, then switch
+            effects1[this.effect1Algorithm].mute();
+            this.effect1Algorithm = effect1Algorithm; 
+        }
 
-        // TODO: Effect 1 Algorithm Select
+        immutable int effect2Algorithm = readParam!int(paramEffect2Algorithm);
+        if (this.effect2Algorithm != effect2Algorithm) {
+            // Mute previous algorithm, then switch
+            effects2[this.effect2Algorithm].mute();
+            this.effect2Algorithm = effect2Algorithm; 
+        }
+
+        immutable float effect1Gain = pow(10, readParam!float(paramEffect1Gain) / 20); // dB to mult
+        immutable float effect2Gain = pow(10, readParam!float(paramEffect2Gain) / 20); // dB to mult
+        immutable float effect1SendToEffect2 = pow(10, readParam!float(paramEffect1Send) / 20); // dB to mult
 
         immutable int effect1EarlyReflectionPattern = readParam!int(paramEffect1EarlyReflectionPattern);
         if (effect1EarlyReflectionPattern != earlyEffect1.getReflectionPattern()) {
           earlyEffect1.setReflectionPattern(effect1EarlyReflectionPattern);
         }
 
+        immutable int effect2EarlyReflectionPattern = readParam!int(paramEffect2EarlyReflectionPattern);
+        if (effect2EarlyReflectionPattern != earlyEffect2.getReflectionPattern()) {
+          earlyEffect2.setReflectionPattern(effect2EarlyReflectionPattern);
+        }
+
         immutable float effect1Predelay = readParam!float(paramEffect1Predelay);
         earlyEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
+        // TODO: Room, Hall, Plate predelay
+
+        immutable float effect2Predelay = readParam!float(paramEffect2Predelay);
+        earlyEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         // TODO: Room, Hall, Plate predelay
 
         immutable float effect1Size = readParam!float(paramEffect1Size);
         earlyEffect1.setSize(effect1Size / 10.0);
         // TODO: Room and Hall Size
 
+        immutable float effect2Size = readParam!float(paramEffect2Size);
+        earlyEffect2.setSize(effect2Size / 10.0);
+        // TODO: Room and Hall Size
+
         immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
         earlyEffect1.setWidth(effect1Width);
+        // TODO: Width for Plate, Room and Hall   
+
+        immutable float effect2Width = readParam!float(paramEffect2Width) / 100.0;
+        earlyEffect2.setWidth(effect2Width);
         // TODO: Width for Plate, Room and Hall   
 
         immutable float effect1HighCut = readParam!float(paramEffect1HighCut);
         earlyEffect1.setHighCut(effect1HighCut);
         // TODO: High Cut for Plate, Room and Hall   
 
+        immutable float effect2HighCut = readParam!float(paramEffect2HighCut);
+        earlyEffect2.setHighCut(effect2HighCut);
+        // TODO: High Cut for Plate, Room and Hall   
+
         immutable float effect1LowCut = readParam!float(paramEffect1LowCut);
         earlyEffect1.setLowCut(effect1LowCut);
         // TODO: Low Cut for Plate, Room and Hall   
 
+        immutable float effect2LowCut = readParam!float(paramEffect2LowCut);
+        earlyEffect2.setLowCut(effect2LowCut);
+        // TODO: Low Cut for Plate, Room and Hall   
+
         // immutable bool hardClip = readParam!bool(paramMode);
 
-        for (int f = 0; f < frames; ++f)
-        {
+        for (int f = 0; f < frames; ++f) {
             effect1InL[f] = inputs[0][f];
             effect1InR[f] = inputs[1][f];
         }
 
-        effects1[effect1Selected].processAudio(effect1InL, effect1InR, effect1OutL, effect1OutR, frames);
+        effects1[effect1Algorithm].processAudio(effect1InL, effect1InR, effect1OutL, effect1OutR, frames);
 
-        for (int f = 0; f < frames; ++f)
-        {
+        for (int f = 0; f < frames; ++f) {
             effect2InL[f] = inputs[0][f] + effect1OutL[f] * effect1SendToEffect2;
             effect2InR[f] = inputs[1][f] + effect1OutR[f] * effect1SendToEffect2;
         }
 
-        effects2[effect2Selected].processAudio(effect2InL, effect2InR, effect2OutL, effect2OutR, frames);
+        effects2[effect2Algorithm].processAudio(effect2InL, effect2InR, effect2OutL, effect2OutR, frames);
 
         for (int f = 0; f < frames; ++f) {
-            outputs[0][f] = ((effect1OutL[f] * effect1Gain + effect2OutL[f]) * mix) + (inputs[0][f] * (1.0 - mix));
-            outputs[1][f] = ((effect1OutR[f] * effect1Gain + effect2OutR[f]) * mix) + (inputs[1][f] * (1.0 - mix));            
+            float effectsLeft = (effect1OutL[f] * effect1Gain + effect2OutL[f] * effect2Gain);
+            float effectsRight = (effect1OutR[f] * effect1Gain + effect2OutR[f] * effect2Gain);
+
+            outputs[0][f] = (effectsLeft * mix) + (inputs[0][f] * (1.0 - mix));
+            outputs[1][f] = (effectsRight * mix) + (inputs[1][f] * (1.0 - mix));            
         }
 
-        /// Get access to the GUI
-        if (DragonflyReverbGUI gui = cast(DragonflyReverbGUI) graphicsAcquire())
-        {
-            /// This is where you would update any elements in the gui
-            /// such as feeding values to meters.
-
+        if (DragonflyReverbGUI gui = cast(DragonflyReverbGUI) graphicsAcquire()) {
+            // TODO: Populate the spectrogram
             graphicsRelease();
         }
     }
@@ -254,8 +284,8 @@ nothrow:
     }
 
 private:
-    int effect1Selected = earlyEffect;
-    int effect2Selected = 0;
+    int effect1Algorithm = earlyEffect;
+    int effect2Algorithm = 0;
 
     NoEffect noEffect;
     EarlyEffect earlyEffect1, earlyEffect2;

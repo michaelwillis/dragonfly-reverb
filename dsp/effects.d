@@ -8,20 +8,20 @@ enum : int
 {
     noEffect,
     earlyEffect,
-    hallEffect,
     plateEffect,
     tankEffect,
     roomEffect,
+    hallEffect,
     effectCount
 }
 
 immutable string[] effectAlgorithmNames = [
   "Off",
   "Early",
-  "Hall",
   "Plate",
   "Tank",
   "Room",
+  "Hall",
 ];
 
 interface Effect
@@ -32,6 +32,7 @@ nothrow:
     void processAudio(float[] leftIn, float[] rightIn,
                       float[] leftOut, float[] rightOut,
                       int frames);
+    void mute();
     void reset(double sampleRate, int maxFrames);
 }
 
@@ -53,9 +54,8 @@ nothrow:
         rightOut[0..frames] = 0.0;
     }
 
-    void reset(double sampleRate, int maxFrames)
-    {
-    }
+    void mute() { }
+    void reset(double sampleRate, int maxFrames) { }
 }
 
 final class HallEffect : NoEffect

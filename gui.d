@@ -95,7 +95,7 @@ nothrow:
 
           auto effect1Widget = mallocNew!UIEffect(style, _client, true);
           style.place(modalContainer, 0, 16, 288, 312, effect1Widget);
-          effect1Widget.selectEffect(effect1Algorithm.value()); // TODO: listen for change
+          effect1Widget.selectEffect(effect1Algorithm.value());
 
 
           EnumParameter effect2Algorithm = cast(EnumParameter) _client.param(paramEffect2Algorithm);
@@ -106,7 +106,7 @@ nothrow:
 
           auto effect2Widget = mallocNew!UIEffect(style, _client, false);
           style.place(modalContainer, 312, 16, 288, 312, effect2Widget);
-          effect2Widget.selectEffect(effect2Algorithm.value()); // TODO: listen for change
+          effect2Widget.selectEffect(effect2Algorithm.value());
 
         } else if (mode == UIMode.CREDITS){
           auto lines = makeVec!string();
@@ -186,10 +186,10 @@ nothrow:
   
   void smallKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
     FloatParameter param = cast(FloatParameter) client.param(paramIndex);
-    place(parent, x, y, largeKnobSize, 16, mallocNew!UILabel(this, name, 14));
-    place(parent, x, y + 18, smallKnobSize, smallKnobSize,
+    place(parent, x, y, 72, 16, mallocNew!UILabel(this, name, 14));
+    place(parent, x + 20, y + 16, smallKnobSize, smallKnobSize,
       mallocNew!UIFilmstripKnob(context, param, smallKnobImage, smallKnobFrames));
-    place(parent, x, y + smallKnobSize + 20, largeKnobSize, 16, mallocNew!UINumericLabel(this, param, format, 14));
+    place(parent, x, y + smallKnobSize + 16, 72, 16, mallocNew!UINumericLabel(this, param, format, 14));
   }
 
   void gainSlider(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {

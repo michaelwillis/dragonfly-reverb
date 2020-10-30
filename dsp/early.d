@@ -275,9 +275,15 @@ nothrow:
     }
   }
 
-  override void reset(double sampleRate, int maxFrames)
-  {
+  override void mute() {
+    // TODO: There may be a better way to do this that doesn't reallocate the delay buffers.
+    reset(this.sampleRate, this.maxFrames);
+  }
+
+  override void reset(double sampleRate, int maxFrames) {
     this.sampleRate = sampleRate;
+    this.maxFrames = maxFrames;
+
     int maxDelaySamples = cast(int) (maxDelaySeconds * sampleRate);
     delayLineL.resize(maxDelaySamples);
     delayLineR.resize(maxDelaySamples);
@@ -294,6 +300,16 @@ nothrow:
 
     // Recalculate current reflection pattern due to new sample rate
     setReflectionPattern(this.reflectionPattern); 
+
+    // Reset all biquads
+    crossAllpassL.initialize();
+    crossAllpassR.initialize();
+    diffuseAllpassL.initialize();
+    diffuseAllpassR.initialize();
+    lowCutL.initialize();
+    lowCutR.initialize();
+    highCutL.initialize();
+    highCutR.initialize();
   }
 
   int getReflectionPattern() {
@@ -358,6 +374,7 @@ private:
   float lrDelaySeconds = 0.0003; // Delay between stereo channels
 
   float sampleRate;
+  int maxFrames;
 
   float predelaySeconds = 0.004;
   float size = 1.0;

@@ -89,28 +89,54 @@ nothrow:
         style.gainSlider(customControls, paramEffect1Send, "Send Effect 2", "%3.1f dB", 0, 272);
       }
 
-      style.gainSlider(customControls, paramGain, "Effect 1 Gain", "%3.1f dB", 0, 296);
+      style.gainSlider(customControls, paramGain, firstEffect ? "Effect 1 Gain" : "Effect 2 Gain", "%3.1f dB", 0, 296);
     }
 
-    switch(effect) {
-    case noEffect:
-      // Nothing
-      break;
-      
-    case earlyEffect:
+    if (effect == earlyEffect) {
       style.selectBox(customControls, paramEarlyReflectionPattern, "Reflection Pattern", 0, 8);
 
       style.largeKnob(customControls, paramSize, "Size", "%2.0f m", 192, 8);
       style.largeKnob(customControls, paramWidth, "Width", "%3.0f%%", 192, 104);
 
-      style.smallKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", 48, 186);
-      style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", 176, 186);
-      break;
-    case hallEffect:
-      style.largeKnob(customControls, paramSize, "Size", "%2.0f m", 192, 8);
-      break;
-    default:
-      break;
+      style.smallKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", 48, 202);
+      style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", 176, 202);
+    } else if (effect == plateEffect || effect == tankEffect) {
+      // Divide into a 3 x 2 grid.  Width of 288 / 3 = 96 pixels per dial
+      // Large dials are 52 pixels wide, 96 - 52 = 44, so each gets a margin of 22
+      int x1 = 22, x2 = 96 + 22, x3 = 192 + 22;
+      int y1 = 22, y2 = 96 + 22;
+
+      style.largeKnob(customControls, paramPredelay, "Predelay", "%3.0f ms", x1, y1);
+      style.largeKnob(customControls, paramWidth, "Width", "%3.0f%%", x2, y1);
+      style.largeKnob(customControls, paramDecay, "Decay", "%2.1f s", x3, y1);
+
+      style.largeKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", x1, y2);
+      style.largeKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", x2, y2);
+      style.largeKnob(customControls, paramDamp, "Dampen", "%5.0f Hz", x3, y2);
+    } else if (effect == roomEffect || effect == hallEffect) {
+
+      int x1 = 0, x2 = 72, x3 = 144, x4 = 216;
+      int y1 = 4, y2 = 70, y3 = 136, y4 = 202;
+
+      style.smallKnob(customControls, paramPredelay, "Predelay", "%3.0f ms", x1, y1);
+      style.smallKnob(customControls, paramSize, "Size", "%2.0f m", x2, y1);
+      style.smallKnob(customControls, paramWidth, "Width", "%3.0f%%", x3, y1);
+      style.smallKnob(customControls, paramDecay, "Decay", "%2.1f s", x4, y1);
+
+      style.smallKnob(customControls, paramDiffuse, "Diffuse", "%3.0f%%", x1, y2);
+      style.smallKnob(customControls, paramModulation, "Modulation", "%3.0f%%", x2, y2);
+      style.smallKnob(customControls, paramSpin, "Spin", "%2.1f Hz", x3, y2);
+      style.smallKnob(customControls, paramWander, "Wander", "%3.0f%%", x4, y2);
+
+      style.smallKnob(customControls, paramHighCross, "High Cross", "%5.0f Hz", x1, y3);
+      style.smallKnob(customControls, paramHighMult, "High Mult", "%1.1f X", x2, y3);
+      style.smallKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", x3, y3);
+      // style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", x4, y3);
+
+      style.smallKnob(customControls, paramLowCross, "Low Cross", "%5.0f Hz", x1, y4);
+      style.smallKnob(customControls, paramLowMult, "Low Mult", "%1.1f X", x2, y4);
+      style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", x3, y4);
+      // style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", x4, y4);
     }
   }
 
