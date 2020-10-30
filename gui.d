@@ -87,26 +87,17 @@ nothrow:
         if (mode == UIMode.PRESETS) {
           
         } else if (mode == UIMode.EFFECTS) {
+          EnumParameter effect1Algorithm = cast(EnumParameter) _client.param(paramEffect1Algorithm);
+          auto effect1Widget = mallocNew!UIEffect(style, _client, true);
+          style.place(modalContainer, 0, 0, 288, 328, effect1Widget);
 
-          UILabel effect1Label = mallocNew!UILabel(style, "Effect 1:", 14, HorizontalAlignment.left);
-          effect1Label.position = box2i(16, 136, 72, 150);
-          this.modalContainer.addChild(effect1Label);
+          style.place(modalContainer, 0, 0, 58, 16,
+            mallocNew!UILabel(style, "Effect 1:", 14, HorizontalAlignment.left));
+          style.place(modalContainer, 60, 0, 248, 16, mallocNew!UISelectBox(style, effect1Algorithm, 14, true));
 
-          UISelectBox effect1AlgorithmSelect = mallocNew!UISelectBox(
-            style, cast(EnumParameter) _client.param(paramEffect1Algorithm), 14, true);
-          effect1AlgorithmSelect.position = box2i(76, 136, 320, 150);
-          this.modalContainer.addChild(effect1AlgorithmSelect);
-
-          UIEffect effect1 = mallocNew!UIEffect(style, _client);
-          effect1.position = box2i(16, 136, 304, 464);
-          // effect1.selectEffect(); // TODO, set this based on effect enum param
-          this.modalContainer.addChild(effect1);
+          effect1Widget.selectEffect(effect1Algorithm.value()); // TODO: listen for change
 
           // TODO: Add second effect
-
-          // TODO: Put these into the effet widget class... needs to know whether to show send
-          style.gainSlider(modalContainer, paramEffect1Send, "Send Effect 2", "%3.1f dB", 0, 424);
-          style.gainSlider(modalContainer, paramEffect1Gain, "Effect 1 Gain", "%3.1f dB", 0, 448);
 
         } else if (mode == UIMode.CREDITS){
           auto lines = makeVec!string();

@@ -17,15 +17,14 @@ public:
 nothrow:
 @nogc:
 
-  this(Style style, Client client) {
+  this(Style style, Client client, bool firstEffect /* if false, this is effect #2 */ ) {
     super(style.context, flagRaw);
     this.style = style;
     this.client = client;
+    this.firstEffect = firstEffect;
 
     this.customControls = mallocNew!UIElement(context, flagRaw);
     addChild(this.customControls);
-
-    selectEffect(earlyEffect);
   }
 
   void selectEffect(int effect) {
@@ -33,6 +32,14 @@ nothrow:
     this.customControls.destroyFree();
     this.customControls = mallocNew!UIElement(context(), 1);
     this.customControls.position = box2i(16, 136, 624, 464);
+
+    if (effect != noEffect) {
+      if (firstEffect) {
+        style.gainSlider(this, paramEffect1Send, "Send Effect 2", "%3.1f dB", 0, 288);
+      }
+
+      style.gainSlider(this, paramEffect1Gain, "Effect 1 Gain", "%3.1f dB", 0, 312);
+    }
 
     switch(effect) {
     case noEffect:
@@ -58,5 +65,6 @@ nothrow:
 private:
   Style style;
   Client client;
+  immutable bool firstEffect;
   UIElement customControls;
 }
