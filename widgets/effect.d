@@ -40,20 +40,13 @@ nothrow:
       break;
       
     case earlyEffect:
-      UILabel effect1Label = mallocNew!UILabel(style, "Reflection Pattern", 14, HorizontalAlignment.left);
-      effect1Label.position = box2i(16, 160, 148, 176);
-      customControls.addChild(effect1Label);
+      style.selectBox(customControls, paramEffect1EarlyReflectionPattern, "Reflection Pattern", 0, 24);
 
-      UISelectBox earlySelect = mallocNew!UISelectBox(
-        style, cast(EnumParameter) client.param(paramEffect1EarlyReflectionPattern), 14);
-      earlySelect.position = box2i(16, 184, 148, 316);
-      customControls.addChild(earlySelect);
+      style.largeKnob(customControls, paramEffect1Size, "Size", "%2.0f m", 192, 24);
+      style.largeKnob(customControls, paramEffect1Width, "Width", "%3.0f%%", 192, 120);
 
-      style.largeKnob(customControls, paramEffect1Size, "Size", "%2.0f m", 206, 160);
-      style.largeKnob(customControls, paramEffect1Width, "Width", "%3.0f%%", 206, 256);
-
-      style.smallKnob(customControls, paramEffect1HighCut, "High Cut", "%5.0f Hz", 64, 336);
-      style.smallKnob(customControls, paramEffect1LowCut, "Low Cut", "%5.0f Hz", 192, 336);
+      style.smallKnob(customControls, paramEffect1HighCut, "High Cut", "%5.0f Hz", 48, 200);
+      style.smallKnob(customControls, paramEffect1LowCut, "Low Cut", "%5.0f Hz", 176, 200);
       break;
     default:
       break;

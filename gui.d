@@ -103,38 +103,10 @@ nothrow:
           this.modalContainer.addChild(effect1);
 
           // TODO: Add second effect
-          immutable int sliderWidth = 146;
-          immutable int sliderHeight = 16;
-          immutable int sliderFrames = 143;
-          immutable int sliderMargin = 2;
 
-          UILabel effect1SendLabel = mallocNew!UILabel(style, "Send Effect 2", 14, HorizontalAlignment.left);
-          effect1SendLabel.position = box2i(16, 424, 112, 424 + sliderHeight);
-          this.modalContainer.addChild(effect1SendLabel);
-
-          GainSlider effect1SendSlider = mallocNew!GainSlider(
-            context(), cast(GainParameter) _client.param(paramEffect1Send), style.sliderImage, sliderFrames, sliderMargin);
-          effect1SendSlider.position = box2i(110, 424, 110 + sliderWidth, 424 + sliderHeight);
-          this.modalContainer.addChild(effect1SendSlider);
-
-          UINumericLabel effect1SendValueLabel = mallocNew!UINumericLabel(
-            style, cast(FloatParameter) _client.param(paramEffect1Send), "%3.1f dB", 14);
-          effect1SendValueLabel.position = box2i(260, 424, 316, 424 + sliderHeight);
-          this.modalContainer.addChild(effect1SendValueLabel);
-
-          UILabel effect1GainLabel = mallocNew!UILabel(style, "Effect 1 Gain", 14, HorizontalAlignment.left);
-          effect1GainLabel.position = box2i(16, 448, 112, 448 + sliderHeight);
-          this.modalContainer.addChild(effect1GainLabel);
-
-          GainSlider effect1GainSlider = mallocNew!GainSlider(
-            context(), cast(GainParameter) _client.param(paramEffect1Gain), style.sliderImage, sliderFrames, sliderMargin);
-          effect1GainSlider.position = box2i(110, 448, 110 + sliderWidth, 448 + sliderHeight);
-          this.modalContainer.addChild(effect1GainSlider);
-
-          UINumericLabel effect1GainValueLabel = mallocNew!UINumericLabel(
-            style, cast(FloatParameter) _client.param(paramEffect1Gain), "%3.1f dB", 14);
-          effect1GainValueLabel.position = box2i(260, 448, 316, 448 + sliderHeight);
-          this.modalContainer.addChild(effect1GainValueLabel);
+          // TODO: Put these into the effet widget class... needs to know whether to show send
+          style.gainSlider(modalContainer, paramEffect1Send, "Send Effect 2", "%3.1f dB", 0, 424);
+          style.gainSlider(modalContainer, paramEffect1Gain, "Effect 1 Gain", "%3.1f dB", 0, 448);
 
         } else if (mode == UIMode.CREDITS){
           auto lines = makeVec!string();
@@ -180,6 +152,9 @@ nothrow:
   immutable int smallKnobSize = 32; // Pixels
   immutable int smallKnobFrames = 101;
 
+  immutable int sliderWidth = 146, sliderHeight = 16;
+  immutable int sliderFrames = 143, sliderMargin = 2;
+  
   immutable RGBA textColor = RGBA(200, 200, 200, 255);
   immutable RGBA highlight = RGBA(230, 240, 255, 255);
 
@@ -197,36 +172,40 @@ nothrow:
     tabOffImage    = loadOwnedImage(cast(ubyte[])(import("tab_off.png")));
   }
 
+  void selectBox(UIElement parent, int paramIndex, const char[] name, int x, int y) {
+    place(parent, x, y, 128, 16, mallocNew!UILabel(this, name, 14, HorizontalAlignment.left));
+    place(parent, x, y + 24, 128, 136, mallocNew!UISelectBox(this, cast(EnumParameter) client.param(paramIndex), 14));
+  }
   void largeKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
-    UILabel label = mallocNew!UILabel(this, name, 14);
-    label.position = box2i(x, y, x + largeKnobSize, y + 16);
-    parent.addChild(label);
-
-    UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context,
-      cast(FloatParameter) client.param(paramIndex), largeKnobImage, largeKnobFrames);
-    knob.position = box2i(x, y + 18, x + largeKnobSize, y + 18 + largeKnobSize);
-    parent.addChild(knob);
-    
-    UINumericLabel value = mallocNew!UINumericLabel(
-      this, cast(FloatParameter) client.param(paramIndex), format, 14);
-    value.position = box2i(x, y + 72, x + largeKnobSize, y + 72 + 16);
-    parent.addChild(value);
+    FloatParameter param = cast(FloatParameter) client.param(paramIndex);
+    place(parent, x, y, largeKnobSize, 16, mallocNew!UILabel(this, name, 14));
+    place(parent, x, y + 18, largeKnobSize, largeKnobSize,
+      mallocNew!UIFilmstripKnob(context, param, largeKnobImage, largeKnobFrames));
+    place(parent, x, y + 72, largeKnobSize, 16, mallocNew!UINumericLabel(this, param, format, 14));
   }
   
   void smallKnob(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
-    UILabel label = mallocNew!UILabel(this, name, 14);
-    label.position = box2i(x, y, x + largeKnobSize, y + 16);
-    parent.addChild(label);
-
     FloatParameter param = cast(FloatParameter) client.param(paramIndex);
-    UIFilmstripKnob knob = mallocNew!UIFilmstripKnob(context, param, smallKnobImage, smallKnobFrames);
-    knob.position = box2i(x, y + 18, x + smallKnobSize, y + 18 + smallKnobSize);
-    parent.addChild(knob);
-    
-    UINumericLabel value = mallocNew!UINumericLabel(
-      this, cast(FloatParameter) client.param(paramIndex), format, 14);
-    value.position = box2i(x, y + smallKnobSize + 20, x + largeKnobSize, y + smallKnobSize + 20 + 16);
-    parent.addChild(value);
+    place(parent, x, y, largeKnobSize, 16, mallocNew!UILabel(this, name, 14));
+    place(parent, x, y + 18, smallKnobSize, smallKnobSize,
+      mallocNew!UIFilmstripKnob(context, param, smallKnobImage, smallKnobFrames));
+    place(parent, x, y + smallKnobSize + 20, largeKnobSize, 16, mallocNew!UINumericLabel(this, param, format, 14));
   }
 
+  void gainSlider(UIElement parent, int paramIndex, const char[] name, const char[] format, int x, int y) {
+    GainParameter param = cast(GainParameter) client.param(paramIndex);
+    place(parent, x, y, 96, sliderHeight, mallocNew!UILabel(this, name, 14, HorizontalAlignment.left));
+    place(parent, x + 94, y, sliderWidth, sliderHeight,
+      mallocNew!GainSlider(context, param, sliderImage, sliderFrames, sliderMargin));
+    place(parent, x + 244, y, 56, sliderHeight, mallocNew!UINumericLabel(this, param, format, 14));
+  }
+
+  void place(UIElement parent, int x, int y, int width, int height, UIElement child) {
+    child.position = box2i(
+      parent.position.min.x + x,
+      parent.position.min.y + y,
+      parent.position.min.x + x + width,
+      parent.position.min.y + y + height);
+    parent.addChild(child);
+  }
 }
