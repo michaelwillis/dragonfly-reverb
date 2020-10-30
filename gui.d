@@ -88,16 +88,25 @@ nothrow:
           
         } else if (mode == UIMode.EFFECTS) {
           EnumParameter effect1Algorithm = cast(EnumParameter) _client.param(paramEffect1Algorithm);
-          auto effect1Widget = mallocNew!UIEffect(style, _client, true);
-          style.place(modalContainer, 0, 0, 288, 328, effect1Widget);
 
           style.place(modalContainer, 0, 0, 58, 16,
             mallocNew!UILabel(style, "Effect 1:", 14, HorizontalAlignment.left));
-          style.place(modalContainer, 60, 0, 248, 16, mallocNew!UISelectBox(style, effect1Algorithm, 14, true));
+          style.place(modalContainer, 60, 0, 240, 16, mallocNew!UISelectBox(style, effect1Algorithm, 14, true));
 
+          auto effect1Widget = mallocNew!UIEffect(style, _client, true);
+          style.place(modalContainer, 0, 16, 288, 312, effect1Widget);
           effect1Widget.selectEffect(effect1Algorithm.value()); // TODO: listen for change
 
-          // TODO: Add second effect
+
+          EnumParameter effect2Algorithm = cast(EnumParameter) _client.param(paramEffect2Algorithm);
+
+          style.place(modalContainer, 312, 0, 58, 16,
+            mallocNew!UILabel(style, "Effect 2:", 14, HorizontalAlignment.left));
+          style.place(modalContainer, 374, 0, 240, 16, mallocNew!UISelectBox(style, effect2Algorithm, 14, true));
+
+          auto effect2Widget = mallocNew!UIEffect(style, _client, false);
+          style.place(modalContainer, 312, 16, 288, 312, effect2Widget);
+          effect2Widget.selectEffect(effect2Algorithm.value()); // TODO: listen for change
 
         } else if (mode == UIMode.CREDITS){
           auto lines = makeVec!string();

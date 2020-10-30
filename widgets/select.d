@@ -49,7 +49,7 @@ nothrow:
 
         if (horizontal) {
           auto box = style.font.measureText(param.getValueString(i), textSize, 0.5);
-          textPosX += box.width + 12;
+          textPosX += box.width + 10;
         } else {
           // TODO: Get rid of magic number 1.2, make row height explicit
           textPosY += 1.2 * textSize;
@@ -66,7 +66,7 @@ nothrow:
       int left = 4;
       for (int i = 0; i <= param.maxValue(); i++) {
           auto box = style.font.measureText(param.getValueString(i), textSize, 0.5);
-          int right = left + box.width + 12;
+          int right = left + box.width + 10;
           if (x >= left && x < right) {
             value = i;
             break;
