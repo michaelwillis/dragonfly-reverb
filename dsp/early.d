@@ -237,12 +237,7 @@ nothrow:
     highCutR.initialize();
   }
   
-  override void processAudio(float[] leftIn, float[] rightIn,
-                             float[] leftOut, float[] rightOut,
-                             int frames)
-  {
-    // TODO: Predelay?
-
+  override void processAudio(float[] leftIn, float[] rightIn, float[] leftOut, float[] rightOut, int frames) {
     for (int f = 0; f < frames; f++)
     {
       delayLineL.feedSample(leftIn[f]);

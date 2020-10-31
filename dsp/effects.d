@@ -63,16 +63,6 @@ final class HallEffect : NoEffect
 
 }
 
-final class PlateEffect : NoEffect
-{
-
-}
-
-final class TankEffect : NoEffect
-{
-
-}
-
 final class RoomEffect : NoEffect
 {
 

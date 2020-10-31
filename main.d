@@ -11,6 +11,8 @@ import gui;
 
 import dsp.effects;
 import dsp.early;
+import dsp.plate;
+import dsp.tank;
 
 mixin(pluginEntryPoints!DragonflyReverbClient);
 
@@ -210,10 +212,12 @@ nothrow:
 
         immutable float effect1Predelay = readParam!float(paramEffect1Predelay);
         earlyEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
-        // TODO: Room, Hall, Plate predelay
+        plateEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
+        // TODO: Room, Hall, predelay
 
         immutable float effect2Predelay = readParam!float(paramEffect2Predelay);
         earlyEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
+        plateEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         // TODO: Room, Hall, Plate predelay
 
         immutable float effect1Size = readParam!float(paramEffect1Size);
