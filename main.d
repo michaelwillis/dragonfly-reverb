@@ -220,6 +220,18 @@ nothrow:
         plateEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         // TODO: Room, Hall, Plate predelay
 
+        immutable float effect1Decay = readParam!float(paramEffect1Decay);
+        if (effect1Decay != plateEffect1.getDecaySeconds()) {
+            plateEffect1.setDecaySeconds(effect1Decay);
+        }
+        // TODO: Room, Hall
+
+        immutable float effect2Decay = readParam!float(paramEffect2Decay);
+        if (effect2Decay != plateEffect2.getDecaySeconds()) {
+            plateEffect2.setDecaySeconds(effect2Decay);
+        }
+        // TODO: Room, Hall
+
         immutable float effect1Size = readParam!float(paramEffect1Size);
         earlyEffect1.setSize(effect1Size / 10.0);
         // TODO: Room and Hall Size
