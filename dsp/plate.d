@@ -53,23 +53,23 @@ nothrow:
   }
 
   override void processAudio(float[] leftIn, float[] rightIn, float[] leftOut, float[] rightOut, int frames) {
-  float outL, outR, tmpL, tmpR;
+
     for (int f = 0; f < frames; f++) {
-      // TODO: Try true stereo input, with two DCCut instances
-      hpf = 0.5 * inDCC.process(leftIn[f] + rightIn[f]) - 0.5 * hpf;
-      outL = outR = tmpL = tmpR = hpf;
 
-      outL += apfeedback * lastL;
+      hpfL = 0.5 * inDCCutLeft.process(leftIn[f]) - 0.5 * hpfL;
+      hpfR = 0.5 * inDCCutRight.process(rightIn[f]) - 0.5 * hpfR;
+
+      float outL = hpfL + apfeedback * lastL;
       lastL += -1 * apfeedback * outL;
-      for(int i = 0; i < combL.length; i++) outL += combL[i].process(tmpL);
+      for(int i = 0; i < combL.length; i++) outL += combL[i].process(hpfL);
       // TODO: Implement left allpass filters!!
-      outL = lDCC.process(outL);
+      outL = outDCCutLeft.process(outL);
 
-      outR += apfeedback * lastR;
+      float outR = hpfR + apfeedback * lastR;
       lastR += -1 * apfeedback * outR;
-      for(int i = 0; i < combR.length; i++) outR += combR[i].process(tmpR);
+      for(int i = 0; i < combR.length; i++) outR += combR[i].process(hpfR);
       // TODO: Implement right allpass filters!!
-      outR = rDCC.process(outR);
+      outR = outDCCutRight.process(outR);
 
       // TODO: Implement width!
       predelayL.feedSample(lastL);
@@ -90,13 +90,15 @@ nothrow:
     this.sampleRate = sampleRate;
     this.maxFrames = maxFrames;
 
-    inDCC.setCutOnFreq(8.0, sampleRate);
-    lDCC.setCutOnFreq(8.0, sampleRate);
-    rDCC.setCutOnFreq(8.0, sampleRate);
+    inDCCutLeft.setCutOnFreq(8.0, sampleRate);
+    inDCCutRight.setCutOnFreq(8.0, sampleRate);
+    outDCCutLeft.setCutOnFreq(8.0, sampleRate);
+    outDCCutRight.setCutOnFreq(8.0, sampleRate);
 
-    inDCC.mute();
-    lDCC.mute();
-    rDCC.mute();
+    inDCCutLeft.mute();
+    inDCCutRight.mute();
+    outDCCutLeft.mute();
+    outDCCutRight.mute();
 
     int maxPredelaySamples = cast(int) (maxPredelaySeconds * sampleRate);
     predelayL.resize(maxPredelaySamples);
@@ -144,9 +146,10 @@ private:
 
   float predelaySeconds = 0.01, decaySeconds = 0.3;
 
-  float hpf = 0.0, lpfL = 0.0, lpfR = 0.0, lastL = 0.0, lastR = 0.0;
+  float hpfL = 0.0, lpfL = 0.0, lastL = 0.0;
+  float hpfR = 0.0, lpfR = 0.0, lastR = 0.0;
 
-  DCCut inDCC, lDCC, rDCC;
+  DCCut inDCCutLeft, inDCCutRight, outDCCutLeft, outDCCutRight;
   FeedbackCombFilter[18] combL, combR;
   Delayline!float predelayL, predelayR;
 }
