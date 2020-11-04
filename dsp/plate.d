@@ -1,6 +1,7 @@
 module dsp.plate;
 
 import dplug.dsp.delayline;
+import dplug.dsp.iir;
 
 import dsp.effects;
 import dsp.filters;
@@ -29,6 +30,15 @@ immutable float[] combSizes = [
   0.097851098
 ];
 
+immutable float[] allpassSizes = [
+  0.013533014,
+  0.004407004,
+  0.001443001,
+  0.002223002,
+  0.003393003,
+  0.004017004
+];
+
 final class PlateEffect : NoEffect
 {
 public:
@@ -46,6 +56,20 @@ nothrow:
       combR[i].setDamp(0.1);
     }
 
+    assert(allpassSizes.length == allpassL.length);
+    assert(allpassSizes.length == allpassR.length);
+
+    for(int i = 0; i < allpassL.length; i++) allpassL[i].setFeedback(0.5);
+    for(int i = 0; i < allpassR.length; i++) allpassR[i].setFeedback(0.5);
+    allpassLAfterLPF[0].setFeedback(0.5);
+    allpassLAfterLPF[1].setFeedback(0.5);
+    allpassRAfterLPF[0].setFeedback(0.5);
+    allpassRAfterLPF[1].setFeedback(0.5);
+
+    lowCutL.initialize();
+    lowCutR.initialize();
+    highCutL.initialize();
+    highCutR.initialize();
   }
   override void mute() {
     // TODO: There may be a better way to do this that doesn't reallocate the delay buffers.
@@ -53,36 +77,40 @@ nothrow:
   }
 
   override void processAudio(float[] leftIn, float[] rightIn, float[] leftOut, float[] rightOut, int frames) {
-
     for (int f = 0; f < frames; f++) {
+      float outL = 0.0;
+      float outR = 0.0;
 
-      hpfL = 0.5 * inDCCutLeft.process(leftIn[f]) - 0.5 * hpfL;
-      hpfR = 0.5 * inDCCutRight.process(rightIn[f]) - 0.5 * hpfR;
-
-      float outL = hpfL + apfeedback * lastL;
-      lastL += -1 * apfeedback * outL;
+      hpfL = 0.5 * leftIn[f] - 0.5 * hpfL;
       for(int i = 0; i < combL.length; i++) outL += combL[i].process(hpfL);
-      // TODO: Implement left allpass filters!!
-      outL = outDCCutLeft.process(outL);
+      for(int i = 0; i < allpassL.length; i++) outL = allpassL[i].process(outL);
+      lpfL = 0.5 * lpfL + 0.5 * outL;
+      outL = allpassLAfterLPF[0].process(lpfL);
+      outL = allpassLAfterLPF[1].process(outL);
 
-      float outR = hpfR + apfeedback * lastR;
-      lastR += -1 * apfeedback * outR;
+      hpfR = 0.5 * rightIn[f] - 0.5 * hpfR;
       for(int i = 0; i < combR.length; i++) outR += combR[i].process(hpfR);
-      // TODO: Implement right allpass filters!!
-      outR = outDCCutRight.process(outR);
+      for(int i = 0; i < allpassR.length; i++) outR = allpassR[i].process(outR);
+      lpfR = 0.5 * lpfR + 0.5 * outR;
+      outR = allpassRAfterLPF[0].process(lpfR);
+      outR = allpassRAfterLPF[1].process(outR);
 
-      // TODO: Implement width!
-      predelayL.feedSample(lastL);
-      predelayR.feedSample(lastR);
+      predelayL.feedSample(widthMult1 * outL + widthMult2 * outR);
+      predelayR.feedSample(widthMult1 * outR + widthMult2 * outL);
 
       int predelaySamples = cast(int)(predelaySeconds * sampleRate);
 
-      // TODO: Implement high cut and low cut
-      leftOut[f] = predelayL.sampleFull(predelaySamples);
-      rightOut[f] = predelayL.sampleFull(predelaySamples);
+      leftOut[f] = highCutL.nextSample(
+        lowCutL.nextSample(
+          predelayL.sampleFull(predelaySamples),
+          lowCutCoefficient),
+        highCutCoefficient);
 
-      lastL = outL;
-      lastR = outR;
+      rightOut[f] = highCutR.nextSample(
+        lowCutR.nextSample(
+          predelayL.sampleFull(predelaySamples),
+          lowCutCoefficient),
+        highCutCoefficient);
     }
   }
 
@@ -90,31 +118,32 @@ nothrow:
     this.sampleRate = sampleRate;
     this.maxFrames = maxFrames;
 
-    inDCCutLeft.setCutOnFreq(8.0, sampleRate);
-    inDCCutRight.setCutOnFreq(8.0, sampleRate);
-    outDCCutLeft.setCutOnFreq(8.0, sampleRate);
-    outDCCutRight.setCutOnFreq(8.0, sampleRate);
-
-    inDCCutLeft.mute();
-    inDCCutRight.mute();
-    outDCCutLeft.mute();
-    outDCCutRight.mute();
-
     int maxPredelaySamples = cast(int) (maxPredelaySeconds * sampleRate);
     predelayL.resize(maxPredelaySamples);
     predelayR.resize(maxPredelaySamples);
 
-    // TODO: Make the sizes prime numbers
+    // TODO: Make the comb and allpass sizes prime numbers
     // TODO: Offset the right channel like nrevb
-    for(int i = 0; i < combL.length; i++) {
-      combL[i].setSize(cast(int)(combSizes[i] * sampleRate));
-    }
+    for(int i = 0; i < combL.length; i++) combL[i].setSize(cast(int)(combSizes[i] * sampleRate));
+    for(int i = 0; i < combR.length; i++) combR[i].setSize(cast(int)(combSizes[i] * sampleRate));
+    for(int i = 0; i < allpassL.length; i++) allpassL[i].setSize(cast(int)(allpassSizes[i] * sampleRate));
+    for(int i = 0; i < allpassR.length; i++) allpassR[i].setSize(cast(int)(allpassSizes[i] * sampleRate));
 
-    for(int i = 0; i < combR.length; i++) {
-      combR[i].setSize(cast(int)(combSizes[i] * sampleRate));
-    }
+    allpassLAfterLPF[0].setSize(cast(int)(sampleRate * 59.0 / 25641));
+    allpassLAfterLPF[1].setSize(cast(int)(sampleRate * 43.0 / 25641));
+    allpassRAfterLPF[0].setSize(cast(int)(sampleRate * 59.0 / 25641));
+    allpassRAfterLPF[1].setSize(cast(int)(sampleRate * 37.0 / 25641));
 
     setDecaySeconds(decaySeconds);
+
+    highCutCoefficient = biquadRBJLowPass(highCut, sampleRate);
+    lowCutCoefficient = biquadRBJHighPass(lowCut, sampleRate);
+
+    // Reset all biquads
+    lowCutL.initialize();
+    lowCutR.initialize();
+    highCutL.initialize();
+    highCutR.initialize();
   }
 
   void setPredelaySeconds(float predelaySeconds) {
@@ -137,6 +166,21 @@ nothrow:
     }
   }
 
+  void setWidth(float width) {
+    widthMult1 = (1 + width) / 2;
+    widthMult2 = (1 - width) / 2;
+  }
+
+  void setHighCut(float highCut) {
+    this.highCut = highCut;
+    highCutCoefficient = biquadRBJLowPass(highCut, sampleRate);
+  }
+
+  void setLowCut(float lowCut) {
+    this.lowCut = lowCut;
+    lowCutCoefficient = biquadRBJHighPass(lowCut, sampleRate);
+  }
+
 private:
   immutable float maxPredelaySeconds = 0.100;
   immutable float apfeedback = 0.2;
@@ -145,11 +189,18 @@ private:
   int maxFrames;
 
   float predelaySeconds = 0.01, decaySeconds = 0.3;
+  float lowCut = 1000.0, highCut = 16000.0;
 
-  float hpfL = 0.0, lpfL = 0.0, lastL = 0.0;
-  float hpfR = 0.0, lpfR = 0.0, lastR = 0.0;
+  float widthMult1 = 1.0, widthMult2 = 0.0; // Multipliers for width
 
-  DCCut inDCCutLeft, inDCCutRight, outDCCutLeft, outDCCutRight;
+  float hpfL = 0.0, lpfL = 0.0, hpfR = 0.0, lpfR = 0.0;
+
   FeedbackCombFilter[18] combL, combR;
+  FirstOrderFeedbackAllpassFilter[6] allpassL, allpassR;
+  FirstOrderFeedbackAllpassFilter[2] allpassLAfterLPF;
+  FirstOrderFeedbackAllpassFilter[2] allpassRAfterLPF;
+
   Delayline!float predelayL, predelayR;
+  BiquadCoeff lowCutCoefficient, highCutCoefficient;
+  BiquadDelay lowCutL, lowCutR, highCutL, highCutR;
 }

@@ -66,3 +66,36 @@ struct FeedbackCombFilter {
   float feedback = 0, filterstore = 0, damp1 = 0, damp2 = 1;
   Delayline!float delay;
 }
+
+
+struct FirstOrderFeedbackAllpassFilter {
+  void mute() nothrow @nogc {
+    setSize(size); // Reallocates buffer and fills with zeros
+  }
+
+  float process(float input) nothrow @nogc {
+      float bufferTemp = delay.sampleFull(size - 1);
+      input += feedback * bufferTemp;
+      float output = bufferTemp - feedback * input;
+      delay.feedSample(input);
+      return output;
+  }
+  
+  void setFeedback(float feedback) nothrow @nogc {
+      this.feedback = feedback;
+  }
+
+  int getSize() nothrow @nogc {
+    return size;
+  }
+
+  void setSize(int size) nothrow @nogc {
+    assert(size > 1);
+    this.size = size;
+    delay.resize(size);
+  }
+
+  int size;
+  float feedback = 0;
+  Delayline!float delay;
+}

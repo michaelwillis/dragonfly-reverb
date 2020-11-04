@@ -242,27 +242,33 @@ nothrow:
 
         immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
         earlyEffect1.setWidth(effect1Width);
-        // TODO: Width for Plate, Room and Hall   
+        plateEffect1.setWidth(effect1Width);
+        // TODO: Width for Room and Hall   
 
         immutable float effect2Width = readParam!float(paramEffect2Width) / 100.0;
         earlyEffect2.setWidth(effect2Width);
-        // TODO: Width for Plate, Room and Hall   
+        plateEffect2.setWidth(effect2Width);
+        // TODO: Width for Room and Hall   
 
         immutable float effect1HighCut = readParam!float(paramEffect1HighCut);
         earlyEffect1.setHighCut(effect1HighCut);
-        // TODO: High Cut for Plate, Room and Hall   
+        plateEffect1.setHighCut(effect1HighCut);
+        // TODO: High Cut for Room and Hall   
 
         immutable float effect2HighCut = readParam!float(paramEffect2HighCut);
         earlyEffect2.setHighCut(effect2HighCut);
-        // TODO: High Cut for Plate, Room and Hall   
+        plateEffect2.setHighCut(effect2HighCut);
+        // TODO: High Cut for Room and Hall   
 
         immutable float effect1LowCut = readParam!float(paramEffect1LowCut);
         earlyEffect1.setLowCut(effect1LowCut);
-        // TODO: Low Cut for Plate, Room and Hall   
+        plateEffect1.setLowCut(effect1LowCut);
+        // TODO: Low Cut for Room and Hall   
 
         immutable float effect2LowCut = readParam!float(paramEffect2LowCut);
         earlyEffect2.setLowCut(effect2LowCut);
-        // TODO: Low Cut for Plate, Room and Hall   
+        plateEffect2.setLowCut(effect2LowCut);
+        // TODO: Low Cut for Room and Hall   
 
         // immutable bool hardClip = readParam!bool(paramMode);
 
