@@ -31,7 +31,6 @@ nothrow:
       paramWidth = paramEffect1Width;
       paramPredelay = paramEffect1Predelay;
       paramDecay = paramEffect1Decay;
-      paramDamp = paramEffect1Damp;
       paramDiffuse = paramEffect1Diffuse;
       paramModulation = paramEffect1Modulation;
       paramSpin = paramEffect1Spin;
@@ -52,7 +51,6 @@ nothrow:
       paramWidth = paramEffect2Width;
       paramPredelay = paramEffect2Predelay;
       paramDecay = paramEffect2Decay;
-      paramDamp = paramEffect2Damp;
       paramDiffuse = paramEffect2Diffuse;
       paramModulation = paramEffect2Modulation;
       paramSpin = paramEffect2Spin;
@@ -112,7 +110,6 @@ nothrow:
 
       style.largeKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", x1, y2);
       style.largeKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", x2, y2);
-      style.largeKnob(customControls, paramDamp, "Dampen", "%5.0f Hz", x3, y2);
     } else if (effect == roomEffect || effect == hallEffect) {
 
       int x1 = 0, x2 = 72, x3 = 144, x4 = 216;
@@ -165,7 +162,6 @@ private:
     paramWidth,
     paramPredelay,
     paramDecay,
-    paramDamp,
     paramDiffuse,
     paramModulation,
     paramSpin,

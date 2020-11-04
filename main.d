@@ -27,7 +27,6 @@ enum : int {
     paramEffect1Width,
     paramEffect1Predelay,
     paramEffect1Decay,
-    paramEffect1Damp,
     paramEffect1Diffuse,
     paramEffect1Modulation,
     paramEffect1Spin,
@@ -48,7 +47,6 @@ enum : int {
     paramEffect2Width,
     paramEffect2Predelay,
     paramEffect2Decay,
-    paramEffect2Damp,
     paramEffect2Diffuse,
     paramEffect2Modulation,
     paramEffect2Spin,
@@ -109,7 +107,6 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramEffect1Width, "Effect 1 Width", "%", 0.0f, 100.0f, 100.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Predelay, "Effect 1 Predelay", "ms", 0, 100, 4);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Decay, "Effect 1 Decay Time", "s", 0.1f, 10.0f, 0.5f);
-        params ~= mallocNew!LogFloatParameter(paramEffect1Damp, "Effect 1 Damp", "Hz", 20, 20000, 10000);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Diffuse, "Effect 1 Diffuse", "%", 0.0f, 100.0f, 80.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Modulation, "Effect 1 Mod", "%", 0.0f, 100.0f, 20.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect1Spin, "Effect 1 Spin", "Hz", 0.0f, 10.0f, 1.0f);
@@ -131,7 +128,6 @@ nothrow:
         params ~= mallocNew!LinearFloatParameter(paramEffect2Width, "Effect 2 Width", "%", 0.0f, 100.0f, 100.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Predelay, "Effect 2 Predelay", "ms", 0, 100, 4);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Decay, "Effect 2 Decay Time", "s", 0.1f, 10.0f, 0.5f);
-        params ~= mallocNew!LogFloatParameter(paramEffect2Damp, "Effect 2 Damp", "Hz", 20, 20000, 10000);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Diffuse, "Effect 2 Diffuse", "%", 0.0f, 100.0f, 80.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Modulation, "Effect 2 Mod", "%", 0.0f, 100.0f, 20.0f);
         params ~= mallocNew!LinearFloatParameter(paramEffect2Spin, "Effect 2 Spin", "Hz", 0.0f, 10.0f, 1.0f);
