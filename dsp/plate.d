@@ -108,7 +108,7 @@ nothrow:
 
       rightOut[f] = highCutR.nextSample(
         lowCutR.nextSample(
-          predelayL.sampleFull(predelaySamples),
+          predelayR.sampleFull(predelaySamples),
           lowCutCoefficient),
         highCutCoefficient);
     }
