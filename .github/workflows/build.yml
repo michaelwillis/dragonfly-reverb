@@ -61,7 +61,7 @@ jobs:
     - name: Install deps
       run: >-
         sudo apt-get install libx11-dev libgl1-mesa-dev 
-        libjack-dev wine-development gcc-mingw-w64-i686 
+        libjack-dev wine-stable gcc-mingw-w64-i686 
         g++-mingw-w64-i686 gcc-mingw-w64-x86-64
         g++-mingw-w64-x86-64
     - name: Checkout submodules
