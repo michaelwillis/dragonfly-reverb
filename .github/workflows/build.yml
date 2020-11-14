@@ -33,8 +33,8 @@ jobs:
         name: linux build dir
         path: build/**
   
-  windows_32_build:
-    runs-on: ubuntu-20.04
+  windows_build:
+    runs-on: ubuntu-18.04
     steps:
     - uses: actions/checkout@v2
     - name: Update apt-get
