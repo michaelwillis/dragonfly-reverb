@@ -34,7 +34,7 @@ jobs:
         path: build/**
   
   windows_build:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
     - name: Update apt-get
@@ -42,7 +42,7 @@ jobs:
     - name: Install deps
       run: >-
         sudo apt-get install libx11-dev libgl1-mesa-dev 
-        libjack-jackd2-dev libasound2-dev wine-development gcc-mingw-w64-i686 
+        libjack-jackd2-dev wine-development gcc-mingw-w64-i686 
         g++-mingw-w64-i686 gcc-mingw-w64-x86-64
         g++-mingw-w64-x86-64
     - name: Checkout submodules
