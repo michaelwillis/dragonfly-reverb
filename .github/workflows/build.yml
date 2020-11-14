@@ -42,9 +42,9 @@ jobs:
     - name: Install deps
       run: >-
         sudo apt-get install libx11-dev libgl1-mesa-dev 
-        libjack-jackd2-dev wine i686-w64-mingw32-gcc 
-        i686-w64-mingw32-g++ x86_64-w64-mingw32-gcc 
-        x86_64-w64-mingw32-g++
+        libjack-jackd2-dev wine gcc-mingw-w64-i686 
+        g++-mingw-w64-i686 gcc-mingw-w64-x86-64
+        g++-mingw-w64-x86-64
     - name: Checkout submodules
       run: git submodule update --init --recursive
     - name: Clean
