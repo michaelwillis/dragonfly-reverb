@@ -32,7 +32,26 @@ jobs:
       with:
         name: linux build dir
         path: build/**
-  
+  macos_build:
+    runs-on: macos-11.0
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update apt-get
+      run: sudo apt-get update
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Clean
+      run: make clean
+    - name: Build
+      run: make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: mac plugins
+        path: bin/**
+    - uses: actions/upload-artifact@v2
+      with:
+        name: mac build dir
+        path: build/**
   windows_build:
     runs-on: ubuntu-20.04
     steps:
