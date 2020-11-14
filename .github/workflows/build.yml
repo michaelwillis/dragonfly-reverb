@@ -1,0 +1,33 @@
+name: Build
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    paths:
+      - "**"
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update apt-get
+      run: sudo apt-get update
+    - name: Install deps
+      run: sudo apt-get install libx11-dev libgl1-mesa-dev libjack-jackd2-dev
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Build
+      run: make
+    - uses: actions/upload-artifact@v2
+      with:
+        name: linux plugins
+        path: bin/**
+    - uses: actions/upload-artifact@v2
+      with:
+        name: linux build dir
+        path: build/**
+    
