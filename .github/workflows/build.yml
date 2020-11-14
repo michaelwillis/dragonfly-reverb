@@ -36,8 +36,6 @@ jobs:
     runs-on: macos-11.0
     steps:
     - uses: actions/checkout@v2
-    - name: Update apt-get
-      run: sudo apt-get update
     - name: Checkout submodules
       run: git submodule update --init --recursive
     - name: Clean
