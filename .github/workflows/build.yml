@@ -10,7 +10,7 @@ on:
       - "**"
 
 jobs:
-  build:
+  linux_build:
     runs-on: ubuntu-20.04
     steps:
     - uses: actions/checkout@v2
@@ -20,6 +20,8 @@ jobs:
       run: sudo apt-get install libx11-dev libgl1-mesa-dev libjack-jackd2-dev
     - name: Checkout submodules
       run: git submodule update --init --recursive
+    - name: Clean
+      run: make clean
     - name: Build
       run: make
     - uses: actions/upload-artifact@v2
@@ -30,4 +32,34 @@ jobs:
       with:
         name: linux build dir
         path: build/**
-    
+  
+  windows_32_build:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+    - name: Update apt-get
+      run: sudo apt-get update
+    - name: Install deps
+      run: >-
+        sudo apt-get install libx11-dev libgl1-mesa-dev 
+        libjack-jackd2-dev wine i686-w64-mingw32-gcc 
+        i686-w64-mingw32-g++ x86_64-w64-mingw32-gcc 
+        x86_64-w64-mingw32-g++
+    - name: Checkout submodules
+      run: git submodule update --init --recursive
+    - name: Clean
+      run: make clean
+    - name: Build win 32-bit
+      run: make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
+    - uses: actions/upload-artifact@v2
+      with:
+        name: win32 plugins
+        path: bin/**
+    - name: Clean
+      run: make clean
+    - name: Build win 64-bit
+      run: make WIN32=true CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
+    - uses: actions/upload-artifact@v2
+      with:
+        name: win 64-bit plugins
+        path: bin/**
