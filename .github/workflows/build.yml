@@ -66,17 +66,17 @@ jobs:
       run: git submodule update --init --recursive
     - name: Clean
       run: make clean
-    - name: Build win 32-bit
-      run: make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
-    - uses: actions/upload-artifact@v2
-      with:
-        name: win32 plugins
-        path: bin/**
-    - name: Clean
-      run: make clean
     - name: Build win 64-bit
       run: make WIN32=true CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
     - uses: actions/upload-artifact@v2
       with:
         name: win 64-bit plugins
+        path: bin/**
+    - name: Clean
+      run: make clean
+    - name: Build win 32-bit
+      run: make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
+    - uses: actions/upload-artifact@v2
+      with:
+        name: win32 plugins
         path: bin/**
