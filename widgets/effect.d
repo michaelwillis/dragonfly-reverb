@@ -98,7 +98,7 @@ nothrow:
 
       style.smallKnob(customControls, paramHighCut, "High Cut", "%5.0f Hz", 48, 202);
       style.smallKnob(customControls, paramLowCut, "Low Cut", "%5.0f Hz", 176, 202);
-    } else if (effect == plateEffect || effect == tankEffect) {
+    } else if (effect == plateEffect) {
       // Divide into a 3 x 2 grid.  Width of 288 / 3 = 96 pixels per dial
       // Large dials are 52 pixels wide, 96 - 52 = 44, so each gets a margin of 22
       int x1 = 22, x2 = 96 + 22, x3 = 192 + 22;

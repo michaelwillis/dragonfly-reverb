@@ -9,7 +9,6 @@ enum : int
     noEffect,
     earlyEffect,
     plateEffect,
-    tankEffect,
     roomEffect,
     hallEffect,
     effectCount
@@ -19,7 +18,6 @@ immutable string[] effectAlgorithmNames = [
   "Off",
   "Early",
   "Plate",
-  "Tank",
   "Room",
   "Hall",
 ];
@@ -56,14 +54,4 @@ nothrow:
 
     void mute() { }
     void reset(double sampleRate, int maxFrames) { }
-}
-
-final class HallEffect : NoEffect
-{
-
-}
-
-final class RoomEffect : NoEffect
-{
-
 }

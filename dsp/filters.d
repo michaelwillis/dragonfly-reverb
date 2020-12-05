@@ -37,9 +37,9 @@ struct FeedbackCombFilter {
   }
 
   float process(float input) nothrow @nogc {
-      float output = delay.sampleFull(size - 1);
+      float output = buffer.sampleFull(size - 1);
       filterstore = (output * damp2) + (filterstore * damp1);
-      delay.feedSample(input + (filterstore * feedback));
+      buffer.feedSample(input + (filterstore * feedback));
       return output;
   }
 
@@ -59,12 +59,12 @@ struct FeedbackCombFilter {
   void setSize(int size) nothrow @nogc {
     assert(size > 1);
     this.size = size;
-    delay.resize(size);
+    buffer.resize(size);
   }
 
   int size;
   float feedback = 0, filterstore = 0, damp1 = 0, damp2 = 1;
-  Delayline!float delay;
+  Delayline!float buffer;
 }
 
 
@@ -74,10 +74,10 @@ struct FirstOrderFeedbackAllpassFilter {
   }
 
   float process(float input) nothrow @nogc {
-      float bufferTemp = delay.sampleFull(size - 1);
+      float bufferTemp = buffer.sampleFull(size - 1);
       input += feedback * bufferTemp;
       float output = bufferTemp - feedback * input;
-      delay.feedSample(input);
+      buffer.feedSample(input);
       return output;
   }
   
@@ -92,10 +92,10 @@ struct FirstOrderFeedbackAllpassFilter {
   void setSize(int size) nothrow @nogc {
     assert(size > 1);
     this.size = size;
-    delay.resize(size);
+    buffer.resize(size);
   }
 
   int size;
   float feedback = 0;
-  Delayline!float delay;
+  Delayline!float buffer;
 }

@@ -12,7 +12,8 @@ import gui;
 import dsp.effects;
 import dsp.early;
 import dsp.plate;
-import dsp.tank;
+import dsp.room;
+import dsp.hall;
 
 mixin(pluginEntryPoints!DragonflyReverbClient);
 
@@ -73,16 +74,14 @@ nothrow:
       earlyEffect2 = mallocNew!EarlyEffect();
       plateEffect1 = mallocNew!PlateEffect();
       plateEffect2 = mallocNew!PlateEffect();
-      tankEffect1 = mallocNew!TankEffect();
-      tankEffect2 = mallocNew!TankEffect();
       hallEffect1 = mallocNew!HallEffect();
       hallEffect2 = mallocNew!HallEffect();
       roomEffect1 = mallocNew!RoomEffect();
       roomEffect2 = mallocNew!RoomEffect();
 
       // These must have the same order as the enum
-      effects1 = [noEffect, earlyEffect1, plateEffect1, tankEffect1, roomEffect1, hallEffect1];
-      effects2 = [noEffect, earlyEffect2, plateEffect2, tankEffect2, roomEffect2, hallEffect2];
+      effects1 = [noEffect, earlyEffect1, plateEffect1, roomEffect1, hallEffect1];
+      effects2 = [noEffect, earlyEffect2, plateEffect2, roomEffect2, hallEffect2];
     }
 
     override PluginInfo buildPluginInfo() {
@@ -209,62 +208,83 @@ nothrow:
         immutable float effect1Predelay = readParam!float(paramEffect1Predelay);
         earlyEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
         plateEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
-        // TODO: Room, Hall, predelay
+        roomEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
+        // TODO: Hall, predelay
 
         immutable float effect2Predelay = readParam!float(paramEffect2Predelay);
         earlyEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         plateEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
-        // TODO: Room, Hall, Plate predelay
+        roomEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
+        // TODO: Hall, Plate predelay
 
         immutable float effect1Decay = readParam!float(paramEffect1Decay);
         if (effect1Decay != plateEffect1.getDecaySeconds()) {
             plateEffect1.setDecaySeconds(effect1Decay);
         }
-        // TODO: Room, Hall
+        if (effect1Decay != roomEffect1.getDecaySeconds()) {
+            roomEffect1.setDecaySeconds(effect1Decay);
+        }
+        // TODO: Hall
 
         immutable float effect2Decay = readParam!float(paramEffect2Decay);
         if (effect2Decay != plateEffect2.getDecaySeconds()) {
             plateEffect2.setDecaySeconds(effect2Decay);
         }
-        // TODO: Room, Hall
+        if (effect2Decay != roomEffect2.getDecaySeconds()) {
+            roomEffect2.setDecaySeconds(effect2Decay);
+        }
+        // TODO: Hall
 
-        immutable float effect1Size = readParam!float(paramEffect1Size);
-        earlyEffect1.setSize(effect1Size / 10.0);
-        // TODO: Room and Hall Size
+        // TODO: Fix the "/ 10.0" hack! Cache previous values as a member 
+        immutable float effect1Size = readParam!float(paramEffect1Size) / 10.0;
+        earlyEffect1.setSize(effect1Size);
+        if (effect1Size != roomEffect1.getSize()) {
+            roomEffect1.setSize(effect1Size);
+        }
+        // TODO: Hall Size
 
         immutable float effect2Size = readParam!float(paramEffect2Size);
-        earlyEffect2.setSize(effect2Size / 10.0);
-        // TODO: Room and Hall Size
+        earlyEffect2.setSize(effect1Size);
+        if (effect2Size != roomEffect2.getSize()) {
+            roomEffect2.setSize(effect1Size);
+        }
+        // TODO: Hall Size
 
         immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
         earlyEffect1.setWidth(effect1Width);
         plateEffect1.setWidth(effect1Width);
-        // TODO: Width for Room and Hall   
+        roomEffect1.setWidth(effect1Width);
+        // TODO: Width for Hall   
 
         immutable float effect2Width = readParam!float(paramEffect2Width) / 100.0;
         earlyEffect2.setWidth(effect2Width);
         plateEffect2.setWidth(effect2Width);
-        // TODO: Width for Room and Hall   
+        roomEffect2.setWidth(effect2Width);
+        // TODO: Width for Hall   
 
         immutable float effect1HighCut = readParam!float(paramEffect1HighCut);
         earlyEffect1.setHighCut(effect1HighCut);
         plateEffect1.setHighCut(effect1HighCut);
-        // TODO: High Cut for Room and Hall   
+        roomEffect1.setHighCut(effect1HighCut);
+        // TODO: High Cut for Hall   
 
         immutable float effect2HighCut = readParam!float(paramEffect2HighCut);
         earlyEffect2.setHighCut(effect2HighCut);
         plateEffect2.setHighCut(effect2HighCut);
-        // TODO: High Cut for Room and Hall   
+        roomEffect2.setHighCut(effect2HighCut);
+        // TODO: High Cut for Hall   
 
         immutable float effect1LowCut = readParam!float(paramEffect1LowCut);
         earlyEffect1.setLowCut(effect1LowCut);
         plateEffect1.setLowCut(effect1LowCut);
-        // TODO: Low Cut for Room and Hall   
+        roomEffect1.setLowCut(effect1LowCut);
+        // TODO: Low Cut for Hall   
 
         immutable float effect2LowCut = readParam!float(paramEffect2LowCut);
         earlyEffect2.setLowCut(effect2LowCut);
         plateEffect2.setLowCut(effect2LowCut);
-        // TODO: Low Cut for Room and Hall   
+        roomEffect2.setLowCut(effect2LowCut);
+        // TODO: Low Cut for Hall   
 
         // immutable bool hardClip = readParam!bool(paramMode);
 
@@ -309,7 +329,6 @@ private:
     EarlyEffect earlyEffect1, earlyEffect2;
     HallEffect hallEffect1, hallEffect2;
     PlateEffect plateEffect1, plateEffect2;
-    TankEffect tankEffect1, tankEffect2;
     RoomEffect roomEffect1, roomEffect2;
 
     Effect[effectCount] effects1;
