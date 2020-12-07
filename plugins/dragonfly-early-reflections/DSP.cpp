@@ -31,7 +31,7 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
 
   for (uint32_t param = 0; param < paramCount; param++) {
     newParams[param] = DEFAULTS[param];
-    oldParams[param] = std::nan("");
+    oldParams[param] = -1.0;
   }
 
   sampleRateChanged(sampleRate);
@@ -53,7 +53,7 @@ void DragonflyReverbDSP::setParameterValue(uint32_t index, float value) {
 
 void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t frames) {
   for (uint32_t index = 0; index < paramCount; index++) {
-    if (std::isnan(oldParams[index]) || d_isNotEqual(oldParams[index], newParams[index])) {
+    if (d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
