@@ -35,10 +35,10 @@ private:
   float oldParams[paramCount];
   float newParams[paramCount];
 
-  float dry_level;
-  float early_level;
-  float early_send;
-  float late_level;
+  float dry_level = 0.0;
+  float early_level = 0.0;
+  float early_send = 0.0;
+  float late_level = 0.0;
 
   fv3::earlyref_f early;
   fv3::zrev2_f late;
