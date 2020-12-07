@@ -64,8 +64,8 @@ private:
 
   double sampleRate;
 
-  float dry_level;
-  float wet_level;
+  float dry_level = 0.0;
+  float wet_level = 0.0;
 
   static const uint32_t BUFFER_SIZE = 256;
 

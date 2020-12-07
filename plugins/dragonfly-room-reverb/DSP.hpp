@@ -36,10 +36,10 @@ private:
 
   double sampleRate;
 
-  float dry_level;
-  float early_level;
-  float early_send;
-  float late_level;
+  float dry_level = 0.0;
+  float early_level = 0.0;
+  float early_send = 0.0;
+  float late_level = 0.0;
 
   fv3::iir_1st_f input_lpf_0, input_lpf_1, input_hpf_0, input_hpf_1;
 

@@ -31,7 +31,7 @@ DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
 
   for (uint32_t param = 0; param < paramCount; param++) {
     newParams[param] = DEFAULTS[param];
-    oldParams[param] = FP_NAN;
+    oldParams[param] = std::nan("");
   }
 
   sampleRateChanged(sampleRate);
@@ -53,7 +53,7 @@ void DragonflyReverbDSP::setParameterValue(uint32_t index, float value) {
 
 void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t frames) {
   for (uint32_t index = 0; index < paramCount; index++) {
-    if (d_isNotEqual(oldParams[index], newParams[index])) {
+    if (std::isnan(oldParams[index]) || d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];
       float value = newParams[index];
 
@@ -67,7 +67,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       }
 
       if (index == paramProgram) {
-	model.loadPresetReflection(programs[(int)value].number);
+        model.loadPresetReflection(programs[(int)value].number);
       }
     }
   }
@@ -90,12 +90,12 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
       outputs[0][offset + i] =
-	dry_level   * inputs[0][offset + i]  +
-	wet_level   * output_buffer[0][i];
+        dry_level * inputs[0][offset + i]  +
+        wet_level * output_buffer[0][i];
 
       outputs[1][offset + i] =
-	dry_level   * inputs[1][offset + i]  +
-	wet_level   * output_buffer[1][i];
+        dry_level * inputs[1][offset + i]  +
+        wet_level * output_buffer[1][i];
     }
 
   }
