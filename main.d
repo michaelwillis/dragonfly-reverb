@@ -209,46 +209,45 @@ nothrow:
         earlyEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
         plateEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
         roomEffect1.setPredelaySeconds(effect1Predelay / 1000.0);
-        // TODO: Hall, predelay
+        // TODO: Hall predelay
 
         immutable float effect2Predelay = readParam!float(paramEffect2Predelay);
         earlyEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         plateEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
         roomEffect2.setPredelaySeconds(effect2Predelay / 1000.0);
-        // TODO: Hall, Plate predelay
+        // TODO: Hall predelay
 
         immutable float effect1Decay = readParam!float(paramEffect1Decay);
-        if (effect1Decay != plateEffect1.getDecaySeconds()) {
+        if (effect1Decay != this.effect1Decay) {
+            this.effect1Decay = effect1Decay;
             plateEffect1.setDecaySeconds(effect1Decay);
-        }
-        if (effect1Decay != roomEffect1.getDecaySeconds()) {
             roomEffect1.setDecaySeconds(effect1Decay);
+            // TODO: Hall
         }
-        // TODO: Hall
 
         immutable float effect2Decay = readParam!float(paramEffect2Decay);
-        if (effect2Decay != plateEffect2.getDecaySeconds()) {
+        if (effect2Decay != this.effect2Decay) {
+            this.effect2Decay = effect2Decay;
             plateEffect2.setDecaySeconds(effect2Decay);
-        }
-        if (effect2Decay != roomEffect2.getDecaySeconds()) {
             roomEffect2.setDecaySeconds(effect2Decay);
+            // TODO: Hall
         }
-        // TODO: Hall
 
-        // TODO: Fix the "/ 10.0" hack! Cache previous values as a member 
-        immutable float effect1Size = readParam!float(paramEffect1Size) / 10.0;
-        earlyEffect1.setSize(effect1Size);
-        if (effect1Size != roomEffect1.getSize()) {
-            roomEffect1.setSize(effect1Size);
+        immutable float effect1Size = readParam!float(paramEffect1Size);
+        if (effect1Size != this.effect1Size) {
+            this.effect1Size = effect1Size;
+            earlyEffect1.setSize(effect1Size / 10.0);
+            roomEffect1.setSize(effect1Size / 10.0);
+            // TODO: Hall Size
         }
-        // TODO: Hall Size
 
         immutable float effect2Size = readParam!float(paramEffect2Size);
-        earlyEffect2.setSize(effect1Size);
-        if (effect2Size != roomEffect2.getSize()) {
-            roomEffect2.setSize(effect1Size);
+        if (effect2Size != this.effect2Size) {
+            this.effect2Size = effect2Size;
+            earlyEffect2.setSize(effect2Size / 10.0);
+            roomEffect2.setSize(effect2Size / 10.0);
+            // TODO: Hall Size
         }
-        // TODO: Hall Size
 
         immutable float effect1Width = readParam!float(paramEffect1Width) / 100.0;
         earlyEffect1.setWidth(effect1Width);
@@ -286,8 +285,6 @@ nothrow:
         roomEffect2.setLowCut(effect2LowCut);
         // TODO: Low Cut for Hall   
 
-        // immutable bool hardClip = readParam!bool(paramMode);
-
         for (int f = 0; f < frames; ++f) {
             effect1InL[f] = inputs[0][f];
             effect1InR[f] = inputs[1][f];
@@ -324,6 +321,11 @@ nothrow:
 private:
     int effect1Algorithm = earlyEffect;
     int effect2Algorithm = 0;
+
+    // Cache old values to avoid setting them if they haven't changed.
+    // Setting the decay and size parameters requires a bit more expensive
+    // computation than just changing a numeric value like most of the params.
+    float effect1Decay, effect2Decay, effect1Size, effect2Size;
 
     NoEffect noEffect;
     EarlyEffect earlyEffect1, earlyEffect2;

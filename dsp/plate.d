@@ -150,10 +150,6 @@ nothrow:
       this.predelaySeconds = predelaySeconds;
   }
 
-  float getDecaySeconds() {
-    return decaySeconds;
-  }
-
   void setDecaySeconds(float decaySeconds) {
     this.decaySeconds = decaySeconds;
 

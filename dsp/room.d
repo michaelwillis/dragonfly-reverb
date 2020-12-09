@@ -22,11 +22,11 @@ nothrow:
     highCutL.initialize();
     highCutR.initialize();
 
-    // allpassmL_15_16.setfeedback(DIFFUSE_1);
-    // allpassmR_19_20.setfeedback(DIFFUSE_1);
+    allpassL_15_16.setFeedback(DIFFUSE_1);
+    allpassR_19_20.setFeedback(DIFFUSE_1);
 
-    // allpassmL_17_18.setfeedback(DIFFUSE_2);
-    // allpassmR_21_22.setfeedback(DIFFUSE_2);
+    allpassL_17_18.setFeedback(DIFFUSE_2);
+    allpassR_21_22.setFeedback(DIFFUSE_2);
 
     allpass2L_25_27.setFeedback(DIFFUSE_4, DIFFUSE_3);
     allpass2R_43_45.setFeedback(DIFFUSE_4, DIFFUSE_3);
@@ -45,17 +45,26 @@ nothrow:
       float outL = leftIn[f];
       float outR = rightIn[f];
 
-      delayL_37.feedSample(
-        allpass3L_34_37.process(
-          delayL_31.nextSample(
-            allpass2L_25_27.process(
-              delayL_23.nextSample(outL)))));
+      // TODO: Implement damp!
+      // float outL = lpfLdamp_11_12(leftIn[f]);
+      // float outR = lpfRdamp_13_14(rightIn[f]);
 
-      delayR_58.feedSample(
-        allpass3R_52_55.process(
-          delayR_49.nextSample(
-            allpass2R_43_45.process(
-              delayR_40.nextSample(outR)))));
+      // outL = allpassmL_17_18.process(allpassmL_15_16.process(outL, lfomod)), lfomod*(-1.));
+      // outR = allpassmR_21_22.process(allpassmR_19_20.process(outR, lfomod*(-1.))), lfomod);
+
+      outL = allpassL_17_18.process(allpassL_15_16.process(outL));
+      outR = allpassR_21_22.process(allpassR_19_20.process(outR));
+
+      // outL = allpassL_17_18.process(allpassL_15_16.process(outL));
+      // outR = allpassR_21_22.process(allpassR_19_20.process(outR));
+
+      delayL_23.feedSample(outL);
+      delayL_31.feedSample(allpass2L_25_27.process(delayL_23.sampleFull(cast(int) (0.03092 * sampleRate * size))));
+      delayL_37.feedSample(allpass3L_34_37.process(delayL_31.sampleFull(cast(int) (0.01008 * sampleRate * size))));
+
+      delayR_40.nextSample(outR);
+      delayR_49.nextSample(allpass2R_43_45.process(delayR_40.sampleFull(cast(int) (0.04278 * sampleRate * size))));
+      delayR_58.feedSample(allpass3R_52_55.process(delayR_49.sampleFull(cast(int) (0.01465 * sampleRate * size))));
 
       float dOut = delayL_23.sampleFull(cast(int) (0.00003 * sampleRate)) * 0.469
         + (delayL_31.sampleFull(cast(int) (0.00117 * sampleRate))
@@ -123,7 +132,17 @@ nothrow:
 
     setDecaySeconds(decaySeconds);
 
-    // TODO: Make these prime!
+    // int modSize = cast(int) (0.000937729 * sampleRate);
+    // allpassmL_15_16.setSize(cast(int) (0.01808 * sampleRate * maxSize + modSize));
+    // allpassmL_17_18.setSize(cast(int) (0.01568 * sampleRate * maxSize + modSize));
+    // allpassmR_19_20.setSize(cast(int) (0.01767 * sampleRate * maxSize + modSize));
+    // allpassmR_21_22.setSize(cast(int) (0.01603 * sampleRate * maxSize + modSize));
+
+    allpassL_15_16.setSize(cast(int) (0.01808 * sampleRate * maxSize));
+    allpassL_17_18.setSize(cast(int) (0.01568 * sampleRate * maxSize));
+    allpassR_19_20.setSize(cast(int) (0.01767 * sampleRate * maxSize));
+    allpassR_21_22.setSize(cast(int) (0.01603 * sampleRate * maxSize));
+
     allpass2L_25_27.setSize(cast(int) (0.01272 * sampleRate * maxSize), cast(int) (0.01016 * sampleRate * maxSize));
     allpass2R_43_45.setSize(cast(int) (0.01219 * sampleRate * maxSize), cast(int) (0.01067 * sampleRate * maxSize));
     allpass3L_34_37.setSize(cast(int) (0.00639 * sampleRate * maxSize), cast(int) (0.00422 * sampleRate * maxSize), cast(int) (0.00358 * sampleRate * maxSize));
@@ -138,16 +157,20 @@ nothrow:
     highCutL.initialize();
     highCutR.initialize();
 
+    delayL_23.resize(cast(int) (0.03092 * sampleRate * maxSize));
+    delayL_31.resize(cast(int) (0.01008 * sampleRate * maxSize));
+    delayL_37.resize(cast(int) (0.04607 * sampleRate * maxSize));
+
+    delayR_40.resize(cast(int) (0.04278 * sampleRate * maxSize));
+    delayR_49.resize(cast(int) (0.01465 * sampleRate * maxSize));
+    delayR_58.resize(cast(int) (0.00047 * sampleRate * maxSize));
+
     // Reset delays on allpass filters to accomodate new sample rate
     setSize(this.size); 
   }
 
   void setPredelaySeconds(float predelaySeconds) {
       this.predelaySeconds = predelaySeconds;
-  }
-
-  float getDecaySeconds() {
-    return decaySeconds;
   }
 
   void setDecaySeconds(float decaySeconds) {
@@ -163,16 +186,10 @@ nothrow:
     allpass3L_34_37.setDecay(decay1, decay1, decay2);
     allpass3R_52_55.setDecay(decay1, decay1, decay2);
 
-    // allpassmL_15_16.setDecay(decay2);
-    // allpassmR_19_20.setDecay(decay2);
-
-    // allpassmL_17_18.setDecay(decay3);
-    // allpassmR_21_22.setDecay(decay3);
-  }
-
-  // TODO: Get rid of this hack, the main.d should cache known DSP param values.
-  float getSize() {
-    return this.size;
+    allpassL_15_16.setDecay(decay2);
+    allpassR_19_20.setDecay(decay2);
+    allpassL_17_18.setDecay(decay3);
+    allpassR_21_22.setDecay(decay3);
   }
 
   void setSize(float size) {
@@ -180,16 +197,10 @@ nothrow:
     assert(size >= 1.0);
     this.size = size;
 
-    // FIXME! This can allocate on the DSP thread.
-    // Instead, preallocate the largest size possible
-    // Then sample based on current room size.
-    delayL_23.resize(cast(int) (0.03092 * sampleRate * size));
-    delayL_31.resize(cast(int) (0.01008 * sampleRate * size));
-    delayL_37.resize(cast(int) (0.04607 * sampleRate * size));
-
-    delayR_40.resize(cast(int) (0.04278 * sampleRate * size));
-    delayR_49.resize(cast(int) (0.01465 * sampleRate * size));
-    delayR_58.resize(cast(int) (0.00047 * sampleRate * size));
+    allpassL_15_16.setDelay(cast(int) (0.01808 * sampleRate * size));
+    allpassL_17_18.setDelay(cast(int) (0.01568 * sampleRate * size));
+    allpassR_19_20.setDelay(cast(int) (0.01767 * sampleRate * size));
+    allpassR_21_22.setDelay(cast(int) (0.01603 * sampleRate * size));
 
     allpass2L_25_27.setDelay(cast(int) (0.01272 * sampleRate * size), cast(int) (0.01016 * sampleRate * size));
     allpass2R_43_45.setDelay(cast(int) (0.01219 * sampleRate * size), cast(int) (0.01067 * sampleRate * size));
@@ -233,7 +244,10 @@ private:
     delayL_23, delayL_31, delayL_37,
     delayR_49, delayR_40, delayR_58;
 
-  // _FV3_(delay) /* delayR_66, */ delayR_49, delayR_ts, delayR_40, delayR_41, delayR_58;
+  // More consistent name for delayR_ts?
+  // _FV3_(delay) delayR_ts, delayR_41;
+
+  FirstOrderFeedbackAllpassFilter allpassL_15_16, allpassR_19_20, allpassL_17_18, allpassR_21_22;
 
   SecondOrderFeedbackAllpassFilter allpass2L_25_27, allpass2R_43_45;
   ThirdOrderFeedbackAllpassFilter allpass3L_34_37, allpass3R_52_55;
@@ -241,148 +255,4 @@ private:
   Delayline!float predelayL, predelayR;
   BiquadCoeff lowCutCoefficient, highCutCoefficient;
   BiquadDelay lowCutL, lowCutR, highCutL, highCutR;
-}
-
-struct SecondOrderFeedbackAllpassFilter {
-  void mute() nothrow @nogc {
-    setSize(size1, size2); // Reallocates buffer and fills with zeros
-  }
-
-  float process(float input) nothrow @nogc {
-    float sample1 = buffer1.sampleFull(delay1);
-    float sample2 = buffer2.sampleFull(delay2);
-
-    float output = decay2 * sample2;
-
-    input += feedback2 * sample2;
-    output -= input * feedback2;
-    input += feedback1 * sample1;
-
-    buffer2.feedSample(decay1 * sample1 - input * feedback1);
-    buffer1.feedSample(input);
-
-    return output;
-  }
-  
-  void setFeedback(float feedback1, float feedback2) nothrow @nogc {
-      this.feedback1 = feedback1;
-      this.feedback2 = feedback2;
-  }
-
-  void setDecay(float decay1, float decay2) nothrow @nogc {
-    this.decay1 = decay1;
-    this.decay2 = decay2;
-  }
-
-  void setSize(int size1, int size2) nothrow @nogc {
-    assert(size1 > 1);
-    assert(size2 > 1);
-    this.size1 = size1;
-    this.size2 = size2;
-    buffer1.resize(size1);
-    buffer2.resize(size2);
-    setDelay(0, 0); // Delay should be set after resize, but just in case
-  }
-
-  void setDelay(int delay1, int delay2) nothrow @nogc {
-    assert(delay1 < size1);
-    assert(delay2 < size2);
-    this.delay1 = delay1;
-    this.delay2 = delay2;
-  }
-
-  float getz1(int index) nothrow @nogc {
-    return buffer1.sampleFull(index);
-  }
-
-  float getz2(int index) nothrow @nogc {
-    return buffer2.sampleFull(index);
-  }
-
-  int size1, size2, delay1, delay2;
-  float decay1, decay2, feedback1, feedback2;
-  Delayline!float buffer1, buffer2;
-}
-
-struct ThirdOrderFeedbackAllpassFilter {
-  void mute() nothrow @nogc {
-    setSize(size1, size2, size3); // Reallocates buffer and fills with zeros
-  }
-
-  float process(float input) nothrow @nogc {
-    float sample1 = buffer1.sampleFull(delay1);
-    float sample2 = buffer2.sampleFull(delay2);
-    float sample3 = buffer3.sampleFull(delay3);
-
-    input += feedback3 * sample3;
-    float output = decay3 * sample3 - feedback3 * input;
-    
-    input += feedback2 * sample2;
-    buffer3.feedSample(decay2 * sample2 - feedback2 * input);
-
-    input += feedback1 * sample1;
-    buffer2.feedSample(decay1 * sample1 - feedback1 * input);
-
-    buffer1.feedSample(input);
-
-    return output;
-  }
-  
-  void setFeedback(float feedback1, float feedback2, float feedback3) nothrow @nogc {
-    assert(feedback1 < 1.0);
-    assert(feedback2 < 1.0);
-    assert(feedback3 < 1.0);
-    this.feedback1 = feedback1;
-    this.feedback2 = feedback2;
-    this.feedback3 = feedback3;
-  }
-
-  void setDecay(float decay1, float decay2, float decay3) nothrow @nogc {
-    assert(decay1 < 1.0);
-    assert(decay2 < 1.0);
-    assert(decay3 < 1.0);
-    this.decay1 = decay1;
-    this.decay2 = decay2;
-    this.decay3 = decay3;
-  }
-
-  void setSize(int size1, int size2, int size3) nothrow @nogc {
-    assert(size1 > 1);
-    assert(size2 > 1);
-    assert(size3 > 1);
-    this.size1 = size1;
-    this.size2 = size2;
-    this.size3 = size3;
-    buffer1.resize(size1);
-    buffer2.resize(size2);
-    buffer3.resize(size3);
-    setDelay(0, 0, 0); // Delay should be set after resize, but just in case
-  }
-
-  void setDelay(int delay1, int delay2, int delay3) nothrow @nogc {
-    assert(delay1 < size1);
-    assert(delay2 < size2);
-    assert(delay3 < size3);
-    this.delay1 = delay1;
-    this.delay2 = delay2;
-    this.delay3 = delay3;
-  }
-
-  float getz1(int index) nothrow @nogc {
-    return buffer1.sampleFull(index);
-  }
-
-  float getz2(int index) nothrow @nogc {
-    return buffer2.sampleFull(index);
-  }
-
-  float getz3(int index) nothrow @nogc {
-    return buffer3.sampleFull(index);
-  }
-
-  int size1, size2, size3;
-  int delay1, delay2, delay3;
-  float decay1, decay2, decay3;
-  float feedback1, feedback2, feedback3;
-  Delayline!float buffer1, buffer2, buffer3;
 }
