@@ -23,6 +23,8 @@ immutable float[] CROSS_ALLPASS_DELAY_LEFT = [0.01260, 0.00999, 0.00773, 0.00510
 immutable float[] CROSS_ALLPASS_DELAY_RIGHT = [0.0131, 0.00949, 0.00724, 0.00560];
 
 immutable float CROSSFEED = 0.40;
+immutable int INPUT_DAMP_FREQ = 20000;
+immutable int DAMP_FREQ = 9000;
 
 final class RoomEffect : NoEffect
 {
@@ -30,6 +32,11 @@ public:
 nothrow:
 @nogc:
   this() {
+    lpfL_in_59_60.initialize();
+    lpfR_in_64_65.initialize();
+    lpfLdamp_11_12.initialize();
+    lpfRdamp_13_14.initialize();
+
     lowCutL.initialize();
     lowCutR.initialize();
     highCutL.initialize();
@@ -74,15 +81,15 @@ nothrow:
 	      crossR = crossAllpassR[i].process(crossR);
 	    }
 
-      outL += CROSSFEED * crossR;
-      outR += CROSSFEED * crossL;
+      outL = lpfL_in_59_60.nextSample(outL + CROSSFEED * crossR, inputDampCoefficient);
+      outR = lpfR_in_64_65.nextSample(outR + CROSSFEED * crossL, inputDampCoefficient);
 
-      // TODO: Implement damp!
-      // float outL = lpfLdamp_11_12(leftIn[f]);
-      // float outR = lpfRdamp_13_14(rightIn[f]);
+      // Another crossfeed, this one with decay based on the rt60
+      outL += loopdecay * delayR_58.sampleFull(cast(int) (0.00047 * sampleRate * size));
+      outR += loopdecay * delayL_37.sampleFull(cast(int) (0.04607 * sampleRate * size));
 
-      outL = allpassL_17_18.process(allpassL_15_16.process(outL));
-      outR = allpassR_21_22.process(allpassR_19_20.process(outR));
+      outL = allpassL_17_18.process(allpassL_15_16.process(lpfLdamp_11_12.nextSample(outL, dampCoefficient)));
+      outR = allpassR_21_22.process(allpassR_19_20.process(lpfRdamp_13_14.nextSample(outR, dampCoefficient)));
 
       delayL_23.feedSample(outL);
       delayL_31.feedSample(allpass2L_25_27.process(delayL_23.sampleFull(cast(int) (0.03092 * sampleRate * size))));
@@ -178,6 +185,8 @@ nothrow:
     allpass3L_34_37.setSize(cast(int) (0.00639 * sampleRate * maxSize), cast(int) (0.00422 * sampleRate * maxSize), cast(int) (0.00358 * sampleRate * maxSize));
     allpass3R_52_55.setSize(cast(int) (0.00692 * sampleRate * maxSize), cast(int) (0.00410 * sampleRate * maxSize), cast(int) (0.00384 * sampleRate * maxSize));
 
+    inputDampCoefficient = biquadRBJLowPass(INPUT_DAMP_FREQ, sampleRate);
+    dampCoefficient = biquadRBJLowPass(DAMP_FREQ, sampleRate);
     highCutCoefficient = biquadRBJLowPass(highCut, sampleRate);
     lowCutCoefficient = biquadRBJHighPass(lowCut, sampleRate);
 
@@ -206,7 +215,7 @@ nothrow:
   void setDecaySeconds(float decaySeconds) {
     this.decaySeconds = decaySeconds;
 
-    // loopdecay = pow(10.0, log10(DECAY_0) * size / decaySeconds),
+    loopdecay = pow(10.0, log10(DECAY_0) * size / decaySeconds);
     float decay1 = pow(10.0, log10(DECAY_1) * size / decaySeconds);
     float decay2 = pow(10.0, log10(DECAY_2) * size / decaySeconds);
     float decay3 = pow(10.0, log10(DECAY_3) * size / decaySeconds);
@@ -295,6 +304,8 @@ private:
 
   float hpfL = 0.0, lpfL = 0.0, hpfR = 0.0, lpfR = 0.0;
 
+  float loopdecay = DECAY_0;
+
   Delayline!float 
     delayL_23, delayL_31, delayL_37,
     delayR_49, delayR_40, delayR_58;
@@ -311,6 +322,10 @@ private:
   ThirdOrderFeedbackAllpassFilter allpass3L_34_37, allpass3R_52_55;
 
   Delayline!float predelayL, predelayR;
-  BiquadCoeff lowCutCoefficient, highCutCoefficient;
-  BiquadDelay lowCutL, lowCutR, highCutL, highCutR;
+  BiquadCoeff inputDampCoefficient, dampCoefficient, lowCutCoefficient, highCutCoefficient;
+
+  BiquadDelay 
+    lpfL_in_59_60, lpfR_in_64_65,
+    lpfLdamp_11_12, lpfRdamp_13_14,
+    lowCutL, lowCutR, highCutL, highCutR;
 }
