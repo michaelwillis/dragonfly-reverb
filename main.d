@@ -253,13 +253,21 @@ nothrow:
         earlyEffect1.setWidth(effect1Width);
         plateEffect1.setWidth(effect1Width);
         roomEffect1.setWidth(effect1Width);
-        // TODO: Width for Hall   
+        // TODO: Width for Hall
 
         immutable float effect2Width = readParam!float(paramEffect2Width) / 100.0;
         earlyEffect2.setWidth(effect2Width);
         plateEffect2.setWidth(effect2Width);
         roomEffect2.setWidth(effect2Width);
-        // TODO: Width for Hall   
+        // TODO: Width for Hall
+
+        immutable float effect1Diffuse = readParam!float(paramEffect1Diffuse);
+        roomEffect1.setDiffusion(effect1Diffuse / 100.0);
+        // TODO: hallEffect1.setDiffusion(effect1Diffuse / 140.0);
+
+        immutable float effect2Diffuse = readParam!float(paramEffect2Diffuse);
+        roomEffect2.setDiffusion(effect1Diffuse / 100.0);
+        // TODO: hallEffect1.setDiffusion(effect1Diffuse / 140.0);
 
         immutable float effect1HighCut = readParam!float(paramEffect1HighCut);
         earlyEffect1.setHighCut(effect1HighCut);

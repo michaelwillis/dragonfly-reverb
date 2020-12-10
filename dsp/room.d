@@ -11,6 +11,19 @@ import std.math;
 immutable float DECAY_0 = 0.237, DECAY_1 = 0.938, DECAY_2 = 0.844, DECAY_3 = 0.906;
 immutable float DIFFUSE_1 = 0.375, DIFFUSE_2 = 0.312, DIFFUSE_3 = 0.406, DIFFUSE_4 = 0.25;
 
+immutable float[] INPUT_ALLPASS_DELAY_LEFT = [
+  0.01808, 0.01568, 0.01272, 0.01017, 0.00639, 0.00475, 0.00422, 0.00358, 0.00319, 0.00217
+];
+
+immutable float[] INPUT_ALLPASS_DELAY_RIGHT = [
+  0.01767, 0.01603, 0.01219, 0.01067, 0.00692, 0.00475, 0.00410, 0.00384, 0.00325, 0.00232
+];
+
+immutable float[] CROSS_ALLPASS_DELAY_LEFT = [0.01260, 0.00999, 0.00773, 0.00510];
+immutable float[] CROSS_ALLPASS_DELAY_RIGHT = [0.0131, 0.00949, 0.00724, 0.00560];
+
+immutable float CROSSFEED = 0.40;
+
 final class RoomEffect : NoEffect
 {
 public:
@@ -21,6 +34,8 @@ nothrow:
     lowCutR.initialize();
     highCutL.initialize();
     highCutR.initialize();
+
+    setDiffusion(0.78);
 
     allpassL_15_16.setFeedback(DIFFUSE_1);
     allpassR_19_20.setFeedback(DIFFUSE_1);
@@ -45,18 +60,29 @@ nothrow:
       float outL = leftIn[f];
       float outR = rightIn[f];
 
+      // Input Diffusion
+      for(int i = 0; i < 10; i ++) { // TODO: Get rid of magic number 10
+        // Maybe modulate these like ProG does?
+	      outL = inputAllpassL[i].process(outL);
+	      outR = inputAllpassR[i].process(outR);
+	    }
+
+      // Crossfeed Diffusion
+      float crossL = outL, crossR = outR;
+      for(int i = 0; i < 4; i ++) {  // TODO: Get rid of magic number 4
+	      crossL = crossAllpassL[i].process(crossL);
+	      crossR = crossAllpassR[i].process(crossR);
+	    }
+
+      outL += CROSSFEED * crossR;
+      outR += CROSSFEED * crossL;
+
       // TODO: Implement damp!
       // float outL = lpfLdamp_11_12(leftIn[f]);
       // float outR = lpfRdamp_13_14(rightIn[f]);
 
-      // outL = allpassmL_17_18.process(allpassmL_15_16.process(outL, lfomod)), lfomod*(-1.));
-      // outR = allpassmR_21_22.process(allpassmR_19_20.process(outR, lfomod*(-1.))), lfomod);
-
       outL = allpassL_17_18.process(allpassL_15_16.process(outL));
       outR = allpassR_21_22.process(allpassR_19_20.process(outR));
-
-      // outL = allpassL_17_18.process(allpassL_15_16.process(outL));
-      // outR = allpassR_21_22.process(allpassR_19_20.process(outR));
 
       delayL_23.feedSample(outL);
       delayL_31.feedSample(allpass2L_25_27.process(delayL_23.sampleFull(cast(int) (0.03092 * sampleRate * size))));
@@ -132,11 +158,15 @@ nothrow:
 
     setDecaySeconds(decaySeconds);
 
-    // int modSize = cast(int) (0.000937729 * sampleRate);
-    // allpassmL_15_16.setSize(cast(int) (0.01808 * sampleRate * maxSize + modSize));
-    // allpassmL_17_18.setSize(cast(int) (0.01568 * sampleRate * maxSize + modSize));
-    // allpassmR_19_20.setSize(cast(int) (0.01767 * sampleRate * maxSize + modSize));
-    // allpassmR_21_22.setSize(cast(int) (0.01603 * sampleRate * maxSize + modSize));
+    for(long i = 0; i < 10; i ++) {
+      inputAllpassL[i].setSize(cast(int) (INPUT_ALLPASS_DELAY_LEFT[i] * sampleRate * maxSize));
+      inputAllpassR[i].setSize(cast(int) (INPUT_ALLPASS_DELAY_RIGHT[i] * sampleRate * maxSize));
+    }
+
+    for(long i = 0; i < 4; i ++) {
+      crossAllpassL[i].setSize(cast(int) (CROSS_ALLPASS_DELAY_LEFT[i] * sampleRate * maxSize));
+      crossAllpassR[i].setSize(cast(int) (CROSS_ALLPASS_DELAY_RIGHT[i] * sampleRate * maxSize));
+    }
 
     allpassL_15_16.setSize(cast(int) (0.01808 * sampleRate * maxSize));
     allpassL_17_18.setSize(cast(int) (0.01568 * sampleRate * maxSize));
@@ -197,6 +227,16 @@ nothrow:
     assert(size >= 1.0);
     this.size = size;
 
+    for(long i = 0; i < 10; i ++) {
+      inputAllpassL[i].setDelay(cast(int) (INPUT_ALLPASS_DELAY_LEFT[i] * sampleRate * size));
+      inputAllpassR[i].setDelay(cast(int) (INPUT_ALLPASS_DELAY_RIGHT[i] * sampleRate * size));
+    }
+
+    for(long i = 0; i < 4; i ++) {
+      crossAllpassL[i].setDelay(cast(int) (CROSS_ALLPASS_DELAY_LEFT[i] * sampleRate * size));
+      crossAllpassR[i].setDelay(cast(int) (CROSS_ALLPASS_DELAY_RIGHT[i] * sampleRate * size));
+    }
+
     allpassL_15_16.setDelay(cast(int) (0.01808 * sampleRate * size));
     allpassL_17_18.setDelay(cast(int) (0.01568 * sampleRate * size));
     allpassR_19_20.setDelay(cast(int) (0.01767 * sampleRate * size));
@@ -213,6 +253,21 @@ nothrow:
   void setWidth(float width) {
     widthMult1 = (1 + width) / 2;
     widthMult2 = (1 - width) / 2;
+  }
+
+  void setDiffusion(float diffusion) {
+
+    for(long i = 0; i < 10; i ++)
+    {
+      inputAllpassL[i].setFeedback(-1.0 * diffusion);
+      inputAllpassR[i].setFeedback(-1.0 * diffusion);
+    }
+
+    for(long i = 0; i < 4; i ++)
+    {
+      crossAllpassL[i].setFeedback(diffusion);
+      crossAllpassR[i].setFeedback(diffusion);
+    }
   }
 
   void setHighCut(float highCut) {
@@ -246,6 +301,9 @@ private:
 
   // More consistent name for delayR_ts?
   // _FV3_(delay) delayR_ts, delayR_41;
+
+  FirstOrderFeedbackAllpassFilter[10] inputAllpassL, inputAllpassR;
+  FirstOrderFeedbackAllpassFilter[4] crossAllpassL, crossAllpassR;
 
   FirstOrderFeedbackAllpassFilter allpassL_15_16, allpassR_19_20, allpassL_17_18, allpassR_21_22;
 
