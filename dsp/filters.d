@@ -69,6 +69,37 @@ struct FeedbackCombFilter {
 }
 
 
+struct FeedforwardCombFilter {
+  void mute() nothrow @nogc {
+    setSize(size); // Reallocates buffer and fills with zeros
+  }
+
+  float process(float input, float feedforward) nothrow @nogc {
+    float output = buffer.sampleFull(size - 1) * feedforward + input;
+    buffer.feedSample(input);
+    return output;
+  }
+
+  void setSize(int size) nothrow @nogc {
+    assert(size > 1);
+    this.size = size;
+    buffer.resize(size);
+
+    // Delay can be customized afterward if needed, but this
+    // is a sensible default and prevents buffer overrun.
+    setDelay(size - 1);
+  }
+
+  void setDelay(int delay) nothrow @nogc {
+    assert(delay < size);
+    this.delay = delay;
+  }
+
+  int size, delay;
+  Delayline!float buffer;
+}
+
+
 struct FirstOrderFeedbackAllpassFilter {
   void mute() nothrow @nogc {
     setSize(size); // Reallocates buffer and fills with zeros

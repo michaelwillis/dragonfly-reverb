@@ -5,6 +5,7 @@ import dplug.dsp.iir;
 
 import dsp.effects;
 import dsp.filters;
+import dsp.oscillator;
 
 import std.math;
 
@@ -25,6 +26,7 @@ immutable float[] CROSS_ALLPASS_DELAY_RIGHT = [0.0131, 0.00949, 0.00724, 0.00560
 immutable float CROSSFEED = 0.40;
 immutable int INPUT_DAMP_FREQ = 20000;
 immutable int DAMP_FREQ = 9000;
+immutable int MAX_WANDER = 100;
 
 final class RoomEffect : NoEffect
 {
@@ -132,9 +134,12 @@ nothrow:
 	      - allpass3L_34_37.getz2(cast(int) (0.02344 * sampleRate))) * 0.064
         + delayR_58.sampleFull(cast(int) (0.00029 * sampleRate)) * 0.045;
 
-      // TODO: Comb filters
       outL = dOut;
       outR = bOut;
+
+      float spin = spinLFO() * mod;
+      outL = spinCombR.process(outL, spin);
+      outR = spinCombR.process(outR, spin * -1.0);
 
       predelayL.feedSample(widthMult1 * outL + widthMult2 * outR);
       predelayR.feedSample(widthMult1 * outR + widthMult2 * outL);
@@ -204,6 +209,11 @@ nothrow:
     delayR_49.resize(cast(int) (0.01465 * sampleRate * maxSize));
     delayR_58.resize(cast(int) (0.00047 * sampleRate * maxSize));
 
+    spinCombL.setSize(cast(int) (MAX_WANDER * sampleRate * 0.001));
+    spinCombR.setSize(cast(int) (MAX_WANDER * sampleRate * 0.001));
+    setSpinFreq(spinFreq);
+    setWander(wander);
+
     // Reset delays on allpass filters to accomodate new sample rate
     setSize(this.size); 
   }
@@ -265,7 +275,6 @@ nothrow:
   }
 
   void setDiffusion(float diffusion) {
-
     for(long i = 0; i < 10; i ++)
     {
       inputAllpassL[i].setFeedback(-1.0 * diffusion);
@@ -277,6 +286,23 @@ nothrow:
       crossAllpassL[i].setFeedback(diffusion);
       crossAllpassR[i].setFeedback(diffusion);
     }
+  }
+
+  void setMod(float mod) {
+    assert(mod >= 0.0);
+    assert(mod <= 1.0);
+    this.mod = mod;
+  }
+
+  void setSpinFreq(float spinFreq) {
+    this.spinFreq = spinFreq;
+    spinLFO.setFreq(spinFreq, sampleRate);
+  }
+
+  void setWander(float wander) {
+    this.wander = wander;
+    spinCombL.setDelay(cast(int) (wander * sampleRate * 0.001));
+    spinCombR.setDelay(cast(int) (wander * sampleRate * 0.001));
   }
 
   void setHighCut(float highCut) {
@@ -320,6 +346,10 @@ private:
 
   SecondOrderFeedbackAllpassFilter allpass2L_25_27, allpass2R_43_45;
   ThirdOrderFeedbackAllpassFilter allpass3L_34_37, allpass3R_52_55;
+
+  float mod = 0.3, spinFreq = 1.0, wander = 20;
+  SineOscillator spinLFO;
+  FeedforwardCombFilter spinCombL, spinCombR;
 
   Delayline!float predelayL, predelayR;
   BiquadCoeff inputDampCoefficient, dampCoefficient, lowCutCoefficient, highCutCoefficient;

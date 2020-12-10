@@ -262,12 +262,36 @@ nothrow:
         // TODO: Width for Hall
 
         immutable float effect1Diffuse = readParam!float(paramEffect1Diffuse);
-        roomEffect1.setDiffusion(effect1Diffuse / 100.0);
+        roomEffect1.setDiffusion(effect1Diffuse / 120.0);
         // TODO: hallEffect1.setDiffusion(effect1Diffuse / 140.0);
 
         immutable float effect2Diffuse = readParam!float(paramEffect2Diffuse);
-        roomEffect2.setDiffusion(effect1Diffuse / 100.0);
+        roomEffect2.setDiffusion(effect1Diffuse / 120.0);
         // TODO: hallEffect1.setDiffusion(effect1Diffuse / 140.0);
+
+        immutable float effect1Modulation = readParam!float(paramEffect1Modulation);
+        roomEffect1.setMod(effect1Modulation / 100.0);
+        // TODO: hallEffect1.setMod(effect1Modulation / 100.0);
+
+        immutable float effect2Modulation = readParam!float(paramEffect2Modulation);
+        roomEffect2.setMod(effect2Modulation / 100.0);
+        // TODO: hallEffect2.setMod(effect2Modulation / 100.0);
+
+        immutable float effect1Spin = readParam!float(paramEffect1Spin);
+        roomEffect1.setSpinFreq(effect1Spin);
+        // TODO: hallEffect1.setSpinFreq(effect1Spin);
+
+        immutable float effect2Spin = readParam!float(paramEffect2Spin);
+        roomEffect2.setSpinFreq(effect2Spin);
+        // TODO: hallEffect2.setSpinFreq(effect2Spin);
+
+        immutable float effect1Wander = readParam!float(paramEffect1Wander);
+        roomEffect1.setWander(effect1Wander);
+        // TODO: hallEffect1.setWander(effect1Wander);
+
+        immutable float effect2Wander = readParam!float(paramEffect2Wander);
+        roomEffect2.setWander(effect2Wander);
+        // TODO: hallEffect2.setWander(effect2Wander);
 
         immutable float effect1HighCut = readParam!float(paramEffect1HighCut);
         earlyEffect1.setHighCut(effect1HighCut);
