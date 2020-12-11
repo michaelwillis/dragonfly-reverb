@@ -87,11 +87,11 @@ struct FeedforwardCombFilter {
 
     // Delay can be customized afterward if needed, but this
     // is a sensible default and prevents buffer overrun.
-    setDelay(size - 1);
+    setDelay(size);
   }
 
   void setDelay(int delay) nothrow @nogc {
-    assert(delay < size);
+    assert(delay <= size);
     this.delay = delay;
   }
 
@@ -121,7 +121,7 @@ struct FirstOrderFeedbackAllpassFilter {
   }
 
   void setDelay(int delay) nothrow @nogc {
-    assert(delay < size);
+    assert(delay <= size);
     this.delay = delay;
   }
 
@@ -132,7 +132,7 @@ struct FirstOrderFeedbackAllpassFilter {
 
     // Delay can be customized afterward if needed, but this
     // is a sensible default and prevents buffer overrun.
-    setDelay(size - 1);
+    setDelay(size);
   }
 
   int size, delay;
@@ -182,12 +182,12 @@ struct SecondOrderFeedbackAllpassFilter {
 
     // Delay can be customized afterward if needed, but this
     // is a sensible default and prevents buffer overrun.
-    setDelay(size1 - 1, size2 - 1);
+    setDelay(size1, size2);
   }
 
   void setDelay(int delay1, int delay2) nothrow @nogc {
-    assert(delay1 < size1);
-    assert(delay2 < size2);
+    assert(delay1 <= size1);
+    assert(delay2 <= size2);
     this.delay1 = delay1;
     this.delay2 = delay2;
   }
@@ -261,13 +261,13 @@ struct ThirdOrderFeedbackAllpassFilter {
 
     // Delay can be customized afterward if needed, but this
     // is a sensible default and prevents buffer overrun.
-    setDelay(size1 - 1, size2 - 1, size3 - 1);
+    setDelay(size1, size2, size3);
   }
 
   void setDelay(int delay1, int delay2, int delay3) nothrow @nogc {
-    assert(delay1 < size1);
-    assert(delay2 < size2);
-    assert(delay3 < size3);
+    assert(delay1 <= size1);
+    assert(delay2 <= size2);
+    assert(delay3 <= size3);
     this.delay1 = delay1;
     this.delay2 = delay2;
     this.delay3 = delay3;
