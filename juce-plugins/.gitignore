@@ -4,6 +4,7 @@
 
 .DS_Store
 Builds/
+dist/
 
 Generator Scripts/*.h
 Generator Scripts/*.cpp
