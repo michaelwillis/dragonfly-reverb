@@ -30,12 +30,14 @@ FILES_UI  = \
 
 include ../../dpf/Makefile.plugins.mk
 
+PKG_CONFIG ?= pkg-config
+
 BUILD_CXX_FLAGS := -I../../common $(BUILD_CXX_FLAGS)
 BUILD_CXX_FLAGS := ../../common/kiss_fft/*.c.o $(BUILD_CXX_FLAGS)
 ifneq ($(SYSTEM_FREEVERB3),true)
 BUILD_CXX_FLAGS := ../../common/freeverb/*.cpp.o $(BUILD_CXX_FLAGS)
 else
-BUILD_CXX_FLAGS := $(shell pkg-config --cflags freeverb3-3) $(BUILD_CXX_FLAGS)
+BUILD_CXX_FLAGS := $(shell $PKG_CONFIG --cflags freeverb3-3) $(BUILD_CXX_FLAGS)
 endif
 
 # --------------------------------------------------------------
@@ -44,7 +46,7 @@ endif
 ifneq ($(SYSTEM_FREEVERB3),true)
 LINK_OPTS += -lm
 else
-LINK_OPTS += -lm $(shell pkg-config --libs freeverb3-3) -lsamplerate
+LINK_OPTS += -lm $(shell $PKG_CONFIG --libs freeverb3-3) -lsamplerate
 BUILD_CXX_FLAGS := -DLIBSRATE1 $(BUILD_CXX_FLAGS)
 endif
 
