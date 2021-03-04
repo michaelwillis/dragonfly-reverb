@@ -86,8 +86,12 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case        paramWander: late.setwander     (value);         break;
         case         paramDecay: late.setrt60       (value);         break;
         case     paramEarlySend: early_send       = (value / 100.0); break;
-        case    paramModulation: late.setspinfactor (value / 100.0);
-                                 late.setlfofactor  (value / 100.0); break;
+        case    paramModulation:
+          // Avoid ill effects of zero modulation, set to one tenth of a percent instead
+          float mod = value == 0.0 ? 0.001 : value / 100.0;
+          late.setspinfactor (mod);
+          late.setlfofactor  (mod);
+          break;
       }
     }
   }
