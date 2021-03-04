@@ -51,12 +51,12 @@ protected:
 
     const char* getHomePage() const override
     {
-        return "https://github.com/michaelwillis/dragonfly-reverb";
+        return "https://michaelwillis.github.io/dragonfly-reverb";
     }
 
     const char* getLicense() const noexcept override
     {
-        return "GPL v3";
+        return "http://www.gnu.org/licenses/gpl-3.0.html";
     }
 
     uint32_t getVersion() const noexcept override
