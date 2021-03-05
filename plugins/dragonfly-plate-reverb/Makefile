@@ -58,9 +58,11 @@ endif
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
+ifeq ($(LINUX),true)
 ifeq ($(HAVE_DGL),true)
 ifeq ($(HAVE_JACK),true)
 TARGETS += jack
+endif
 endif
 endif
 
