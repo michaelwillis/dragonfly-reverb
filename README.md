@@ -5,10 +5,10 @@ Dragonfly Reverb is a bundle of free audio effects for Linux, MacOS, and Windows
 
 ## Download
 
-* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.3/DragonflyReverb-Linux-64bit-v3.2.3.tgz)**
-* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.3/DragonflyReverb-MacOS-64bit-v3.2.3.zip)**
-* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.3/DragonflyReverb-Windows-32bit-v3.2.3.zip)**
-* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.3/DragonflyReverb-Windows-64bit-v3.2.3.zip)**
+* **[Linux](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.5/DragonflyReverb-Linux-64bit-v3.2.5.tgz)**
+* **[MacOS](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.5/DragonflyReverb-MacOS-64bit-v3.2.5.zip)**
+* **[Windows (32 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.5/DragonflyReverb-Windows-32bit-v3.2.5.zip)**
+* **[Windows (64 bit)](https://github.com/michaelwillis/dragonfly-reverb/releases/download/3.2.5/DragonflyReverb-Windows-64bit-v3.2.5.zip)**
 
 ## Dependencies
 
