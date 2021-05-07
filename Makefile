@@ -6,7 +6,7 @@
 
 include dpf/Makefile.base.mk
 
-all: libs plugins gen
+all: plugins gen
 
 # --------------------------------------------------------------
 
