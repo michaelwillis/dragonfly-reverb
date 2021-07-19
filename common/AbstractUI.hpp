@@ -26,13 +26,13 @@
 
 class DragonflyReverbAbstractUI : public UI, public ImageKnob::Callback {
 public:
-  DragonflyReverbAbstractUI(uint width, uint height, Param* params, const char* knobData, uint knobWidth, uint knobHeight);
+  DragonflyReverbAbstractUI(uint width, uint height, const Param* params, const char* knobData, uint knobWidth, uint knobHeight);
 protected:
   NanoVG nanoText;
-  Param* params;
+  const Param* params;
   Image knobImage;
 
-  LabelledKnob * createLabelledKnob(Param *param, const char * numberFormat, int x, int y);
+  LabelledKnob * createLabelledKnob(const Param *param, const char * numberFormat, int x, int y);
 };
 
 #endif

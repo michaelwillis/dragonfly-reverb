@@ -56,7 +56,7 @@ enum Parameters
     paramCount
 };
 
-static Param PARAMS[paramCount] = {
+static const Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",   "dry_level",    0.0f,   100.0f,   "%"},
   {paramEarly,      "Early Level", "early_level",  0.0f,   100.0f,   "%"},
   {paramLate,       "Late Level",  "late_level",   0.0f,   100.0f,   "%"},
@@ -77,8 +77,8 @@ static Param PARAMS[paramCount] = {
   {paramModulation, "Modulation",  "modulation",   0.0f,   100.0f,   "%"}
 };
 
-const int NUM_BANKS = 5;
-const int PRESETS_PER_BANK = 5;
+static const int NUM_BANKS = 5;
+static const int PRESETS_PER_BANK = 5;
 
 typedef struct {
   const char *name;
@@ -90,7 +90,7 @@ typedef struct {
   const Preset presets[PRESETS_PER_BANK];
 } Bank;
 
-static Bank banks[NUM_BANKS] = {
+static const Bank banks[NUM_BANKS] = {
   {
     "Rooms", {                   // dry, early, late, size, width, delay, diffuse, low cut, low xo, low mult, high cut, high xo, high mult, spin, wander, decay, e. send, modulation
       {"Bright Room",            { 80.0,  10.0, 20.0, 10.0,  90.0,   4.0,    90.0,     4.0,    500,     0.80,    16000,    7900,      0.75,  1.0, 25.0,     0.6,    20.0,    30.0 }},
@@ -138,7 +138,7 @@ static Bank banks[NUM_BANKS] = {
   }
 };
 
-const int DEFAULT_BANK   = 2; // Small Halls
-const int DEFAULT_PRESET = 1; // Second preset in each bank
+static const int DEFAULT_BANK   = 2; // Small Halls
+static const int DEFAULT_PRESET = 1; // Second preset in each bank
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

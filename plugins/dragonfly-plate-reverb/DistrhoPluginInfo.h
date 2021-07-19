@@ -40,7 +40,7 @@ enum Algorithms {
   ALGORITHM_COUNT
 };
 
-static char *algorithmNames[ALGORITHM_COUNT] = {
+static const char *algorithmNames[ALGORITHM_COUNT] = {
   "Simple",
   "Nested",
   "Tank"
@@ -64,7 +64,7 @@ enum Parameters
     paramCount
 };
 
-static Param PARAMS[paramCount] = {
+static const Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramWet,        "Wet Level",    "early_level",    0.0f,   100.0f,   "%"},
   {paramAlgorithm,  "Algorithm",    "algorithm",      0.0f,     2.0f,    ""},  
@@ -76,14 +76,14 @@ static Param PARAMS[paramCount] = {
   {paramDamp,       "Dampen",       "early_damp",  1000.0f, 16000.0f,  "Hz"}
 };
 
-const int NUM_PRESETS = 8;
+static const int NUM_PRESETS = 8;
 
 typedef struct {
   const char *name;
   const float params[paramCount];
 } Preset;
 
-static Preset presets[NUM_PRESETS] = {
+static const Preset presets[NUM_PRESETS] = {
                   //  dry,  wet,        algorithm, width, delay, decay, low cut, high cut,  damp
   {"Abrupt Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,  20.0,   0.2,      50,    10000,  7000 } },
   {"Bright Plate", { 80.0, 20.0, ALGORITHM_NREV_B,   100,   0.0,   0.4,     200,    16000, 13000 } },
@@ -95,7 +95,7 @@ static Preset presets[NUM_PRESETS] = {
   {"Phat Tank",    { 80.0, 20.0,  ALGORITHM_STREV,   150,  10.0,   1.0,      50,    10000,  4000 } }
 };
 
-const int DEFAULT_PRESET = 1;
+static const int DEFAULT_PRESET = 1;
 
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

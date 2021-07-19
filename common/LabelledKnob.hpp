@@ -22,7 +22,7 @@
 #include "ImageWidgets.hpp"
 #include "Param.hpp"
 
-class LabelledKnob : public Widget
+class LabelledKnob : public SubWidget
 {
 public:
   LabelledKnob(
@@ -30,7 +30,7 @@ public:
     ImageKnob::Callback* callback,
     Image* image,
     NanoVG* nanoText,
-    Param* param,
+    const Param* param,
     const char* numberFormat,
     int x, int y);
   float getValue() const noexcept;
