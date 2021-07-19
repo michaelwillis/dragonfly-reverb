@@ -1,0 +1,189 @@
+name: build
+
+on:
+  push:
+    branches:
+      - '*'
+  pull_request:
+    branches:
+      - '*'
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  linux-arm64:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: |
+        sudo dpkg --add-architecture arm64 && \
+        sudo sed -i "s/deb http/deb [arch=amd64] http/" /etc/apt/sources.list && \
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports bionic main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ports-arm64.list && \
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports bionic-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list && \
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports bionic-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-arm64.list && \
+        sudo apt-get update -qq && \
+        sudo apt-get install -yq g++-aarch64-linux-gnu libasound2-dev:arm64 libcairo2-dev:arm64 libgl1-mesa-dev:arm64 liblo-dev:arm64 libpulse-dev:arm64 qemu-user-static
+    - name: Build linux arm64 cross-compiled
+      env:
+        CC: aarch64-linux-gnu-gcc
+        CXX: aarch64-linux-gnu-g++
+        LDFLAGS: -static-libgcc -static-libstdc++
+      run: |
+        make -j $(nproc)
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-linux-arm64-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          bin/*
+
+  linux-armhf:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: |
+        sudo dpkg --add-architecture armhf && \
+        sudo sed -i "s/deb http/deb [arch=amd64] http/" /etc/apt/sources.list && \
+        echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports bionic main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/ports-armhf.list && \
+        echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports bionic-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list && \
+        echo "deb [arch=armhf] http://ports.ubuntu.com/ubuntu-ports bionic-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/ports-armhf.list && \
+        sudo apt-get update -qq && \
+        sudo apt-get install -yq g++-arm-linux-gnueabihf libasound2-dev:armhf libcairo2-dev:armhf libgl1-mesa-dev:armhf liblo-dev:armhf libpulse-dev:armhf qemu-user-static
+    - name: Build linux armhf cross-compiled
+      env:
+        CC: arm-linux-gnueabihf-gcc
+        CXX: arm-linux-gnueabihf-g++
+        LDFLAGS: -static-libgcc -static-libstdc++
+      run: |
+        make -j $(nproc)
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-linux-armhf-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          bin/*
+
+  linux-x64:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: |
+        sudo apt-get install -yq libasound2-dev libgl1-mesa-dev liblo-dev libpulse-dev
+    - name: Build linux x64
+      env:
+        LDFLAGS: -static-libgcc -static-libstdc++
+      run: |
+        make -j $(nproc)
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-linux-x64-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          bin/*
+
+  macos-universal:
+    runs-on: macos-10.15
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Fix up Xcode
+      run: |
+        sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*
+        sudo xcode-select -s "/Applications/Xcode_12.3.app"
+    - name: Build macOS universal
+      env:
+        CFLAGS: -arch x86_64 -arch arm64 -DMAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_12 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
+        CXXFLAGS: -arch x86_64 -arch arm64 -DMAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_12 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
+        LDFLAGS: -arch x86_64 -arch arm64 -mmacosx-version-min=10.12
+      run: |
+        make NOOPT=true -j $(sysctl -n hw.logicalcpu) && \
+        ./dpf/utils/package-osx-bundles.sh
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-macOS-universal-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          *-macOS.pkg
+          bin/*
+          !bin/*-ladspa.dylib
+          !bin/*-dssi.dylib
+          !bin/lv2
+          !bin/vst2
+
+  win32:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: |
+        sudo dpkg --add-architecture i386 && \
+        sudo apt-get update -qq && \
+        sudo apt-get install -yq binutils-mingw-w64-i686 g++-mingw-w64-i686 mingw-w64 wine-stable:i386
+    - name: Build win32 cross-compiled
+      env:
+        CC: i686-w64-mingw32-gcc
+        CXX: i686-w64-mingw32-g++
+        EXE_WRAPPER: wine
+        PKG_CONFIG: "false"
+        WINEDEBUG: "-all"
+      run: |
+        make -j $(nproc)
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-win32-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          bin/*
+          !bin/*-ladspa.dll
+          !bin/*-dssi.dll
+
+  win64:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Set up dependencies
+      run: |
+        sudo apt-get install -yq binutils-mingw-w64-x86-64 g++-mingw-w64-x86-64 mingw-w64 wine-stable
+    - name: Build win64 cross-compiled
+      env:
+        CC: x86_64-w64-mingw32-gcc
+        CXX: x86_64-w64-mingw32-g++
+        EXE_WRAPPER: wine
+        PKG_CONFIG: "false"
+        WINEDEBUG: "-all"
+      run: |
+        make -j $(nproc)
+    - name: Set sha8
+      id: slug
+      run: echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: ${{ github.event.repository.name }}-win64-${{ github.event.pull_request.number || steps.slug.outputs.sha8 }}
+        path: |
+          bin/*
+          !bin/*-ladspa.dll
+          !bin/*-dssi.dll
