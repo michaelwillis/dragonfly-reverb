@@ -29,7 +29,7 @@ Spectrogram::Spectrogram(
   Widget * widget,
   NanoVG * fNanoText,
   DGL::Rectangle<int> * rect,
-  AbstractDSP * dsp) : Widget(widget->getParentWindow()) {
+  AbstractDSP * dsp) : SubWidget(widget) {
 
   this->dsp = dsp;
   setParameterValue(0, 0.0f);
@@ -153,7 +153,7 @@ void Spectrogram::uiIdle() {
           raster[pixel * 4 + 3] = alpha;
       }
 
-      image->loadFromMemory(raster, image->getWidth(), image->getHeight(), GL_BGRA);
+      image->loadFromMemory(raster, image->getWidth(), image->getHeight(), kImageFormatBGRA);
       repaint();
       x++;
     }

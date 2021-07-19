@@ -62,6 +62,9 @@ BUILD_CXX_FLAGS += -DLIBSRATE1
 BUILD_CXX_FLAGS += $(shell $(PKG_CONFIG) --cflags freeverb3-3)
 endif
 
+# `algorithmNames` only used in UI
+BUILD_CXX_FLAGS += -Wno-unused-variable
+ 
 # TODO handle throw deprecation for freeverb
 BUILD_CXX_FLAGS += -Wno-deprecated
 

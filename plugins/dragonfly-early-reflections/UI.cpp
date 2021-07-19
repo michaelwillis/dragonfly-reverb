@@ -37,10 +37,10 @@ static const int knoby[]  = {130, 245};
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA ),
-    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGR ),
-    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
+    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
+    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR ),
+    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, kImageFormatBGRA )
 {
   currentProgram = DEFAULT_PROGRAM;
 
@@ -51,7 +51,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   knobLowCut      = createLabelledKnob(&params[paramLowCut],    "%4.0f Hz", knobx[0], knoby[1]);
   knobHighCut     = createLabelledKnob(&params[paramHighCut],   "%5.0f Hz", knobx[1], knoby[1]);
 
-  sliderDry = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  sliderDry = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   sliderDry->setId ( paramDry );
   sliderDry->setStartPos ( 17, 157 );
   sliderDry->setEndPos ( 17, 317 );
@@ -59,7 +59,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   sliderDry->setInverted ( true );
   sliderDry->setCallback ( this );
 
-  sliderWet = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  sliderWet = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   sliderWet->setId ( paramWet );
   sliderWet->setStartPos ( 57, 157 );
   sliderWet->setEndPos ( 57, 317 );
@@ -178,7 +178,9 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
 void DragonflyReverbUI::onDisplay()
 {
-  fImgBackground.draw();
+  const GraphicsContext& context(getGraphicsContext());
+
+  fImgBackground.draw(context);
 
   float r,g,b;
   r = 230.0f / 256;
@@ -222,9 +224,9 @@ void DragonflyReverbUI::onDisplay()
   rectSliders[1].setY ( 118 + 200 - wet );
 
   if ( dry > 1 )
-    rectSliders[0].draw();
+    rectSliders[0].draw(context);
   if ( wet > 1 )
-    rectSliders[1].draw();
+    rectSliders[1].draw(context);
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
@@ -268,7 +270,7 @@ void DragonflyReverbUI::onDisplay()
   else
   {
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
+      fImgQuestion.drawAt ( context, rectAbout.getX(), rectAbout.getY() );
 
       nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
       nanoText.fillColor(bright);
