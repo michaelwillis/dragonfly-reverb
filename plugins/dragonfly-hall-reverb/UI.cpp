@@ -37,10 +37,10 @@ static const int knoby[]  = {15,  130, 245};
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight ),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, GL_BGRA ),
-    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, GL_BGRA ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, GL_BGRA ),
-    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, GL_BGRA )
+    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
+    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGRA ),
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGRA ),
+    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, kImageFormatBGRA )
 {
   currentBank = DEFAULT_BANK;
   for (int b = 0; b < NUM_BANKS; b++)
@@ -69,7 +69,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fKnobLowXover   = createLabelledKnob(&params[paramLowXover],   "%4.0f Hz", knobx[4], knoby[2]);
   fKnobLowMult    = createLabelledKnob(&params[paramLowMult],    "%2.1f X",  knobx[5], knoby[2]);
 
-  fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   fSliderDry_level->setId ( paramDry );
   fSliderDry_level->setStartPos ( 17, 157 );
   fSliderDry_level->setEndPos ( 17, 317 );
@@ -77,7 +77,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderDry_level->setInverted ( true );
   fSliderDry_level->setCallback ( this );
 
-  fSliderEarly_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarly_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   fSliderEarly_level->setId ( paramEarly );
   fSliderEarly_level->setStartPos ( 57, 157 );
   fSliderEarly_level->setEndPos ( 57, 317 );
@@ -85,7 +85,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarly_level->setInverted ( true );
   fSliderEarly_level->setCallback ( this );
 
-  fSliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   fSliderEarlySend->setId ( paramEarlySend );
   fSliderEarlySend->setStartPos ( 97, 157 );
   fSliderEarlySend->setEndPos ( 97, 317 );
@@ -93,7 +93,7 @@ DragonflyReverbUI::DragonflyReverbUI()
   fSliderEarlySend->setInverted ( true );
   fSliderEarlySend->setCallback ( this );
 
-  fSliderLate_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, GL_BGRA ) );
+  fSliderLate_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
   fSliderLate_level->setId ( paramLate );
   fSliderLate_level->setStartPos ( 137, 157 );
   fSliderLate_level->setEndPos ( 137, 317 );
@@ -309,7 +309,9 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
 void DragonflyReverbUI::onDisplay()
 {
-  fImgBackground.draw();
+  const GraphicsContext& context(getGraphicsContext());
+
+  fImgBackground.draw(context);
 
   float r,g,b;
   r = 230.0f / 256;
@@ -368,13 +370,13 @@ void DragonflyReverbUI::onDisplay()
   rectSliders[3].setY ( 118 + 200 - late );
 
   if ( dry > 1 )
-    rectSliders[0].draw();
+    rectSliders[0].draw(context);
   if ( early > 1 )
-    rectSliders[1].draw();
+    rectSliders[1].draw(context);
   if ( early_send > 1 )
-    rectSliders[2].draw();
+    rectSliders[2].draw(context);
   if ( late > 1 )
-    rectSliders[3].draw();
+    rectSliders[3].draw(context);
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
@@ -389,10 +391,10 @@ void DragonflyReverbUI::onDisplay()
   {
     DGL::Rectangle<int> bank = rectBanks[row];
     if (currentBank == row) {
-      fImgTabOn.drawAt ( bank.getX(), bank.getY() );
+      fImgTabOn.drawAt ( context, bank.getX(), bank.getY() );
       nanoText.fillColor ( bright );
     } else {
-      fImgTabOff.drawAt ( bank.getX(), bank.getY() );
+      fImgTabOff.drawAt ( context, bank.getX(), bank.getY() );
       nanoText.fillColor ( dim );
     }
 
@@ -447,7 +449,7 @@ void DragonflyReverbUI::onDisplay()
   {
       spectrogram->show();
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( rectAbout.getX(), rectAbout.getY() );
+      fImgQuestion.drawAt ( context, rectAbout.getX(), rectAbout.getY() );
   }
 
 }

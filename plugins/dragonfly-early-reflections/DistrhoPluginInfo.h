@@ -44,7 +44,7 @@ enum Parameters
     paramCount
 };
 
-static Param PARAMS[paramCount] = {
+static const Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramWet,        "Wet Level",    "early_level",    0.0f,   100.0f,   "%"},
   {paramProgram,    "Program",      "program",        0.0f,     6.0f,    ""},
@@ -54,19 +54,19 @@ static Param PARAMS[paramCount] = {
   {paramHighCut,    "High Cut",     "high_cut",    1000.0f, 16000.0f,  "Hz"}
 };
 
-const float DEFAULTS[paramCount] = {
+static const float DEFAULTS[paramCount] = {
   // dry,  wet, program, size, width, lowcut, highcut
     80.0, 20.0,       2, 20.0, 100.0,     50, 10000
 };
 
-const int PROGRAM_COUNT = 8;
+static const int PROGRAM_COUNT = 8;
 
 typedef struct {
   const char *name;
   const int number; // freeverb's earlyref has numeric programs
 } Program;
 
-static Program programs[PROGRAM_COUNT] = {
+static const Program programs[PROGRAM_COUNT] = {
   {"Abrupt Echo",     2},
   {"Backstage Pass", 18}, 
   {"Concert Venue",   0},
@@ -77,7 +77,7 @@ static Program programs[PROGRAM_COUNT] = {
   {"Home Studio",    21}
 };
 
-const int DEFAULT_PROGRAM = 2;
+static const int DEFAULT_PROGRAM = 2;
 
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

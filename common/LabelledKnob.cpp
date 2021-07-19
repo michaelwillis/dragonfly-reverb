@@ -17,8 +17,8 @@
 #include "LabelledKnob.hpp"
 #include "DistrhoPluginInfo.h"
 
-LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback* callback, Image* image, NanoVG* nanoText, Param* param, const char * numberFormat, int x, int y)
-    : Widget(widget->getParentWindow())
+LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback* callback, Image* image, NanoVG* nanoText, const Param* param, const char * numberFormat, int x, int y)
+    : SubWidget(widget)
 {
   setWidth(image->getWidth() + 20);
   setHeight(image->getHeight() + 30);

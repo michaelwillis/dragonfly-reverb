@@ -38,7 +38,7 @@ extern "C" {
 #define MARGIN_BOTTOM 20
 #define MARGIN_LEFT   50
 
-class Spectrogram : public Widget {
+class Spectrogram : public SubWidget {
   public:
   Spectrogram(Widget* widget, NanoVG * fNanoText, DGL::Rectangle<int> * rect, AbstractDSP * dsp);
     ~Spectrogram();

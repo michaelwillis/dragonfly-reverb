@@ -54,7 +54,7 @@ enum Parameters
     paramCount
 };
 
-static Param PARAMS[paramCount] = {
+static const Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramEarly,      "Early Level",  "early_level",    0.0f,   100.0f,   "%"},
   {paramEarlySend,  "Early Send",   "early_send",     0.0f,   100.0f,   "%"},
@@ -74,8 +74,8 @@ static Param PARAMS[paramCount] = {
   {paramInLowCut,   "Low Cut",      "in_low_cut",     0.0f,   200.0f,  "Hz"}
 };
 
-const int NUM_BANKS = 5;
-const int PRESETS_PER_BANK = 5;
+static const int NUM_BANKS = 5;
+static const int PRESETS_PER_BANK = 5;
 
 typedef struct {
   const char *name;
@@ -87,7 +87,7 @@ typedef struct {
   const Preset presets[PRESETS_PER_BANK];
 } Bank;
 
-static Bank banks[NUM_BANKS] = {
+static const Bank banks[NUM_BANKS] = {
   {
     "Small", {               // dry, early, e. send, late, size, width, delay, decay, diffuse, spin, wander, high cut, early damp, late damp, bass boost, boost lpf, low cut
       {"Small Bright Room",  { 80.0,  10.0,    20.0, 20.0,  8.0,  90.0,   4.0,   0.2,    60.0,  0.4,   40.0,    16000,      16000,     16000,       20.0,       600,    4.0}},
@@ -135,8 +135,8 @@ static Bank banks[NUM_BANKS] = {
   }
 };
 
-const int DEFAULT_BANK   = 1; // Medium Rooms
-const int DEFAULT_PRESET = 1; // Second preset in each bank
+static const int DEFAULT_BANK   = 1; // Medium Rooms
+static const int DEFAULT_PRESET = 1; // Second preset in each bank
 
 
 #endif // DISTRHO_PLUGIN_INFO_H_INCLUDED

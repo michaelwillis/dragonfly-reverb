@@ -17,7 +17,7 @@
 #include "AbstractUI.hpp"
 #include "Bitstream_Vera_Sans_Regular.hpp"
 
-DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(uint width, uint height, Param* params, const char* knobData, uint knobWidth, uint knobHeight)
+DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(uint width, uint height, const Param* params, const char* knobData, uint knobWidth, uint knobHeight)
   : UI (width, height) {
     NanoVG::FontId font  = nanoText.createFontFromMemory(
         "bitstream vera sans",
@@ -29,6 +29,6 @@ DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(uint width, uint height, Pa
     this->knobImage = Image(knobData, knobWidth, knobHeight);
 }
 
-LabelledKnob * DragonflyReverbAbstractUI::createLabelledKnob(Param *param, const char * numberFormat, int x, int y) {
+LabelledKnob * DragonflyReverbAbstractUI::createLabelledKnob(const Param *param, const char * numberFormat, int x, int y) {
   return new LabelledKnob(this, this, &knobImage, &nanoText, param, numberFormat, x, y);
 }
