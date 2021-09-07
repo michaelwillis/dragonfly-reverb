@@ -16,7 +16,13 @@ Dragonfly reverb requires GL >= 3.0 to show the graphical interface.
 
 ## Building
 
-On Linux or MacOS, invoke `make` to build Dragonfly Reverb.
+On Linux or MacOS, invoke the following commands to build Dragonfly
+Reverb.
+
+```
+git submodule update --init --recursive
+make
+```
 
 ### Linux Build Dependencies
 
