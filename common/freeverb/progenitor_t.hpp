@@ -131,8 +131,8 @@ public:
   _FV3_(progenitor)& operator=(const _FV3_(progenitor)& x);
   void resetdecay();
   virtual void setFsFactors();
-  _fv3_float_t rt60, decay0, dccutfq, inputdamp, damp, damp2, outputdamp, outputdampbw, decay1, decay2, decay3, decayf;
-  _fv3_float_t diff1, diff2, diff3, diff4, spin, spinlimit, wander, spin2, spin2wander, spinlimit2, wander2, bassbw, bassb, loopdecay;
+  _fv3_float_t rt60, decay0 = 0.237, dccutfq, inputdamp, damp, damp2, outputdamp, outputdampbw = 2.0, decay1 = 0.938, decay2 = 0.844, decay3 = 0.906, decayf = 1.0;
+  _fv3_float_t diff1, diff2, diff3, diff4, spin, spinlimit, wander, spin2, spin2wander, spinlimit2, wander2, bassbw = 2.0, bassb, loopdecay;
   
   _FV3_(dccut) dccutL, dccutR;
   _FV3_(iir_1st) lpfL_in_59_60, lpfR_in_64_65, lpfLdamp_11_12, lpfRdamp_13_14;
