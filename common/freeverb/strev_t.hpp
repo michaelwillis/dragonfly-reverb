@@ -113,8 +113,8 @@ public:
   virtual void setFsFactors();
   
   _fv3_float_t rt60, decay, dccutfq, inputdamp, damp, outputdamp;
-  _fv3_float_t diff1, diff2, idiff1, idiff2, spin, spindiff, spinlimit, wander, modnoise1, modnoise2;
-  bool autoDiff;
+  _fv3_float_t diff1, diff2, idiff1, idiff2, spin, spindiff = 0.1, spinlimit, wander, modnoise1, modnoise2;
+  bool autoDiff = true;
   _FV3_(allpass) allpassC[FV3_STREV_NUM_ALLPASS_4], allpassC_31_33, allpassC_55_59;
   _FV3_(allpassm) allpassM_23_24, allpassM_46_48;
   _FV3_(delay) delayC_30, delayC_39, delayC_54, delayC_63;
@@ -124,5 +124,5 @@ public:
   _FV3_(noisegen_pink_frac) noise1L;
   const static long allpCo[FV3_STREV_NUM_ALLPASS], delayCo[FV3_STREV_NUM_DELAY], idxLCo[FV3_STREV_NUM_INDEX], idxRCo[FV3_STREV_NUM_INDEX];
   const static long allpM_EXCURSION;
-  long iLC[FV3_STREV_NUM_INDEX], iRC[FV3_STREV_NUM_INDEX], tankDelay;
+  long iLC[FV3_STREV_NUM_INDEX], iRC[FV3_STREV_NUM_INDEX], tankDelay = 0;
 };

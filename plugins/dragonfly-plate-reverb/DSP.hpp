@@ -31,7 +31,7 @@ public:
   virtual void setFsFactors();
   virtual void processloop2(long count, float *inputL,  float *inputR, float *outputL, float *outputR);
 private:
-  float dampLpf;
+  float dampLpf = 20000;
   fv3::iir_1st_f dampLpfL, dampLpfR;
 };
 
@@ -44,7 +44,7 @@ public:
   virtual void setFsFactors();
   virtual void processloop2(long count, float *inputL,  float *inputR, float *outputL, float *outputR);
 private:
-  float dampLpf;
+  float dampLpf = 20000;
   fv3::iir_1st_f dampLpfL, dampLpfR;
 };
 

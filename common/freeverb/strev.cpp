@@ -204,7 +204,7 @@ fv3_float_t FV3_(strev)::getdiffusion2()
 
 void FV3_(strev)::setspin(fv3_float_t value)
 {
-  if(spin > 0)
+  if(value > 0)
     {
       spin = limFs2(value);
       lfo1.setFreq(spin,          getTotalSampleRate());
