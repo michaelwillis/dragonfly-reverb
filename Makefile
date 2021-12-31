@@ -10,10 +10,14 @@ all: dgl plugins gen
 
 # --------------------------------------------------------------
 
-dgl:
-ifeq ($(HAVE_OPENGL),true)
-	$(MAKE) -C dpf/dgl opengl
+ifneq ($(CROSS_COMPILING),true)
+CAN_GENERATE_TTL = true
+else ifneq ($(EXE_WRAPPER),)
+CAN_GENERATE_TTL = true
 endif
+
+dgl:
+	$(MAKE) -C dpf/dgl
 
 plugins: dgl
 	$(MAKE) all -C plugins/dragonfly-hall-reverb
