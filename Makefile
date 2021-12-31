@@ -21,7 +21,7 @@ plugins: dgl
 	$(MAKE) all -C plugins/dragonfly-plate-reverb
 	$(MAKE) all -C plugins/dragonfly-early-reflections
 
-ifneq ($(CROSS_COMPILING),true)
+ifeq ($(CAN_GENERATE_TTL),true)
 gen: plugins dpf/utils/lv2_ttl_generator
 	@$(CURDIR)/dpf/utils/generate-ttl.sh
 ifeq ($(MACOS),true)
