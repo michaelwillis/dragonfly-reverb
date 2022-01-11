@@ -15,7 +15,6 @@
  */
 
 #include "LabelledKnob.hpp"
-#include "DistrhoPluginInfo.h"
 
 LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback* callback, Image* image, NanoVG* nanoText, const Param* param, const char * numberFormat, int x, int y)
     : SubWidget(widget)

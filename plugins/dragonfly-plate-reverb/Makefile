@@ -43,7 +43,7 @@ FILES_DSP = $(FILES_COMMON) \
 FILES_UI  = $(FILES_COMMON) \
 	Artwork.cpp \
 	UI.cpp \
-	../../common/AbstractUI.cpp \
+	AbstractUI.cpp \
 	../../common/LabelledKnob.cpp \
 	../../common/Spectrogram.cpp \
 	../../common/Bitstream_Vera_Sans_Regular.cpp
@@ -80,15 +80,7 @@ LINK_OPTS += -lm
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
-ifeq ($(HAVE_OPENGL),true)
-ifneq ($(MACOS_OR_WINDOWS),true)
-TARGETS += jack
-endif # MACOS_OR_WINDOWS
-
-TARGETS += lv2_sep
-TARGETS += vst
-
-endif # HAVE_OPENGL
+TARGETS = jack lv2_sep vst2 vst3
 
 all: $(TARGETS)
 

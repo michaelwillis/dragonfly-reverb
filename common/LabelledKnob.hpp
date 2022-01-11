@@ -17,7 +17,6 @@
 #ifndef LABELLED_KNOB_HPP_INCLUDED
 #define LABELLED_KNOB_HPP_INCLUDED
 
-#include "DistrhoUI.hpp"
 #include "NanoVG.hpp"
 #include "ImageWidgets.hpp"
 #include "Param.hpp"

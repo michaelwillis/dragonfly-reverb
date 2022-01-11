@@ -27,7 +27,7 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 0), dsp(g
 
 void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) {
   if (index < paramCount) {
-    parameter.hints      = kParameterIsAutomable;
+    parameter.hints      = kParameterIsAutomatable;
     parameter.name       = PARAMS[index].name;
     parameter.symbol     = PARAMS[index].symbol;
     parameter.ranges.min = PARAMS[index].range_min;
