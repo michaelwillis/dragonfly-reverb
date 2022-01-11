@@ -77,15 +77,7 @@ LINK_OPTS += -lm
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
-ifeq ($(HAVE_OPENGL),true)
-ifneq ($(MACOS_OR_WINDOWS),true)
-TARGETS += jack
-endif # MACOS_OR_WINDOWS
-
-TARGETS += lv2_sep
-TARGETS += vst
-
-endif # HAVE_OPENGL
+TARGETS = jack lv2_sep vst2 vst3
 
 all: $(TARGETS)
 
