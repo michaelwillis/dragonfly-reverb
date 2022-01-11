@@ -181,14 +181,14 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 {
   if ( ev.button != 1 )
-    return false;
+    return UI::onMouse(ev);
   if ( ev.press )
   {
     if ( displayAbout )
     {
       displayAbout = false;
       repaint();
-      return false;
+      return UI::onMouse(ev);
     }
     else
     {
@@ -248,7 +248,7 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
       }
     }
   }
-  return false;
+  return UI::onMouse(ev);
 }
 
 void DragonflyReverbUI::onDisplay()
