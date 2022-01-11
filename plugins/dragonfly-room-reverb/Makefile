@@ -43,7 +43,7 @@ FILES_DSP = $(FILES_COMMON) \
 FILES_UI  = $(FILES_COMMON) \
 	Artwork.cpp \
 	UI.cpp \
-	../../common/AbstractUI.cpp \
+	AbstractUI.cpp \
 	../../common/LabelledKnob.cpp \
 	../../common/Spectrogram.cpp \
 	../../common/Bitstream_Vera_Sans_Regular.cpp
