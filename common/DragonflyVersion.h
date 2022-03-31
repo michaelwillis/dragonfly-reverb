@@ -16,5 +16,5 @@
 
 #define MAJOR_VERSION 3
 #define MINOR_VERSION 2
-#define PATCH_VERSION 5
+#define PATCH_VERSION 6
 #define VERSION_SUFFIX ""
