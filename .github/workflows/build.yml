@@ -43,12 +43,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-linux-arm64-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-linux-arm64-${{ steps.slug.outputs.version }}
           path: |
             bin/*
 
@@ -83,12 +89,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-linux-armhf-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-linux-armhf-${{ steps.slug.outputs.version }}
           path: |
             bin/*
 
@@ -121,12 +133,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-linux-i686-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-linux-i686-${{ steps.slug.outputs.version }}
           path: |
             bin/*
 
@@ -148,12 +166,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-linux-x86_64-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-linux-x86_64-${{ steps.slug.outputs.version }}
           path: |
             bin/*
 
@@ -178,12 +202,18 @@ jobs:
           ./dpf/utils/package-osx-bundles.sh
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-macOS-universal-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-macOS-universal-${{ steps.slug.outputs.version }}
           path: |
             *-macOS.pkg
             bin/*
@@ -221,12 +251,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-win32-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-win32-${{ steps.slug.outputs.version }}
           path: |
             bin/*
             !bin/*-ladspa.dll
@@ -254,12 +290,18 @@ jobs:
           make WITH_LTO=true -j $(nproc)
       - name: Set slug
         id: slug
+        env:
+          REF_TYPE: ${{ github.ref_type }}
         run: |
-          echo "::set-output name=sha8::$(echo ${{ github.sha }} | cut -c1-8)"
-          echo "if [ "${{ github.ref_type}}" == "tag" ]; then ::set-output name=version::${{ github.ref_name }}; fi;"
+          if [ $REF_TYPE == 'tag' ]
+          then
+            echo "::set-output name=version::${{ github.ref_name }}"
+          else
+            echo "::set-output name=version::$(echo ${{ github.sha }} | cut -c1-8)"
+          fi
       - uses: actions/upload-artifact@v2
         with:
-          name: ${{ github.event.repository.name }}-win64-${{ steps.slug.outputs.version || steps.slug.outputs.sha8 }}
+          name: ${{ github.event.repository.name }}-win64-${{ steps.slug.outputs.version }}
           path: |
             bin/*
             !bin/*-ladspa.dll
