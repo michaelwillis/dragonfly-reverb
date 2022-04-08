@@ -406,47 +406,47 @@ jobs:
                     /usr/lib/carla/carla-bridge-native vst3 ./bin/${p} "" 1>/dev/null; \
             done
 
-    release:
-      if: ${{ github.ref_type == 'tag'}}
-      needs:
-        - linux-arm64
-        - linux-armhf
-        - linux-i686
-        - linux-x86_64
-        - macos-universal
-        - win32
-        - win64
-        - plugin-validation
-      steps:
-        - name: Set slug
-          id: slug
-          run: echo "::set-output name=version::${{ github.ref_name }}"
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-linux-arm64-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-linux-armhf-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-linux-i686-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-linux-x86_64-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-macOS-universal-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-win32-${{ steps.slug.outputs.version }}
-        - uses: actions/download-artifact@v2
-          with:
-            name: ${{ github.event.repository.name }}-win64-${{ steps.slug.outputs.version }}
-        - name: Display file information
-          shell: bash
-          run: ls -lR
-        - name: Release
-          uses: softprops/action-gh-release@v1
-          with:
-            files: ${{ github.event.repository.name }}-*-${{ steps.slug.outputs.version }}
-          discussion_category_name: General
+  release:
+    if: ${{ github.ref_type == 'tag'}}
+    needs:
+      - linux-arm64
+      - linux-armhf
+      - linux-i686
+      - linux-x86_64
+      - macos-universal
+      - win32
+      - win64
+      - plugin-validation
+    steps:
+      - name: Set slug
+        id: slug
+        run: echo "::set-output name=version::${{ github.ref_name }}"
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-linux-arm64-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-linux-armhf-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-linux-i686-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-linux-x86_64-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-macOS-universal-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-win32-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.event.repository.name }}-win64-${{ steps.slug.outputs.version }}
+      - name: Display file information
+        shell: bash
+        run: ls -lR
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ github.event.repository.name }}-*-${{ steps.slug.outputs.version }}
+        discussion_category_name: General
