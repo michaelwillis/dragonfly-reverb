@@ -422,27 +422,7 @@ jobs:
       - name: Set slug
         id: slug
         run: echo "::set-output name=version::${{ github.ref_name }}"
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-linux-arm64-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-linux-armhf-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-linux-i686-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-linux-x86_64-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-macOS-universal-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-win32-${{ steps.slug.outputs.version }}
-      - uses: actions/download-artifact@v2
-        with:
-          name: ${{ github.event.repository.name }}-win64-${{ steps.slug.outputs.version }}
+      - uses: actions/download-artifact@v3
       - name: Display file information
         shell: bash
         run: ls -lR
