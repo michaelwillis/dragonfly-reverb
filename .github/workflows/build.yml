@@ -430,5 +430,6 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: *.zip
+          files: |
+            *.zip
           discussion_category_name: General
