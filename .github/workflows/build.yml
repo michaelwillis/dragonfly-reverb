@@ -416,10 +416,10 @@ jobs:
         uses: actions/download-artifact@v3
       - name: Create archive files
         run: |
-          zip -r dragonfly-reverb-arm64-${{ github.ref_name }}.zip dragonfly-reverb-arm64-${{ github.ref_name }}
-          zip -r dragonfly-reverb-armhf-${{ github.ref_name }}.zip dragonfly-reverb-armhf-${{ github.ref_name }}
-          zip -r dragonfly-reverb-i686-${{ github.ref_name }}.zip dragonfly-reverb-i686-${{ github.ref_name }}
-          zip -r dragonfly-reverb-x86_64-${{ github.ref_name }}.zip dragonfly-reverb-x86_64-${{ github.ref_name }}
+          zip -r dragonfly-reverb-linux-arm64-${{ github.ref_name }}.zip dragonfly-reverb-linux-arm64-${{ github.ref_name }}
+          zip -r dragonfly-reverb-linux-armhf-${{ github.ref_name }}.zip dragonfly-reverb-linux-armhf-${{ github.ref_name }}
+          zip -r dragonfly-reverb-linux-i686-${{ github.ref_name }}.zip dragonfly-reverb-linux-i686-${{ github.ref_name }}
+          zip -r dragonfly-reverb-linux-x86_64-${{ github.ref_name }}.zip dragonfly-reverb-linux-x86_64-${{ github.ref_name }}
           zip -r dragonfly-reverb-mac-universal-${{ github.ref_name }}.zip dragonfly-reverb-mac-universal-${{ github.ref_name }}
           zip -r dragonfly-reverb-win32-${{ github.ref_name }}.zip dragonfly-reverb-win32-${{ github.ref_name }}
           zip -r dragonfly-reverb-win64-${{ github.ref_name }}.zip dragonfly-reverb-win64-${{ github.ref_name }}
