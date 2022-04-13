@@ -216,7 +216,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         with:
           name: dragonfly-reverb-mac-universal-${{ steps.slug.outputs.version }}
-          path: *-macOS.pkg
+          path: |
+            *-macOS.pkg
 
   win32:
     runs-on: ubuntu-20.04
