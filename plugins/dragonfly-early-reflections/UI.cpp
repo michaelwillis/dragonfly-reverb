@@ -32,19 +32,17 @@ namespace Art = Artwork;
 using DGL::Color;
 
 static const int knobx[]  = {285, 360};
+
 static const int knoby[]  = {130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
-  : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight),
+  : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight, Art::questionData, Art::questionWidth, Art::questionHeight),
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR ),
-    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, kImageFormatBGRA )
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
 {
   currentProgram = DEFAULT_PROGRAM;
-
-  displayAbout = false;
 
   knobSize        = createLabelledKnob(&params[paramSize],       "%2.0f m", knobx[0], knoby[0]);
   knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[1], knoby[0]);
@@ -81,8 +79,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     rectPrograms[i].setSize( 125, 21 );
   }
 
-  rectAbout.setPos  ( 240, 130 );
-  rectAbout.setSize ( 20,  20  );
+  aboutButton->setAbsolutePos ( 240, 130 );
 }
 
 /**
@@ -143,37 +140,20 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 {
-  if ( ev.button != 1 )
-    return UI::onMouse(ev);
-  if ( ev.press )
+  if ( ev.button == 1 && ev.press )
   {
-    if ( displayAbout )
+    for (int row = 0; row < PROGRAM_COUNT; row++)
     {
-      displayAbout = false;
-      repaint();
-      return UI::onMouse(ev);
-    }
-    else
-    {
-      for (int row = 0; row < PROGRAM_COUNT; row++)
+      if (rectPrograms[row].contains ( ev.pos ))
       {
-        if (rectPrograms[row].contains ( ev.pos ))
-        {
-	  setParameterValue ( paramProgram, row );
-          currentProgram = row;
-	  repaint();
-        }
-      }
-
-      if ( rectAbout.contains ( ev.pos ) )
-      {
-        displayAbout = true;
+        setParameterValue ( paramProgram, row );
+        currentProgram = row;
         repaint();
-        return true;
       }
     }
   }
-  return UI::onMouse(ev);
+
+  return DragonflyReverbAbstractUI::onMouse(ev);
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -270,8 +250,6 @@ void DragonflyReverbUI::onDisplay()
   else
   {
       glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( context, rectAbout.getX(), rectAbout.getY() );
-
       nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
       nanoText.fillColor(bright);
       nanoText.textBox ( 123, 130, 200, "Reflection Type", nullptr );

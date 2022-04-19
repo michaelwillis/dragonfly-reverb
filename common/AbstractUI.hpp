@@ -24,15 +24,21 @@
 #include "Spectrogram.hpp"
 #include "LabelledKnob.hpp"
 
-class DragonflyReverbAbstractUI : public UI, public ImageKnob::Callback {
+class DragonflyReverbAbstractUI : public UI, public ImageKnob::Callback, public ImageButton::Callback {
 public:
-  DragonflyReverbAbstractUI(uint width, uint height, const Param* params, const char* knobData, uint knobWidth, uint knobHeight);
+  DragonflyReverbAbstractUI(uint width, uint height, const Param* params, const char* knobData, uint knobWidth, uint knobHeight, const char* questionData, uint questionWidth, uint questionHeight);
 protected:
   NanoVG nanoText;
   const Param* params;
   Image knobImage;
 
+  ImageButton *aboutButton;
+  bool displayAbout = false;
+
   LabelledKnob * createLabelledKnob(const Param *param, const char * numberFormat, int x, int y);
+
+  bool onMouse(const MouseEvent& ev);
+  void imageButtonClicked(ImageButton* imageButton, int button);
 };
 
 #endif

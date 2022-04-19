@@ -35,16 +35,13 @@ static const int knoby[]  = {130, 245};
 
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
-  : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight),
+  : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight, Art::questionData, Art::questionWidth, Art::questionHeight),
     fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
     fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR ),
-    fImgQuestion ( Art::questionData, Art::questionWidth, Art::questionHeight, kImageFormatBGRA )
+    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
 {
   currentPreset = DEFAULT_PRESET;
   currentAlg = presets[currentPreset].params[paramAlgorithm];
-
-  displayAbout = false;
 
   knobWidth       = createLabelledKnob(&params[paramWidth],      "%3.0f%%", knobx[0], knoby[0]);
   knobPredelay    = createLabelledKnob(&params[paramPredelay],  "%2.0f ms", knobx[1], knoby[0]);
@@ -91,8 +88,7 @@ DragonflyReverbUI::DragonflyReverbUI()
     rectPresets[i].setSize( 125, 21 );
   }
 
-  rectAbout.setPos  ( 390, 130 );
-  rectAbout.setSize ( 20,  20  );
+  aboutButton->setAbsolutePos ( 390, 130 );
 
   AbstractDSP *dsp = new DragonflyReverbDSP(SPECTROGRAM_SAMPLE_RATE);
   spectrogram = new Spectrogram(this, &nanoText, &rectDisplay, dsp);
@@ -180,75 +176,58 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
 
 bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 {
-  if ( ev.button != 1 )
-    return UI::onMouse(ev);
-  if ( ev.press )
+  if ( ev.button == 1 && ev.press )
   {
-    if ( displayAbout )
+    for (int row = 0; row < ALGORITHM_COUNT; row++)
     {
-      displayAbout = false;
-      repaint();
-      return UI::onMouse(ev);
+      if (rectAlgorithms[row].contains ( ev.pos ))
+      {
+        currentAlg = row;
+        setParameterValue ( paramAlgorithm, row );
+        spectrogram->setParameterValue( paramAlgorithm, row);
+      }
     }
-    else
+
+    bool presetClicked = false;
+
+    for (int row = 0; row < NUM_PRESETS; row++)
     {
-      for (int row = 0; row < ALGORITHM_COUNT; row++)
+      if (rectPresets[row].contains ( ev.pos ))
       {
-        if (rectAlgorithms[row].contains ( ev.pos ))
-        {
-	  currentAlg = row;
-	  setParameterValue ( paramAlgorithm, row );
-	  spectrogram->setParameterValue( paramAlgorithm, row);
+        currentPreset = row;
+        presetClicked = true;
+      }
+    }
+
+    if (presetClicked)
+    {
+      setState("preset", presets[currentPreset].name);
+      updatePresetDefaults();
+
+      const float *preset = presets[currentPreset].params;
+
+      knobWidth->setValue ( preset[paramWidth] );
+      knobPredelay->setValue ( preset[paramPredelay] );
+      knobDecay->setValue ( preset[paramDecay] );
+
+      knobLowCut->setValue ( preset[paramLowCut] );
+      knobHighCut->setValue ( preset[paramHighCut] );
+      knobDamp->setValue ( preset[paramDamp] );
+
+      for ( uint32_t i = 0; i < paramCount; i++ ) {
+        // Don't set sliders
+        if (i != paramDry && i != paramWet) {
+                setParameterValue ( i, preset[i] );
+                spectrogram->setParameterValue(i, preset[i]);
         }
       }
 
-      bool presetClicked = false;
-
-      for (int row = 0; row < NUM_PRESETS; row++)
-      {
-        if (rectPresets[row].contains ( ev.pos ))
-        {
-          currentPreset = row;
-          presetClicked = true;
-        }
-      }
-
-      if (presetClicked)
-      {
-        setState("preset", presets[currentPreset].name);
-        updatePresetDefaults();
-
-        const float *preset = presets[currentPreset].params;
-
-        knobWidth->setValue ( preset[paramWidth] );
-        knobPredelay->setValue ( preset[paramPredelay] );
-        knobDecay->setValue ( preset[paramDecay] );
-
-	knobLowCut->setValue ( preset[paramLowCut] );
-	knobHighCut->setValue ( preset[paramHighCut] );
-	knobDamp->setValue ( preset[paramDamp] );
-
-        for ( uint32_t i = 0; i < paramCount; i++ ) {
-	  // Don't set sliders
-	  if (i != paramDry && i != paramWet) {
-            setParameterValue ( i, preset[i] );
-            spectrogram->setParameterValue(i, preset[i]);
-	  }
-        }
-
-        repaint();
-        return true;
-      }
-
-      if ( rectAbout.contains ( ev.pos ) )
-      {
-        displayAbout = true;
-        repaint();
-        return true;
-      }
+      repaint();
+      return true;
     }
   }
-  return UI::onMouse(ev);
+
+  return DragonflyReverbAbstractUI::onMouse(ev);
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -374,8 +353,6 @@ void DragonflyReverbUI::onDisplay()
   else
   {
       spectrogram->show();
-      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      fImgQuestion.drawAt ( context, rectAbout.getX(), rectAbout.getY() );
   }
 
 }

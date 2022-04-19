@@ -69,16 +69,12 @@ private:
     int currentBank;
     int currentProgram[NUM_BANKS];
 
-    bool displayAbout;
-
     DGL::Rectangle<int> rectSliders[4];
 
     DGL::Rectangle<int> rectDisplay;
 
     DGL::Rectangle<int> rectBanks[NUM_BANKS];
     DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
-
-    DGL::Rectangle<int> rectAbout;
 
     void updatePresetDefaults();
 

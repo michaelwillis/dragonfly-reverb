@@ -52,20 +52,18 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn,fImgQuestion;
+    Image fImgBackground,fImgTabOff,fImgTabOn;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobLowCut, knobHighCut;
 
     int currentProgram;
-    bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[2];
 
     DGL::Rectangle<int> rectPrograms[PROGRAM_COUNT];
 
     DGL::Rectangle<int> rectDisplay;
-    DGL::Rectangle<int> rectAbout;
 
     void updatePresetDefaults();
 

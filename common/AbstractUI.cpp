@@ -17,7 +17,10 @@
 #include "AbstractUI.hpp"
 #include "Bitstream_Vera_Sans_Regular.hpp"
 
-DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(uint width, uint height, const Param* params, const char* knobData, uint knobWidth, uint knobHeight)
+DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(
+  uint width, uint height, const Param* params,
+  const char* knobData, uint knobWidth, uint knobHeight,
+  const char* questionData, uint questionWidth, uint questionHeight)
   : UI (width, height) {
     getWindow().setGeometryConstraints(width, height, true, true, true);
     NanoVG::FontId font  = nanoText.createFontFromMemory(
@@ -28,8 +31,32 @@ DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(uint width, uint height, co
     nanoText.fontFaceId(font);
     this->params = params;
     this->knobImage = Image(knobData, knobWidth, knobHeight);
+
+    displayAbout = false;
+    aboutButton = new ImageButton(this, Image (questionData, questionWidth, questionHeight, kImageFormatBGRA));
+    aboutButton->setCallback(this);
+
 }
 
 LabelledKnob * DragonflyReverbAbstractUI::createLabelledKnob(const Param *param, const char * numberFormat, int x, int y) {
   return new LabelledKnob(this, this, &knobImage, &nanoText, param, numberFormat, x, y);
+}
+
+void DragonflyReverbAbstractUI::imageButtonClicked(ImageButton* imageButton, int button)
+{
+  if (imageButton == aboutButton && button == 1) {
+    aboutButton->setVisible(false);
+    displayAbout = true;
+    repaint();
+  }
+}
+
+bool DragonflyReverbAbstractUI::onMouse(const MouseEvent& ev) {
+  if (ev.press && displayAbout) {
+    aboutButton->setVisible(true);
+    displayAbout = false;
+    repaint();
+  }
+
+  return UI::onMouse(ev);
 }

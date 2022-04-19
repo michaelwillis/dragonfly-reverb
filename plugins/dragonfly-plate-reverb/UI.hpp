@@ -55,7 +55,7 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn,fImgQuestion;
+    Image fImgBackground,fImgTabOff,fImgTabOn;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
     ScopedPointer<Spectrogram> spectrogram;
@@ -65,7 +65,6 @@ private:
 
     int currentAlg;
     int currentPreset;
-    bool displayAbout;
 
     DGL::Rectangle<int> rectSliders[2];
 
@@ -73,7 +72,6 @@ private:
     DGL::Rectangle<int> rectPresets[NUM_PRESETS];
 
     DGL::Rectangle<int> rectDisplay;
-    DGL::Rectangle<int> rectAbout;
 
     void updatePresetDefaults();
 
