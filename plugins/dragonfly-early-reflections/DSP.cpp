@@ -58,8 +58,8 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       float value = newParams[index];
 
       switch(index) {
-        case           paramDry: dry_level         = (value / 100.0); break;
-        case           paramWet: wet_level         = (value / 100.0); break;
+        case           paramDry: dryLevel         = (value / 100.0); break;
+        case           paramWet: wetLevel         = (value / 100.0); break;
         case          paramSize: model.setRSFactor   (value / 10.0);  break;
         case         paramWidth: model.setwidth      (value / 100.0); break;
         case        paramLowCut: model.setoutputhpf  (value);         break;
@@ -90,12 +90,12 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
       outputs[0][offset + i] =
-        dry_level * inputs[0][offset + i]  +
-        wet_level * output_buffer[0][i];
+        dryLevel * inputs[0][offset + i]  +
+        wetLevel * output_buffer[0][i];
 
       outputs[1][offset + i] =
-        dry_level * inputs[1][offset + i]  +
-        wet_level * output_buffer[1][i];
+        dryLevel * inputs[1][offset + i]  +
+        wetLevel * output_buffer[1][i];
     }
 
   }

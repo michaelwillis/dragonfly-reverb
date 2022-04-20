@@ -58,10 +58,10 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn,fImgQuestion;
+    Image imgBackground,imgTabOff,imgTabOn,imgQuestion;
 
-    ScopedPointer<LabelledKnob> fKnobSize, fKnobWidth, fKnobPredelay, fKnobDecay, fKnobSpin, fKnobWander, fKnobDiffuse, fKnobModulation, fKnobLowCut, fKnobLowXover, fKnobLowMult, fKnobHighCut, fKnobHighXover, fKnobHighMult;
-    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
+    ScopedPointer<LabelledKnob> knobSize, knobWidth, knobPredelay, knobDecay, knobSpin, knobWander, knobDiffuse, knobModulation, knobLowCut, knobLowXover, knobLowMult, knobHighCut, knobHighXover, knobHighMult;
+    ScopedPointer<ImageSlider> sliderDryLevel, sliderEarlyLevel, sliderEarlySend, sliderLateLevel;
     ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<Image> spectrogramImage;

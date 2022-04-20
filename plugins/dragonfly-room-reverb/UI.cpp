@@ -36,9 +36,9 @@ static const int knoby[]  = {15,  130, 245};
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight, Art::questionData, Art::questionWidth, Art::questionHeight),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
-    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
+    imgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
+    imgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
+    imgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
 {
   currentBank = DEFAULT_BANK;
   for (int b = 0; b < NUM_BANKS; b++)
@@ -46,54 +46,54 @@ DragonflyReverbUI::DragonflyReverbUI()
     currentPreset[b] = DEFAULT_PRESET;
   }
 
-  fKnobSize        = createLabelledKnob(&params[paramSize],        "%2.0f m",  knobx[0], knoby[1]);
-  fKnobWidth       = createLabelledKnob(&params[paramWidth],       "%3.0f%%",  knobx[1], knoby[1]);
-  fKnobPredelay    = createLabelledKnob(&params[paramPredelay],    "%2.0f ms", knobx[0], knoby[2]);
-  fKnobDecay       = createLabelledKnob(&params[paramDecay],       "%2.1f s",  knobx[1], knoby[2]);
+  knobSize        = createLabelledKnob(&params[paramSize],        "%2.0f m",  knobx[0], knoby[1]);
+  knobWidth       = createLabelledKnob(&params[paramWidth],       "%3.0f%%",  knobx[1], knoby[1]);
+  knobPredelay    = createLabelledKnob(&params[paramPredelay],    "%2.0f ms", knobx[0], knoby[2]);
+  knobDecay       = createLabelledKnob(&params[paramDecay],       "%2.1f s",  knobx[1], knoby[2]);
 
-  fKnobDiffuse     = createLabelledKnob(&params[paramDiffuse],     "%2.0f%%",  knobx[2], knoby[0]);
-  fKnobSpin        = createLabelledKnob(&params[paramSpin],        "%2.2f Hz", knobx[3], knoby[0]);
-  fKnobWander      = createLabelledKnob(&params[paramWander],      "%2.0f%%",  knobx[4], knoby[0]);
+  knobDiffuse     = createLabelledKnob(&params[paramDiffuse],     "%2.0f%%",  knobx[2], knoby[0]);
+  knobSpin        = createLabelledKnob(&params[paramSpin],        "%2.2f Hz", knobx[3], knoby[0]);
+  knobWander      = createLabelledKnob(&params[paramWander],      "%2.0f%%",  knobx[4], knoby[0]);
 
-  fKnobInHighCut   = createLabelledKnob(&params[paramInHighCut],   "%5.0f Hz", knobx[2], knoby[1]);
-  fKnobEarlyDamp   = createLabelledKnob(&params[paramEarlyDamp],   "%5.0f Hz", knobx[3], knoby[1]);
-  fKnobLateDamp    = createLabelledKnob(&params[paramLateDamp],    "%5.0f Hz", knobx[4], knoby[1]);
+  knobInHighCut   = createLabelledKnob(&params[paramInHighCut],   "%5.0f Hz", knobx[2], knoby[1]);
+  knobEarlyDamp   = createLabelledKnob(&params[paramEarlyDamp],   "%5.0f Hz", knobx[3], knoby[1]);
+  knobLateDamp    = createLabelledKnob(&params[paramLateDamp],    "%5.0f Hz", knobx[4], knoby[1]);
 
-  fKnobInLowCut    = createLabelledKnob(&params[paramInLowCut],    "%4.0f Hz", knobx[2], knoby[2]);
-  fKnobBoost       = createLabelledKnob(&params[paramBoost],       "%1.0f%%",  knobx[3], knoby[2]);
-  fKnobBoostLPF    = createLabelledKnob(&params[paramBoostLPF],    "%4.0f Hz", knobx[4], knoby[2]);
+  knobInLowCut    = createLabelledKnob(&params[paramInLowCut],    "%4.0f Hz", knobx[2], knoby[2]);
+  knobBoost       = createLabelledKnob(&params[paramBoost],       "%1.0f%%",  knobx[3], knoby[2]);
+  knobBoostLPF    = createLabelledKnob(&params[paramBoostLPF],    "%4.0f Hz", knobx[4], knoby[2]);
 
-  fSliderDry_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
-  fSliderDry_level->setId ( paramDry );
-  fSliderDry_level->setStartPos ( 17, 157 );
-  fSliderDry_level->setEndPos ( 17, 317 );
-  fSliderDry_level->setRange ( 0.0f, 100.0f );
-  fSliderDry_level->setInverted ( true );
-  fSliderDry_level->setCallback ( this );
+  sliderDryLevel = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
+  sliderDryLevel->setId ( paramDry );
+  sliderDryLevel->setStartPos ( 17, 157 );
+  sliderDryLevel->setEndPos ( 17, 317 );
+  sliderDryLevel->setRange ( 0.0f, 100.0f );
+  sliderDryLevel->setInverted ( true );
+  sliderDryLevel->setCallback ( this );
 
-  fSliderEarly_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
-  fSliderEarly_level->setId ( paramEarly );
-  fSliderEarly_level->setStartPos ( 57, 157 );
-  fSliderEarly_level->setEndPos ( 57, 317 );
-  fSliderEarly_level->setRange ( 0.0f, 100.0f );
-  fSliderEarly_level->setInverted ( true );
-  fSliderEarly_level->setCallback ( this );
+  sliderEarlyLevel = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
+  sliderEarlyLevel->setId ( paramEarly );
+  sliderEarlyLevel->setStartPos ( 57, 157 );
+  sliderEarlyLevel->setEndPos ( 57, 317 );
+  sliderEarlyLevel->setRange ( 0.0f, 100.0f );
+  sliderEarlyLevel->setInverted ( true );
+  sliderEarlyLevel->setCallback ( this );
 
-  fSliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
-  fSliderEarlySend->setId ( paramEarlySend );
-  fSliderEarlySend->setStartPos ( 97, 157 );
-  fSliderEarlySend->setEndPos ( 97, 317 );
-  fSliderEarlySend->setRange ( 0.0f, 100.0f );
-  fSliderEarlySend->setInverted ( true );
-  fSliderEarlySend->setCallback ( this );
+  sliderEarlySend = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
+  sliderEarlySend->setId ( paramEarlySend );
+  sliderEarlySend->setStartPos ( 97, 157 );
+  sliderEarlySend->setEndPos ( 97, 317 );
+  sliderEarlySend->setRange ( 0.0f, 100.0f );
+  sliderEarlySend->setInverted ( true );
+  sliderEarlySend->setCallback ( this );
 
-  fSliderLate_level = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
-  fSliderLate_level->setId ( paramLate );
-  fSliderLate_level->setStartPos ( 137, 157 );
-  fSliderLate_level->setEndPos ( 137, 317 );
-  fSliderLate_level->setRange ( 0.0f, 100.0f );
-  fSliderLate_level->setInverted ( true );
-  fSliderLate_level->setCallback ( this );
+  sliderLateLevel = new ImageSlider ( this, Image ( Art::sliderData, Art::sliderWidth, Art::sliderHeight, kImageFormatBGRA ) );
+  sliderLateLevel->setId ( paramLate );
+  sliderLateLevel->setStartPos ( 137, 157 );
+  sliderLateLevel->setEndPos ( 137, 317 );
+  sliderLateLevel->setRange ( 0.0f, 100.0f );
+  sliderLateLevel->setInverted ( true );
+  sliderLateLevel->setCallback ( this );
 
   rectSliders[0].setPos  ( 17,  157 );
   rectSliders[0].setSize ( 26,  160 );
@@ -136,27 +136,27 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 
   switch ( index )
   {
-    case paramDry:           fSliderDry_level->setValue ( value ); break;
-    case paramEarly:       fSliderEarly_level->setValue ( value ); break;
-    case paramEarlySend:     fSliderEarlySend->setValue ( value ); break;
-    case paramLate:         fSliderLate_level->setValue ( value ); break;
+    case paramDry:           sliderDryLevel->setValue ( value ); break;
+    case paramEarly:       sliderEarlyLevel->setValue ( value ); break;
+    case paramEarlySend:     sliderEarlySend->setValue ( value ); break;
+    case paramLate:         sliderLateLevel->setValue ( value ); break;
 
-    case paramSize:                 fKnobSize->setValue ( value ); break;
-    case paramWidth:               fKnobWidth->setValue ( value ); break;
-    case paramPredelay:         fKnobPredelay->setValue ( value ); break;
-    case paramDecay:               fKnobDecay->setValue ( value ); break;
+    case paramSize:                 knobSize->setValue ( value ); break;
+    case paramWidth:               knobWidth->setValue ( value ); break;
+    case paramPredelay:         knobPredelay->setValue ( value ); break;
+    case paramDecay:               knobDecay->setValue ( value ); break;
 
-    case paramDiffuse:           fKnobDiffuse->setValue ( value ); break;
-    case paramSpin:                 fKnobSpin->setValue ( value ); break;
-    case paramWander:             fKnobWander->setValue ( value ); break;
+    case paramDiffuse:           knobDiffuse->setValue ( value ); break;
+    case paramSpin:                 knobSpin->setValue ( value ); break;
+    case paramWander:             knobWander->setValue ( value ); break;
 
-    case paramInHighCut:       fKnobInHighCut->setValue ( value ); break;
-    case paramEarlyDamp:       fKnobEarlyDamp->setValue ( value ); break;
-    case paramLateDamp:         fKnobLateDamp->setValue ( value ); break;
+    case paramInHighCut:       knobInHighCut->setValue ( value ); break;
+    case paramEarlyDamp:       knobEarlyDamp->setValue ( value ); break;
+    case paramLateDamp:         knobLateDamp->setValue ( value ); break;
 
-    case paramInLowCut:         fKnobInLowCut->setValue ( value ); break;
-    case paramBoost:               fKnobBoost->setValue ( value ); break;
-    case paramBoostLPF:         fKnobBoostLPF->setValue ( value ); break;
+    case paramInLowCut:         knobInLowCut->setValue ( value ); break;
+    case paramBoost:               knobBoost->setValue ( value ); break;
+    case paramBoostLPF:         knobBoostLPF->setValue ( value ); break;
   }
 
   if (index != paramDry) {
@@ -250,22 +250,22 @@ bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
 
       const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
-      fKnobSize->setValue ( preset[paramSize] );
-      fKnobWidth->setValue ( preset[paramWidth] );
-      fKnobPredelay->setValue ( preset[paramPredelay] );
-      fKnobDecay->setValue ( preset[paramDecay] );
+      knobSize->setValue ( preset[paramSize] );
+      knobWidth->setValue ( preset[paramWidth] );
+      knobPredelay->setValue ( preset[paramPredelay] );
+      knobDecay->setValue ( preset[paramDecay] );
 
-      fKnobDiffuse->setValue ( preset[paramDiffuse] );
-      fKnobSpin->setValue ( preset[paramSpin] );
-      fKnobWander->setValue ( preset[paramWander] );
+      knobDiffuse->setValue ( preset[paramDiffuse] );
+      knobSpin->setValue ( preset[paramSpin] );
+      knobWander->setValue ( preset[paramWander] );
 
-      fKnobInHighCut->setValue ( preset[paramInHighCut] );
-      fKnobEarlyDamp->setValue ( preset[paramEarlyDamp] );
-      fKnobLateDamp->setValue ( preset[paramLateDamp] );
+      knobInHighCut->setValue ( preset[paramInHighCut] );
+      knobEarlyDamp->setValue ( preset[paramEarlyDamp] );
+      knobLateDamp->setValue ( preset[paramLateDamp] );
 
-      fKnobInLowCut->setValue ( preset[paramInLowCut] );
-      fKnobBoost->setValue ( preset[paramBoost] );
-      fKnobBoostLPF->setValue ( preset[paramBoostLPF] );
+      knobInLowCut->setValue ( preset[paramInLowCut] );
+      knobBoost->setValue ( preset[paramBoost] );
+      knobBoostLPF->setValue ( preset[paramBoostLPF] );
 
       for ( uint32_t i = 0; i < paramCount; i++ ) {
         // Don't set sliders
@@ -286,7 +286,7 @@ void DragonflyReverbUI::onDisplay()
 {
   const GraphicsContext& context(getGraphicsContext());
 
-  fImgBackground.draw(context);
+  imgBackground.draw(context);
 
   float r,g,b;
   r = 230.0f / 256;
@@ -303,13 +303,13 @@ void DragonflyReverbUI::onDisplay()
   char strBuf[32+1];
   strBuf[32] = '\0';
 
-  std::snprintf ( strBuf, 32, "%i%%", int ( fSliderDry_level->getValue() ) );
+  std::snprintf ( strBuf, 32, "%i%%", int ( sliderDryLevel->getValue() ) );
   nanoText.textBox ( 17 - 2, 330, 35.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%i%%", int ( fSliderEarly_level->getValue() ) );
+  std::snprintf ( strBuf, 32, "%i%%", int ( sliderEarlyLevel->getValue() ) );
   nanoText.textBox ( 57 - 2, 330, 35.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%i%%", int ( fSliderEarlySend->getValue() ) );
+  std::snprintf ( strBuf, 32, "%i%%", int ( sliderEarlySend->getValue() ) );
   nanoText.textBox ( 97 - 2, 330, 35.0f, strBuf, nullptr );
-  std::snprintf ( strBuf, 32, "%i%%", int ( fSliderLate_level->getValue() ) );
+  std::snprintf ( strBuf, 32, "%i%%", int ( sliderLateLevel->getValue() ) );
   nanoText.textBox (137 - 2, 330, 35.0f, strBuf, nullptr );
 
   // print labels;
@@ -327,10 +327,10 @@ void DragonflyReverbUI::onDisplay()
   g = 130.0f/255.f;
   b = 161.0f/255.f;
   glColor4f ( r, g, b, 1.0f );
-  uint dry = ( float ( fSliderDry_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
-  uint early = ( float ( fSliderEarly_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
-  uint early_send = ( float ( fSliderEarlySend->getValue() ) / 100.0 ) * 160.0 + 1.0f;
-  uint late = ( float ( fSliderLate_level->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint dry = ( float ( sliderDryLevel->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint early = ( float ( sliderEarlyLevel->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint early_send = ( float ( sliderEarlySend->getValue() ) / 100.0 ) * 160.0 + 1.0f;
+  uint late = ( float ( sliderLateLevel->getValue() ) / 100.0 ) * 160.0 + 1.0f;
 
   rectSliders[0].setHeight ( dry );
   rectSliders[0].setY ( 118 + 200 - dry );
@@ -366,10 +366,10 @@ void DragonflyReverbUI::onDisplay()
   {
     DGL::Rectangle<int> bank = rectBanks[row];
     if (currentBank == row) {
-      fImgTabOn.drawAt ( context, bank.getX(), bank.getY() );
+      imgTabOn.drawAt ( context, bank.getX(), bank.getY() );
       nanoText.fillColor ( bright );
     } else {
-      fImgTabOff.drawAt ( context, bank.getX(), bank.getY() );
+      imgTabOff.drawAt ( context, bank.getX(), bank.getY() );
       nanoText.fillColor ( dim );
     }
 
@@ -434,22 +434,22 @@ void DragonflyReverbUI::uiIdle() {
 void DragonflyReverbUI::updatePresetDefaults() {
   const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
-  fKnobSize->setDefault ( preset[paramSize] );
-  fKnobWidth->setDefault ( preset[paramWidth] );
-  fKnobPredelay->setDefault ( preset[paramPredelay] );
-  fKnobDecay->setDefault ( preset[paramDecay] );
+  knobSize->setDefault ( preset[paramSize] );
+  knobWidth->setDefault ( preset[paramWidth] );
+  knobPredelay->setDefault ( preset[paramPredelay] );
+  knobDecay->setDefault ( preset[paramDecay] );
 
-  fKnobDiffuse->setDefault ( preset[paramDiffuse] );
-  fKnobSpin->setDefault ( preset[paramSpin] );
-  fKnobWander->setDefault ( preset[paramWander] );
+  knobDiffuse->setDefault ( preset[paramDiffuse] );
+  knobSpin->setDefault ( preset[paramSpin] );
+  knobWander->setDefault ( preset[paramWander] );
 
-  fKnobInHighCut->setDefault ( preset[paramInHighCut] );
-  fKnobEarlyDamp->setDefault ( preset[paramEarlyDamp] );
-  fKnobLateDamp->setDefault ( preset[paramLateDamp] );
+  knobInHighCut->setDefault ( preset[paramInHighCut] );
+  knobEarlyDamp->setDefault ( preset[paramEarlyDamp] );
+  knobLateDamp->setDefault ( preset[paramLateDamp] );
 
-  fKnobInLowCut->setDefault ( preset[paramInLowCut] );
-  fKnobBoost->setDefault ( preset[paramBoost] );
-  fKnobBoostLPF->setDefault ( preset[paramBoostLPF] );
+  knobInLowCut->setDefault ( preset[paramInLowCut] );
+  knobBoost->setDefault ( preset[paramBoost] );
+  knobBoostLPF->setDefault ( preset[paramBoostLPF] );
 }
 
 /* ------------------------------------------------------------------------------------------------------------

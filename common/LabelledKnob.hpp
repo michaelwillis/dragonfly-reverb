@@ -43,7 +43,7 @@ private:
   NanoVG *fNanoText;
   const char *fNumberFormat;
   const char *fName;
-  ScopedPointer<ImageKnob> fKnob;
+  ScopedPointer<ImageKnob> knob;
 };
 
 #endif

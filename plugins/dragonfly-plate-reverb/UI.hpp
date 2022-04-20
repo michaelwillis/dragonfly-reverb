@@ -55,7 +55,7 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn;
+    Image imgBackground,imgTabOff,imgTabOn;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
     ScopedPointer<Spectrogram> spectrogram;

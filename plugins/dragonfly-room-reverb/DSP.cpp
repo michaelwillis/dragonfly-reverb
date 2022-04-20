@@ -74,10 +74,10 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       float value = newParams[index];
 
       switch(index) {
-        case           paramDry: dry_level        = (value / 100.0); break;
-        case         paramEarly: early_level      = (value / 100.0); break;
+        case           paramDry: dryLevel        = (value / 100.0); break;
+        case         paramEarly: earlyLevel      = (value / 100.0); break;
         case     paramEarlySend: early_send       = (value / 100.0); break;
-        case          paramLate: late_level       = (value / 100.0); break;
+        case          paramLate: lateLevel       = (value / 100.0); break;
         case          paramSize: early.setRSFactor  (value /  10.0);
                                  late.setRSFactor   (value /  10.0);
 	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
@@ -133,21 +133,21 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       buffer_frames);
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
-      outputs[0][offset + i] = dry_level   * inputs[0][offset + i];
-      outputs[1][offset + i] = dry_level   * inputs[1][offset + i];
+      outputs[0][offset + i] = dryLevel   * inputs[0][offset + i];
+      outputs[1][offset + i] = dryLevel   * inputs[1][offset + i];
     }
     
-    if( early_level > 0.0 ){
+    if( earlyLevel > 0.0 ){
       for (uint32_t i = 0; i < buffer_frames; i++) {
-	outputs[0][offset + i] += early_level * early_out_buffer[0][i];
-	outputs[1][offset + i] += early_level * early_out_buffer[1][i];
+	outputs[0][offset + i] += earlyLevel * early_out_buffer[0][i];
+	outputs[1][offset + i] += earlyLevel * early_out_buffer[1][i];
       }
     }
     
-    if( late_level > 0.0 ){
+    if( lateLevel > 0.0 ){
       for (uint32_t i = 0; i < buffer_frames; i++) {
-	outputs[0][offset + i] += late_level  * late_out_buffer[0][i];
-	outputs[1][offset + i] += late_level  * late_out_buffer[1][i];
+	outputs[0][offset + i] += lateLevel  * late_out_buffer[0][i];
+	outputs[1][offset + i] += lateLevel  * late_out_buffer[1][i];
       }
     }
   }

@@ -52,7 +52,7 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn;
+    Image imgBackground,imgTabOff,imgTabOn;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobLowCut, knobHighCut;

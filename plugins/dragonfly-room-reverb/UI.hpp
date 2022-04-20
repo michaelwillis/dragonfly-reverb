@@ -55,16 +55,16 @@ protected:
     void uiIdle() override;
 
 private:
-    Image fImgBackground,fImgTabOff,fImgTabOn;
+    Image imgBackground,imgTabOff,imgTabOn;
 
-    ScopedPointer<ImageSlider> fSliderDry_level, fSliderEarly_level, fSliderEarlySend, fSliderLate_level;
+    ScopedPointer<ImageSlider> sliderDryLevel, sliderEarlyLevel, sliderEarlySend, sliderLateLevel;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<LabelledKnob>
-      fKnobSize, fKnobWidth,
-      fKnobPredelay, fKnobDecay,
-      fKnobDiffuse, fKnobSpin, fKnobWander,
-      fKnobInHighCut, fKnobEarlyDamp, fKnobLateDamp,
-      fKnobInLowCut, fKnobBoostLPF, fKnobBoost;
+      knobSize, knobWidth,
+      knobPredelay, knobDecay,
+      knobDiffuse, knobSpin, knobWander,
+      knobInHighCut, knobEarlyDamp, knobLateDamp,
+      knobInLowCut, knobBoostLPF, knobBoost;
 
     int currentBank;
     int currentPreset[NUM_BANKS];

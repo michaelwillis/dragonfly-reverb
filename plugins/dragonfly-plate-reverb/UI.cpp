@@ -36,9 +36,9 @@ static const int knoby[]  = {130, 245};
 // -----------------------------------------------------------------------------------------------------------
 DragonflyReverbUI::DragonflyReverbUI()
   : DragonflyReverbAbstractUI ( Art::backgroundWidth, Art::backgroundHeight, PARAMS, Art::knobData, Art::knobWidth, Art::knobHeight, Art::questionData, Art::questionWidth, Art::questionHeight),
-    fImgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
-    fImgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
-    fImgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
+    imgBackground ( Art::backgroundData, Art::backgroundWidth, Art::backgroundHeight, kImageFormatBGRA ),
+    imgTabOff ( Art::tab_offData, Art::tab_offWidth, Art::tab_offHeight, kImageFormatBGR ),
+    imgTabOn ( Art::tab_onData, Art::tab_onWidth,Art::tab_onHeight, kImageFormatBGR )
 {
   currentPreset = DEFAULT_PRESET;
   currentAlg = presets[currentPreset].params[paramAlgorithm];
@@ -234,7 +234,7 @@ void DragonflyReverbUI::onDisplay()
 {
   const GraphicsContext& context(getGraphicsContext());
 
-  fImgBackground.draw(context);
+  imgBackground.draw(context);
 
   float r,g,b;
   r = 230.0f / 256;

@@ -1,5 +1,5 @@
 /*
- * Dragonfly Reverb, copyright (c) 2019 Michael Willis, Rob van den Berg
+ * Dragonfly Reverb, copyright (c) 2022 Michael Willis
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -27,27 +27,27 @@ LabelledKnob::LabelledKnob(Widget* widget, ImageKnob::Callback* callback, Image*
   fNanoText = nanoText;
   fName = param->name;
 
-  fKnob = new ImageKnob(this, *image); // Image ( raster, width, height, GL_BGRA )
-  fKnob->setId(param->id);
-  fKnob->setAbsolutePos(x + 10, y + 14);
-  fKnob->setRange(param->range_min, param->range_max);
-  fKnob->setRotationAngle(300);
-  fKnob->setCallback(callback);
+  knob = new ImageKnob(this, *image); // Image ( raster, width, height, GL_BGRA )
+  knob->setId(param->id);
+  knob->setAbsolutePos(x + 10, y + 14);
+  knob->setRange(param->range_min, param->range_max);
+  knob->setRotationAngle(300);
+  knob->setCallback(callback);
 }
 
 void LabelledKnob::setDefault(float value) noexcept
 {
-    fKnob->setDefault(value);
+    knob->setDefault(value);
 }
 
 float LabelledKnob::getValue() const noexcept
 {
-  return fKnob->getValue();
+  return knob->getValue();
 }
 
 void LabelledKnob::setValue(float value)
 {
-  fKnob->setValue(value);
+  knob->setValue(value);
 }
 
 void LabelledKnob::onDisplay()
@@ -61,7 +61,7 @@ void LabelledKnob::onDisplay()
 
   char strBuf[32+1];
   strBuf[32] = '\0';
-  std::snprintf ( strBuf, 32, fNumberFormat, fKnob->getValue() );
+  std::snprintf ( strBuf, 32, fNumberFormat, knob->getValue() );
 
   fNanoText->fontSize ( 14 );
   fNanoText->fillColor ( Color ( 0.9f, 0.9f, 0.9f ) );
