@@ -44,7 +44,7 @@ public:
   void setSelectedImage(Image *image);
   void setUnselectedImage(Image *image);
 
-  void setOptions(char const* options[]);
+  void setOptionName(int option, char const* name);
   void setSelectedOption(int option);
 
 protected:

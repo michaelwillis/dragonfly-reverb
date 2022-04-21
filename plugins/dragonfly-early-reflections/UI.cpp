@@ -73,10 +73,12 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos  ( 110, 126 );
   rectDisplay.setSize ( 305, 207 );
 
+  programSelection = new Selection(this, this, 125, &nanoText, PROGRAM_COUNT);
+  programSelection->setAbsolutePos(120, 160);
+  programSelection->setSelectedOption(DEFAULT_PROGRAM);
   for ( int i = 0; i < PROGRAM_COUNT; ++i)
   {
-    rectPrograms[i].setPos( 120, 160 + (i * 21) );
-    rectPrograms[i].setSize( 125, 21 );
+    programSelection->setOptionName(i, programs[i].name);
   }
 
   aboutButton->setAbsolutePos ( 240, 130 );
@@ -89,6 +91,7 @@ DragonflyReverbUI::DragonflyReverbUI()
 void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
 {
   displayAbout = false;
+  repaint();
 
   switch ( index )
   {
@@ -138,22 +141,13 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
   setParameterValue ( SliderID,value );
 }
 
-bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
-{
-  if ( ev.button == 1 && ev.press )
-  {
-    for (int row = 0; row < PROGRAM_COUNT; row++)
-    {
-      if (rectPrograms[row].contains ( ev.pos ))
-      {
-        setParameterValue ( paramProgram, row );
-        currentProgram = row;
-        repaint();
-      }
-    }
+void DragonflyReverbUI::selectionClicked(Selection* selection, int selectedOption) {
+  if (selection == programSelection) {
+    programSelection->setSelectedOption(selectedOption);
+    setParameterValue(paramProgram, selectedOption);
+    currentProgram = selectedOption;
+    repaint();
   }
-
-  return DragonflyReverbAbstractUI::onMouse(ev);
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -210,14 +204,10 @@ void DragonflyReverbUI::onDisplay()
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
-  nanoText.beginFrame ( this );
-  nanoText.fontSize ( 15 );
-  nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
-
-  Color bright = Color ( 0.90f, 0.95f, 1.00f );
-  Color dim    = Color ( 0.65f, 0.65f, 0.65f );
-
   if (displayAbout) {
+    programSelection->setVisible(false);
+    programSelection->repaint();
+
     nanoText.beginFrame ( this );
     nanoText.fontSize ( 12 );
     nanoText.textAlign ( NanoVG::ALIGN_LEFT|NanoVG::ALIGN_TOP );
@@ -249,23 +239,21 @@ void DragonflyReverbUI::onDisplay()
   }
   else
   {
-      glColor4f ( 1.0f,1.0f,1.0f,1.0f );
-      nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-      nanoText.fillColor(bright);
-      nanoText.textBox ( 123, 130, 200, "Reflection Type", nullptr );
-  
-      for (int row = 0; row < PROGRAM_COUNT; row ++) {
-	DGL::Rectangle<int> rect = rectPrograms[row];
-	nanoText.fillColor( row == currentProgram ? bright : dim );
-	nanoText.textBox ( rect.getX() + 3, rect.getY() + 2, rect.getWidth(), programs[row].name, nullptr );
-      }
-      
-      nanoText.endFrame();
+    programSelection->setVisible(true);
+    programSelection->repaint();
+
+    nanoText.beginFrame ( this );
+    nanoText.fontSize ( 15 );
+
+    Color bright = Color ( 0.90f, 0.95f, 1.00f );
+
+    nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
+    nanoText.fillColor(bright);
+    nanoText.textBox ( 123, 130, 200, "Reflection Type", nullptr );
+    
+    nanoText.endFrame();
   }
-
 }
-
-void DragonflyReverbUI::uiIdle() { }
 
 /* ------------------------------------------------------------------------------------------------------------
  * UI entry point, called by DPF to create a new UI instance. */

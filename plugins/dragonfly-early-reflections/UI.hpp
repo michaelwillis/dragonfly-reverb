@@ -22,12 +22,17 @@
 #include "NanoVG.hpp"
 #include "DistrhoPlugin.hpp"
 #include "LabelledKnob.hpp"
+#include "Selection.hpp"
 
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class DragonflyReverbUI : public DragonflyReverbAbstractUI, public ImageSlider::Callback {
+class DragonflyReverbUI :
+  public DragonflyReverbAbstractUI,
+  public ImageSlider::Callback,
+  public Selection::Callback
+{
 public:
     DragonflyReverbUI();
 
@@ -46,23 +51,20 @@ protected:
     void imageSliderDragStarted(ImageSlider* slider) override;
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
+    void selectionClicked(Selection* selection, int option) override;
 
-    bool onMouse(const MouseEvent&) override;
     void onDisplay() override;
-    void uiIdle() override;
 
 private:
     Image imgBackground,imgTabOff,imgTabOn;
 
     ScopedPointer<ImageSlider> sliderDry, sliderWet;
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobLowCut, knobHighCut;
+    ScopedPointer<Selection> programSelection;
 
     int currentProgram;
 
     DGL::Rectangle<int> rectSliders[2];
-
-    DGL::Rectangle<int> rectPrograms[PROGRAM_COUNT];
-
     DGL::Rectangle<int> rectDisplay;
 
     void updatePresetDefaults();

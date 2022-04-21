@@ -105,19 +105,12 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos  ( 355, 126 );
   rectDisplay.setSize ( 305, 207 );
 
-  char const* bankNames[NUM_BANKS];
-
-  for (int i = 0; i < NUM_BANKS; ++i)
-  {
-    bankNames[i] = banks[i].name;
-  } 
-
   bankSelection = new Selection(this, this, 100, &nanoText, NUM_BANKS);
-  bankSelection->setOptions(bankNames);
   bankSelection->setAbsolutePos(320, 5);
   bankSelection->setSelectedImage(&imgTabOn);
   bankSelection->setUnselectedImage(&imgTabOff);
   bankSelection->setTextAlign(NanoVG::ALIGN_RIGHT);
+  for ( int i = 0; i < NUM_BANKS; ++i) { bankSelection->setOptionName(i, banks[i].name); }
 
   presetSelection = new Selection(this, this, 165, &nanoText, PRESETS_PER_BANK);
   presetSelection->setAbsolutePos(420, 5);
@@ -390,12 +383,10 @@ void DragonflyReverbUI::uiIdle() {
 
 void DragonflyReverbUI::updateBank(int newBank) {
   currentBank = newBank;
-  bankSelection->setSelectedOption(newBank);
-  char const* presetNames[PRESETS_PER_BANK];
-  for (int p = 0; p < PRESETS_PER_BANK; p++) {
-    presetNames[p] = banks[currentBank].presets[p].name;
+  bankSelection->setSelectedOption(newBank);  
+  for ( int p = 0; p < NUM_BANKS; ++p) {
+    presetSelection->setOptionName(p, banks[currentBank].presets[p].name);
   }
-  presetSelection->setOptions(presetNames);
 }
 
 void DragonflyReverbUI::updatePresetDefaults() {

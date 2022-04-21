@@ -35,14 +35,10 @@ Selection::Selection(
     this->align = NanoVG::ALIGN_LEFT;
     this->numberOfOptions = numberOfOptions;
     this->options = new char const*[numberOfOptions];
-    for (int i = 0; i < numberOfOptions; i++) {
-        this->options[i] = "";
-    }
     this->selectedOption = 0;
 
     this->selectedImage = nullptr;
     this->unselectedImage = nullptr;
-
 }
 
 Selection::~Selection()
@@ -65,12 +61,9 @@ void Selection::setTextAlign(int align)
   this->align = align;
 }
 
-void Selection::setOptions(char const* options[])
+void Selection::setOptionName(int option, char const* name)
 {
-  // Warning! This assumes that numberOfOptions doesn't change
-  for (int i = 0; i < numberOfOptions; i++) {
-    this->options[i] = options[i];
-  }
+  this->options[option] = name;
 }
 
 void Selection::setSelectedOption(int selectedOption)
