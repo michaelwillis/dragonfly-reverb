@@ -66,7 +66,6 @@ private:
 
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobPredelay, knobDecay, knobSpin, knobWander, knobDiffuse, knobModulation, knobLowCut, knobLowXover, knobLowMult, knobHighCut, knobHighXover, knobHighMult;
     ScopedPointer<ImageSlider> sliderDryLevel, sliderEarlyLevel, sliderEarlySend, sliderLateLevel;
-    ScopedPointer<ImageSwitch> fSwitchPrograms, fSwitchAbout, fSwitchResponse;
     ScopedPointer<Spectrogram> spectrogram;
     ScopedPointer<Image> spectrogramImage;
 
@@ -80,8 +79,6 @@ private:
 
     DGL::Rectangle<int> rectDisplay;
 
-    // DGL::Rectangle<int> rectBanks[NUM_BANKS];
-    // DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
     void updateBank(int newBank);
     void updatePresetDefaults();
 
