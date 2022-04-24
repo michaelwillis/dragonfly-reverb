@@ -107,16 +107,20 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos  ( 355, 126 );
   rectDisplay.setSize ( 305, 207 );
 
-  for ( int i = 0; i < NUM_BANKS; ++i)
-  {
-    rectBanks[i].setPos ( 350, 5 + (i * 21) );
-    rectBanks[i].setSize ( 95, 24 );
-  }
+  bankSelection = new Selection(this, this, 100, &nanoText, NUM_BANKS);
+  bankSelection->setAbsolutePos(350, 5);
+  bankSelection->setSelectedImage(&imgTabOn);
+  bankSelection->setUnselectedImage(&imgTabOff);
+  bankSelection->setTextAlign(NanoVG::ALIGN_RIGHT);
+  for ( int i = 0; i < NUM_BANKS; ++i) { bankSelection->setOptionName(i, banks[i].name); }
 
-  for ( int i = 0; i < PRESETS_PER_BANK; ++i)
+  presetSelection = new Selection(this, this, 150, &nanoText, PRESETS_PER_BANK);
+  presetSelection->setAbsolutePos(460, 5);
+
+  updateBank(DEFAULT_BANK);
+  for (int b = 0; b < NUM_BANKS; b++)
   {
-    rectPresets[i].setPos( 460, 5 + (i * 21) );
-    rectPresets[i].setSize( 150, 21 );
+    currentPreset[b] = DEFAULT_PRESET;
   }
 
   aboutButton->setAbsolutePos ( 635, 130 );
@@ -219,67 +223,47 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
   spectrogram->setParameterValue ( SliderID, value );
 }
 
-bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
-{
-  if ( ev.button == 1 && ev.press )
-  {
-    bool presetClicked = false;
+void DragonflyReverbUI::selectionClicked(Selection* selection, int selectedOption) {
 
-    for (int row = 0; row < NUM_BANKS; row++)
-    {
-      if (rectBanks[row].contains ( ev.pos ))
-      {
-        currentBank = row;
-        presetClicked = true;
-      }
-    }
+  if (selection == bankSelection) {
+    updateBank(selectedOption);
+  }
+  else if (selection == presetSelection) {
+    currentPreset[currentBank] = selectedOption;
+    presetSelection->setSelectedOption(selectedOption);
+  }
 
-    for (int row = 0; row < PRESETS_PER_BANK; row++)
-    {
-      if (rectPresets[row].contains ( ev.pos ))
-      {
-        currentPreset[currentBank] = row;
-        presetClicked = true;
-      }
-    }
+  setState("preset", banks[currentBank].presets[currentPreset[currentBank]].name);
+  updatePresetDefaults();
 
-    if (presetClicked)
-    {
-      setState("preset", banks[currentBank].presets[currentPreset[currentBank]].name);
-      updatePresetDefaults();
+  const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
 
-      const float *preset = banks[currentBank].presets[currentPreset[currentBank]].params;
+  knobSize->setValue ( preset[paramSize] );
+  knobWidth->setValue ( preset[paramWidth] );
+  knobPredelay->setValue ( preset[paramPredelay] );
+  knobDecay->setValue ( preset[paramDecay] );
 
-      knobSize->setValue ( preset[paramSize] );
-      knobWidth->setValue ( preset[paramWidth] );
-      knobPredelay->setValue ( preset[paramPredelay] );
-      knobDecay->setValue ( preset[paramDecay] );
+  knobDiffuse->setValue ( preset[paramDiffuse] );
+  knobSpin->setValue ( preset[paramSpin] );
+  knobWander->setValue ( preset[paramWander] );
 
-      knobDiffuse->setValue ( preset[paramDiffuse] );
-      knobSpin->setValue ( preset[paramSpin] );
-      knobWander->setValue ( preset[paramWander] );
+  knobInHighCut->setValue ( preset[paramInHighCut] );
+  knobEarlyDamp->setValue ( preset[paramEarlyDamp] );
+  knobLateDamp->setValue ( preset[paramLateDamp] );
 
-      knobInHighCut->setValue ( preset[paramInHighCut] );
-      knobEarlyDamp->setValue ( preset[paramEarlyDamp] );
-      knobLateDamp->setValue ( preset[paramLateDamp] );
+  knobInLowCut->setValue ( preset[paramInLowCut] );
+  knobBoost->setValue ( preset[paramBoost] );
+  knobBoostLPF->setValue ( preset[paramBoostLPF] );
 
-      knobInLowCut->setValue ( preset[paramInLowCut] );
-      knobBoost->setValue ( preset[paramBoost] );
-      knobBoostLPF->setValue ( preset[paramBoostLPF] );
-
-      for ( uint32_t i = 0; i < paramCount; i++ ) {
-        // Don't set sliders
-        if (i != paramDry && i != paramEarly && i != paramEarlySend && i != paramLate) {
-                setParameterValue ( i, preset[i] );
-                spectrogram->setParameterValue(i, preset[i]);
-        }
-      }
-
-      repaint();
-      return true;
+  for ( uint32_t i = 0; i < paramCount; i++ ) {
+    // Don't set sliders
+    if (i != paramDry && i != paramEarly && i != paramEarlySend && i != paramLate) {
+            setParameterValue ( i, preset[i] );
+            spectrogram->setParameterValue(i, preset[i]);
     }
   }
-  return DragonflyReverbAbstractUI::onMouse(ev);
+
+  repaint();
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -355,39 +339,6 @@ void DragonflyReverbUI::onDisplay()
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
 
-  nanoText.beginFrame ( this );
-  nanoText.fontSize ( 15 );
-  nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
-
-  Color bright = Color ( 0.90f, 0.95f, 1.00f );
-  Color dim    = Color ( 0.65f, 0.65f, 0.65f );
-
-  for (int row = 0; row < NUM_BANKS; row ++)
-  {
-    DGL::Rectangle<int> bank = rectBanks[row];
-    if (currentBank == row) {
-      imgTabOn.drawAt ( context, bank.getX(), bank.getY() );
-      nanoText.fillColor ( bright );
-    } else {
-      imgTabOff.drawAt ( context, bank.getX(), bank.getY() );
-      nanoText.fillColor ( dim );
-    }
-
-    nanoText.textBox ( bank.getX(), bank.getY() + 4, bank.getWidth(), banks[row].name, nullptr );
-  }
-
-
-  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-
-  for (int row = 0; row < PRESETS_PER_BANK; row ++)
-  {
-    DGL::Rectangle<int> presetRect = rectPresets[row];
-    nanoText.fillColor( row == currentPreset[currentBank] ? bright : dim );
-    nanoText.textBox ( presetRect.getX(), presetRect.getY() + 4, presetRect.getWidth(), banks[currentBank].presets[row].name, nullptr );
-  }
-
-  nanoText.endFrame();
-
   if (displayAbout) {
     spectrogram->hide();
     nanoText.beginFrame ( this );
@@ -429,6 +380,14 @@ void DragonflyReverbUI::onDisplay()
 
 void DragonflyReverbUI::uiIdle() {
   spectrogram->uiIdle();
+}
+
+void DragonflyReverbUI::updateBank(int newBank) {
+  currentBank = newBank;
+  bankSelection->setSelectedOption(newBank);  
+  for ( int p = 0; p < NUM_BANKS; ++p) {
+    presetSelection->setOptionName(p, banks[currentBank].presets[p].name);
+  }
 }
 
 void DragonflyReverbUI::updatePresetDefaults() {

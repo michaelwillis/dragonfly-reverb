@@ -62,7 +62,7 @@ protected:
     void uiIdle() override;
 
 private:
-    Image imgBackground,imgTabOff,imgTabOn,imgQuestion;
+    Image imgBackground,imgTabOff,imgTabOn;
 
     ScopedPointer<LabelledKnob> knobSize, knobWidth, knobPredelay, knobDecay, knobSpin, knobWander, knobDiffuse, knobModulation, knobLowCut, knobLowXover, knobLowMult, knobHighCut, knobHighXover, knobHighMult;
     ScopedPointer<ImageSlider> sliderDryLevel, sliderEarlyLevel, sliderEarlySend, sliderLateLevel;
@@ -76,7 +76,6 @@ private:
     int currentProgram[NUM_BANKS];
 
     DGL::Rectangle<int> rectSliders[4];
-
     DGL::Rectangle<int> rectDisplay;
 
     void updateBank(int newBank);

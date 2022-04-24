@@ -25,7 +25,6 @@
 #include <vector>
 #include <math.h>
 #include <string>
-#include <iostream>
 
 START_NAMESPACE_DISTRHO
 

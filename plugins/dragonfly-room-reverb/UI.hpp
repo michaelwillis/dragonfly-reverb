@@ -23,12 +23,16 @@
 #include "DistrhoPlugin.hpp"
 #include "Spectrogram.hpp"
 #include "LabelledKnob.hpp"
+#include "Selection.hpp"
 
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class DragonflyReverbUI : public DragonflyReverbAbstractUI, public ImageSlider::Callback {
+class DragonflyReverbUI :
+    public DragonflyReverbAbstractUI,
+    public ImageSlider::Callback,
+    public Selection::Callback {
 public:
     DragonflyReverbUI();
 
@@ -49,8 +53,8 @@ protected:
     void imageSliderDragStarted(ImageSlider* slider) override;
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
+    void selectionClicked(Selection* selection, int option) override;
 
-    bool onMouse(const MouseEvent&) override;
     void onDisplay() override;
     void uiIdle() override;
 
@@ -66,16 +70,16 @@ private:
       knobInHighCut, knobEarlyDamp, knobLateDamp,
       knobInLowCut, knobBoostLPF, knobBoost;
 
+    ScopedPointer<Selection> bankSelection;
+    ScopedPointer<Selection> presetSelection;
+
     int currentBank;
     int currentPreset[NUM_BANKS];
 
     DGL::Rectangle<int> rectSliders[4];
-
-    DGL::Rectangle<int> rectBanks[NUM_BANKS];
-    DGL::Rectangle<int> rectPresets[PRESETS_PER_BANK];
-
     DGL::Rectangle<int> rectDisplay;
 
+    void updateBank(int newBank);
     void updatePresetDefaults();
 
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR ( DragonflyReverbUI )
