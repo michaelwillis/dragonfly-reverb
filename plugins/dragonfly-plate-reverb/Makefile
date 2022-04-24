@@ -45,6 +45,7 @@ FILES_UI  = $(FILES_COMMON) \
 	UI.cpp \
 	AbstractUI.cpp \
 	../../common/LabelledKnob.cpp \
+	../../common/Selection.cpp \
 	../../common/Spectrogram.cpp \
 	../../common/Bitstream_Vera_Sans_Regular.cpp
 

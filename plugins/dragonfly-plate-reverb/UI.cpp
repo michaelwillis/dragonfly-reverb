@@ -75,17 +75,26 @@ DragonflyReverbUI::DragonflyReverbUI()
   rectDisplay.setPos  ( 110, 126 );
   rectDisplay.setSize ( 305, 207 );
 
+  algorithmSelection = new Selection(this, this, 100, &nanoText, ALGORITHM_COUNT);
+  algorithmSelection->setAbsolutePos(575, 35);
+  algorithmSelection->setSelectedOption(presets[currentPreset].params[paramAlgorithm]);
   for ( int i = 0; i < ALGORITHM_COUNT; ++i)
   {
-    rectAlgorithms[i].setPos( 575, 35 + (i * 21) );
-    rectAlgorithms[i].setSize( 100, 21 );
+    algorithmSelection->setOptionName(i, algorithmNames[i]);
   }
 
-  for ( int i = 0; i < NUM_PRESETS; ++i)
+  presetSelection1 = new Selection(this, this, 115, &nanoText, NUM_PRESETS / 2);
+  presetSelection1->setAbsolutePos(340, 25);
+  presetSelection1->setSelectedOption(DEFAULT_PRESET);
+  
+  presetSelection2 = new Selection(this, this, 115, &nanoText, NUM_PRESETS / 2);
+  presetSelection2->setAbsolutePos(455, 25);
+  presetSelection2->setSelectedOption(-1);
+
+  for ( int i = 0; i < NUM_PRESETS / 2; ++i)
   {
-    int x = i < 4 ? 340 : 455;
-    rectPresets[i].setPos( x, 25 + ((i % 4) * 21) );
-    rectPresets[i].setSize( 125, 21 );
+    presetSelection1->setOptionName(i, presets[i].name);
+    presetSelection2->setOptionName(i, presets[i + NUM_PRESETS / 2].name);
   }
 
   aboutButton->setAbsolutePos ( 390, 130 );
@@ -127,7 +136,7 @@ void DragonflyReverbUI::stateChanged(const char* key, const char* value)
   if (std::strcmp(key, "preset") == 0) {
     for (int p = 0; p < NUM_PRESETS; p++) {
       if (std::strcmp(value, presets[p].name) == 0) {
-	currentPreset = p;
+        currentPreset = p;
       }
     }
 
@@ -174,60 +183,57 @@ void  DragonflyReverbUI::imageSliderValueChanged ( ImageSlider* slider, float va
   spectrogram->setParameterValue ( SliderID, value );
 }
 
-bool DragonflyReverbUI::onMouse ( const MouseEvent& ev )
+void DragonflyReverbUI::selectionClicked(Selection* selection, int selectedOption)
 {
-  if ( ev.button == 1 && ev.press )
+  bool presetClicked = false;
+  if (selection == algorithmSelection)
   {
-    for (int row = 0; row < ALGORITHM_COUNT; row++)
-    {
-      if (rectAlgorithms[row].contains ( ev.pos ))
-      {
-        currentAlg = row;
-        setParameterValue ( paramAlgorithm, row );
-        spectrogram->setParameterValue( paramAlgorithm, row);
-      }
-    }
-
-    bool presetClicked = false;
-
-    for (int row = 0; row < NUM_PRESETS; row++)
-    {
-      if (rectPresets[row].contains ( ev.pos ))
-      {
-        currentPreset = row;
-        presetClicked = true;
-      }
-    }
-
-    if (presetClicked)
-    {
-      setState("preset", presets[currentPreset].name);
-      updatePresetDefaults();
-
-      const float *preset = presets[currentPreset].params;
-
-      knobWidth->setValue ( preset[paramWidth] );
-      knobPredelay->setValue ( preset[paramPredelay] );
-      knobDecay->setValue ( preset[paramDecay] );
-
-      knobLowCut->setValue ( preset[paramLowCut] );
-      knobHighCut->setValue ( preset[paramHighCut] );
-      knobDamp->setValue ( preset[paramDamp] );
-
-      for ( uint32_t i = 0; i < paramCount; i++ ) {
-        // Don't set sliders
-        if (i != paramDry && i != paramWet) {
-                setParameterValue ( i, preset[i] );
-                spectrogram->setParameterValue(i, preset[i]);
-        }
-      }
-
-      repaint();
-      return true;
-    }
+    currentAlg = selectedOption;
+    algorithmSelection->setSelectedOption(selectedOption);
+    setParameterValue ( paramAlgorithm, selectedOption );
+    spectrogram->setParameterValue( paramAlgorithm, selectedOption);
+  }
+  else if (selection == presetSelection1)
+  {
+    currentPreset = selectedOption;
+    presetSelection1->setSelectedOption(selectedOption);
+    presetSelection2->setSelectedOption(-1);
+    presetClicked = true;
+  }
+  else if (selection == presetSelection2)
+  {
+    currentPreset = selectedOption + NUM_PRESETS / 2;
+    presetSelection2->setSelectedOption(selectedOption);
+    presetSelection1->setSelectedOption(-1);
+    presetClicked = true;
   }
 
-  return DragonflyReverbAbstractUI::onMouse(ev);
+  if (presetClicked)
+  {
+    setState("preset", presets[currentPreset].name);
+    algorithmSelection->setSelectedOption(presets[currentPreset].params[paramAlgorithm]);
+    updatePresetDefaults();
+
+    const float *preset = presets[currentPreset].params;
+
+    knobWidth->setValue ( preset[paramWidth] );
+    knobPredelay->setValue ( preset[paramPredelay] );
+    knobDecay->setValue ( preset[paramDecay] );
+
+    knobLowCut->setValue ( preset[paramLowCut] );
+    knobHighCut->setValue ( preset[paramHighCut] );
+    knobDamp->setValue ( preset[paramDamp] );
+
+    for ( uint32_t i = 0; i < paramCount; i++ ) {
+      // Don't set sliders
+      if (i != paramDry && i != paramWet) {
+        setParameterValue ( i, preset[i] );
+        spectrogram->setParameterValue(i, preset[i]);
+      }
+    }
+
+    repaint();
+  }
 }
 
 void DragonflyReverbUI::onDisplay()
@@ -283,40 +289,15 @@ void DragonflyReverbUI::onDisplay()
     rectSliders[1].draw(context);
 
   glColor4f ( 1.0f,1.0f,1.0f,1.0f );
+  Color bright = Color ( 0.90f, 0.95f, 1.00f );
 
   nanoText.beginFrame ( this );
   nanoText.fontSize ( 15 );
-  nanoText.textAlign ( NanoVG::ALIGN_RIGHT | NanoVG::ALIGN_TOP );
-
-  Color bright = Color ( 0.90f, 0.95f, 1.00f );
-  Color dim    = Color ( 0.65f, 0.65f, 0.65f );
-
-
+  nanoText.fillColor(bright);
   nanoText.textAlign ( NanoVG::ALIGN_CENTER | NanoVG::ALIGN_TOP );
-  nanoText.fillColor(bright);
   nanoText.textBox ( 340, 10, 200, "Presets", nullptr );
-  
   nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-  
-  for (int row = 0; row < NUM_PRESETS; row ++)
-  {
-    DGL::Rectangle<int> presetRect = rectPresets[row];
-    nanoText.fillColor( row == currentPreset ? bright : dim );
-    nanoText.textBox ( presetRect.getX() + 3, presetRect.getY() + 2, presetRect.getWidth(), presets[row].name, nullptr );
-  }
-
-  nanoText.textAlign ( NanoVG::ALIGN_LEFT | NanoVG::ALIGN_TOP );
-  
-  nanoText.fillColor(bright);
   nanoText.textBox ( 575, 10, 100, "Reverb Type", nullptr );
-
-  for (int row = 0; row < ALGORITHM_COUNT; row ++)
-  {
-    DGL::Rectangle<int> rect = rectAlgorithms[row];
-    nanoText.fillColor( row == ((int)currentAlg) ? bright : dim );
-    nanoText.textBox ( rect.getX(), rect.getY() + 2, rect.getWidth(), algorithmNames[row], nullptr );
-  }
-
   nanoText.endFrame();
 
   if (displayAbout) {

@@ -23,12 +23,17 @@
 #include "DistrhoPlugin.hpp"
 #include "Spectrogram.hpp"
 #include "LabelledKnob.hpp"
+#include "Selection.hpp"
 
 START_NAMESPACE_DISTRHO
 
 // -----------------------------------------------------------------------
 
-class DragonflyReverbUI : public DragonflyReverbAbstractUI, public ImageSlider::Callback {
+class DragonflyReverbUI :
+    public DragonflyReverbAbstractUI,
+    public ImageSlider::Callback,
+    public Selection::Callback
+{
 public:
     DragonflyReverbUI();
 
@@ -49,8 +54,8 @@ protected:
     void imageSliderDragStarted(ImageSlider* slider) override;
     void imageSliderDragFinished(ImageSlider* slider) override;
     void imageSliderValueChanged(ImageSlider* slider, float value) override;
+    void selectionClicked(Selection* selection, int option) override;
 
-    bool onMouse(const MouseEvent&) override;
     void onDisplay() override;
     void uiIdle() override;
 
@@ -63,14 +68,14 @@ private:
       knobWidth, knobPredelay, knobDecay,
       knobLowCut, knobHighCut, knobDamp;
 
+    ScopedPointer<Selection> algorithmSelection;
+    ScopedPointer<Selection> presetSelection1;
+    ScopedPointer<Selection> presetSelection2;
+
     int currentAlg;
     int currentPreset;
 
     DGL::Rectangle<int> rectSliders[2];
-
-    DGL::Rectangle<int> rectAlgorithms[NUM_PRESETS];
-    DGL::Rectangle<int> rectPresets[NUM_PRESETS];
-
     DGL::Rectangle<int> rectDisplay;
 
     void updatePresetDefaults();
