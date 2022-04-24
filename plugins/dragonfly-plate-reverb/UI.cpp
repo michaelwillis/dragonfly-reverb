@@ -124,6 +124,9 @@ void DragonflyReverbUI::parameterChanged ( uint32_t index, float value )
     case paramLowCut:        knobLowCut->setValue ( value ); break;
     case paramHighCut:      knobHighCut->setValue ( value ); break;
     case paramDamp:            knobDamp->setValue ( value ); break;
+
+    case paramAlgorithm:
+             algorithmSelection->setSelectedOption( value ); break;
   }
 
   if (index != paramDry) {
@@ -137,6 +140,14 @@ void DragonflyReverbUI::stateChanged(const char* key, const char* value)
     for (int p = 0; p < NUM_PRESETS; p++) {
       if (std::strcmp(value, presets[p].name) == 0) {
         currentPreset = p;
+
+        if (p < NUM_PRESETS / 2) {
+          presetSelection1->setSelectedOption(p);
+          presetSelection2->setSelectedOption(-1);
+        } else {
+          presetSelection2->setSelectedOption(p - NUM_PRESETS / 2);
+          presetSelection1->setSelectedOption(-1);
+        }
       }
     }
 
@@ -346,6 +357,7 @@ void DragonflyReverbUI::updatePresetDefaults() {
   const float *preset = presets[currentPreset].params;
 
   currentAlg = preset[paramAlgorithm];
+  algorithmSelection->setSelectedOption(currentAlg);
 
   knobWidth->setDefault ( preset[paramWidth] );
   knobPredelay->setDefault ( preset[paramPredelay] );

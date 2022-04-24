@@ -117,11 +117,11 @@ DragonflyReverbUI::DragonflyReverbUI()
   presetSelection = new Selection(this, this, 150, &nanoText, PRESETS_PER_BANK);
   presetSelection->setAbsolutePos(460, 5);
 
-  updateBank(DEFAULT_BANK);
   for (int b = 0; b < NUM_BANKS; b++)
   {
     currentPreset[b] = DEFAULT_PRESET;
   }
+  updateBank(DEFAULT_BANK);
 
   aboutButton->setAbsolutePos ( 635, 130 );
 
@@ -174,8 +174,8 @@ void DragonflyReverbUI::stateChanged(const char* key, const char* value)
     for (int b = 0; b < NUM_BANKS; b++) {
       for (int p = 0; p < PRESETS_PER_BANK; p++) {
         if (std::strcmp(value, banks[b].presets[p].name) == 0) {
-          currentBank = b;
-          currentPreset[currentBank] = p;
+          currentPreset[b] = p;
+          updateBank(b);
         }
       }
     }
@@ -384,7 +384,8 @@ void DragonflyReverbUI::uiIdle() {
 
 void DragonflyReverbUI::updateBank(int newBank) {
   currentBank = newBank;
-  bankSelection->setSelectedOption(newBank);  
+  bankSelection->setSelectedOption(newBank);
+  presetSelection->setSelectedOption(currentPreset[currentBank]);
   for ( int p = 0; p < NUM_BANKS; ++p) {
     presetSelection->setOptionName(p, banks[currentBank].presets[p].name);
   }
