@@ -52,7 +52,7 @@ void FV3_(allpass)::setsize(long size)
     {
       new_buffer = new fv3_float_t[size];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "allpass::setsize(%ld) bad_alloc\n", size);
       delete[] new_buffer;
@@ -162,7 +162,7 @@ void FV3_(allpassm)::setsize(long size, long modsize)
     {
       new_buffer = new fv3_float_t[newsize];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "allpassm::setsize(%ld) bad_alloc\n", newsize);
       delete[] new_buffer;
@@ -247,7 +247,7 @@ void FV3_(allpass2)::setsize(long size1, long size2)
       buffer1 = new fv3_float_t[size1];
       buffer2 = new fv3_float_t[size2];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "allpass2::setsize(%ld,%ld) bad_alloc\n", size1, size2);
       delete[] buffer1;
@@ -330,7 +330,7 @@ void FV3_(allpass3)::setsize(long size1, long size1mod, long size2, long size3)
       buffer2 = new fv3_float_t[size2];
       buffer3 = new fv3_float_t[size3];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "allpass3::setsize(%ld,%ld,%ld) bad_alloc\n", size1, size2, size3);
       delete[] buffer1;

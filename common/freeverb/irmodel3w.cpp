@@ -156,7 +156,7 @@ void FV3_(irmodel3wm)::loadImpulse(const fv3_float_t * inputL, long size)
     {
       FV3_(irmodel3m)::loadImpulse(inputL, size);
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       LeaveCriticalSection(&threadSection);
       LeaveCriticalSection(&mainSection);
@@ -294,7 +294,7 @@ FV3_(irmodel3w)::FV3_(irmodel3w)()
       irmL = ir3mL = ir3wmL;
       irmR = ir3mR = ir3wmR;
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       delete irmL;
       delete irmR;
@@ -321,7 +321,7 @@ void FV3_(irmodel3w)::loadImpulse(const fv3_float_t * inputL, const fv3_float_t 
     {
       FV3_(irmodel3)::loadImpulse(inputL, inputR, size);
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       LeaveCriticalSection(&mainSection);
       throw;

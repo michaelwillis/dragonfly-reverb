@@ -42,7 +42,7 @@ void FV3_(slot)::alloc(long nsize, long nch)
     {
       data = new fv3_float_t*[nch];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       data = NULL;
       std::fprintf(stderr, "slot::alloc(%ld, %ld) bad_alloc\n", nsize, nch);

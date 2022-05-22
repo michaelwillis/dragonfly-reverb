@@ -83,7 +83,7 @@ void FV3_(irmodel3m)::loadImpulse(const fv3_float_t * inputL, long size)
       lBlockDelayL.setBlock(lFragmentSize*2, (long)lFragments.size());
       latency = 0;
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel3m::loadImpulse(%ld) bad_alloc\n", size);
       FV3_(irmodel3m)::unloadImpulse();
@@ -125,7 +125,7 @@ void FV3_(irmodel3m)::allocFrags(std::vector<FV3_(frag)*> *to, const fv3_float_t
           f->loadImpulse(inputL+fragSize*num, fragSize, mod, fftflags, preAllocL+fragSize*2*num);
         }
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel3::allocFrags(%ld) bad_alloc\n", fragSize);
       freeFrags(to);
@@ -309,7 +309,7 @@ FV3_(irmodel3)::FV3_(irmodel3)()
       irmL = ir3mL;
       irmR = ir3mR;
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       delete irmL;
       delete irmR;
@@ -338,7 +338,7 @@ void FV3_(irmodel3)::loadImpulse(const fv3_float_t * inputL, const fv3_float_t *
       inputD.alloc(getSFragmentSize(), 2);
       FV3_(irbase)::setInitialDelay(getInitialDelay());
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel3::loadImpulse(%ld) bad_alloc\n", size);
       FV3_(irmodel3)::unloadImpulse();

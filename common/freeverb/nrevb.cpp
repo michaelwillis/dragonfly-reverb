@@ -119,10 +119,8 @@ void FV3_(nrevb)::processloop2(long count, fv3_float_t *inputL, fv3_float_t *inp
     }
 }
 
-void FV3_(nrevb)::processloop4(long count, fv3_float_t *inputL, fv3_float_t *inputR, fv3_float_t *outputL, fv3_float_t *outputR,
-			       fv3_float_t *outRearL, fv3_float_t *outRearR)
+void FV3_(nrevb)::processloop4(long, fv3_float_t*, fv3_float_t*, fv3_float_t*, fv3_float_t*, fv3_float_t*, fv3_float_t*)
 {
-  ;
 }
 
 void FV3_(nrevb)::setFsFactors()

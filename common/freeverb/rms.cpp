@@ -48,7 +48,7 @@ void FV3_(rms)::setsize(long size)
     {
       buffer = new fv3_float_t[size];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "rms::setsize(%ld) bad_alloc\n", size);
       delete[] buffer;

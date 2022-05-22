@@ -80,7 +80,7 @@ void FV3_(irmodel2m)::loadImpulse(const fv3_float_t * inputL, long size)
       std::fprintf(stderr, "irmodel2m::loadImpulse(): {%ldx%ld+%ld}\n", fragmentSize, fragment_num, fragment_mod);
 #endif
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel2m::loadImpulse(%ld) bad_alloc\n", size);
       unloadImpulse();
@@ -173,7 +173,7 @@ FV3_(irmodel2)::FV3_(irmodel2)()
       irmL = ir2mL;
       irmR = ir2mR;
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       delete irmL;
       delete irmR;
@@ -221,7 +221,7 @@ void FV3_(irmodel2)::loadImpulse(const fv3_float_t * inputL, const fv3_float_t *
       setInitialDelay(getInitialDelay());
       mute();
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel2::loadImpulse(%ld) bad_alloc\n", size);
       unloadImpulse();

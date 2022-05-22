@@ -48,7 +48,7 @@ void FV3_(irmodel2zlm)::loadImpulse(const fv3_float_t * inputL, long size)
       latency = 0;
       mute();
 	}
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel2zlm::loadImpulse(%ld) bad_alloc\n", size);
       unloadImpulse();
@@ -140,7 +140,7 @@ FV3_(irmodel2zl)::FV3_(irmodel2zl)()
       irmL = ir2mL;
       irmR = ir2mR;
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       delete irmL;
       delete irmR;
@@ -165,7 +165,7 @@ void FV3_(irmodel2zl)::loadImpulse(const fv3_float_t * inputL, const fv3_float_t
       setInitialDelay(getInitialDelay());
       mute();
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodel2zl::loadImpulse(%ld) bad_alloc\n", size);
       unloadImpulse();

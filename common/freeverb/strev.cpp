@@ -133,7 +133,8 @@ void FV3_(strev)::setrt60(fv3_float_t value)
   if(autoDiff)
     {
       fv3_float_t adiff = decay + 0.15;
-      if(adiff < 0.25) adiff = 0.25; if(adiff > 0.5) adiff = 0.5;
+      if (adiff < 0.25) adiff = 0.25;
+      else if (adiff > 0.5) adiff = 0.5;
       setdiffusion2(adiff);
     }
 }

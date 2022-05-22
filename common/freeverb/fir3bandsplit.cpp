@@ -94,7 +94,7 @@ void FV3_(fir3bandsplit)::allocFilter(long length)
       bpfF = new fv3_float_t[length];
       hpfF = new fv3_float_t[length];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "fir3bandsplit::allocFilter(%ld) bad_alloc\n", length);
       freeFilter();
@@ -279,7 +279,7 @@ void FV3_(fir3bandsplit)::allocIR(unsigned o)
       lpfM->setwet(0);
       hpfM->setwet(0);
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "fir3bandsplit::allocIR() bad_alloc\n");
       throw;
