@@ -52,6 +52,8 @@ FILES_UI  = $(FILES_COMMON) \
 # --------------------------------------------------------------
 # Do some magic
 
+FILE_BROWSER_DISABLED = true
+SKIP_RTAUDIO_FALLBACK = true
 include ../../dpf/Makefile.plugins.mk
 
 # --------------------------------------------------------------
