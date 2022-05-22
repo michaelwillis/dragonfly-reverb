@@ -22,7 +22,7 @@ DragonflyReverbAbstractUI::DragonflyReverbAbstractUI(
   const char* knobData, uint knobWidth, uint knobHeight,
   const char* questionData, uint questionWidth, uint questionHeight)
   : UI (width, height) {
-    getWindow().setGeometryConstraints(width, height, true, true, true);
+    setGeometryConstraints(width, height, true, true, true);
     NanoVG::FontId font  = nanoText.createFontFromMemory(
         "bitstream vera sans",
         font_bitstream_vera::bitstream_vera_sans_ttf,
