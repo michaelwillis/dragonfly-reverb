@@ -245,7 +245,7 @@ void FV3_(earlyref)::loadReflection(const fv3_float_t * delayL, const fv3_float_
       delayTableL = new fv3_float_t[sizeL];
       delayTableR = new fv3_float_t[sizeR];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "earlyref::loadReflection() bad_alloc\n");
       delete[] gainTableL;

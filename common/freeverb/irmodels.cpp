@@ -106,7 +106,7 @@ void FV3_(irmodels)::allocImpulse(long size)
       impulse.alloc(size, 2);
       delay.alloc(size*2, 2);
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "irmodels::allocImpulse(%ld) bad_alloc\n", size);
       freeImpulse();

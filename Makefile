@@ -17,7 +17,7 @@ CAN_GENERATE_TTL = true
 endif
 
 dgl:
-	$(MAKE) -C dpf/dgl
+	$(MAKE) -C dpf/dgl FILE_BROWSER_DISABLED=true
 
 plugins: dgl
 	$(MAKE) all -C plugins/dragonfly-hall-reverb
@@ -45,6 +45,10 @@ clean:
 	$(MAKE) clean -C plugins/dragonfly-plate-reverb
 	$(MAKE) clean -C plugins/dragonfly-early-reflections
 	rm -rf bin build
+	rm -f common/*.d common/*.o
+	rm -f common/freeverb/*.d common/freeverb/*.o
+	rm -f common/kiss_fft/*.d common/kiss_fft/*.o
+	rm -f dpf/utils/lv2_ttl_generator.d
 
 # --------------------------------------------------------------
 

@@ -81,7 +81,7 @@ void FV3_(slimit)::setLookahead(long value)
     {
       buffer = new fv3_float_t[lookahead+1];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "FV3_(slimit)::setLa bad_alloc\n");
       delete[] buffer;

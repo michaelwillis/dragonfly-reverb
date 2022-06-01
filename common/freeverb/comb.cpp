@@ -53,7 +53,7 @@ void FV3_(comb)::setsize(long size)
     {
       new_buffer = new fv3_float_t[size];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "comb::setsize(%ld) bad_alloc\n", size);
       delete[] new_buffer;
@@ -159,7 +159,7 @@ void FV3_(combm)::setsize(long size, long modsize)
     {
       new_buffer = new fv3_float_t[newsize];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "combm::setsize(%ld) bad_alloc\n", newsize);
       delete[] new_buffer;

@@ -251,7 +251,7 @@ void FV3_(frag)::loadImpulse(const fv3_float_t * L, const fv3_float_t * R, long 
 	registerPreallocatedBlock(preAllocatedL, preAllocatedR, size);
       fragFFT.allocFFT(size, fftflags);
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       unloadImpulse();
       throw;

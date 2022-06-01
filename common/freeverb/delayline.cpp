@@ -59,7 +59,7 @@ void FV3_(delayline)::setsize(long size)
     {
       new_buffer = new fv3_float_t[size];
     }
-  catch(std::bad_alloc)
+  catch(std::bad_alloc&)
     {
       std::fprintf(stderr, "delayline::setsize(%ld) bad_alloc\n", size);
       delete[] new_buffer;

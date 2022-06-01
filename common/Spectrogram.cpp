@@ -52,7 +52,7 @@ Spectrogram::Spectrogram(
     raster[pixel * 4 + 3] = (char) 0;
   }
 
-  image = new Image(raster, imageWidth, imageHeight, GL_BGRA);
+  image = new Image(raster, imageWidth, imageHeight, kImageFormatBGRA);
 
   srand(time(NULL));
 
@@ -161,7 +161,9 @@ void Spectrogram::uiIdle() {
 }
 
 void Spectrogram::onDisplay() {
-  image->drawAt(MARGIN_LEFT, MARGIN_TOP);
+  const GraphicsContext& ctx(getGraphicsContext());
+
+  image->drawAt(ctx, MARGIN_LEFT, MARGIN_TOP);
 
   int freq[] = {125, 250, 500, 1000, 2000, 4000, 8000, 16000};
   std::string freqStrings[]  = {"125 Hz", "250 Hz", "500 Hz", "1 kHz", "2 kHz", "4 kHz", "8 kHz", "16 kHz"};
