@@ -36,6 +36,17 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
     parameter.ranges.def = presets[DEFAULT_PRESET].params[index];
     parameter.ranges.max = PARAMS[index].range_max;
     parameter.unit       = PARAMS[index].unit;
+    if (index == paramAlgorithm) {
+      parameter.hints   |= kParameterIsInteger;
+      parameter.enumValues.count = ALGORITHM_COUNT;
+      parameter.enumValues.restrictedMode = true;
+      ParameterEnumerationValue* const values = new ParameterEnumerationValue[ALGORITHM_COUNT];
+      parameter.enumValues.values = values;
+      for (int i=0; i<ALGORITHM_COUNT; ++i) {
+        values[i].label = algorithmNames[i];
+        values[i].value = i;
+      }
+    }
   }
 }
 
