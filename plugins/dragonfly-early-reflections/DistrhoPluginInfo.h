@@ -47,7 +47,7 @@ enum Parameters
 static const Param PARAMS[paramCount] = {
   {paramDry,        "Dry Level",    "dry_level",      0.0f,   100.0f,   "%"},
   {paramWet,        "Wet Level",    "early_level",    0.0f,   100.0f,   "%"},
-  {paramProgram,    "Program",      "program",        0.0f,     6.0f,    ""},
+  {paramProgram,    "Program",      "program",        0.0f,     7.0f,    ""},
   {paramSize,       "Size",         "size",          10.0f,    60.0f,   "m"},
   {paramWidth,      "Width",        "width",         50.0f,   150.0f,   "%"},
   {paramLowCut,     "Low Cut",      "low_cut",        0.0f,   200.0f,  "Hz"},
