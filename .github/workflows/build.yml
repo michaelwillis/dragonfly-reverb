@@ -183,24 +183,34 @@ jobs:
           path: |
             bin/*
   macos-universal:
-    runs-on: macos-10.15
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: Fix up Xcode
-        run: |
-          sudo rm -Rf /Library/Developer/CommandLineTools/SDKs/*
-          sudo xcode-select -s "/Applications/Xcode_12.3.app"
-      - name: Build mac universal
+      - name: Build mac universal (VST and LV2)
         env:
-          CFLAGS: -arch x86_64 -arch arm64 -DMAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_12 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
-          CXXFLAGS: -arch x86_64 -arch arm64 -DMAC_OS_X_VERSION_MAX_ALLOWED=MAC_OS_X_VERSION_10_12 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
+          CFLAGS: -arch x86_64 -arch arm64 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
+          CXXFLAGS: -arch x86_64 -arch arm64 -mmacosx-version-min=10.12 -mtune=generic -msse -msse2
           LDFLAGS: -arch x86_64 -arch arm64 -mmacosx-version-min=10.12
         run: |
           make features
           make NOOPT=true WITH_LTO=true -j $(sysctl -n hw.logicalcpu)
-          ./dpf/utils/package-osx-bundles.sh
+      - name: Build macOS universal (AU using juce)
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '10.12'
+        run: |
+          git clone --depth=1 -b 6.1.6 https://github.com/juce-framework/JUCE.git jucewrapper/JUCE
+          mkdir -p jucewrapper/build
+          pushd jucewrapper/build; cmake -DCMAKE_OSX_ARCHITECTURES='arm64;x86_64' -DCMAKE_OSX_DEPLOYMENT_TARGET=10.12 -DCMAKE_OSX_SYSROOT=$(xcrun --sdk macosx --show-sdk-path) -DCMAKE_BUILD_TYPE=Release .. && make VERBOSE=1 -j $(sysctl -n hw.logicalcpu); popd
+      - name: Capture JUCE output
+        run: cat jucewrapper/build/CMakeFiles/CMakeOutput.log
+      - name: Move AU build
+        run: mv jucewrapper/build/*_artefacts/Release/AU/*.component bin/
+      - name: List files in bin
+        run: ls bin
+      - name: Package bundles
+        run: ./dpf/utils/package-osx-bundles.sh
       - name: Set slug
         id: slug
         env:
