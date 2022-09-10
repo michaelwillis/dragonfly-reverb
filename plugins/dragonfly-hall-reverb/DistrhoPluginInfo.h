@@ -34,6 +34,11 @@
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 #define DISTRHO_PLUGIN_VST3_CATEGORIES "Fx|Reverb|Stereo"
 
+#include "Artwork.hpp"
+
+#define DISTRHO_UI_DEFAULT_WIDTH  Artwork::backgroundWidth
+#define DISTRHO_UI_DEFAULT_HEIGHT Artwork::backgroundHeight
+
 enum Parameters
 {
     paramDry = 0,

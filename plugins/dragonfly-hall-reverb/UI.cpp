@@ -19,8 +19,6 @@
 #include "DragonflyVersion.h"
 #include "DSP.hpp"
 #include "UI.hpp"
-#include "Artwork.hpp"
-#include "DistrhoPluginInfo.h"
 #include <array>
 #include <vector>
 #include <math.h>
