@@ -32,7 +32,7 @@ protected:
   const Param* params;
   Image knobImage;
 
-  ImageButton *aboutButton;
+  ScopedPointer<ImageButton> aboutButton;
   bool displayAbout = false;
 
   LabelledKnob * createLabelledKnob(const Param *param, const char * numberFormat, int x, int y);

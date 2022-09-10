@@ -27,6 +27,8 @@ make
 ### Linux Build Dependencies
 
 * libx11-dev
+* libxext-dev
+* libxrandr-dev
 * libgl1-mesa-dev
 * libjack-jackd2-dev
 
@@ -42,13 +44,13 @@ sudo apt install wine i686-w64-mingw32-gcc i686-w64-mingw32-g++ x86_64-w64-mingw
 #### 32 bit
 ```
 make clean
-make WIN32=true CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
+make CC=i686-w64-mingw32-gcc CXX=i686-w64-mingw32-g++
 ```
 
 #### 64 bit
 ```
 make clean
-make WIN32=true CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
+make CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++
 ```
 
 ## License

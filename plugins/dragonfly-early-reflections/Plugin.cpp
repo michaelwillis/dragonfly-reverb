@@ -25,6 +25,14 @@ DragonflyReverbPlugin::DragonflyReverbPlugin() : Plugin(paramCount, 0, 0), dsp(g
 // -----------------------------------------------------------------------
 // Init
 
+void DragonflyReverbPlugin::initAudioPort(bool input, uint32_t index, AudioPort& port) {
+  // treat audio ports as stereo
+  port.groupId = kPortGroupStereo;
+
+  // everything else is as default
+  Plugin::initAudioPort(input, index, port);
+}
+
 void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) {
   if (index < paramCount) {
     parameter.hints      = kParameterIsAutomatable;

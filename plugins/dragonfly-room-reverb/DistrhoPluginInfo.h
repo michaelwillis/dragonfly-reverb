@@ -20,9 +20,10 @@
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
 
-#define DISTRHO_PLUGIN_BRAND "Dragonfly"
-#define DISTRHO_PLUGIN_NAME  "Dragonfly Room Reverb"
-#define DISTRHO_PLUGIN_URI   "urn:dragonfly:room"
+#define DISTRHO_PLUGIN_BRAND   "Dragonfly"
+#define DISTRHO_PLUGIN_NAME    "Dragonfly Room Reverb"
+#define DISTRHO_PLUGIN_URI     "urn:dragonfly:room"
+#define DISTRHO_PLUGIN_CLAP_ID "michaelwillis.dragonfly.room"
 
 #define DISTRHO_PLUGIN_HAS_UI        1
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
@@ -31,6 +32,13 @@
 #define DISTRHO_PLUGIN_WANT_STATE    1
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
+#define DISTRHO_PLUGIN_VST3_CATEGORIES "Fx|Reverb|Stereo"
+#define DISTRHO_PLUGIN_CLAP_FEATURES "audio-effect", "reverb", "stereo"
+
+#include "Artwork.hpp"
+
+#define DISTRHO_UI_DEFAULT_WIDTH  Artwork::backgroundWidth
+#define DISTRHO_UI_DEFAULT_HEIGHT Artwork::backgroundHeight
 
 enum Parameters
 {
