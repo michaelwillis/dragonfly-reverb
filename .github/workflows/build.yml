@@ -386,36 +386,36 @@ jobs:
         run: |
           make features
           make NOOPT=true SKIP_STRIPPING=true -j $(nproc)
-      - name: Run self-tests
-        run: |
-          xvfb-run valgrind \
-                --gen-suppressions=all \
-                --error-exitcode=255 \
-                --leak-check=full \
-                --track-origins=yes \
-                --suppressions=./dpf/utils/valgrind-dpf.supp \
-                ./bin/DragonflyEarlyReflections selftest
-          xvfb-run valgrind \
-                --gen-suppressions=all \
-                --error-exitcode=255 \
-                --leak-check=full \
-                --track-origins=yes \
-                --suppressions=./dpf/utils/valgrind-dpf.supp \
-                ./bin/DragonflyHallReverb selftest
-          xvfb-run valgrind \
-                --gen-suppressions=all \
-                --error-exitcode=255 \
-                --leak-check=full \
-                --track-origins=yes \
-                --suppressions=./dpf/utils/valgrind-dpf.supp \
-                ./bin/DragonflyPlateReverb selftest
-          xvfb-run valgrind \
-                --gen-suppressions=all \
-                --error-exitcode=255 \
-                --leak-check=full \
-                --track-origins=yes \
-                --suppressions=./dpf/utils/valgrind-dpf.supp \
-                ./bin/DragonflyRoomReverb selftest
+      #- name: Run self-tests
+        #run: |
+          #xvfb-run valgrind \
+                #--gen-suppressions=all \
+                #--error-exitcode=255 \
+                #--leak-check=full \
+                #--track-origins=yes \
+                #--suppressions=./dpf/utils/valgrind-dpf.supp \
+                #./bin/DragonflyEarlyReflections selftest
+          #xvfb-run valgrind \
+                #--gen-suppressions=all \
+                #--error-exitcode=255 \
+                #--leak-check=full \
+                #--track-origins=yes \
+                #--suppressions=./dpf/utils/valgrind-dpf.supp \
+                #./bin/DragonflyHallReverb selftest
+          #xvfb-run valgrind \
+                #--gen-suppressions=all \
+                #--error-exitcode=255 \
+                #--leak-check=full \
+                #--track-origins=yes \
+                #--suppressions=./dpf/utils/valgrind-dpf.supp \
+                #./bin/DragonflyPlateReverb selftest
+          #xvfb-run valgrind \
+                #--gen-suppressions=all \
+                #--error-exitcode=255 \
+                #--leak-check=full \
+                #--track-origins=yes \
+                #--suppressions=./dpf/utils/valgrind-dpf.supp \
+                #./bin/DragonflyRoomReverb selftest
       - name: Validate LV2 ttl syntax
         run: |
           lv2_validate \
