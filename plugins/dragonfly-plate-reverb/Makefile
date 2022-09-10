@@ -83,7 +83,7 @@ LINK_OPTS += -lm
 # --------------------------------------------------------------
 # Enable all possible plugin types
 
-TARGETS = jack lv2_sep vst2 vst3
+TARGETS = jack lv2_sep vst2 vst3 clap
 
 all: $(TARGETS)
 

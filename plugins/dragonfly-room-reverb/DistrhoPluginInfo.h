@@ -32,6 +32,7 @@
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
 #define DISTRHO_PLUGIN_VST3_CATEGORIES "Fx|Reverb|Stereo"
+#define DISTRHO_PLUGIN_CLAP_FEATURES "audio-effect", "reverb", "stereo"
 
 #include "Artwork.hpp"
 
