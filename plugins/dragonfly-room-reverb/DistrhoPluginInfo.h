@@ -20,9 +20,10 @@
 #ifndef DISTRHO_PLUGIN_INFO_H_INCLUDED
 #define DISTRHO_PLUGIN_INFO_H_INCLUDED
 
-#define DISTRHO_PLUGIN_BRAND "Dragonfly"
-#define DISTRHO_PLUGIN_NAME  "Dragonfly Room Reverb"
-#define DISTRHO_PLUGIN_URI   "urn:dragonfly:room"
+#define DISTRHO_PLUGIN_BRAND   "Dragonfly"
+#define DISTRHO_PLUGIN_NAME    "Dragonfly Room Reverb"
+#define DISTRHO_PLUGIN_URI     "urn:dragonfly:room"
+#define DISTRHO_PLUGIN_CLAP_ID "michaelwillis.dragonfly.room"
 
 #define DISTRHO_PLUGIN_HAS_UI        1
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
