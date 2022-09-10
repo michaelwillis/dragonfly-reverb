@@ -31,6 +31,7 @@
 #define DISTRHO_PLUGIN_WANT_STATE    0
 
 #define DISTRHO_PLUGIN_LV2_CATEGORY "lv2:ReverbPlugin"
+#define DISTRHO_PLUGIN_VST3_CATEGORIES "Fx|Reverb|Stereo"
 
 enum Parameters
 {
