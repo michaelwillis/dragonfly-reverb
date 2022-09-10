@@ -40,10 +40,10 @@ void DragonflyReverbPlugin::initParameter(uint32_t index, Parameter& parameter) 
   }
 }
 
-void DragonflyReverbPlugin::initState(uint32_t index, String& stateKey, String& defaultStateValue) {
+void DragonflyReverbPlugin::initState(uint32_t index, State& state) {
   if (index == 0) {
-    stateKey = "preset";
-    defaultStateValue = "Medium Clear Room";
+    state.key = "preset";
+    state.defaultValue = "Medium Clear Room";
   }
 }
 

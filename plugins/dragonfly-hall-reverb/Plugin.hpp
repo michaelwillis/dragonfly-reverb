@@ -73,7 +73,7 @@ protected:
     // Init
 
     void initParameter(uint32_t index, Parameter& parameter) override;
-    void initState(uint32_t index, String& stateKey, String& defaultStateValue) override;
+    void initState(uint32_t index, State& state) override;
 
     // -------------------------------------------------------------------
     // Internal data
