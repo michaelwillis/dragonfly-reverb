@@ -83,7 +83,14 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
         case         paramWidth: early.setwidth     (value / 120.0);
                                  late.setwidth      (value / 100.0); break;
-        case      paramPredelay: late.setPreDelay   (value);         break;
+        case      paramPredelay:
+          // Freeverb doesn't handle zero predelay properly
+          // Instead of modifying the library, avoid it here
+          if (value < 0.1) {
+            value = 0.1;
+          }
+          late.setPreDelay   (value);
+          break;
         case         paramDecay: late.setrt60       (value);
 	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
         case       paramDiffuse: late.setidiffusion1(value / 120.0);

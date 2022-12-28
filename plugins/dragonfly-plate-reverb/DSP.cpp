@@ -187,9 +187,16 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case         paramWidth: strev.setwidth      (value / 120.0);             
 	                         nrev.setwidth       (value / 120.0);
 				 nrevb.setwidth      (value / 120.0);             break;
-        case      paramPredelay: strev.setPreDelay   (value);
-	                         nrev.setPreDelay    (value);
-				 nrevb.setPreDelay   (value);                     break;
+        case      paramPredelay:
+          // Freeverb doesn't handle zero predelay properly
+          // Instead of modifying the library, avoid it here
+          if (value < 0.1) {
+            value = 0.1;
+          }
+          strev.setPreDelay   (value);
+          nrev.setPreDelay    (value);
+          nrevb.setPreDelay   (value);
+          break;
         case         paramDecay: strev.setrt60       (value);
                                  nrev.setrt60        (value);
                                  nrevb.setrt60       (value);                     break;
