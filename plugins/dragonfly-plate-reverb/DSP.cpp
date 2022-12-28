@@ -184,9 +184,9 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       switch(index) {
         case           paramDry: dryLevel         = (value / 100.0);             break;
         case           paramWet: wetLevel         = (value / 100.0);             break;
-        case         paramWidth: strev.setwidth      (value / 120.0);             
-	                         nrev.setwidth       (value / 120.0);
-				 nrevb.setwidth      (value / 120.0);             break;
+        case         paramWidth: strev.setwidth     (value / 120.0);
+                                 nrev.setwidth      (value / 120.0);
+                                 nrevb.setwidth     (value / 120.0);             break;
         case      paramPredelay:
           // Freeverb doesn't handle zero predelay properly
           // Instead of modifying the library, avoid it here
@@ -204,23 +204,23 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case       paramHighCut: setInputLPF         (value);                     break;
         case          paramDamp: nrev.setDampLpf     (value);
                                  nrevb.setDampLpf    (value);
-				 strev.setdamp       (value);
+                                 strev.setdamp       (value);
                                  strev.setoutputdamp (fmax(value * 2.0, 16000));  break;
       }
 
       if (index == paramAlgorithm) {
-	fv3::revbase_f *previous = model;
-	int algorithm = value;
-	if (algorithm == ALGORITHM_NREV) {
-	  model = &nrev;
-	} else if (algorithm == ALGORITHM_NREV_B) {
-	  model = &nrevb;
-	} else if (algorithm == ALGORITHM_STREV) {
-	  model = &strev;
-	}
-	if (model != previous) {
-	  previous->mute();
-	}
+        fv3::revbase_f *previous = model;
+        int algorithm = value;
+        if (algorithm == ALGORITHM_NREV) {
+          model = &nrev;
+        } else if (algorithm == ALGORITHM_NREV_B) {
+          model = &nrevb;
+        } else if (algorithm == ALGORITHM_STREV) {
+          model = &strev;
+        }
+        if (model != previous) {
+          previous->mute();
+        }
       }
     }
   }
@@ -243,12 +243,12 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
 
     for (uint32_t i = 0; i < buffer_frames; i++) {
       outputs[0][offset + i] =
-	dryLevel   * inputs[0][offset + i]  +
-	wetLevel   * output_buffer[0][i];
+        dryLevel   * inputs[0][offset + i]  +
+        wetLevel   * output_buffer[0][i];
 
       outputs[1][offset + i] =
-	dryLevel   * inputs[1][offset + i]  +
-	wetLevel   * output_buffer[1][i];
+        dryLevel   * inputs[1][offset + i]  +
+        wetLevel   * output_buffer[1][i];
     }
 
   }

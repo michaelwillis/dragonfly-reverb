@@ -80,7 +80,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case          paramLate: lateLevel       = (value / 100.0); break;
         case          paramSize: early.setRSFactor  (value /  10.0);
                                  late.setRSFactor   (value /  10.0);
-	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
+                                 late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
         case         paramWidth: early.setwidth     (value / 120.0);
                                  late.setwidth      (value / 100.0); break;
         case      paramPredelay:
@@ -92,7 +92,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
           late.setPreDelay   (value);
           break;
         case         paramDecay: late.setrt60       (value);
-	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
+                                 late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0) ); break;
         case       paramDiffuse: late.setidiffusion1(value / 120.0);
                                  late.setodiffusion1(value / 120.0); break;
         case          paramSpin: late.setspin       (value);
@@ -104,8 +104,7 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         case     paramEarlyDamp: early.setoutputlpf (value);         break;
         case      paramLateDamp: late.setdamp       (value);
                                  late.setoutputdamp (value);         break;
-        case         paramBoost:
-	  late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0)  ); break;
+        case         paramBoost: late.setbassboost( newParams[paramBoost] / 20.0 / pow(newParams[paramDecay], 1.5) * (newParams[paramSize] / 10.0)  ); break;
         case      paramBoostLPF: late.setdamp2      (newParams[paramBoostLPF]); break;
         case      paramInLowCut: setInputHPF        (value);         break;
       }
@@ -146,15 +145,15 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
     
     if( earlyLevel > 0.0 ){
       for (uint32_t i = 0; i < buffer_frames; i++) {
-	outputs[0][offset + i] += earlyLevel * early_out_buffer[0][i];
-	outputs[1][offset + i] += earlyLevel * early_out_buffer[1][i];
+        outputs[0][offset + i] += earlyLevel * early_out_buffer[0][i];
+        outputs[1][offset + i] += earlyLevel * early_out_buffer[1][i];
       }
     }
     
     if( lateLevel > 0.0 ){
       for (uint32_t i = 0; i < buffer_frames; i++) {
-	outputs[0][offset + i] += lateLevel  * late_out_buffer[0][i];
-	outputs[1][offset + i] += lateLevel  * late_out_buffer[1][i];
+        outputs[0][offset + i] += lateLevel  * late_out_buffer[0][i];
+        outputs[1][offset + i] += lateLevel  * late_out_buffer[1][i];
       }
     }
   }

@@ -80,7 +80,7 @@ void DragonflyReverbPlugin::setState(const char* key, const char* value) {
   if (std::strcmp(key, "preset") == 0) {
     for (int p = 0; p < NUM_PRESETS; p++) {
       if (std::strcmp(value, presets[p].name) == 0) {
-	preset = p;
+        preset = p;
       }
     }
   }
