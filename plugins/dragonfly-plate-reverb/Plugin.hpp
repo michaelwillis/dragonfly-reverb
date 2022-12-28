@@ -81,7 +81,7 @@ protected:
     float getParameterValue(uint32_t index) const override;
     void  setParameterValue(uint32_t index, float value) override;
 
-    void setState(const char* key, const char* value);
+    void setState(const char* key, const char* value) override;
 
     // -------------------------------------------------------------------
     // Process
@@ -98,7 +98,6 @@ protected:
 
 private:
     DragonflyReverbDSP dsp;
-    int bank;
     int preset;
     DISTRHO_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DragonflyReverbPlugin)
 };

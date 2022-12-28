@@ -81,7 +81,7 @@ protected:
     float getParameterValue(uint32_t index) const override;
     void  setParameterValue(uint32_t index, float value) override;
 
-    void setState(const char* key, const char* value);
+    void setState(const char* key, const char* value) override;
 
     // -------------------------------------------------------------------
     // Process
