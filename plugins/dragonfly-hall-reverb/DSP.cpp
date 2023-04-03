@@ -17,6 +17,8 @@
 
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
+#include "extra/ScopedDenormalDisable.hpp"
+
 #include "DSP.hpp"
 
 DragonflyReverbDSP::DragonflyReverbDSP(double sampleRate) {
@@ -58,6 +60,7 @@ void DragonflyReverbDSP::setParameterValue(uint32_t index, float value) {
 }
 
 void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t frames) {
+  const ScopedDenormalDisable sdd;
   for (uint32_t index = 0; index < paramCount; index++) {
     if (d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];

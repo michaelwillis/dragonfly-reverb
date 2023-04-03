@@ -14,10 +14,13 @@
  * For a full copy of the GNU General Public License see the LICENSE file.
  */
 
+#include "math.h"
+
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
+#include "extra/ScopedDenormalDisable.hpp"
+
 #include "DSP.hpp"
-#include "math.h"
 
 NRev::NRev() : fv3::nrev_f() { }
 
@@ -176,6 +179,7 @@ void DragonflyReverbDSP::setParameterValue(uint32_t index, float value) {
 }
 
 void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t frames) {
+  const ScopedDenormalDisable sdd;
   for (uint32_t index = 0; index < paramCount; index++) {
     if (d_isNotEqual(oldParams[index], newParams[index])) {
       oldParams[index] = newParams[index];
