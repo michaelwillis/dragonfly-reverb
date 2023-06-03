@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles/normalize.css">  
-  <link rel="stylesheet" href="styles/common.css">
-  <link rel="stylesheet" href="styles/manual.css">
+  <head>
+    <title>Dragonfly Room Reverb Manual</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/common.css">
+    <link rel="stylesheet" href="styles/manual.css">
+  </head>
   <body>
     <div class="logos">
       <img src="images/dragonfly-room-reverb/dragonfly-room-logo.png" />
@@ -24,20 +27,20 @@
     <dl>
       <dt>Dry Level</dt>
       <dd>
-	<p>Level of the input signal sent directly to the reverb’s output</p>
+        <p>Level of the input signal sent directly to the reverb’s output</p>
       </dd>
       <dt>Early Level</dt>
       <dd>
-	<p>Level of the early reflection signal in the reverb’s output</p>
+        <p>Level of the early reflection signal in the reverb’s output</p>
       </dd>
       <dt>Early Send</dt>
       <dd>
-	<p>Level of the early reflection signal mixed into the input to
-	the late reverberation algorithm</p>
+        <p>Level of the early reflection signal mixed into the input to
+        the late reverberation algorithm</p>
       </dd>
       <dt>Late Level</dt>
       <dd>
-	<p>Level of the late reverberation signal in the reverb’s output</p>
+        <p>Level of the late reverberation signal in the reverb’s output</p>
       </dd>
     </dl>
     <p>
@@ -56,55 +59,55 @@
     <dl>
       <dt>Size</dt>
       <dd>
-	<p>
-	  Length of the reverb’s internal delay lines. Increasing the
-	  Size parameter generally leads to a smoother, less resonant
-	  output however it can also increase the reverb’s attack time
-	  and make individual early reflections more audible.
-	  Decreasing the Size parameter generally has the opposite
-	  effect, decreasing the reverb’s attack time and making
-	  individual early reflections less audible although it can
-	  increase the presence of metallic resonances.
-	</p>
-	<p>
-	  In physical terms, the Size control corresponds to the
-	  largest dimension of an imaginary space. When the size is
-	  small, the “walls” of this space are closer together and the
-	  resultant reflection density increases. When the size is
-	  large, that reflection density decreases.
-	</p>
+        <p>
+          Length of the reverb’s internal delay lines. Increasing the
+          Size parameter generally leads to a smoother, less resonant
+          output however it can also increase the reverb’s attack time
+          and make individual early reflections more audible.
+          Decreasing the Size parameter generally has the opposite
+          effect, decreasing the reverb’s attack time and making
+          individual early reflections less audible although it can
+          increase the presence of metallic resonances.
+        </p>
+        <p>
+          In physical terms, the Size control corresponds to the
+          largest dimension of an imaginary space. When the size is
+          small, the “walls” of this space are closer together and the
+          resultant reflection density increases. When the size is
+          large, that reflection density decreases.
+        </p>
       </dd>
       <dt>Width</dt>
       <dd>
-	<p>
-	  The Width control sets the output stereo width. Note that
-	  this applies to both the early reflections and the late
-	  reverberation.
-	</p>
+        <p>
+          The Width control sets the output stereo width. Note that
+          this applies to both the early reflections and the late
+          reverberation.
+        </p>
       </dd>
     </dl>
     <img src="images/dragonfly-room-reverb/predelay-decay-dials.png" />
     <dl>
       <dt>Predelay</dt>
       <dd>
-	<p>
-	  Delay before the onset of the late reverberation.
-	</p>
-	<p>
-	  Note that only the late reverberation is delayed. Early
-	  reflections are always output immediately. You can see this
-	  by doing the following:
-	  <ul>
-	    <li>Set Early Level to 100% and Late Level to 0%.</li>
-	    <li>Observe on the spectrogram that changing the Predelay does not move the early reflections.</li>
-	    <li>Set Early Level to 0% and Late Level to 100%.</li>	    
-	    <li>Observe on the spectrogram that changing the Predelay moves the late reverberation.</li>
-	  </ul>
-	</p>
+        <p>
+          Delay before the onset of the late reverberation.
+        </p>
+        <p>
+          Note that only the late reverberation is delayed. Early
+          reflections are always output immediately. You can see this
+          by doing the following:
+          <ul>
+            <li>Set Early Level to 100% and Late Level to 0%.</li>
+            <li>Observe on the spectrogram that changing the Predelay does not move the early reflections.</li>
+            <li>Set Early Level to 0% and Late Level to 100%.</li>            
+            <li>Observe on the spectrogram that changing the Predelay moves the late reverberation.</li>
+          </ul>
+        </p>
       </dd>
       <dt>Decay</dt>
       <dd>
-	Length of time for the late reverberation to decrease by 60dB.
+        Length of time for the late reverberation to decrease by 60dB.
       </dd>
     </dl>
     <h2>Preset Browser</h2>
@@ -132,124 +135,124 @@
     <dl>
       <dt>Diffuse</dt>
       <dd>
-	<p>
-	  Adjusts the coefficients of the allpass filters in the late
-	  reverberation algorithm. It enables the user to balance echo
-	  density against unpleasant colouration so that the result
-	  enhances rather than detracts from the audio input signal.
-	</p>
-	<p>
-	  A challenge that the designers of early digital reverbs
-	  faced was generating a realistic number of early reflections
-	  or echo density. One solution to this problem was to use
-	  allpass filter networks. Although successful in increasing
-	  echo density, the downside of allpass filter networks is
-	  that they have a tendency to resonate, particularly when the
-	  input signal is impulsive. This means that there is a
-	  tradeoff between echo density and colouration.
-	</p>
-	<p>
-	  In general, low echo density or diffusion settings increase
-	  the perception of discrete echoes. In the case of
-	  transient-rich sounds this can lead to “machine-gun-like”
-	  effects in which individual echoes are heard. For sustained
-	  sounds, this is less of an issue. Increasing the Diffusion
-	  setting makes individual echoes less perceptible and
-	  generally leads to a smoother, more lush reverb sound
-	  however it also can introduce metallic resonances which can
-	  be noticeable but depend to a large extent on the nature of
-	  the input signal.
-	</p>
-	<p>
-	  To better understand the effects of the Diffuse control,
-	  open a track with clear percussive sounds. Decreasing the
-	  Diffuse value will result in fewer, more discrete
-	  reflections in the late reverberation. When set at very low
-	  values the late reverberation has an almost "shattering"
-	  sound to it. A higher Diffuse setting results in the late
-	  reverberation having a smoother and richer sound.
-	</p>
+        <p>
+          Adjusts the coefficients of the allpass filters in the late
+          reverberation algorithm. It enables the user to balance echo
+          density against unpleasant colouration so that the result
+          enhances rather than detracts from the audio input signal.
+        </p>
+        <p>
+          A challenge that the designers of early digital reverbs
+          faced was generating a realistic number of early reflections
+          or echo density. One solution to this problem was to use
+          allpass filter networks. Although successful in increasing
+          echo density, the downside of allpass filter networks is
+          that they have a tendency to resonate, particularly when the
+          input signal is impulsive. This means that there is a
+          tradeoff between echo density and colouration.
+        </p>
+        <p>
+          In general, low echo density or diffusion settings increase
+          the perception of discrete echoes. In the case of
+          transient-rich sounds this can lead to “machine-gun-like”
+          effects in which individual echoes are heard. For sustained
+          sounds, this is less of an issue. Increasing the Diffusion
+          setting makes individual echoes less perceptible and
+          generally leads to a smoother, more lush reverb sound
+          however it also can introduce metallic resonances which can
+          be noticeable but depend to a large extent on the nature of
+          the input signal.
+        </p>
+        <p>
+          To better understand the effects of the Diffuse control,
+          open a track with clear percussive sounds. Decreasing the
+          Diffuse value will result in fewer, more discrete
+          reflections in the late reverberation. When set at very low
+          values the late reverberation has an almost "shattering"
+          sound to it. A higher Diffuse setting results in the late
+          reverberation having a smoother and richer sound.
+        </p>
       </dd>
       <dt>Spin</dt>
       <dd>
-	<p>
-	  Rate of modulated chorus effect on the late
-	  reverberation. Higher Spin values can lead to an audible
-	  “wobble” particularly in real instruments such as acoustic
-	  guitar or piano and can also cause noise on pure tones. This
-	  effect tends to be less noticeable on speech.
-	</p>
+        <p>
+          Rate of modulated chorus effect on the late
+          reverberation. Higher Spin values can lead to an audible
+          “wobble” particularly in real instruments such as acoustic
+          guitar or piano and can also cause noise on pure tones. This
+          effect tends to be less noticeable on speech.
+        </p>
       </dd>
       <dt>Wander</dt>
       <dd>
-	<p>
-	  Length of modulated chorus effect on the late reverberation,
-	  measured in milliseconds.
-	</p>
-	<p>
-	  To better understand the effects of Spin and Wander, set a
-	  large room size, a long delay, Modulation to 100%, and
-	  Wander to 0%. Then play an abrupt sound such as a
-	  percussion hit or a chord on piano or guitar. You'll notice
-	  the reverb tail panning alternately left and right in the
-	  stereo field at the rate set by Spin control. There are
-	  multiple layers to the late reverberation, but they are all
-	  synchronised in the stereo space when Wander is set to 0
-	  ms. Next, increase the Wander setting, which will make the
-	  layers spread out in the stereo space. The layers all still
-	  spin at the same rate, but at any given time each one has
-	  its own location in the stereo field.
-	</p>
+        <p>
+          Length of modulated chorus effect on the late reverberation,
+          measured in milliseconds.
+        </p>
+        <p>
+          To better understand the effects of Spin and Wander, set a
+          large room size, a long delay, Modulation to 100%, and
+          Wander to 0%. Then play an abrupt sound such as a
+          percussion hit or a chord on piano or guitar. You'll notice
+          the reverb tail panning alternately left and right in the
+          stereo field at the rate set by Spin control. There are
+          multiple layers to the late reverberation, but they are all
+          synchronised in the stereo space when Wander is set to 0
+          ms. Next, increase the Wander setting, which will make the
+          layers spread out in the stereo space. The layers all still
+          spin at the same rate, but at any given time each one has
+          its own location in the stereo field.
+        </p>
       </dd>
     </dl>
     <img src="images/dragonfly-room-reverb/high-dials.png" />
     <dl>
       <dt>High Cut</dt>
       <dd>
-	<p>
-	  Low pass filter frequency applied to the input signal before
-	  it is processed by the early reflection and late
-	  reverberation algorithms.
-	</p>
+        <p>
+          Low pass filter frequency applied to the input signal before
+          it is processed by the early reflection and late
+          reverberation algorithms.
+        </p>
       </dd>
       <dt>Early Damp</dt>
       <dd>
-	<p>
-	  Low pass filter frequency applied to the output signal of
-	  the early reflection algorithm.
-	</p>
+        <p>
+          Low pass filter frequency applied to the output signal of
+          the early reflection algorithm.
+        </p>
       </dd>
       <dt>Late Damp</dt>
       <dd>
-	<p>
-	  Low pass filter frequency applied to the output signal of
-	  the late reverberation algorithm.	  
-	</p>
+        <p>
+          Low pass filter frequency applied to the output signal of
+          the late reverberation algorithm.          
+        </p>
       </dd>
     </dl>
     <img src="images/dragonfly-room-reverb/low-dials.png" />
     <dl>
       <dt>Low Cut</dt>
       <dd>
-	<p>
-	  High pass filter frequency applied to the input signal
-	  before it is processed by the early reflection and late
-	  reverberation algorithms.
-	</p>
+        <p>
+          High pass filter frequency applied to the input signal
+          before it is processed by the early reflection and late
+          reverberation algorithms.
+        </p>
       </dd>
       <dt>Low Boost</dt>
       <dd>
-	<p>
-	  Increases the decay time for a band of low frequencies. Note
-	  that the boost feature does not have a significant effect
-	  with a short decay time of less than 1s.
-	</p>
+        <p>
+          Increases the decay time for a band of low frequencies. Note
+          that the boost feature does not have a significant effect
+          with a short decay time of less than 1s.
+        </p>
       </dd>
       <dt>Boost Freq</dt>
       <dd>
-	<p>
-	  Approximately the top of the frequency band to be boosted.
-	</p>
+        <p>
+          Approximately the top of the frequency band to be boosted.
+        </p>
       </dd>
     </dl>
   </body>

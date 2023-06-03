@@ -47,13 +47,14 @@ svg {
     font-size: 40px;
     font-family: averia;
     display: inline-block;
-    width: 300px;
+    margin: 0 12px;
     text-align: left;
     text-decoration: none;
     white-space: nowrap;
 }
 
 .links {
+    line-height: 1.5;
     margin: 1em 0 1em 3em;
     text-align: center;
 }

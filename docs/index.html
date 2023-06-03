@@ -1,37 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="styles/normalize.css">
-  <link rel="stylesheet" href="styles/common.css">
+  <head>
+    <title>Dragonfly Reverb</title>
+    <meta name="description" content="Free audio effect plugins for Linux, MacOS, and Windows">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/common.css">
+  </head>
   <body>
     <div class="header">
       <a href="index.html"><img src="images/title.png" alt="Dragonfly Reverb" /></a>
       <div class="navigation">
-	<a href="https://github.com/michaelwillis/dragonfly-reverb/releases/tag/3.2.10">
-	  <svg viewBox="-6 -2 16 16" height="32" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M7 7V3H3v4H0l5 6 5-6H7z"></path></svg>
-	  Download
-	</a>
-	<a href="https://teespring.com/stores/dragonfly-reverb">
-	  <svg height="32" width="36">
-	    <path d="M29.248,4.118l-0.502,0.503V4.118h-2.473c-1.115,1.723-3.469,2.914-6.202,2.914c-2.732,0-5.086-1.191-6.201-2.914h-2.473
-		     v0.503l-0.503-0.503L2,13.017l4.865,4.869l4.532-4.534v22.672h17.347V13.353l4.533,4.534l4.864-4.87L29.248,4.118z"/>
-	  </svg>
-	  Merchandise</a>
-	<a href="donations.html">
-	  <svg height="32" class="octicon octicon-heart" viewBox="-2 0 12 16" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M9 2c-.97 0-1.69.42-2.2 1-.51.58-.78.92-.8 1-.02-.08-.28-.42-.8-1-.52-.58-1.17-1-2.2-1-1.632.086-2.954 1.333-3 3 0 .52.09 1.52.67 2.67C1.25 8.82 3.01 10.61 6 13c2.98-2.39 4.77-4.17 5.34-5.33C11.91 6.51 12 5.5 12 5c-.047-1.69-1.342-2.913-3-3z"></path></svg>
-	  Donations
-	</a>
-	<a href="manuals.html">
-	  <svg height="32" class="octicon octicon-book" viewBox="0 0 16 16" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M3 5h4v1H3V5zm0 3h4V7H3v1zm0 2h4V9H3v1zm11-5h-4v1h4V5zm0 2h-4v1h4V7zm0 2h-4v1h4V9zm2-6v9c0 .55-.45 1-1 1H9.5l-1 1-1-1H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h5.5l1 1 1-1H15c.55 0 1 .45 1 1zm-8 .5L7.5 3H2v9h6V3.5zm7-.5H9.5l-.5.5V12h6V3z"></path></svg>
-	  Manuals
-	</a>
-	<a href="https://github.com/michaelwillis/dragonfly-reverb">
-	  <svg height="32" class="octicon octicon-mark-github" viewBox="0 0 16 16" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
-	  Github
-	</a>      
+        <a href="https://github.com/michaelwillis/dragonfly-reverb/releases/tag/3.2.10">
+          <svg viewBox="-4 -2 18 16" height="32" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M7 7V3H3v4H0l5 6 5-6H7z"></path></svg>Download
+        </a>
+        <a href="manuals.html">
+          <svg height="32" class="octicon octicon-book" viewBox="0 -2 20 16" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M3 5h4v1H3V5zm0 3h4V7H3v1zm0 2h4V9H3v1zm11-5h-4v1h4V5zm0 2h-4v1h4V7zm0 2h-4v1h4V9zm2-6v9c0 .55-.45 1-1 1H9.5l-1 1-1-1H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h5.5l1 1 1-1H15c.55 0 1 .45 1 1zm-8 .5L7.5 3H2v9h6V3.5zm7-.5H9.5l-.5.5V12h6V3z"></path></svg>Manuals
+        </a>
+        <a href="https://github.com/michaelwillis/dragonfly-reverb">
+          <svg height="32" class="octicon octicon-mark-github" viewBox="-2 -2 22 18" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>Github
+        </a>   
+        <a href="https://paypal.me/michaelcwillis">
+          <svg height="32" class="octicon octicon-heart" viewBox="0 -2 12 16" version="1.1" width="36" aria-hidden="true"><path fill-rule="evenodd" d="M9 2c-.97 0-1.69.42-2.2 1-.51.58-.78.92-.8 1-.02-.08-.28-.42-.8-1-.52-.58-1.17-1-2.2-1-1.632.086-2.954 1.333-3 3 0 .52.09 1.52.67 2.67C1.25 8.82 3.01 10.61 6 13c2.98-2.39 4.77-4.17 5.34-5.33C11.91 6.51 12 5.5 12 5c-.047-1.69-1.342-2.913-3-3z"></path></svg>Donations
+        </a>   
       </div>
     </div>
-    <p style="text-align: center">Dragonfly Reverb is a bundle of free audio effect plugins (LV2 and VST) for Linux, MacOS, and Windows.</p>
+    <p style="text-align: center">Dragonfly Reverb is a bundle of free audio effect plugins for Linux, MacOS, and Windows.</p>
     <div style="text-align: center;">
       <img src="images/collage.png" width="640" align="center"/>
     </div>
