@@ -19,6 +19,7 @@
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 #include "extra/ScopedDenormalDisable.hpp"
+#include "optimization/optimization.hpp"
 
 #include "DSP.hpp"
 
@@ -130,10 +131,11 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       early_out_buffer[1],
       buffer_frames);
     
-    for (uint32_t i = 0; i < buffer_frames; i++) {
-      late_in_buffer[0][i] = early_send * early_out_buffer[0][i] + filtered_input_buffer[0][i];
-      late_in_buffer[1][i] = early_send * early_out_buffer[1][i] + filtered_input_buffer[1][i];
-    }
+    VMUL32FLOAT_V(early_send, early_out_buffer[0], late_buffer, buffer_frames);
+    VSUM32FLOAT(late_buffer, filtered_input_buffer[0], late_in_buffer[0], buffer_frames);
+
+    VMUL32FLOAT_V(early_send, early_out_buffer[1], late_buffer, buffer_frames);
+    VSUM32FLOAT(late_buffer, filtered_input_buffer[1], late_in_buffer[1], buffer_frames);
     
     late.processreplace(
       const_cast<float *>(late_in_buffer[0]),
@@ -142,23 +144,23 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
       late_out_buffer[1],
       buffer_frames);
 
-    for (uint32_t i = 0; i < buffer_frames; i++) {
-      outputs[0][offset + i] = dryLevel   * inputs[0][offset + i];
-      outputs[1][offset + i] = dryLevel   * inputs[1][offset + i];
-    }
+    VMUL32FLOAT_V(dryLevel, &inputs[0][offset], &outputs[0][offset], buffer_frames);
+    VMUL32FLOAT_V(dryLevel, &inputs[1][offset], &outputs[1][offset], buffer_frames);
     
     if( earlyLevel > 0.0 ){
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-        outputs[0][offset + i] += earlyLevel * early_out_buffer[0][i];
-        outputs[1][offset + i] += earlyLevel * early_out_buffer[1][i];
-      }
+      VMUL32FLOAT_V(earlyLevel, early_out_buffer[0], early_buffer, buffer_frames);
+      VSUM32FLOAT(early_buffer, &outputs[0][offset], &outputs[0][offset], buffer_frames);
+
+      VMUL32FLOAT_V(earlyLevel, early_out_buffer[1], early_buffer, buffer_frames);
+      VSUM32FLOAT(early_buffer, &outputs[1][offset], &outputs[1][offset], buffer_frames);
     }
     
     if( lateLevel > 0.0 ){
-      for (uint32_t i = 0; i < buffer_frames; i++) {
-        outputs[0][offset + i] += lateLevel  * late_out_buffer[0][i];
-        outputs[1][offset + i] += lateLevel  * late_out_buffer[1][i];
-      }
+      VMUL32FLOAT_V(lateLevel, late_out_buffer[0], late_buffer, buffer_frames);
+      VSUM32FLOAT(late_buffer, &outputs[0][offset], &outputs[0][offset], buffer_frames);
+
+      VMUL32FLOAT_V(lateLevel, late_out_buffer[1], late_buffer, buffer_frames);
+      VSUM32FLOAT(late_buffer, &outputs[1][offset], &outputs[1][offset], buffer_frames);
     }
   }
 }

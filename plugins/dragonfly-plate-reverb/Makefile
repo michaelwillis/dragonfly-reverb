@@ -14,7 +14,10 @@ NAME = DragonflyPlateReverb
 
 FILES_COMMON  = DSP.cpp \
 	../../common/kiss_fft/kiss_fft.c \
-	../../common/kiss_fft/kiss_fftr.c
+	../../common/kiss_fft/kiss_fftr.c \
+	../../common/optimization/optimization.cpp \
+	../../common/optimization/default.cpp \
+	../../common/optimization/avx.cpp
 
 ifneq ($(SYSTEM_FREEVERB3),true)
 FILES_COMMON += \
@@ -59,7 +62,7 @@ include ../../dpf/Makefile.plugins.mk
 # --------------------------------------------------------------
 # Build dependencies
 
-BUILD_CXX_FLAGS += -I../../common -DLIBFV3_FLOAT
+BUILD_CXX_FLAGS += -I../../common -DLIBFV3_FLOAT -mavx
 ifeq ($(SYSTEM_FREEVERB3),true)
 BUILD_CXX_FLAGS += -DLIBSRATE1
 BUILD_CXX_FLAGS += $(shell $(PKG_CONFIG) --cflags freeverb3-3)

@@ -47,6 +47,9 @@ private:
   float early_out_buffer[2][BUFFER_SIZE];
   float late_in_buffer[2][BUFFER_SIZE];
   float late_out_buffer[2][BUFFER_SIZE];
+
+  float early_buffer[BUFFER_SIZE];
+  float late_buffer[BUFFER_SIZE];
 };
 
 #endif

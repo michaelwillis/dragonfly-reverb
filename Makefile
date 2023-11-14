@@ -48,6 +48,7 @@ clean:
 	rm -f common/*.d common/*.o
 	rm -f common/freeverb/*.d common/freeverb/*.o
 	rm -f common/kiss_fft/*.d common/kiss_fft/*.o
+	rm -f common/optimization/*.d common/optimization/*.o
 	rm -f dpf/utils/lv2_ttl_generator.d
 
 # --------------------------------------------------------------

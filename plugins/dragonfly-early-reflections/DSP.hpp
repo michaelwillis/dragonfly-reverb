@@ -46,6 +46,9 @@ private:
   float input_buffer[2][BUFFER_SIZE];
   float output_buffer[2][BUFFER_SIZE];
 
+  float dry_buffer[BUFFER_SIZE];
+  float wet_buffer[BUFFER_SIZE];
+
   void setInputLPF(float freq);
   void setInputHPF(float freq);
 };

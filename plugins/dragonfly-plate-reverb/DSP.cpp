@@ -19,6 +19,7 @@
 #include "DistrhoPlugin.hpp"
 #include "DistrhoPluginInfo.h"
 #include "extra/ScopedDenormalDisable.hpp"
+#include "optimization/optimization.hpp"
 
 #include "DSP.hpp"
 
@@ -245,16 +246,13 @@ void DragonflyReverbDSP::run(const float** inputs, float** outputs, uint32_t fra
         buffer_frames
     );
 
-    for (uint32_t i = 0; i < buffer_frames; i++) {
-      outputs[0][offset + i] =
-        dryLevel   * inputs[0][offset + i]  +
-        wetLevel   * output_buffer[0][i];
+    VMUL32FLOAT_V( dryLevel, &inputs[0][offset], dry_buffer, buffer_frames);
+    VMUL32FLOAT_V( wetLevel, output_buffer[0], wet_buffer, buffer_frames);
+    VSUM32FLOAT(dry_buffer, wet_buffer, &outputs[0][offset], buffer_frames);
 
-      outputs[1][offset + i] =
-        dryLevel   * inputs[1][offset + i]  +
-        wetLevel   * output_buffer[1][i];
-    }
-
+    VMUL32FLOAT_V( dryLevel, &inputs[1][offset], dry_buffer, buffer_frames);
+    VMUL32FLOAT_V( wetLevel, output_buffer[1], wet_buffer, buffer_frames);
+    VSUM32FLOAT(dry_buffer, wet_buffer, &outputs[1][offset], buffer_frames);
   }
 }
 
