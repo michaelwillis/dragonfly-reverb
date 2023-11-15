@@ -4,10 +4,12 @@
 
 #include <stdint.h>
 
-void VSUM32FLOAT_avx(const float* op1, const float* op2, float* result, int32_t length);
+void VADD32FLOAT_avx(const float* op1, const float* op2, float* result, int32_t length);
 
 void VMUL32FLOAT_avx(const float* op1, const float* op2, float* result, int32_t length);
 
 void VMUL32FLOAT_V_avx(const float value, const float* vec, float* result, int32_t length);
+
+void VMADD32FLOAT_V_avx(const float value, const float* vmul, const float* vadd, float* result, int32_t length);
 
 #endif

@@ -14,10 +14,7 @@ NAME = DragonflyHallReverb
 
 FILES_COMMON  = DSP.cpp \
 	../../common/kiss_fft/kiss_fft.c \
-	../../common/kiss_fft/kiss_fftr.c \
-	../../common/optimization/optimization.cpp \
-	../../common/optimization/default.cpp \
-	../../common/optimization/avx.cpp
+	../../common/kiss_fft/kiss_fftr.c
 
 ifneq ($(SYSTEM_FREEVERB3),true)
 FILES_COMMON += \
@@ -53,6 +50,11 @@ FILES_UI  = $(FILES_COMMON) \
 	../../common/Bitstream_Vera_Sans_Regular.cpp
 
 # --------------------------------------------------------------
+# Check for optimization support
+
+include ../../common/optimization/Makefile.optimization.mk
+
+# --------------------------------------------------------------
 # Do some magic
 
 FILE_BROWSER_DISABLED = true
@@ -62,7 +64,7 @@ include ../../dpf/Makefile.plugins.mk
 # --------------------------------------------------------------
 # Build dependencies
 
-BUILD_CXX_FLAGS += -I../../common -DLIBFV3_FLOAT -mavx
+BUILD_CXX_FLAGS += -I../../common -DLIBFV3_FLOAT
 ifeq ($(SYSTEM_FREEVERB3),true)
 BUILD_CXX_FLAGS += -DLIBSRATE1
 BUILD_CXX_FLAGS += $(shell $(PKG_CONFIG) --cflags freeverb3-3)
