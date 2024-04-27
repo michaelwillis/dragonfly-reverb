@@ -25,6 +25,10 @@
 #define DISTRHO_PLUGIN_URI     "urn:dragonfly:room"
 #define DISTRHO_PLUGIN_CLAP_ID "michaelwillis.dragonfly.room"
 
+#define DISTRHO_PLUGIN_AU_TYPE   aufx
+#define DISTRHO_PLUGIN_BRAND_ID  Dfrv
+#define DISTRHO_PLUGIN_UNIQUE_ID Dfrr
+
 #define DISTRHO_PLUGIN_HAS_UI        1
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
 #define DISTRHO_PLUGIN_NUM_INPUTS    2

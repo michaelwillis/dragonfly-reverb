@@ -26,6 +26,10 @@
 #define DISTRHO_PLUGIN_URI     "https://github.com/michaelwillis/dragonfly-reverb"
 #define DISTRHO_PLUGIN_CLAP_ID "michaelwillis.dragonfly.hall"
 
+#define DISTRHO_PLUGIN_AU_TYPE   aufx
+#define DISTRHO_PLUGIN_BRAND_ID  Dfrv
+#define DISTRHO_PLUGIN_UNIQUE_ID Dfhr
+
 #define DISTRHO_PLUGIN_HAS_UI        1
 #define DISTRHO_PLUGIN_IS_RT_SAFE    1
 #define DISTRHO_PLUGIN_NUM_INPUTS    2
