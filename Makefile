@@ -17,7 +17,7 @@ CAN_GENERATE_TTL = true
 endif
 
 dgl:
-	$(MAKE) -C dpf/dgl FILE_BROWSER_DISABLED=true
+	$(MAKE) -C dpf/dgl USE_FILE_BROWSER=false
 
 plugins: dgl
 	$(MAKE) all -C plugins/dragonfly-hall-reverb
