@@ -17,7 +17,7 @@ jobs:
         target: [linux-arm64, linux-armhf, linux-i686, linux-riscv64, linux-x86_64]
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: distrho/dpf-makefile-action@v1
@@ -30,7 +30,7 @@ jobs:
         target: [macos-intel, macos-universal]
     runs-on: macos-11
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: distrho/dpf-makefile-action@v1
@@ -43,7 +43,7 @@ jobs:
         target: [win32, win64]
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: distrho/dpf-makefile-action@v1
@@ -53,7 +53,7 @@ jobs:
   pluginval:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: distrho/dpf-makefile-action@v1
@@ -63,7 +63,7 @@ jobs:
   source:
     runs-on: ubuntu-20.04
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           submodules: recursive
       - uses: distrho/dpf-makefile-action@v1
