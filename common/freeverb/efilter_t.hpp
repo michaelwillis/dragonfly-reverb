@@ -231,25 +231,46 @@ class _FV3_(noisegen_pink_frac)
   {
     pfn1_param = param1;
     pfn1_length = (1<<length);
-    if(pfn1_slot.getsize() != pfn1_length)
+    if(pfn1_slot.getsize() != pfn1_length*2)
       {
-	pfn1_slot.alloc(pfn1_length, 1);
+	/* two halves: one is being consumed, the other is being built */
+	pfn1_slot.alloc(pfn1_length*2, 1);
 	pfn1_count = 0;
       }
     mute();
   }
   
-  void mute(){ pfn1_slot.mute(); pfn1_count = 0; }
+  void mute()
+  {
+    pfn1_slot.mute();
+    pfn1_count = 0;
+    pfn1_fronte = 0;
+    if(pfn1_length <= 0) return;
+    /* the first block is generated in full here: mute() is not on the audio path */
+    _pfn1_begin(0);
+    while(!_pfn1_advance(pfn1_length)) ;
+    pfn1_count = pfn1_length;
+    _pfn1_begin(1);
+  }
   
   inline _fv3_float_t process()
   {
     if(pfn1_count == 0)
       {
-	fractal(pfn1_slot.L, pfn1_length, pfn1_param);
+	/* if the spare half is not ready, finish it here in one go, which is
+	   exactly the old behaviour: never worse than the original */
+	while(!_pfn1_advance(pfn1_length)) ;
+	pfn1_fronte ^= 1;
 	pfn1_count = pfn1_length;
+	_pfn1_begin(pfn1_fronte ^ 1);
       }
+    _fv3_float_t pfn1_uscita = _pfn1_half(pfn1_fronte)[pfn1_length - pfn1_count];
     pfn1_count --;
-    return pfn1_slot.L[pfn1_length - (pfn1_count+1)];
+    /* two steps per sample: the spare half is ready halfway through, and the
+       total cost stays what it was, only spread out instead of landing in one
+       audio period */
+    _pfn1_advance(2);
+    return pfn1_uscita;
   }
   inline _fv3_float_t operator()(){ return this->process(); }
   inline _fv3_float_t process(_fv3_float_t input){ return this->process()*input; }
@@ -286,8 +307,52 @@ class _FV3_(noisegen_pink_frac)
       }
   }
   
+  _fv3_float_t *_pfn1_half(int half){ return pfn1_slot.L + (long)half * pfn1_length; }
+  
+  void _pfn1_begin(int half)
+  {
+    pfn1_gen = _pfn1_half(half);
+    pfn1_gl = pfn1_length;
+    pfn1_gr = 2.0 * (pfn1_param*pfn1_param) + 0.3;
+    pfn1_gc = 0;
+    pfn1_gen[0] = 0;
+  }
+  
+  /* One step is a single displacement, at the same indices and in the same
+     order as the original fractal(): the sequence of std::rand() draws is
+     unchanged, so the noise that comes out is identical. Moving to the next
+     level is not work and does not consume a step. Returns true when the
+     block is complete. */
+  bool _pfn1_advance(long steps)
+  {
+    while(steps > 0)
+      {
+	if(pfn1_gl <= 1) return true;
+	long pfn1_k = pfn1_length / pfn1_gl;
+	if(pfn1_gc >= pfn1_k)
+	  {
+	    pfn1_gl /= 2;
+	    pfn1_gr /= std::pow((_fv3_float_t)2., pfn1_param);
+	    pfn1_gc = 0;
+	    continue;
+	  }
+	long pfn1_i = pfn1_gc*pfn1_gl + pfn1_gl/2;
+	pfn1_gen[pfn1_i] = (pfn1_gen[pfn1_gc*pfn1_gl] + pfn1_gen[((pfn1_gc+1) * pfn1_gl) % pfn1_length]) / 2.0
+	  + 2.0 * pfn1_gr * ((_fv3_float_t)std::rand() - (_fv3_float_t)RAND_MAX/2.0) / (_fv3_float_t)RAND_MAX;
+	if(pfn1_gen[pfn1_i] < -1.) pfn1_gen[pfn1_i] = -1.;
+	if(pfn1_gen[pfn1_i] >  1.) pfn1_gen[pfn1_i] =  1.;
+	pfn1_gc ++;
+	steps --;
+      }
+    return pfn1_gl <= 1;
+  }
+  
   _fv3_float_t pfn1_param;
   long pfn1_length, pfn1_count;
+  int pfn1_fronte;
+  _fv3_float_t *pfn1_gen;
+  long pfn1_gl, pfn1_gc;
+  _fv3_float_t pfn1_gr;
   _FV3_(slot) pfn1_slot;
 };
 
